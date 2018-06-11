@@ -1,8 +1,8 @@
 CC := g++
-OPTIONS := -std=c++17 -Wall -O3
+OPTIONS := -std=c++17 -Wall -Wextra# -O3
 LDFLAGS := -lncursesw -L/home/justin/Personal/Programming/ZootronUtilsCpp/ -lzutil
 INCLUDES := -I /home/justin/Personal/Programming/ZootronUtilsCpp/
-OBJS := main.o dataStack.o
+OBJS := main.o ui.o
 EXENAME := stacklang
 .PHONY: all clean run remake rerun
 
