@@ -1,22 +1,27 @@
 CC := g++
+RM := rm -rf
+CD := cd
 OPTIONS := -std=c++17 -Wall -Wextra# -O3
-LDFLAGS := -lncursesw -L/home/justin/Personal/Programming/ZootronUtilsCpp/ -lzutil
-INCLUDES := -I /home/justin/Personal/Programming/ZootronUtilsCpp/
-OBJS := main.o ui.o
+LDFLAGS := -lncursesw -L/usr/lib/x86_64-linux-gnu
+OBJS := main.o ui.o stackElement.o
+SEOBJS := booleanElement.o commandElement.o numberElement.o stringElement.o substackElement.o typeElement.o
 EXENAME := stacklang
 .PHONY: all clean run remake rerun
 
-all: ${OBJS}
-	${CC} -o ${EXENAME} ${OPTIONS} ${OBJS} ${LDFLAGS}
+all: ${OBJS} ${SEOBJS}
+	${CC} -o ${EXENAME} ${OPTIONS} ${OBJS} ${SEOBJS} ${LDFLAGS}
+
+${OBJS}: *.cpp
+	${CC} ${OPTIONS} -c $*.cpp
+
+${SEOBJS}: stackElements/*.cpp
+	${CC} ${OPTIONS} -I. -c stackElements/$*.cpp
 
 run: all
 	./${EXENAME}
 
-%.o: %.cpp
-	${CC} ${OPTIONS} -c $*.cpp ${INCLUDES}
-
 clean:
-	rm -rf *.o ${EXENAME}
+	${RM} *.o ${EXENAME}
 
 remake: clean all
 
