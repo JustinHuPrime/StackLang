@@ -44,7 +44,7 @@ int main ()
             buffer += key;
             drawPrompt (buffer);
         }
-        else if (key == '\n' || key == KEY_ENTER)
+        else if (!buffer.isEmpty () && (key == '\n' || key == KEY_ENTER))
         {
             try
             {

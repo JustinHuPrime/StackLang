@@ -20,6 +20,7 @@ class LineEditor
     void down ();
     void enter ();
     int cursorPosition ();
+    bool isEmpty ();
     
     void operator+= (char);
     void operator+= (string);

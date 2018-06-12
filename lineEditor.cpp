@@ -74,6 +74,11 @@ int LineEditor::cursorPosition ()
     return preCursor.size ();
 }
 
+bool LineEditor::isEmpty ()
+{
+    return preCursor.empty () && postCursor.empty ();
+}
+
 void LineEditor::operator+= (char c)
 {
     preCursor.push_back (c);
