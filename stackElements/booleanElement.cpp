@@ -14,7 +14,7 @@ namespace StackElements
 
 using namespace BooleanConstants;
 
-BooleanElement::BooleanElement () : StackElement (StackElement::DataType::Boolean)
+BooleanElement::BooleanElement (bool b) : StackElement (StackElement::DataType::Boolean), data (b)
 {}
 
 BooleanElement::operator const char* () const

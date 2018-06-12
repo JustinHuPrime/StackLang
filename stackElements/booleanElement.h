@@ -9,7 +9,7 @@ namespace StackElements
     {
         public:
 
-        BooleanElement ();
+        BooleanElement (bool);
 
         operator const char* () const override;
 
@@ -17,6 +17,12 @@ namespace StackElements
 
         bool data;
     };
+
+    namespace BooleanConstants
+    {
+        const string TCSTR;
+        const string FCSTR;
+    }
 }
 
 #endif /* BOOLEANELEMENT_H */

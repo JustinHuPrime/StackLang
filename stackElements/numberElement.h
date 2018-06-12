@@ -9,7 +9,7 @@ namespace StackElements
     {
         public:
 
-        NumberElement ();
+        NumberElement (double);
 
         operator const char* () const override;
 

@@ -3,7 +3,7 @@ RM := rm -rf
 CD := cd
 OPTIONS := -std=c++17 -Wall -Wextra# -O3
 LDFLAGS := -lncursesw -L/usr/lib/x86_64-linux-gnu
-OBJS := main.o ui.o stackElement.o
+OBJS := main.o ui.o stackElement.o stringUtils.o lineEditor.o
 SEOBJS := booleanElement.o commandElement.o numberElement.o stringElement.o substackElement.o typeElement.o
 EXENAME := stacklang
 .PHONY: all clean run remake rerun

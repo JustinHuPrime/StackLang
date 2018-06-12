@@ -11,7 +11,7 @@ namespace StackElements
     {
         public:
 
-        StringElement ();
+        StringElement (string);
 
         operator const char* () const override;
 

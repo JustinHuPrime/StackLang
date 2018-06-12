@@ -1,7 +1,10 @@
 #include "stackElements/typeElement.h"
 #include <string>
+#include <stdexcept>
 using namespace StackElements;
 using std::string;
+using std::to_string;
+using std::invalid_argument;
 
 namespace StackElements
 {
@@ -13,7 +16,7 @@ namespace StackElements
 
 using namespace TypeNameConstants;
 
-TypeElement::TypeElement () : StackElement (StackElement::DataType::Type)
+TypeElement::TypeElement (DataType type) : StackElement (StackElement::DataType::Type), data (type)
 {}
 
 TypeElement::operator const char* () const

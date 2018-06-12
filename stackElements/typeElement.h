@@ -11,7 +11,7 @@ namespace StackElements
     {
         public:
 
-        TypeElement ();
+        TypeElement (DataType);
 
         operator const char* () const override;
 
@@ -19,6 +19,11 @@ namespace StackElements
 
         DataType data;
     };
+
+    namespace TypeNameConstants
+    {
+        const char* TYPES;
+    }
 }
 
 #endif /* TYPEELEMENT_H */

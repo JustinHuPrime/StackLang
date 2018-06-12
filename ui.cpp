@@ -52,14 +52,16 @@ void draw (const list<StackElement*>& s, const string& buffer)
     refresh ();
 }
 
-void drawPrompt (const string& s)
+void drawPrompt (const LineEditor& s)
 {
     int maxY = getmaxy (stdscr);
 
     move (maxY - 1, 0);
     clrtoeol ();
-    printw (("> " + s).c_str ());
-    move (maxY - 1, 2 + s.length ());
+    printw ("> ");
+    move (maxY - 1, 2);
+    printw (s);
+    move (maxY - 1, 2 + s.cursorPosition ());
 
     refresh ();
 }

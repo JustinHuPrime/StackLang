@@ -1,9 +1,14 @@
 #ifndef STACKELEMENT_H
 #define STACKELEMENT_H
 
+#include <string>
+using std::string;
+
 class StackElement
 {
     public:
+
+    static StackElement* parse (string);
 
     virtual operator const char* () const = 0;
 
@@ -23,5 +28,7 @@ class StackElement
 
     DataType dataType;
 };
+
+const int NUMTYPES;
 
 #endif /* STACKELEMENT_H */

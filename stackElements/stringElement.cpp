@@ -3,10 +3,25 @@
 using namespace StackElements;
 using std::string;
 
-StringElement::StringElement () : StackElement (StackElement::DataType::String)
+StringElement::StringElement (string s) : StackElement (StackElement::DataType::String), data (s)
 {}
 
 StringElement::operator const char* () const
 {
-    return data.c_str ();
+    string buffer = "\"";
+
+    for (const char c : data)
+    {
+        switch (c)
+        {
+            case '\t': buffer += "\\t"; break;
+            case '\\': buffer += "\\\\"; break;
+            case '"': buffer += "\\\""; break;
+            default: buffer += c;
+        }
+    }
+
+    buffer += "\"";
+
+    return buffer.c_str ();
 }

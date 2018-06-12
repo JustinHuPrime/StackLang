@@ -4,7 +4,7 @@ using namespace StackElements;
 using std::string;
 using std::to_string;
 
-NumberElement::NumberElement () : StackElement (StackElement::DataType::Number)
+NumberElement::NumberElement (double d) : StackElement (StackElement::DataType::Number), data (d)
 {}
 
 NumberElement::operator const char* () const
