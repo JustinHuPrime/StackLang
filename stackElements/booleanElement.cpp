@@ -3,21 +3,13 @@
 using namespace StackElements;
 using std::string;
 
-namespace StackElements
-{
-    namespace BooleanConstants
-    {
-        const string TCSTR = "true";
-        const string FCSTR = "false";
-    }
-}
-
-using namespace BooleanConstants;
+const string BooleanElement::TSTR = "true";
+const string BooleanElement::FSTR = "false";
 
 BooleanElement::BooleanElement (bool b) : StackElement (StackElement::DataType::Boolean), data (b)
 {}
 
 BooleanElement::operator const char* () const
 {
-    return (data ? TCSTR : FCSTR).c_str ();
+    return (data ? TSTR : FSTR).c_str ();
 }

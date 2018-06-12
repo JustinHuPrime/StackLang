@@ -69,12 +69,12 @@ void LineEditor::enter ()
     postCursor.clear ();
 }
 
-int LineEditor::cursorPosition ()
+int LineEditor::cursorPosition () const
 {
     return preCursor.size ();
 }
 
-bool LineEditor::isEmpty ()
+bool LineEditor::isEmpty () const
 {
     return preCursor.empty () && postCursor.empty ();
 }

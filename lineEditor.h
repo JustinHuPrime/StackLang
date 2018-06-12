@@ -19,8 +19,8 @@ class LineEditor
     void up ();
     void down ();
     void enter ();
-    int cursorPosition ();
-    bool isEmpty ();
+    int cursorPosition () const;
+    bool isEmpty () const;
     
     void operator+= (char);
     void operator+= (string);

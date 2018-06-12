@@ -15,15 +15,12 @@ namespace StackElements
 
         operator const char* () const override;
 
+        static const string TYPES [];
+
         private:
 
         DataType data;
     };
-
-    namespace TypeNameConstants
-    {
-        const char* TYPES;
-    }
 }
 
 #endif /* TYPEELEMENT_H */

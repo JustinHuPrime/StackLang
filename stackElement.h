@@ -29,6 +29,4 @@ class StackElement
     DataType dataType;
 };
 
-const int NUMTYPES;
-
 #endif /* STACKELEMENT_H */

@@ -2,6 +2,8 @@
 #define BOOLEANELEMENT_H
 
 #include "stackElement.h"
+#include <string>
+using std::string;
 
 namespace StackElements
 {
@@ -13,16 +15,13 @@ namespace StackElements
 
         operator const char* () const override;
 
+        static const string TSTR;
+        static const string FSTR;
+
         private:
 
         bool data;
     };
-
-    namespace BooleanConstants
-    {
-        const string TCSTR;
-        const string FCSTR;
-    }
 }
 
 #endif /* BOOLEANELEMENT_H */

@@ -10,15 +10,11 @@
 #include <string>
 #include <stdexcept>
 using namespace StackElements;
-using namespace BooleanConstants;
-using namespace TypeNameConstants;
 using std::invalid_argument;
 using std::all_of;
 using std::find;
 using std::count;
 using std::stod;
-
-const int NUMTYPES = 6;
 
 StackElement::StackElement (DataType type) : dataType (type)
 {}
@@ -29,11 +25,31 @@ StackElement* StackElement::parse (string s)
     {
         return new NumberElement (stod (s));
     }
-    else if (starts_with (s, "\"") && ends_with (s, "\"") && all_of (s.begin (), s.end (), [=] (char c) {/*all " is preceeded by a \, and all \ properly escape the next character*/})) // looks like a string!
+    else if (starts_with (s, "\"") && ends_with (s, "\"") && [=] (string s) //all quotes are matched.
     {
+        char prev = '\0';
+        for (char curr : s)
+        {
+            if (curr == '"' && prev != '\\')
+            {
+                return false;
+            }
+            if (curr == '\\' && prev == '\\')
+            {
+                prev = '\0';
+            }
+        }
 
+        return true;
+    } (s)) // looks like a string!
+    {
+        char prev = '\0';
+        for (char curr : s)
+        {
+            
+        }
     }
-    else if (s == TCSTR || s == FCSTR)
+    else if (s == BooleanElement::TSTR || s == BooleanElement::FSTR)
     {
         return new BooleanElement (s == "true");
     }

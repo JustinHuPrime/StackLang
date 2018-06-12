@@ -24,7 +24,7 @@ void uninit ()
     endwin ();
 }
 
-void draw (const list<StackElement*>& s, const string& buffer)
+void draw (const list<StackElement*>& s, const LineEditor& buffer)
 {
     int maxY = getmaxy (stdscr);
 
@@ -47,7 +47,7 @@ void draw (const list<StackElement*>& s, const string& buffer)
         printw ("...");
     }
 
-    move (maxY - 1, 2 + buffer.length ());
+    move (maxY - 1, 2 + buffer.cursorPosition ());
 
     refresh ();
 }
