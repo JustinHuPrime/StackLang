@@ -14,17 +14,17 @@ all: ${EXENAME}
 ${EXENAME}: ${OBJS} ${SEOBJS}
 	${CC} -o ${EXENAME} ${OPTIONS} ${OBJS} ${SEOBJS} ${LDFLAGS}
 
-${OBJS}: *.cpp
-	${CC} ${OPTIONS} ${INCLUDES} -c $*.cpp -o bin/$*.o
+${OBJS}: $(notdir *.cpp *.h)
+	${CC} ${OPTIONS} ${INCLUDES} -c $(notdir $*.cpp) -o $*.o
 
-${SEOBJS}: stackElements/*.cpp
-	${CC} ${OPTIONS} ${INCLUDES} -c stackElements/$*.cpp -o bin/$*.o
+${SEOBJS}: $(addprefix stackElements/, $(notdir *.cpp *.h))
+	${CC} ${OPTIONS} ${INCLUDES} -c stackElements/$(notdir $*.cpp) -o $*.o
 
 run: | all
 	./${EXENAME}
 
 clean:
-	${RM} *.o ${EXENAME}
+	${RM} bin/*.o ${EXENAME}
 
 remake: | clean all
 
