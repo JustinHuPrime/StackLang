@@ -11,7 +11,7 @@ namespace StackElements
 
         NumberElement (double);
 
-        operator const char* () const override;
+        operator const string () const override;
 
         private:
 

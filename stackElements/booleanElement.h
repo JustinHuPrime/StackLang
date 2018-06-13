@@ -13,7 +13,7 @@ namespace StackElements
 
         BooleanElement (bool);
 
-        operator const char* () const override;
+        operator const string () const override;
 
         private:
 

@@ -10,7 +10,7 @@ class StackElement
 
     static StackElement* parse (string);
 
-    virtual operator const char* () const = 0;
+    virtual operator const string () const = 0;
 
     protected:
 

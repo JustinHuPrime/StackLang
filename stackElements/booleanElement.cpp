@@ -7,7 +7,7 @@ using std::string;
 BooleanElement::BooleanElement (bool b) : StackElement (StackElement::DataType::Boolean), data (b)
 {}
 
-BooleanElement::operator const char* () const
+BooleanElement::operator const string () const
 {
-    return (data ? TSTR : FSTR).c_str ();
+    return data ? TSTR : FSTR;
 }

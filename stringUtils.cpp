@@ -14,21 +14,25 @@ bool ends_with (string s, string s1)
 
 string escape (string s)
 {
-    for (int i = 0; i < s.length (); i++)
+    for (unsigned i = 0; i < s.length (); i++)
     {
         if (s[i] == '"')
         {
             s.erase (i, 1);
             s.insert (i, "\\\"");
+            i++;
         }
         else if (s[i] == '\n')
         {
             s.erase (i, 1);
             s.insert (i, "\\n");
+            i++;
         }
         else if (s[i] == '\\')
         {
-            
+            s.erase (i, 1);
+            s.insert (i, "\\\\");
+            i++;
         }
     }
 
@@ -40,11 +44,36 @@ string unescape (string s)
     bool prevBackslash = false;
     bool prevPrevBackslash = false;
 
-    for (int i = 0; i < s.length (); i++)
+    for (unsigned i = 0; i < s.length (); i++)
     {
         if (s[i] == '"' && prevBackslash && !prevPrevBackslash)
         {
-            s.erase (i, 1);
+            i--;
+            s.erase (i, 2);
+            s.insert (i, "\"");
+            prevPrevBackslash = false;
+            prevBackslash = false;
+        }
+        else if (s[i] == 'n' && prevBackslash && !prevPrevBackslash)
+        {
+            i--;
+            s.erase (i, 2);
+            s.insert (i, "\n");
+            prevPrevBackslash = false;
+            prevBackslash = false;
+        }
+        else if (s[i] == '\\' && prevBackslash && !prevPrevBackslash)
+        {
+            i--;
+            s.erase (i, 2);
+            s.insert (i, "\n");
+            prevPrevBackslash = false;
+            prevBackslash = false;
+        }
+        else
+        {
+            prevPrevBackslash = prevBackslash;
+            prevBackslash = s[i] == '\\';
         }
     }
 

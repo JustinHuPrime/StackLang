@@ -7,7 +7,7 @@ using std::to_string;
 NumberElement::NumberElement (double d) : StackElement (StackElement::DataType::Number), data (d)
 {}
 
-NumberElement::operator const char* () const
+NumberElement::operator const string () const
 {
-    return to_string (data).c_str ();
+    return to_string (data);
 }

@@ -28,6 +28,36 @@ void LineEditor::left ()
     preCursor.pop_back ();
 }
 
+void LineEditor::toEnd ()
+{
+    if (postCursor.size () == 0)
+    {
+        beep ();
+        return;
+    }
+
+    while (postCursor.size () > 0)
+    {
+        preCursor.push_back (postCursor.front ());
+        postCursor.pop_front ();
+    }
+}
+
+void LineEditor::toHome ()
+{
+    if (preCursor.size () == 0)
+    {
+        beep ();
+        return;
+    }
+
+    while (preCursor.size () > 0)
+    {
+        postCursor.push_front (preCursor.back ());
+        preCursor.pop_back ();
+    }
+}
+
 void LineEditor::up ()
 {
     if (preHistory.size () == 0)
@@ -120,11 +150,6 @@ void LineEditor::operator-- ()
 void LineEditor::operator-- (int)
 {
     preCursor.pop_back ();
-}
-
-LineEditor::operator const char* () const
-{
-    return ((*this).operator const string ()).c_str ();
 }
 
 LineEditor::operator const string () const

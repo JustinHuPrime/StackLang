@@ -7,7 +7,7 @@ using std::string;
 StringElement::StringElement (string s) : StackElement (StackElement::DataType::String), data (s)
 {}
 
-StringElement::operator const char* () const
+StringElement::operator const string () const
 {
-    return ("\"" + escape (data) + "\"").c_str ();
+    return "\"" + escape (data) + "\"";
 }

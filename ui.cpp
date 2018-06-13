@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <locale.h>
 #include <stdlib.h>
+#include <signal.h>
 using std::list;
 
 void init ()
@@ -17,6 +18,19 @@ void init ()
     intrflush(stdscr, false);
     keypad(stdscr, true);
     atexit (uninit);
+    signal (SIGWINCH, [] (int dummy)
+    {
+        endwin ();
+        refresh ();
+        clear ();
+        drawPrompt (*UPDATE_BUFFER);
+        draw (*UPDATE_STACK, *UPDATE_BUFFER);
+    });
+}
+
+void drawResized (int dummy)
+{
+    (void) dummy;
 }
 
 void uninit ()
@@ -39,14 +53,14 @@ void draw (const list<StackElement*>& s, const LineEditor& buffer)
     for (; i > 0 && it != s.end (); i--, it++)
     {
         move (i, 0);
-        printw (**it);
+        addstring (**it);
     }
 
     if (s.size () >= (unsigned) getmaxy (stdscr) - 2)
     {
         move (0, 0);
         clrtoeol ();
-        printw ("...");
+        addstring ("...");
     }
 
     move (maxY - 1, 2 + buffer.cursorPosition ());
@@ -60,9 +74,8 @@ void drawPrompt (const LineEditor& s)
 
     move (maxY - 1, 0);
     clrtoeol ();
-    printw ("> ");
-    move (maxY - 1, 2);
-    printw (s);
+    addstring ("> ");
+    addstring (s);
     move (maxY - 1, 2 + s.cursorPosition ());
 
     refresh ();
@@ -72,10 +85,17 @@ void drawError (const string& e)
 {
     int maxY = getmaxy (stdscr);
 
-    move (maxY - 1, 0);
-    clrtoeol ();
-    printw (("> " + e).c_str ());
     move (maxY - 1, 2);
+    clrtoeol ();
+    addstring (e.c_str ());
 
     refresh ();
+}
+
+void addstring (const string& s)
+{
+    for (const char c : s)
+    {
+        addch (c);
+    }
 }

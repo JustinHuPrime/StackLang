@@ -16,6 +16,8 @@ class LineEditor
 
     void right ();
     void left ();
+    void toEnd ();
+    void toHome ();
     void up ();
     void down ();
     void enter ();
@@ -28,7 +30,6 @@ class LineEditor
     void operator+= (string);
     void operator-- ();
     void operator-- (int);
-    operator const char* () const;
     operator const string () const;
 
     private:

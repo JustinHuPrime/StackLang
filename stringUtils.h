@@ -9,7 +9,7 @@ using std::pair;
 bool starts_with (string, string);
 bool ends_with (string, string);
 
-string escape (string&);
-string unescape (string&);
+string escape (string);
+string unescape (string);
 
 #endif /* STRINGUTILS_H */

@@ -7,7 +7,7 @@ using std::string;
 TypeElement::TypeElement (DataType type) : StackElement (StackElement::DataType::Type), data (type)
 {}
 
-TypeElement::operator const char* () const
+TypeElement::operator const string () const
 {
-    return TYPES[(int) data].c_str ();
+    return TYPES[(int) data];
 }

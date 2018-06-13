@@ -23,35 +23,39 @@ StackElement::StackElement (DataType type) : dataType (type)
 
 StackElement* StackElement::parse (string s)
 {
-    if (all_of (s.begin (), s.end (), [=] (char c) {return isdigit (c) || c == '.';})) // looks like a number!
+    if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';})) // looks like a number!
     {
         return new NumberElement (stod (s));
     }
-    else if (starts_with (s, "\"") && ends_with (s, "\"") && [=] (string s) //all quotes are matched.
+    else if (starts_with (s, "\"") && ends_with (s, "\"") && [] (string str) //all quotes are escaped.
     {
         char prev = '\0';
-        for (char curr : s)
+        for (char curr : str)
         {
             if (curr == '"' && prev != '\\')
             {
                 return false;
             }
-            if (curr == '\\' && prev == '\\')
+            else if (curr == '\\' && prev == '\\')
             {
                 prev = '\0';
+            }
+            else
+            {
+                prev = curr;
             }
         }
 
         return true;
-    } (s)) // looks like a string!
+    } (s.substr (1, s.length () - 2))) // looks like a string!
     {
-        return nullptr;//return new StringElement (unescape (s));
+        return new StringElement (unescape (s));
     }
     else if (s == TSTR || s == FSTR)
     {
         return new BooleanElement (s == "true");
     }
-    else if (s.length () > 0 && isalpha(s[0]) && all_of (s.begin (), s.end (), [=] (char c) {return isalnum (c) || c == '-' || c == '?';}))
+    else if (s.length () > 0 && isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';}))
     {
         return new CommandElement (s);
     }

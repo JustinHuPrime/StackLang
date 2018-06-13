@@ -19,13 +19,13 @@ using namespace SubstackConstants;
 SubstackElement::SubstackElement () : StackElement (StackElement::DataType::Substack)
 {}
 
-SubstackElement::operator const char* () const
+SubstackElement::operator const string () const
 {
     string buffer = SUBSTACK_BEGIN;
 
     for (auto elm : data)
     {
-        buffer += (const char*) *elm;
+        buffer += string (*elm);
         buffer += SUBSTACK_SEPARATOR;
     }
 
