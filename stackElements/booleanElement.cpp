@@ -1,10 +1,8 @@
 #include "stackElements/booleanElement.h"
 #include <string>
 using namespace StackElements;
+using namespace BooleanConstants;
 using std::string;
-
-const string BooleanElement::TSTR = "true";
-const string BooleanElement::FSTR = "false";
 
 BooleanElement::BooleanElement (bool b) : StackElement (StackElement::DataType::Boolean), data (b)
 {}

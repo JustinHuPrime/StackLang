@@ -10,6 +10,8 @@
 #include <string>
 #include <stdexcept>
 using namespace StackElements;
+using namespace BooleanConstants;
+using namespace TypeNameConstants;
 using std::invalid_argument;
 using std::all_of;
 using std::find;
@@ -43,13 +45,9 @@ StackElement* StackElement::parse (string s)
         return true;
     } (s)) // looks like a string!
     {
-        char prev = '\0';
-        for (char curr : s)
-        {
-            
-        }
+        return nullptr;//return new StringElement (unescape (s));
     }
-    else if (s == BooleanElement::TSTR || s == BooleanElement::FSTR)
+    else if (s == TSTR || s == FSTR)
     {
         return new BooleanElement (s == "true");
     }

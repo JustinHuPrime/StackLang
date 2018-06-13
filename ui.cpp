@@ -34,10 +34,12 @@ void draw (const list<StackElement*>& s, const LineEditor& buffer)
         clrtoeol ();
     }
 
-    for (unsigned j = 0, i = maxY - 2; i > 0 && j < s.size (); i--, j++)
+    unsigned i = maxY - 2;
+    auto it = s.begin ();
+    for (; i > 0 && it != s.end (); i--, it++)
     {
         move (i, 0);
-        printw (*(s.front ()));
+        printw (**it);
     }
 
     if (s.size () >= (unsigned) getmaxy (stdscr) - 2)

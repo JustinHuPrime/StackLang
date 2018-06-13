@@ -15,13 +15,16 @@ namespace StackElements
 
         operator const char* () const override;
 
-        static const string TSTR;
-        static const string FSTR;
-
         private:
 
         bool data;
     };
+
+    namespace BooleanConstants
+    {
+        const string TSTR = "true";
+        const string FSTR = "false";
+    }
 }
 
 #endif /* BOOLEANELEMENT_H */

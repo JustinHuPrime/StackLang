@@ -69,6 +69,26 @@ void LineEditor::enter ()
     postCursor.clear ();
 }
 
+void LineEditor::backspace ()
+{
+    if (preCursor.size () == 0)
+    {
+        beep ();
+        return;
+    }
+    preCursor.pop_back ();
+}
+
+void LineEditor::del ()
+{
+    if (postCursor.size () == 0)
+    {
+        beep ();
+        return;
+    }
+    postCursor.pop_front ();
+}
+
 int LineEditor::cursorPosition () const
 {
     return preCursor.size ();
