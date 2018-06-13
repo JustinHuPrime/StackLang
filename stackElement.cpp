@@ -47,7 +47,7 @@ StackElement* StackElement::parse (string s)
         }
 
         return true;
-    } (s.substr (1, s.length () - 2))) // looks like a string!
+    } (s.substr (1, s.length () - 3))) // looks like a string!
     {
         return new StringElement (unescape (s));
     }
