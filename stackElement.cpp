@@ -2,8 +2,6 @@
 #include "stackElements/numberElement.h"
 #include "stackElements/stringElement.h"
 #include "stackElements/booleanElement.h"
-#include "stackElements/substackElement.h"
-#include "stackElements/typeElement.h"
 #include "stackElements/commandElement.h"
 #include "stringUtils.h"
 #include <algorithm>
@@ -63,12 +61,3 @@ StackElement* StackElement::parse (string s)
         throw invalid_argument ("`" + s + "` cannot be parsed as anything!");
     }
 }
-
-/*
-Number,
-String,
-Boolean,
-Substack,
-Type,
-Command,
-*/
