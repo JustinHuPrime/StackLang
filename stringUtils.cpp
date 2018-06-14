@@ -9,7 +9,7 @@ bool starts_with (string s, string s1)
 
 bool ends_with (string s, string s1)
 {
-    return s.length () - s1.length () == s.find (s1);
+    return s.length () - s1.length () == s.find (s1, s.length () - s1.length ());
 }
 
 string escape (string s)
@@ -66,7 +66,7 @@ string unescape (string s)
         {
             i--;
             s.erase (i, 2);
-            s.insert (i, "\n");
+            s.insert (i, "\\\\");
             prevPrevBackslash = false;
             prevBackslash = false;
         }

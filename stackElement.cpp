@@ -29,27 +29,26 @@ StackElement* StackElement::parse (string s)
     }
     else if (starts_with (s, "\"") && ends_with (s, "\"") && [] (string str) //all quotes are escaped.
     {
-        char prev = '\0';
-        for (char curr : str)
+        for (unsigned i = 0; i < str.length (); i++)
         {
-            if (curr == '"' && prev != '\\')
+            if (str[i] == '\\' && (i + 1 >= str.length () || (str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\')))
             {
                 return false;
             }
-            else if (curr == '\\' && prev == '\\')
+            else if (str[i] == '\\')
             {
-                prev = '\0';
+                i++;
             }
-            else
+            else if (str[i] == '"')
             {
-                prev = curr;
+                return false;
             }
         }
 
         return true;
-    } (s.substr (1, s.length () - 3))) // looks like a string!
+    } (s.substr (1, s.length () - 2))) // looks like a string!
     {
-        return new StringElement (unescape (s));
+        return new StringElement (unescape (s.substr (1, s.length () - 2)));
     }
     else if (s == TSTR || s == FSTR)
     {

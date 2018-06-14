@@ -5,9 +5,16 @@
 #include <string>
 #include <list>
 #include <stdexcept>
+#include <fstream>
+#include <iostream>
+#include <map>
 using std::string;
 using std::list;
 using std::invalid_argument;
+using std::ifstream;
+using std::cerr;
+using std::endl;
+using std::map;
 
 const list<StackElement*>* UPDATE_STACK;
 const LineEditor* UPDATE_BUFFER;
@@ -32,22 +39,82 @@ int main (int argc, char* argv[])
 {
     int key = 0;
     list<StackElement*> s;
+    map<string, list<StackElement*>> defines;
     LineEditor buffer;
     int debugmode = 0;
     bool errorFlag = false;
+    ifstream fin;
+    string includeFile;
+    bool argsInclude = false;
 
-    init ();
-
-    UPDATE_STACK = &s;
+    UPDATE_STACK = &s; //set const pointers for data access.
     UPDATE_BUFFER = &buffer;
+
 
     for (int i = 1; i < argc; i++)
     {
         if (string (argv[i]) == "-d")
         {
-            debugmode = std::stoi (argv[i + 1]);
+            if (i + 1 >= argc)
+            {
+                cerr << "Expected number after `-d`, found nothing. Abort." << endl;
+                exit (EXIT_FAILURE);
+            }
+
+            try
+            {
+                debugmode = std::stoi (argv[i + 1]);
+                i++;
+            }
+            catch (invalid_argument)
+            {
+                cerr << "Expected number after `-d`, found `" << argv[i + 1] << "`. Abort." << endl;;
+                exit (EXIT_FAILURE);
+            }
+        }
+        else if (string (argv[i]) == "-I")
+        {
+            argsInclude = true;
+        }
+        else if (string (argv[i]) == "--")
+        {
+            argsInclude = false;
+        }
+        else if (argsInclude)
+        {
+            fin.open (argv[i]);
+
+            if (!fin.good ())
+            {
+                cerr << "Cannot open include file `" << argv[i] << "`. Abort." << endl;
+                exit (EXIT_FAILURE);
+            }
+
+            string fileBuffer;
+
+            while (!fin.eof ())
+            {
+                getline (fin, fileBuffer);
+
+                if (fileBuffer.length () == 0 || fileBuffer[0] == '#')
+                {
+                    continue;
+                }
+
+                try
+                {
+                    s.push_front (StackElement::parse (fileBuffer));
+                }
+                catch (invalid_argument e)
+                {
+                    cerr << "Error while reading included file `" << argv[i] << "`\n" << e.what () << " Abort." << endl;
+                    exit (EXIT_FAILURE);
+                }
+            }
         }
     }
+
+    init ();
 
     displayInfo (); //splash screen
     getch ();
@@ -66,6 +133,7 @@ int main (int argc, char* argv[])
         else if (errorFlag)
         {
             drawPrompt (buffer);
+            errorFlag = false;
             continue;
         }
 
@@ -92,6 +160,7 @@ int main (int argc, char* argv[])
                 catch (invalid_argument e)
                 {
                     drawError (e.what ());
+                    errorFlag = true;
                     buffer.enter ();
                 }
             }
