@@ -8,12 +8,6 @@ class StackElement
 {
     public:
 
-    static StackElement* parse (string);
-
-    virtual operator const string () const = 0;
-
-    protected:
-
     enum class DataType
     {
         Number,
@@ -23,6 +17,13 @@ class StackElement
         Type,
         Command,
     };
+
+    static StackElement* parse (string);
+
+    virtual operator const string () const = 0;
+    DataType getType () const;
+
+    protected:
 
     StackElement (DataType);
 

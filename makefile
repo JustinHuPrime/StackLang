@@ -4,27 +4,30 @@ CD := cd
 OPTIONS := -std=c++17 -Wall -Wextra# -O3
 LDFLAGS := -lncursesw
 INCLUDES := -I.
-OBJS := $(addprefix bin/,main.o ui.o stackElement.o stringUtils.o lineEditor.o)
-SEOBJS := $(addprefix bin/,booleanElement.o commandElement.o numberElement.o stringElement.o substackElement.o typeElement.o)
+SRCS := $(wildcard *.cpp) $(wildcard stackElements/*.cpp)
+OBJS := $(addprefix bin/, $(notdir $(SRCS:.cpp=.o)))
 EXENAME := stacklang
 .PHONY: all clean run remake rerun
 
-all: ${EXENAME}
+all: $(EXENAME)
 
-${EXENAME}: ${OBJS} ${SEOBJS}
-	${CC} -o ${EXENAME} ${OPTIONS} ${OBJS} ${SEOBJS} ${LDFLAGS}
+$(EXENAME): $(OBJS)
+	$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LDFLAGS)
 
-${OBJS}: $(notdir *.cpp *.h)
-	${CC} ${OPTIONS} ${INCLUDES} -c $(notdir $*.cpp) -o $*.o
+bin/main.o: main.cpp
+	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
 
-${SEOBJS}: $(addprefix stackElements/, $(notdir *.cpp *.h))
-	${CC} ${OPTIONS} ${INCLUDES} -c stackElements/$(notdir $*.cpp) -o $*.o
+bin/%.o: %.cpp %.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+
+bin/%.o: stackElements/%.cpp stackElements/%.h
+	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
 
 run: | all
-	./${EXENAME}
+	./$(EXENAME)
 
 clean:
-	${RM} bin/*.o ${EXENAME}
+	$(RM) bin/*.o $(EXENAME)
 
 remake: | clean all
 

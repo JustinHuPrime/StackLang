@@ -11,3 +11,8 @@ StringElement::operator const string () const
 {
     return "\"" + escape (data) + "\"";
 }
+
+const string& StringElement::getData () const
+{
+    return data;
+}

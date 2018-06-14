@@ -14,11 +14,19 @@ namespace StackElements
         SubstackElement ();
 
         operator const string () const override;
+        const list<StackElement*>& getData () const;
 
         private:
 
         list<StackElement*> data;
     };
+    
+    namespace SubstackConstants
+    {
+        const string SUBSTACK_BEGIN = "<<";
+        const string SUBSTACK_END = ">>";
+        const string SUBSTACK_SEPARATOR = ", ";
+    }
 }
 
 #endif /* SUBSTACKELEMENT_H */

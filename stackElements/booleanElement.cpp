@@ -11,3 +11,8 @@ BooleanElement::operator const string () const
 {
     return data ? TSTR : FSTR;
 }
+
+const bool& BooleanElement::getData () const
+{
+    return data;
+}

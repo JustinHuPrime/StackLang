@@ -1,6 +1,7 @@
 #include "ui.h"
 #include "stackElement.h"
 #include "lineEditor.h"
+#include "language.h"
 #include <ncurses.h>
 #include <string>
 #include <list>
@@ -21,7 +22,11 @@ const LineEditor* UPDATE_BUFFER;
 
 const string INFO = R"(StackLang interpreter version ALPHA 2
 by Justin Hu, 2018
+Use ^D to exit
 Press any key to continue...)";
+
+const int INFOCURSX = 29;
+const int INFOCURSY = 3;
 
 namespace keyinfo
 {
@@ -32,7 +37,7 @@ void displayInfo ()
 {
     move (0, 0);
     addstring (INFO.c_str ());
-    move (2, 29);
+    move (INFOCURSY, INFOCURSX);
 }
 
 int main (int argc, char* argv[])
@@ -51,7 +56,7 @@ int main (int argc, char* argv[])
     UPDATE_BUFFER = &buffer;
 
 
-    for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++) // command evaluation
     {
         if (string (argv[i]) == "-d")
         {
@@ -111,6 +116,8 @@ int main (int argc, char* argv[])
                     exit (EXIT_FAILURE);
                 }
             }
+
+            execute (s);
         }
     }
 

@@ -1,18 +1,11 @@
 #include "stackElements/substackElement.h"
+#include "stackElement.h"
 #include <string>
+#include <list>
 using namespace StackElements;
 using std::string;
 using std::to_string;
-
-namespace StackElements
-{
-    namespace SubstackConstants
-    {
-        const string SUBSTACK_BEGIN = "<<";
-        const string SUBSTACK_END = ">>";
-        const string SUBSTACK_SEPARATOR = ", ";
-    }
-}
+using std::list;
 
 using namespace SubstackConstants;
 
@@ -34,4 +27,9 @@ SubstackElement::operator const string () const
     buffer += SUBSTACK_END;
 
     return buffer.c_str ();
+}
+
+const list<StackElement*>& SubstackElement::getData () const
+{
+    return data;
 }

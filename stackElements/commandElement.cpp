@@ -10,3 +10,8 @@ CommandElement::operator const string () const
 {
     return "<" + data + ">";
 }
+
+const string& CommandElement::getData () const
+{
+    return data;
+}

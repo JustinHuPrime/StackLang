@@ -9,29 +9,43 @@
 #include <stdexcept>
 using namespace StackElements;
 using namespace BooleanConstants;
-using namespace TypeNameConstants;
 using std::invalid_argument;
 using std::all_of;
 using std::find;
 using std::count;
 using std::stod;
+using std::to_string;
+
+StackElement::DataType StackElement::getType () const
+{
+    return dataType;
+}
 
 StackElement::StackElement (DataType type) : dataType (type)
 {}
 
+// ASSUME: s is not empty
 StackElement* StackElement::parse (string s)
 {
-    if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';})) // looks like a number!
+    if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';}) && s.find ('.', s.find ('.') + 1) == string::npos) // looks like a number!
     {
         return new NumberElement (stod (s));
+    }
+    else if (isdigit (s [0]) || s[0] == '.')
+    {
+        throw invalid_argument ("`" + s + "` cannot be parsed as a number - second deminal point at position " + to_string (s.find ('.', s.find ('.') + 1)) + ".");
     }
     else if (starts_with (s, "\"") && ends_with (s, "\"") && [] (string str) //all quotes are escaped.
     {
         for (unsigned i = 0; i < str.length (); i++)
         {
-            if (str[i] == '\\' && (i + 1 >= str.length () || (str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\')))
+            if (str[i] == '\\' && i + 1 >= str.length ())
             {
-                return false;
+                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - escaped ending quote.");
+            }
+            if (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\')
+            {
+                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - invalid escape sequence \\" + str [i + 1] + " at position " + to_string (i) + ".");
             }
             else if (str[i] == '\\')
             {
@@ -39,7 +53,7 @@ StackElement* StackElement::parse (string s)
             }
             else if (str[i] == '"')
             {
-                return false;
+                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - unescaped quote at position " + to_string (i) + ".");
             }
         }
 
@@ -48,16 +62,16 @@ StackElement* StackElement::parse (string s)
     {
         return new StringElement (unescape (s.substr (1, s.length () - 2)));
     }
-    else if (s == TSTR || s == FSTR)
+    else if (s == TSTR || s == FSTR) //it's either true or false
     {
         return new BooleanElement (s == "true");
     }
-    else if (s.length () > 0 && isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';}))
+    else if (isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';})) // it's a valid symbol
     {
         return new CommandElement (s);
     }
     else
     {
-        throw invalid_argument ("`" + s + "` cannot be parsed as anything!");
+        throw invalid_argument ("`" + s + "` cannot be parsed as anything.");
     }
 }

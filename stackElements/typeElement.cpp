@@ -11,3 +11,8 @@ TypeElement::operator const string () const
 {
     return TYPES[(int) data];
 }
+
+const StackElement::DataType& TypeElement::getData () const
+{
+    return data;
+}

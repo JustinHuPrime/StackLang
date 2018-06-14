@@ -14,6 +14,7 @@ namespace StackElements
         TypeElement (DataType);
 
         operator const string () const override;
+        const DataType& getData () const;
 
         private:
 
