@@ -12,7 +12,7 @@ namespace StackElements
         NumberElement (double);
 
         operator const string () const override;
-        const double& getData () const;
+        double& getData ();
 
         private:
 

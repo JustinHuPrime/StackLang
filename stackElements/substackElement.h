@@ -14,7 +14,7 @@ namespace StackElements
         SubstackElement ();
 
         operator const string () const override;
-        const list<StackElement*>& getData () const;
+        list<StackElement*>& getData ();
 
         private:
 

@@ -11,7 +11,7 @@ CommandElement::operator const string () const
     return "<" + data + ">";
 }
 
-const string& CommandElement::getData () const
+string& CommandElement::getData ()
 {
     return data;
 }

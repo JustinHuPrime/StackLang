@@ -12,7 +12,7 @@ NumberElement::operator const string () const
     return to_string (data);
 }
 
-const double& NumberElement::getData () const
+double& NumberElement::getData ()
 {
     return data;
 }

@@ -14,7 +14,7 @@ namespace StackElements
         CommandElement (string);
 
         operator const string () const override;
-        const string& getData () const;
+        string& getData ();
 
         private:
 
