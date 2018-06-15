@@ -2,7 +2,7 @@
 #include "language/language.h"
 #include "language/stackElement.h"
 #include "language/stackElements/stringElement.h"
-#include "language/exceptions/syntaxError.h"
+#include "language/exceptions/languageError.h"
 #include "ui/lineEditor.h"
 #include <ncurses.h>
 #include <string>
@@ -98,7 +98,7 @@ int main (int argc, char* argv[])
             {
                 execute (s);
             }
-            catch (const SyntaxError& e)
+            catch (const LanguageError& e)
             {
 
             }
@@ -148,7 +148,7 @@ int main (int argc, char* argv[])
                     drawPrompt (buffer);
                     drawStack (s);
                 }
-                catch (const SyntaxError& e)
+                catch (const LanguageError& e)
                 {
                     drawError (e);
                     errorFlag = true;

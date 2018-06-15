@@ -3,7 +3,7 @@
 
 #include "language/stackElement.h"
 #include "ui/lineEditor.h"
-#include "language/exceptions/syntaxError.h"
+#include "language/exceptions/languageError.h"
 #include "utils/stringUtils.h"
 #include <string>
 #include <list>
@@ -14,7 +14,7 @@
 using std::list;
 using std::string;
 using StackLang::StackElement;
-using StackLang::SyntaxError;
+using StackLang::LanguageError;
 
 /**
  * initializes/uninitializes curses (and general stuff) with preset options
@@ -27,7 +27,7 @@ void uninit ();
  */
 void drawStack (const list<StackElement*>&);
 void drawPrompt (const LineEditor&);
-void drawError (const SyntaxError&);
+void drawError (const LanguageError&);
 
 /**
  * adds an std::string at the current cursor position

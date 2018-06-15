@@ -1,10 +1,10 @@
 CC := g++
 RM := rm -rf
 CD := cd
-OPTIONS := -std=c++17 -Wall -Wextra# -O3
+OPTIONS := -std=c++17 -Wall -Wextra -g# -O3
 LDFLAGS := -lncursesw
 INCLUDES := -I.
-SRCS := $(wildcard utils/*.cpp) $(wildcard language/*.cpp) $(wildcard ui/*.cpp) $(wildcard language/stackElements/*.cpp) main.cpp
+SRCS := $(wildcard utils/*.cpp) $(wildcard language/*.cpp) $(wildcard ui/*.cpp) $(wildcard language/*/*.cpp) main.cpp
 OBJS := $(addprefix bin/, $(notdir $(SRCS:.cpp=.o)))
 EXENAME := stacklang
 .PHONY: all clean run remake rerun

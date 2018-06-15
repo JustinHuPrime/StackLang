@@ -16,7 +16,7 @@ namespace StackLang
             BooleanElement (bool);
 
             operator const string () const override;
-            bool& getData ();
+            bool getData ();
 
             private:
 

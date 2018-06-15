@@ -80,7 +80,7 @@ void drawPrompt (const LineEditor& s)
     refresh ();
 }
 
-void drawError (const SyntaxError& e)
+void drawError (const LanguageError& e)
 {
     int centerY = getmaxy (stdscr) / 2;
 
