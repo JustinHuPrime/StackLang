@@ -1,7 +1,7 @@
 #ifndef TYPEELEMENT_H
 #define TYPEELEMENT_H
 
-#include "stackElement.h"
+#include "language/stackElement.h"
 #include <string>
 using std::string;
 

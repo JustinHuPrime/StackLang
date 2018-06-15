@@ -1,7 +1,7 @@
-#include "ui.h"
-#include "stackElement.h"
-#include "lineEditor.h"
-#include "language.h"
+#include "ui/ui.h"
+#include "language/stackElement.h"
+#include "ui/lineEditor.h"
+#include "language/language.h"
 #include <ncurses.h>
 #include <string>
 #include <list>
@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+using namespace StackLang;
 using std::string;
 using std::list;
 using std::invalid_argument;
@@ -20,9 +21,9 @@ using std::map;
 const list<StackElement*>* UPDATE_STACK;
 const LineEditor* UPDATE_BUFFER;
 
-const string INFO = R"(StackLang interpreter version ALPHA 2
+const string INFO = R"(StackLang interpreter version ALPHA 3
 by Justin Hu, 2018
-Use ^D to exit
+Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)";
 
 const int INFOCURSX = 29;
@@ -52,7 +53,7 @@ int main (int argc, char* argv[])
     string includeFile;
     bool argsInclude = false;
 
-    UPDATE_STACK = &s; //set const pointers for data access.
+    UPDATE_STACK = &s; //set const pointers for data access
     UPDATE_BUFFER = &buffer;
 
 

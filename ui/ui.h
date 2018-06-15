@@ -1,8 +1,8 @@
 #ifndef UI_H
 #define UI_H
 
-#include "stackElement.h"
-#include "lineEditor.h"
+#include "language/stackElement.h"
+#include "ui/lineEditor.h"
 #include <string>
 #include <list>
 using std::string;

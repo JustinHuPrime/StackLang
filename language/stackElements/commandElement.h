@@ -1,17 +1,17 @@
-#ifndef STRINGELEMENT_H
-#define STRINGELEMENT_H
+#ifndef COMMANDELEMENT_H
+#define COMMANDELEMENT_H
 
-#include "stackElement.h"
+#include "language/stackElement.h"
 #include <string>
 using std::string;
 
 namespace StackElements
 {
-    class StringElement : public StackElement
+    class CommandElement : public StackElement
     {
         public:
 
-        StringElement (string);
+        CommandElement (string);
 
         operator const string () const override;
         string& getData ();
@@ -22,4 +22,4 @@ namespace StackElements
     };
 }
 
-#endif /* STRINGELEMENT_H */
+#endif /* COMMANDELEMENT_H */

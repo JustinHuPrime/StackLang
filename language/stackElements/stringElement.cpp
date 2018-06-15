@@ -1,5 +1,5 @@
-#include "stackElements/stringElement.h"
-#include "stringUtils.h"
+#include "language/stackElements/stringElement.h"
+#include "utils/stringUtils.h"
 #include <string>
 using namespace StackElements;
 using std::string;

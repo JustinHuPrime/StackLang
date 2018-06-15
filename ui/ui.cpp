@@ -1,5 +1,5 @@
-#include "ui.h"
-#include "stackElement.h"
+#include "ui/ui.h"
+#include "language/stackElement.h"
 #include <string>
 #include <list>
 #include <ncurses.h>

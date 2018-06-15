@@ -1,9 +1,11 @@
-#include "stackElement.h"
-#include "stackElements/numberElement.h"
-#include "stackElements/stringElement.h"
-#include "stackElements/booleanElement.h"
-#include "stackElements/commandElement.h"
-#include "stringUtils.h"
+#include "language/stackElement.h"
+#include "language/stackElements/numberElement.h"
+#include "language/stackElements/stringElement.h"
+#include "language/stackElements/booleanElement.h"
+#include "language/stackElements/commandElement.h"
+#include "language/stackElements/typeElement.h"
+#include "language/stackElements/substackElement.h"
+#include "utils/stringUtils.h"
 #include <algorithm>
 #include <string>
 #include <stdexcept>
