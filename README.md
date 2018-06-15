@@ -1,4 +1,4 @@
-# StackLang programming language
+# StackLang Programming Language
 
 A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules
 
