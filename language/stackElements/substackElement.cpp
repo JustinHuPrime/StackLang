@@ -23,7 +23,7 @@ SubstackElement::operator const string () const
     return buffer.c_str ();
 }
 
-list<StackElement*>& SubstackElement::getData ()
+const list<StackElement*>& SubstackElement::getData ()
 {
     return data;
 }

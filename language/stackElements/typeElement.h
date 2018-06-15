@@ -16,7 +16,7 @@ namespace StackLang
             TypeElement (DataType);
 
             operator const string () const override;
-            DataType& getData ();
+            DataType getData ();
 
             private:
 

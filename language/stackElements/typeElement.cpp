@@ -11,7 +11,7 @@ TypeElement::operator const string () const
     return TYPES[(int) data];
 }
 
-StackElement::DataType& TypeElement::getData ()
+StackElement::DataType TypeElement::getData ()
 {
     return data;
 }

@@ -19,7 +19,7 @@ namespace StackLang
             SubstackElement ();
 
             operator const string () const override;
-            list<StackElement*>& getData ();
+            const list<StackElement*>& getData ();
 
             private:
 

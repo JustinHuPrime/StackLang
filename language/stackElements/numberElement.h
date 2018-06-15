@@ -17,7 +17,7 @@ namespace StackLang
             NumberElement (double);
 
             operator const string () const override;
-            double& getData ();
+            double getData ();
 
             private:
 

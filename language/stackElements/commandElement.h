@@ -16,7 +16,7 @@ namespace StackLang
             CommandElement (string);
 
             operator const string () const override;
-            string& getData ();
+            const string& getData ();
 
             private:
 
