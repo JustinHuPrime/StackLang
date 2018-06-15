@@ -87,13 +87,13 @@ void drawError (const SyntaxError& e)
     curs_set (CURSOR_INVISIBLE);
     clear ();
     move (centerY - 1, 0);
-    addstring (e.kind ());
+    addstring (e.getKind ());
     move (centerY, 0);
-    addstring (e.message ());
+    addstring (e.getMessage ());
     move (centerY + 1, 0);
-    addstring (e.context ());
+    addstring (e.getContext ());
     move (centerY + 2, 0);
-    addstring (spaces (e.location ()) + '^');
+    addstring (spaces (e.getLocation ()) + '^');
 
     /* FOrmat:
     Syntax Error:/Parser Error:/Runtime Error:

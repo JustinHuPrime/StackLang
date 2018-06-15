@@ -141,16 +141,6 @@ void LineEditor::operator+= (string s)
     }
 }
 
-void LineEditor::operator-- ()
-{
-    preCursor.pop_back ();
-}
-
-void LineEditor::operator-- (int)
-{
-    preCursor.pop_back ();
-}
-
 LineEditor::operator const string () const
 {
     string temp;

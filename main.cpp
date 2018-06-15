@@ -1,8 +1,9 @@
 #include "ui/ui.h"
+#include "language/language.h"
 #include "language/stackElement.h"
 #include "language/stackElements/stringElement.h"
+#include "language/exceptions/syntaxError.h"
 #include "ui/lineEditor.h"
-#include "language/language.h"
 #include <ncurses.h>
 #include <string>
 #include <list>
@@ -46,8 +47,8 @@ void displayInfo () //displays info splash, they pauses
 int main (int argc, char* argv[])
 {
     int key = 0;
-    list<StackElement&> s;
-    map<string, list<StackElement&>> defines;
+    list<StackElement*> s;
+    map<string, list<StackElement*>> defines;
     LineEditor buffer;
     int debugmode = 0;
     bool errorFlag = false;

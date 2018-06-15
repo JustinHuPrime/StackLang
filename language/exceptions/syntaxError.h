@@ -14,7 +14,15 @@ namespace StackLang
 
         SyntaxError (const string&);
 
+        virtual const string& getKind () const;
+        const string& getMessage () const;
+        const string& getContext () const;
+        const int& getLocation () const;
+
         private:
+
+        string message, context;
+        int location;
 
     };
 }

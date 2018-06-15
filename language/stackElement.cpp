@@ -73,5 +73,7 @@ namespace StackLang
                 throw invalid_argument ("Parser error: input doesn't look like any type.");
             }
         }
+
+        return nullptr; //shouldn't get here - keep the compiler happy
     }
 }
