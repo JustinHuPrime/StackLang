@@ -20,7 +20,7 @@ SubstackElement::operator const string () const
 
     buffer += SUBSTACK_END;
 
-    return buffer.c_str ();
+    return buffer; //return value optimization
 }
 
 const list<StackElement*>& SubstackElement::getData ()
