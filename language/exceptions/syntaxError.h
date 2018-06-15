@@ -8,13 +8,14 @@ using std::exception;
 
 namespace StackLang
 {
-    class SyntaxError : public exception
+    class SyntaxError
     {
         public:
 
         SyntaxError (const string&);
 
         private:
+
     };
 }
 

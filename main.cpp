@@ -46,8 +46,8 @@ void displayInfo () //displays info splash, they pauses
 int main (int argc, char* argv[])
 {
     int key = 0;
-    list<StackElement*> s;
-    map<string, list<StackElement*>> defines;
+    list<StackElement&> s;
+    map<string, list<StackElement&>> defines;
     LineEditor buffer;
     int debugmode = 0;
     bool errorFlag = false;
@@ -74,9 +74,9 @@ int main (int argc, char* argv[])
                 debugmode = std::stoi (argv[i + 1]);
                 i++;
             }
-            catch (invalid_argument e)
+            catch (const invalid_argument& e)
             {
-                cerr << "Expected number after `-d`, found `" << argv[i + 1] << "`. Abort." << endl;;
+                cerr << "Expected number after `-d`, found `" << argv[i + 1] << "`. Abort." << endl;
                 exit (EXIT_FAILURE);
             }
         }
@@ -92,7 +92,15 @@ int main (int argc, char* argv[])
         {
             s.push_front (new StringElement (argv[i]));
             s.push_front (new CommandElement ("include"));
-            execute (s);
+            
+            try
+            {
+                execute (s);
+            }
+            catch (const SyntaxError& e)
+            {
+
+            }
         }
     }
 
@@ -100,8 +108,8 @@ int main (int argc, char* argv[])
 
     displayInfo (); //splash screen
 
-    draw (s, buffer); //draw the 
-    drawPrompt (buffer);
+    drawPrompt (buffer); //draw the stack and prompt
+    drawStack (s);
 
     while (true)
     {
@@ -113,8 +121,8 @@ int main (int argc, char* argv[])
         }
         else if (errorFlag)
         {
-            draw (s, buffer);
             drawPrompt (buffer);
+            drawStack (s);
             errorFlag = false;
             continue;
         }
@@ -136,10 +144,10 @@ int main (int argc, char* argv[])
                 {
                     s.push_front (StackElement::parse (buffer));
                     buffer.enter ();
-                    draw (s, buffer);
                     drawPrompt (buffer);
+                    drawStack (s);
                 }
-                catch (SyntaxError e)
+                catch (const SyntaxError& e)
                 {
                     drawError (e);
                     errorFlag = true;

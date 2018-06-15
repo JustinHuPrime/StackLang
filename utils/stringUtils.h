@@ -29,4 +29,9 @@ string unescape (string);
  */
 bool properlyEscaped (const string&);
 
+/**
+ * produces 'n' spaces in a row
+ */
+string spaces (int);
+
 #endif /* STRINGUTILS_H */

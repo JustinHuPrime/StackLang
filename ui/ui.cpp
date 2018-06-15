@@ -11,12 +11,13 @@ void init ()
     keypad(stdscr, true);
     atexit (uninit);
     signal (SIGWINCH, [] (int dummy)
-    {
-        endwin ();
+    {(void) dummy; //ignore dummy value
+        endwin (); //these commands resync ncurses with the terminal
         refresh ();
-        clear ();
+
+        clear (); //draw the screen
         drawPrompt (*UPDATE_BUFFER);
-        draw (*UPDATE_STACK, *UPDATE_BUFFER);
+        drawStack (*UPDATE_STACK);
     });
 }
 
@@ -30,9 +31,12 @@ void uninit ()
     endwin ();
 }
 
-void draw (const list<StackElement*>& s, const LineEditor& buffer)
+void drawStack (const list<StackElement*>& s)
 {
     int maxY = getmaxy (stdscr);
+    int offset = getcurx (stdscr);
+
+    int prevCurMode = curs_set (CURSOR_INVISIBLE);
 
     for (int i = 0; i < maxY - 1; i++)
     {
@@ -55,7 +59,8 @@ void draw (const list<StackElement*>& s, const LineEditor& buffer)
         addstring ("...");
     }
 
-    move (maxY - 1, 2 + buffer.cursorPosition ());
+    move (maxY - 1, 2 + offset);
+    curs_set (prevCurMode);
 
     refresh ();
 }
@@ -64,24 +69,38 @@ void drawPrompt (const LineEditor& s)
 {
     int maxY = getmaxy (stdscr);
 
+    curs_set (CURSOR_INVISIBLE);
     move (maxY - 1, 0);
     clrtoeol ();
     addstring ("> ");
     addstring (s);
     move (maxY - 1, 2 + s.cursorPosition ());
+    curs_set (CURSOR_VISIBLE);
 
     refresh ();
 }
 
-void drawError (const string& e)
+void drawError (const SyntaxError& e)
 {
-    int maxY = getmaxy (stdscr);
+    int centerY = getmaxy (stdscr) / 2;
 
-    move (maxY - 1, 2);
-    clrtoeol ();
-    addstring (e.c_str ());
+    curs_set (CURSOR_INVISIBLE);
+    clear ();
+    move (centerY - 1, 0);
+    addstring (e.kind ());
+    move (centerY, 0);
+    addstring (e.message ());
+    move (centerY + 1, 0);
+    addstring (e.context ());
+    move (centerY + 2, 0);
+    addstring (spaces (e.location ()) + '^');
 
-    refresh ();
+    /* FOrmat:
+    Syntax Error:/Parser Error:/Runtime Error:
+    error message
+    error context
+    error location line 2 (generated from int)
+    */
 }
 
 void addstring (const string& s)

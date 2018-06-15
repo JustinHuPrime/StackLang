@@ -96,3 +96,10 @@ bool properlyEscaped (const string& str)
 
     return true;
 }
+
+string spaces (int n)
+{
+    string acc = "";
+    acc.resize (n, ' ');
+    return acc;
+}
