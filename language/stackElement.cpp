@@ -27,6 +27,9 @@ StackElement::DataType StackElement::getType () const
 StackElement::StackElement (DataType type) : dataType (type)
 {}
 
+StackElement::~StackElement ()
+{}
+
 //ASSUME: s is not empty
 StackElement* StackElement::parse (const string& s)
 {

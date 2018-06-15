@@ -6,6 +6,14 @@ using namespace SubstackConstants;
 SubstackElement::SubstackElement () : StackElement (StackElement::DataType::Substack)
 {}
 
+SubstackElement::~SubstackElement ()
+{
+    for (StackElement* elm : data)
+    {
+        delete elm;
+    }
+}
+
 SubstackElement::operator const string () const
 {
     string buffer = SUBSTACK_BEGIN;

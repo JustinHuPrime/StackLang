@@ -24,6 +24,11 @@ namespace StackLang
         };
 
         /**
+         * destroys this object and anything managed by it
+         */
+        virtual ~StackElement ();
+
+        /**
          * Produces a StackElement (of some type) from a terminal input string
          * Assumes that given string is not empty
          */
