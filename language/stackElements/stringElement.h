@@ -2,24 +2,28 @@
 #define STRINGELEMENT_H
 
 #include "language/stackElement.h"
+#include "utils/stringUtils.h"
 #include <string>
 using std::string;
 
-namespace StackElements
+namespace StackLang
 {
-    class StringElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class StringElement : public StackElement
+        {
+            public:
 
-        StringElement (string);
+            StringElement (string);
 
-        operator const string () const override;
-        string& getData ();
+            operator const string () const override;
+            string& getData ();
 
-        private:
+            private:
 
-        string data;
-    };
+            string data;
+        };
+    }
 }
 
 #endif /* STRINGELEMENT_H */

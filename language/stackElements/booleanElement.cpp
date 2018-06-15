@@ -1,8 +1,6 @@
 #include "language/stackElements/booleanElement.h"
-#include <string>
-using namespace StackElements;
+using namespace StackLang::StackElements;
 using namespace BooleanConstants;
-using std::string;
 
 BooleanElement::BooleanElement (bool b) : StackElement (StackElement::DataType::Boolean), data (b)
 {}

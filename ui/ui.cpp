@@ -1,12 +1,4 @@
 #include "ui/ui.h"
-#include "language/stackElement.h"
-#include <string>
-#include <list>
-#include <ncurses.h>
-#include <locale.h>
-#include <stdlib.h>
-#include <signal.h>
-using std::list;
 
 void init ()
 {

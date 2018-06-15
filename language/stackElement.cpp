@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <string>
 #include <stdexcept>
-using namespace StackElements;
+using namespace StackLang::StackElements;
 using namespace BooleanConstants;
 using std::invalid_argument;
 using std::all_of;
@@ -18,62 +18,60 @@ using std::count;
 using std::stod;
 using std::to_string;
 
-StackElement::DataType StackElement::getType () const
+namespace StackLang
 {
-    return dataType;
-}
-
-StackElement::StackElement (DataType type) : dataType (type)
-{}
-
-// ASSUME: s is not empty
-StackElement* StackElement::parse (string s)
-{
-    if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';}) && s.find ('.', s.find ('.') + 1) == string::npos) // looks like a number!
+    StackElement::DataType StackElement::getType () const
     {
-        return new NumberElement (stod (s));
+        return dataType;
     }
-    else if (isdigit (s [0]) || s[0] == '.')
+
+    StackElement::StackElement (DataType type) : dataType (type)
+    {}
+
+    //ASSUME: s is not empty
+    StackElement* StackElement::parse (const string& s)
     {
-        throw invalid_argument ("`" + s + "` cannot be parsed as a number - second deminal point at position " + to_string (s.find ('.', s.find ('.') + 1)) + ".");
-    }
-    else if (starts_with (s, "\"") && ends_with (s, "\"") && [] (string str) //all quotes are escaped.
-    {
-        for (unsigned i = 0; i < str.length (); i++)
+        if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';}) && count (s.begin (), s.end (), '.') <= 1) //is a number
         {
-            if (str[i] == '\\' && i + 1 >= str.length ())
+            return new NumberElement (stod (s));
+        }
+        else if (starts_with (s, "\"") && ends_with (s, "\"") && properlyEscaped (s)) //is a string
+        {
+            return new StringElement (unescape (s.substr (1, s.length () - 2)));
+        }
+        else if (s == TSTR || s == FSTR) //it's either true or false
+        {
+            return new BooleanElement (s == "true");
+        }
+        else if (isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';})) //it's a valid command name
+        {
+            return new CommandElement (s);
+        }
+        else
+        {
+            if (isdigit (s[0])) //kinda looks like a number.
             {
-                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - escaped ending quote.");
+                if (!all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';})) //doesn't have all numbers
+                {
+                    throw invalid_argument ("Parser error: input looks like a number, but has non-number characters.");
+                }
+                else if (!(count (s.begin (), s.end (), '.') <= 1)) //has more than one dot
+                {
+                    throw invalid_argument ("Parser error: input looks like a number, but has more than one decimal point.");
+                }
             }
-            if (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\')
+            else if (s[0] == '"') //starts with a quote
             {
-                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - invalid escape sequence \\" + str [i + 1] + " at position " + to_string (i) + ".");
+                throw invalid_argument ("Parser error: input looks like a string, but has invalid escape sequences.");
             }
-            else if (str[i] == '\\')
+            else if (isalpha (s[0])) //starts with an alphabetical character
             {
-                i++;
+                throw invalid_argument ("Parser error: input looks like a command, but has invalid characters.");
             }
-            else if (str[i] == '"')
+            else //Starts with a symbol, I guess?
             {
-                throw invalid_argument ("`\"" + str + "\"` cannot be parsed as a string - unescaped quote at position " + to_string (i) + ".");
+                throw invalid_argument ("Parser error: input doesn't look like any type.");
             }
         }
-
-        return true;
-    } (s.substr (1, s.length () - 2))) // looks like a string!
-    {
-        return new StringElement (unescape (s.substr (1, s.length () - 2)));
-    }
-    else if (s == TSTR || s == FSTR) //it's either true or false
-    {
-        return new BooleanElement (s == "true");
-    }
-    else if (isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';})) // it's a valid symbol
-    {
-        return new CommandElement (s);
-    }
-    else
-    {
-        throw invalid_argument ("`" + s + "` cannot be parsed as anything.");
     }
 }

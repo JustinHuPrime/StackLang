@@ -1,44 +1,46 @@
 #include "ui/ui.h"
 #include "language/stackElement.h"
+#include "language/stackElements/stringElement.h"
 #include "ui/lineEditor.h"
 #include "language/language.h"
 #include <ncurses.h>
 #include <string>
 #include <list>
-#include <stdexcept>
 #include <fstream>
 #include <iostream>
 #include <map>
 using namespace StackLang;
 using std::string;
 using std::list;
-using std::invalid_argument;
 using std::ifstream;
 using std::cerr;
 using std::endl;
 using std::map;
+using StackElements::StringElement;
+using StackElements::CommandElement;
 
-const list<StackElement*>* UPDATE_STACK;
+const list<StackElement*>* UPDATE_STACK; //used for resize handlers - set once, then ignored
 const LineEditor* UPDATE_BUFFER;
 
 const string INFO = R"(StackLang interpreter version ALPHA 3
 by Justin Hu, 2018
 Use ^D to exit from prompt, and ^C to force quit
-Press any key to continue...)";
+Press any key to continue...)"; //introductory stuff
 
-const int INFOCURSX = 29;
+const int INFOCURSX = 29; //co-ords of the end of the splash
 const int INFOCURSY = 3;
 
-namespace keyinfo
+namespace KeyInfo
 {
-    const char Cd = 4;
+    const char KEY_CTRL_D = 4; //self defined constants
 }
 
-void displayInfo ()
+void displayInfo () //displays info splash, they pauses
 {
     move (0, 0);
     addstring (INFO.c_str ());
     move (INFOCURSY, INFOCURSX);
+    getch ();
 }
 
 int main (int argc, char* argv[])
@@ -53,13 +55,13 @@ int main (int argc, char* argv[])
     string includeFile;
     bool argsInclude = false;
 
-    UPDATE_STACK = &s; //set const pointers for data access
+    UPDATE_STACK = &s; //set const pointers for data access from event handlers
     UPDATE_BUFFER = &buffer;
 
 
-    for (int i = 1; i < argc; i++) // command evaluation
+    for (int i = 1; i < argc; i++) //command line args evaluation
     {
-        if (string (argv[i]) == "-d")
+        if (string (argv[i]) == "-d") //set debug mode
         {
             if (i + 1 >= argc)
             {
@@ -72,52 +74,24 @@ int main (int argc, char* argv[])
                 debugmode = std::stoi (argv[i + 1]);
                 i++;
             }
-            catch (invalid_argument)
+            catch (invalid_argument e)
             {
                 cerr << "Expected number after `-d`, found `" << argv[i + 1] << "`. Abort." << endl;;
                 exit (EXIT_FAILURE);
             }
         }
-        else if (string (argv[i]) == "-I")
+        else if (string (argv[i]) == "-I") //start of specified files to include
         {
             argsInclude = true;
         }
-        else if (string (argv[i]) == "--")
+        else if (string (argv[i]) == "--") //end of specified files to include
         {
             argsInclude = false;
         }
         else if (argsInclude)
         {
-            fin.open (argv[i]);
-
-            if (!fin.good ())
-            {
-                cerr << "Cannot open include file `" << argv[i] << "`. Abort." << endl;
-                exit (EXIT_FAILURE);
-            }
-
-            string fileBuffer;
-
-            while (!fin.eof ())
-            {
-                getline (fin, fileBuffer);
-
-                if (fileBuffer.length () == 0 || fileBuffer[0] == '#')
-                {
-                    continue;
-                }
-
-                try
-                {
-                    s.push_front (StackElement::parse (fileBuffer));
-                }
-                catch (invalid_argument e)
-                {
-                    cerr << "Error while reading included file `" << argv[i] << "`\n" << e.what () << " Abort." << endl;
-                    exit (EXIT_FAILURE);
-                }
-            }
-
+            s.push_front (new StringElement (argv[i]));
+            s.push_front (new CommandElement ("include"));
             execute (s);
         }
     }
@@ -125,21 +99,21 @@ int main (int argc, char* argv[])
     init ();
 
     displayInfo (); //splash screen
-    getch ();
 
-    draw (s, buffer);
+    draw (s, buffer); //draw the 
     drawPrompt (buffer);
 
     while (true)
     {
         key = getch ();
 
-        if (key == keyinfo::Cd) //overriding keypresses
+        if (key == KeyInfo::KEY_CTRL_D) //overriding keypresses
         {
             break;
         }
         else if (errorFlag)
         {
+            draw (s, buffer);
             drawPrompt (buffer);
             errorFlag = false;
             continue;
@@ -154,7 +128,7 @@ int main (int argc, char* argv[])
         {
             if (buffer.isEmpty ()) //empty buffer - execute top of stack.
             {
-
+                execute (s);
             }
             else //nonempty buffer - push onto stack.
             {
@@ -165,9 +139,9 @@ int main (int argc, char* argv[])
                     draw (s, buffer);
                     drawPrompt (buffer);
                 }
-                catch (invalid_argument e)
+                catch (SyntaxError e)
                 {
-                    drawError (e.what ());
+                    drawError (e);
                     errorFlag = true;
                     buffer.enter ();
                 }

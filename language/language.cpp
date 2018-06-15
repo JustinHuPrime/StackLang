@@ -1,13 +1,7 @@
 #include "language/language.h"
-#include "language/stackElement.h"
-#include "language/stackElements/commandElement.h"
-#include <list>
-#include <map>
-using namespace StackElements;
 using namespace StackLang;
+using namespace StackElements;
 using namespace Primitives;
-using std::list;
-using std::map;
 
 namespace StackLang
 {

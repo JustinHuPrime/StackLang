@@ -1,7 +1,5 @@
 #include "language/stackElements/commandElement.h"
-#include <string>
-using namespace StackElements;
-using std::string;
+using namespace StackLang::StackElements;
 
 CommandElement::CommandElement (string s) : StackElement (StackElement::DataType::Command), data (s)
 {}

@@ -1,8 +1,5 @@
 #include "language/stackElements/numberElement.h"
-#include <string>
-using namespace StackElements;
-using std::string;
-using std::to_string;
+using namespace StackLang::StackElements;
 
 NumberElement::NumberElement (double d) : StackElement (StackElement::DataType::Number), data (d)
 {}

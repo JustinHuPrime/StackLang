@@ -1,8 +1,5 @@
 #include "language/stackElements/stringElement.h"
-#include "utils/stringUtils.h"
-#include <string>
-using namespace StackElements;
-using std::string;
+using namespace StackLang::StackElements;
 
 StringElement::StringElement (string s) : StackElement (StackElement::DataType::String), data (s)
 {}

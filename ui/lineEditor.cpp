@@ -1,5 +1,4 @@
-#include "lineEditor.h"
-#include <cursesw.h>
+#include "ui/lineEditor.h"
 
 LineEditor::LineEditor () : preCursor (), postCursor (), preHistory (), postHistory ()
 {}

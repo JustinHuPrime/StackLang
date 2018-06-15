@@ -5,25 +5,28 @@
 #include <string>
 using std::string;
 
-namespace StackElements
+namespace StackLang
 {
-    class TypeElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class TypeElement : public StackElement
+        {
+            public:
 
-        TypeElement (DataType);
+            TypeElement (DataType);
 
-        operator const string () const override;
-        DataType& getData ();
+            operator const string () const override;
+            DataType& getData ();
 
-        private:
+            private:
 
-        DataType data;
-    };
+            DataType data;
+        };
 
-    namespace TypeNameConstants
-    {
-        const string TYPES [] = {"Number", "String", "Boolean", "Substack", "Type", "Command"};
+        namespace TypeNameConstants
+        {
+            const string TYPES [] = {"Number", "String", "Boolean", "Substack", "Type", "Command"};
+        }
     }
 }
 

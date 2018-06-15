@@ -3,29 +3,35 @@
 
 #include "language/stackElement.h"
 #include <list>
+#include <string>
 using std::list;
+using std::string;
+using std::to_string;
 
-namespace StackElements
+namespace StackLang
 {
-    class SubstackElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class SubstackElement : public StackElement
+        {
+            public:
 
-        SubstackElement ();
+            SubstackElement ();
 
-        operator const string () const override;
-        list<StackElement*>& getData ();
+            operator const string () const override;
+            list<StackElement*>& getData ();
 
-        private:
+            private:
 
-        list<StackElement*> data;
-    };
-    
-    namespace SubstackConstants
-    {
-        const string SUBSTACK_BEGIN = "<<";
-        const string SUBSTACK_END = ">>";
-        const string SUBSTACK_SEPARATOR = ", ";
+            list<StackElement*> data;
+        };
+        
+        namespace SubstackConstants
+        {
+            const string SUBSTACK_BEGIN = "<<";
+            const string SUBSTACK_END = ">>";
+            const string SUBSTACK_SEPARATOR = ", ";
+        }
     }
 }
 

@@ -5,21 +5,24 @@
 #include <string>
 using std::string;
 
-namespace StackElements
+namespace StackLang
 {
-    class CommandElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class CommandElement : public StackElement
+        {
+            public:
 
-        CommandElement (string);
+            CommandElement (string);
 
-        operator const string () const override;
-        string& getData ();
+            operator const string () const override;
+            string& getData ();
 
-        private:
+            private:
 
-        string data;
-    };
+            string data;
+        };
+    }
 }
 
 #endif /* COMMANDELEMENT_H */

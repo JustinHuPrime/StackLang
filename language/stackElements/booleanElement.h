@@ -5,26 +5,29 @@
 #include <string>
 using std::string;
 
-namespace StackElements
+namespace StackLang
 {
-    class BooleanElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class BooleanElement : public StackElement
+        {
+            public:
 
-        BooleanElement (bool);
+            BooleanElement (bool);
 
-        operator const string () const override;
-        bool& getData ();
+            operator const string () const override;
+            bool& getData ();
 
-        private:
+            private:
 
-        bool data;
-    };
+            bool data;
+        };
 
-    namespace BooleanConstants
-    {
-        const string TSTR = "true";
-        const string FSTR = "false";
+        namespace BooleanConstants
+        {
+            const string TSTR = "true";
+            const string FSTR = "false";
+        }
     }
 }
 

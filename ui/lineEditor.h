@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <stack>
+#include <ncurses.h>
 using std::stack;
 using std::list;
 using std::string;

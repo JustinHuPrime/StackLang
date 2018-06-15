@@ -1,12 +1,6 @@
 #include "language/stackElements/substackElement.h"
-#include "language/stackElement.h"
-#include <string>
-#include <list>
+using namespace StackLang;
 using namespace StackElements;
-using std::string;
-using std::to_string;
-using std::list;
-
 using namespace SubstackConstants;
 
 SubstackElement::SubstackElement () : StackElement (StackElement::DataType::Substack)

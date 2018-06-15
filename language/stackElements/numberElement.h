@@ -2,22 +2,28 @@
 #define NUMBERELEMENT_H
 
 #include "language/stackElement.h"
+#include <string>
+using std::string;
+using std::to_string;
 
-namespace StackElements
+namespace StackLang
 {
-    class NumberElement : public StackElement
+    namespace StackElements
     {
-        public:
+        class NumberElement : public StackElement
+        {
+            public:
 
-        NumberElement (double);
+            NumberElement (double);
 
-        operator const string () const override;
-        double& getData ();
+            operator const string () const override;
+            double& getData ();
 
-        private:
+            private:
 
-        double data;
-    };
+            double data;
+        };
+    }
 }
 
 #endif /* NUMBERELEMENT_H */
