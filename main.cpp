@@ -114,6 +114,8 @@ int main (int argc, char* argv[])
             catch (const LanguageError& e)
             {
                 printError (e);
+                cerr << "Aborting." << endl;
+                exit (EXIT_FAILURE);
             }
         }
     }

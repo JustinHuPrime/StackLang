@@ -78,7 +78,7 @@ string unescape (string s)
     return s;
 }
 
-bool properlyEscaped (const string& str)
+size_t findImproperEscape (const string& str)
 {
     for (unsigned i = 0; i < str.length (); i++)
     {
@@ -86,7 +86,7 @@ bool properlyEscaped (const string& str)
             (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\') || //make sure that we only escape \, n, and "
             (str[i] == '"')) //it's an unescaped quote!
         {
-            return false;
+            return i;
         }
         else if (str[i] == '\\') //it's a valid escape - skip next char
         {
@@ -94,7 +94,7 @@ bool properlyEscaped (const string& str)
         }
     }
 
-    return true;
+    return string::npos;
 }
 
 string spaces (int n)

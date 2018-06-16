@@ -9,6 +9,8 @@ namespace StackLang
     {
         class ParserError : public LanguageError
         {
+            public:
+            
             ParserError (const string&, const string&, int);
 
             const string getKind () const override;

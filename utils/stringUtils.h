@@ -27,7 +27,7 @@ string unescape (string);
 /**
  * Returns true if all \'es escape a \, ", or n, and doesn't have any unescaped \ or "
  */
-bool properlyEscaped (const string&);
+size_t findImproperEscape (const string&);
 
 /**
  * produces 'n' spaces in a row

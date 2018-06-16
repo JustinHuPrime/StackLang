@@ -23,6 +23,11 @@ namespace StackLang
             string data;
         };
     }
+
+    namespace CharSet
+    {
+        const string ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?";
+    }
 }
 
 #endif /* COMMANDELEMENT_H */

@@ -24,6 +24,11 @@ namespace StackLang
             double data;
         };
     }
+
+    namespace CharSet
+    {
+        const string ALLOWED_NUMBER = "1234567890.";
+    }
 }
 
 #endif /* NUMBERELEMENT_H */

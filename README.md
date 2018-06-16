@@ -1,10 +1,8 @@
 # StackLang Programming Language
 
-A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules
+A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is 
 
 # TEMPLATE BELOW
-
-One Paragraph of project description goes here
 
 ## Getting Started
 

@@ -5,19 +5,15 @@
 #include "language/stackElements/commandElement.h"
 #include "language/stackElements/typeElement.h"
 #include "language/stackElements/substackElement.h"
+#include "language/exceptions/parserError.h"
 #include "utils/stringUtils.h"
 #include <algorithm>
 #include <string>
-#include <stdexcept>
 using namespace StackLang;
 using namespace StackElements;
+using namespace Exceptions;
 using namespace BooleanConstants;
-using std::invalid_argument;
-using std::all_of;
-using std::find;
-using std::count;
-using std::stod;
-using std::to_string;
+using namespace CharSet;
 
 StackElement::DataType StackElement::getType () const
 {
@@ -33,11 +29,11 @@ StackElement::~StackElement ()
 //ASSUME: s is not empty
 StackElement* StackElement::parse (const string& s)
 {
-    if (all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';}) && count (s.begin (), s.end (), '.') <= 1) //is a number
+    if (s.find_first_not_of (ALLOWED_NUMBER) == string::npos && count (s.begin (), s.end (), '.') <= 1) //is a number
     {
         return new NumberElement (stod (s));
     }
-    else if (starts_with (s, "\"") && ends_with (s, "\"") && properlyEscaped (s)) //is a string
+    else if (starts_with (s, "\"") && ends_with (s, "\"") && findImproperEscape (s) == string::npos) //is a string
     {
         return new StringElement (unescape (s.substr (1, s.length () - 2)));
     }
@@ -45,7 +41,7 @@ StackElement* StackElement::parse (const string& s)
     {
         return new BooleanElement (s == "true");
     }
-    else if (isalpha(s[0]) && all_of (s.begin (), s.end (), [] (char c) {return isalnum (c) || c == '-' || c == '?';})) //it's a valid command name
+    else if (isalpha(s[0]) && s.find_first_not_of (ALLOWED_COMMAND) == string::npos) //it's a valid command name
     {
         return new CommandElement (s);
     }
@@ -55,24 +51,24 @@ StackElement* StackElement::parse (const string& s)
         {
             if (!all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';})) //doesn't have all numbers
             {
-                throw invalid_argument ("Parser error: input looks like a number, but has non-number characters.");
+                throw ParserError ("Input looks like a number, but has non-numeric characters.", s, s.find_first_not_of ("0123456789."));
             }
             else if (!(count (s.begin (), s.end (), '.') <= 1)) //has more than one dot
             {
-                throw invalid_argument ("Parser error: input looks like a number, but has more than one decimal point.");
+                throw ParserError ("Input looks like a number, but has more than one deminal point.", s, s.find ('.', s.find ('.') + 1));
             }
         }
         else if (s[0] == '"') //starts with a quote
         {
-            throw invalid_argument ("Parser error: input looks like a string, but has invalid escape sequences.");
+            throw ParserError ("Input looks like a string, but has an invalid escape sequence", s, findImproperEscape (s));
         }
         else if (isalpha (s[0])) //starts with an alphabetical character
         {
-            throw invalid_argument ("Parser error: input looks like a command, but has invalid characters.");
+            throw ParserError ("Input looks like a command, but has a non-alphanumeric char that is not - or ?.", s, s.find_first_not_of (ALLOWED_COMMAND));
         }
         else //Starts with a symbol, I guess?
         {
-            throw invalid_argument ("Parser error: input doesn't look like any type.");
+            throw ParserError ("Input doesn't look like any recogized type - does it begin with a symbol?", s, 0);
         }
     }
 
