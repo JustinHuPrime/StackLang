@@ -1,4 +1,5 @@
 #include "language/stack.h"
+#include "language/stackIterator.h"
 using namespace StackLang;
 
 Stack::Stack () : head (nullptr), dataSize (0)

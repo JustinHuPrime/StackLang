@@ -2,6 +2,7 @@
 #define UI_H
 
 #include "language/stack.h"
+#include "language/stackIterator.h"
 #include "language/stackElement.h"
 #include "language/exceptions/languageError.h"
 #include "ui/lineEditor.h"

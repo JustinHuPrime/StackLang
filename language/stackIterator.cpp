@@ -1,4 +1,4 @@
-#include "language/stack.h"
+#include "language/stackIterator.h"
 using namespace StackLang;
 
 Stack::StackIterator::StackIterator (Stack::Node* node) : curr (node)
