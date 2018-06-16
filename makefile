@@ -4,7 +4,8 @@ CD := cd
 OPTIONS := -std=c++17 -Wall -Wextra -g# -O3
 LDFLAGS := -lncursesw
 INCLUDES := -I.
-SRCS := $(wildcard utils/*.cpp) $(wildcard language/*.cpp) $(wildcard ui/*.cpp) $(wildcard language/*/*.cpp) main.cpp
+MODULES := utils language ui
+SRCS := $(wildcard $(addsuffix /*.cpp, $(MODULES)) $(addsuffix /*/*.cpp, $(MODULES))) main.cpp
 OBJS := $(addprefix bin/, $(notdir $(SRCS:.cpp=.o)))
 EXENAME := stacklang
 .PHONY: all clean run remake rerun
@@ -22,13 +23,6 @@ bin/%.o: */%.cpp */%.h
 
 bin/%.o: */*/%.cpp */*/%.h
 	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-
-#bin/%.o: language/stackElements/%.cpp language/stackElements/%.h
-#	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-#
-#bin/%.o: language/%.cpp language/%.h
-#	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-
 
 run: | all
 	./$(EXENAME)

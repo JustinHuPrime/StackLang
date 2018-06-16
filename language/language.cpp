@@ -6,25 +6,27 @@ using namespace Primitives;
 namespace StackLang
 {
     const map<string, stackFunction> PRIMITIVES = {
-        {"plus", [] (list<StackElement*>& s)
+        {"plus", [] (Stack& s)
         {
             //do things
         }},
-        {"divide", [] (list<StackElement*>& s)
+        {"divide", [] (Stack& s)
         {
             //do other things
         }} //and so on.
     };
 
-    void execute (list<StackElement*>& s)
+    void execute (Stack& s)
     {
-        switch (s.front () -> getType ())
+        switch (s.top () -> getType ())
         {
             case StackElement::DataType::Command:
             {
-                CommandElement* command = dynamic_cast<CommandElement*> (s.front ());
-                s.pop_front ();
+                CommandElement* command = dynamic_cast<CommandElement*> (s.top ());
+                s.pop ();
+
                 auto result = PRIMITIVES.find (command -> getData ());
+                
                 if (result != PRIMITIVES.end ())
                 {
                     result -> second (s);
@@ -37,6 +39,8 @@ namespace StackLang
                     else
                     {}
                 }
+                
+                delete command;
                 break;
             }
             default:

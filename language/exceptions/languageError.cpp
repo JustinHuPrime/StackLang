@@ -1,13 +1,11 @@
 #include "language/exceptions/languageError.h"
-using namespace StackLang;
+using namespace StackLang::Exceptions;
 
-LanguageError::LanguageError (const string& message, const string& context, int location) : message (message), context (context), location (location)
+LanguageError::LanguageError (const string& message) : message (message), errorHasContext (false)
 {}
 
-const string LanguageError::getKind () const
-{
-    return "language error";
-}
+LanguageError::LanguageError (const string& message, const string& context, int location) : message (message), context (context), location (location), errorHasContext (true)
+{}
 
 const string LanguageError::getMessage () const
 {
@@ -22,4 +20,9 @@ const string LanguageError::getContext () const
 int LanguageError::getLocation () const
 {
     return location;
+}
+
+bool LanguageError::hasContext () const
+{
+    return errorHasContext;
 }

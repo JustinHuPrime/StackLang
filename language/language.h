@@ -1,23 +1,22 @@
 #ifndef LANGUAGE_H
 #define LANGUAGE_H
 
+#include "language/stack.h"
 #include "language/stackElement.h"
 #include "language/stackElements/commandElement.h"
-#include <list>
 #include <map>
-using std::list;
 using std::map;
 
 namespace StackLang
 {
     /**
-     * Executes
+     * Executes the top element of the stack
      */
-    void execute (list<StackElement*>&);
+    void execute (Stack&);
 
     namespace Primitives
     {
-        typedef void (*stackFunction) (list<StackElement*>&);
+        typedef void (*stackFunction) (Stack&);
         const map<string, stackFunction> PRIMITIVES;
     }
 }

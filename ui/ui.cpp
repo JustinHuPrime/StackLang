@@ -31,7 +31,7 @@ void uninit ()
     endwin ();
 }
 
-void drawStack (const list<StackElement*>& s)
+void drawStack (const Stack& s)
 {
     int maxY = getmaxy (stdscr);
     int offset = getcurx (stdscr);
@@ -86,21 +86,25 @@ void drawError (const LanguageError& e)
 
     curs_set (CURSOR_INVISIBLE);
     clear ();
-    move (centerY - 1, 0);
-    addstring (e.getKind ());
-    move (centerY, 0);
-    addstring (e.getMessage ());
-    move (centerY + 1, 0);
-    addstring (e.getContext ());
-    move (centerY + 2, 0);
-    addstring (spaces (e.getLocation ()) + '^');
 
-    /* FOrmat:
-    Syntax Error:/Parser Error:/Runtime Error:
-    error message
-    error context
-    error location line 2 (generated from int)
-    */
+    if (e.hasContext ())
+    {
+        move (centerY - 1, 0);
+        addstring (e.getKind ());
+        move (centerY, 0);
+        addstring (e.getMessage ());
+        move (centerY + 1, 0);
+        addstring (e.getContext ());
+        move (centerY + 2, 0);
+        addstring (spaces (e.getLocation ()) + '^');
+    }
+    else
+    {
+        move (centerY, 0);
+        addstring (e.getKind ());
+        move (centerY - 1, 0);
+        addstring (e.getMessage ());
+    }
 }
 
 void addstring (const string& s)

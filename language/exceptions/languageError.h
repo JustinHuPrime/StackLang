@@ -8,23 +8,42 @@ using std::exception;
 
 namespace StackLang
 {
-    class LanguageError
+    namespace Exceptions
     {
-        public:
+        /**
+         * Describes a StackLang runtime error
+         */
+        class LanguageError
+        {
+            public:
 
-        LanguageError (const string&, const string&, int);
+            /**
+             * Creates an error with a message, but no context
+             */
+            LanguageError (const string&);
 
-        virtual const string getKind () const;
-        const string getMessage () const;
-        const string getContext () const;
-        int getLocation () const;
+            /**
+             * Creates an error with a message and context (plus exact location of error)
+             */
+            LanguageError (const string&, const string&, int);
 
-        private:
+            /**
+             * Get error details
+             */
+            virtual const string getKind () const = 0;
+            const string getMessage () const;
+            const string getContext () const;
+            int getLocation () const;
+            bool hasContext () const;
 
-        string message, context;
-        int location;
+            private:
 
-    };
+            string message, context;
+            int location;
+            bool errorHasContext;
+
+        };
+    }
 }
 
 #endif /* LANGUAGEERROR_H */

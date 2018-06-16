@@ -1,5 +1,6 @@
 #include "ui/ui.h"
 #include "language/language.h"
+#include "language/stack.h"
 #include "language/stackElement.h"
 #include "language/stackElements/stringElement.h"
 #include "language/exceptions/languageError.h"
@@ -19,8 +20,9 @@ using std::endl;
 using std::map;
 using StackElements::StringElement;
 using StackElements::CommandElement;
+using Exceptions::LanguageError;
 
-const list<StackElement*>* UPDATE_STACK; //used for resize handlers - set once, then ignored
+const Stack* UPDATE_STACK; //used for resize handlers - set once, then ignored
 const LineEditor* UPDATE_BUFFER;
 
 const string INFO = R"(StackLang interpreter version ALPHA 3
@@ -44,16 +46,27 @@ void displayInfo () //displays info splash, they pauses
     getch ();
 }
 
-int main (int argc, char* argv[])
+void printError (const LanguageError& e)
 {
-    int key = 0;
-    list<StackElement*> s;
-    map<string, list<StackElement*>> defines;
+    cerr << e.getKind () << endl;
+    cerr << e.getMessage () << endl;
+    if (e.hasContext ())
+    {
+        cerr << e.getContext () << endl;
+        cerr << spaces (e.getLocation ()) << "^" << endl;
+    }
+}
+
+int main (int argc, char* argv[])
+{    
+    Stack s;
+    //map<string, SubstackElement> defines;
+
+    int key = 0;    
     LineEditor buffer;
+
     int debugmode = 0;
     bool errorFlag = false;
-    ifstream fin;
-    string includeFile;
     bool argsInclude = false;
 
     UPDATE_STACK = &s; //set const pointers for data access from event handlers
@@ -91,8 +104,8 @@ int main (int argc, char* argv[])
         }
         else if (argsInclude)
         {
-            s.push_front (new StringElement (argv[i]));
-            s.push_front (new CommandElement ("include"));
+            s.push (new StringElement (argv[i]));
+            s.push (new CommandElement ("include"));
             
             try
             {
@@ -100,7 +113,7 @@ int main (int argc, char* argv[])
             }
             catch (const LanguageError& e)
             {
-
+                printError (e);
             }
         }
     }
@@ -143,7 +156,7 @@ int main (int argc, char* argv[])
             {
                 try
                 {
-                    s.push_front (StackElement::parse (buffer));
+                    s.push (StackElement::parse (buffer));
                     buffer.enter ();
                     drawPrompt (buffer);
                     drawStack (s);
