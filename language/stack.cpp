@@ -39,7 +39,7 @@ StackElement* Stack::top ()
     return head -> elm;
 }
 
-unsigned Stack::size () const
+unsigned long Stack::size () const
 {
     return dataSize;
 }

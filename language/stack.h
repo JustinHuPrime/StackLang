@@ -25,7 +25,7 @@ namespace StackLang
         StackIterator begin () const;
         StackIterator end () const;
 
-        unsigned size () const;
+        unsigned long size () const;
 
         private:
 
@@ -36,7 +36,7 @@ namespace StackLang
         };
 
         Node* head;
-        int dataSize;
+        unsigned long dataSize;
     };
 }
 

@@ -1,91 +1,30 @@
 # StackLang Programming Language
 
-A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is 
+A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is heavily inspired by the xSL teaching languages and HP's RPL.
 
-# TEMPLATE BELOW
+# The Interpreter
+
+A StackLang interpreter has been implemented in C++, and can be found in this repository.
 
 ## Getting Started
 
-StackLang is built using the `c++17` standard
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+StackLang is built using the `c++17` standard, and compiled using `g++`. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+StackLang requires:
 
-```
-Give examples
-```
+* Ncurses
 
-### Installing
+### Using the Interpreter
 
-A step by step series of examples that tell you how to get a development env running
+To build StackLang, just run `make` from the root directory. This should generate the stacklang executable. This executable has several command line options:
 
-Say what the step will be
+* `-d N`: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The default mode of 0 is guarenteed to disable debugging.
+* `-I file1 ... --`: automatically `includes` files to be read at startup. These files must only contain `define`s. The terminal `--` is optional.
+* `-l N`: *NYI* limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
+* `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits.
 
-```
-Give the example
-```
+# The Language
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+The core of StackLang is the stack. 
