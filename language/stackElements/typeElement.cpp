@@ -8,10 +8,15 @@ TypeElement::TypeElement (DataType type) : StackElement (StackElement::DataType:
 
 TypeElement::operator const string () const
 {
-    return TYPES[(int) data];
+    return to_string (data);
 }
 
 StackElement::DataType TypeElement::getData ()
 {
     return data;
+}
+
+string TypeElement::to_string (StackElement::DataType type)
+{
+    return TYPES[(int) type];
 }

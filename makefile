@@ -1,6 +1,6 @@
 CC := g++
 RM := rm -rf
-MKDIR := mkdir
+MKDIR := mkdir -p
 OPTIONS := -std=c++17 -Wall -Wextra -g# -O3
 LDFLAGS := -lncursesw
 INCLUDES := -I.

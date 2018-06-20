@@ -124,8 +124,8 @@ int main (int argc, char* argv[])
 
     displayInfo (); //splash screen
 
-    drawPrompt (buffer); //draw the stack and prompt
     drawStack (s);
+    drawPrompt (buffer); //draw the stack and prompt
 
     while (true)
     {
@@ -137,8 +137,8 @@ int main (int argc, char* argv[])
         }
         else if (errorFlag)
         {
-            drawPrompt (buffer);
             drawStack (s);
+            drawPrompt (buffer);
             errorFlag = false;
             continue;
         }
@@ -160,8 +160,8 @@ int main (int argc, char* argv[])
                 {
                     s.push (StackElement::parse (buffer));
                     buffer.enter ();
-                    drawPrompt (buffer);
                     drawStack (s);
+                    drawPrompt (buffer);
                 }
                 catch (const LanguageError& e)
                 {

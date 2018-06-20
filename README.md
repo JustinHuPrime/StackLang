@@ -45,7 +45,7 @@ Stack elements can be:
 
 * Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
 
-* Numbers: enter a decimal. Numbers have arbitrary precison, and have no size limits either in the positive or the negative. Displayed as plain text.
+* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers have arbitrary precison, and have no size limits either in the positive or the negative. Displayed as plain text.
 
 * Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
 

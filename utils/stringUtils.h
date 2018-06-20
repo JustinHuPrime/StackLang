@@ -34,4 +34,9 @@ size_t findImproperEscape (const string&);
  */
 string spaces (int);
 
+/**
+ * removes all occurences of character c from string s
+ */
+string removeChar (string, char);
+
 #endif /* STRINGUTILS_H */

@@ -14,19 +14,19 @@ string escape (string s)
 {
     for (unsigned i = 0; i < s.length (); i++)
     {
-        if (s[i] == '"')
+        if (s[i] == '"') //escape quotes
         {
             s.erase (i, 1);
             s.insert (i, "\\\"");
             i++;
         }
-        else if (s[i] == '\n')
+        else if (s[i] == '\n') //newlines
         {
             s.erase (i, 1);
             s.insert (i, "\\n");
             i++;
         }
-        else if (s[i] == '\\')
+        else if (s[i] == '\\') //escaped backslashes
         {
             s.erase (i, 1);
             s.insert (i, "\\\\");
@@ -44,7 +44,7 @@ string unescape (string s)
 
     for (unsigned i = 0; i < s.length (); i++)
     {
-        if (s[i] == '"' && prevBackslash && !prevPrevBackslash)
+        if (s[i] == '"' && prevBackslash && !prevPrevBackslash) // escaped quote
         {
             i--;
             s.erase (i, 2);
@@ -52,7 +52,7 @@ string unescape (string s)
             prevPrevBackslash = false;
             prevBackslash = false;
         }
-        else if (s[i] == 'n' && prevBackslash && !prevPrevBackslash)
+        else if (s[i] == 'n' && prevBackslash && !prevPrevBackslash) // escaped n
         {
             i--;
             s.erase (i, 2);
@@ -60,11 +60,11 @@ string unescape (string s)
             prevPrevBackslash = false;
             prevBackslash = false;
         }
-        else if (s[i] == '\\' && prevBackslash && !prevPrevBackslash)
+        else if (s[i] == '\\' && prevBackslash && !prevPrevBackslash) // escaped backslash
         {
             i--;
             s.erase (i, 2);
-            s.insert (i, "\\\\");
+            s.insert (i, "\\");
             prevPrevBackslash = false;
             prevBackslash = false;
         }
@@ -102,4 +102,18 @@ string spaces (int n)
     string acc = "";
     acc.resize (n, ' ');
     return acc;
+}
+
+string removeChar (string s, char c)
+{
+    for (unsigned i = 0; i < s.length (); i++)
+    {
+        if (s[i] == c)
+        {
+            s.erase (i, 1);
+            i--;
+        }
+    }
+
+    return s;
 }

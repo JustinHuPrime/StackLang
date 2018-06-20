@@ -18,6 +18,8 @@ namespace StackLang
             operator const string () const override;
             DataType getData ();
 
+            static string to_string (DataType);
+
             private:
 
             DataType data;
@@ -25,7 +27,7 @@ namespace StackLang
 
         namespace TypeNameConstants
         {
-            const string TYPES [] = {"Number", "String", "Boolean", "Substack", "Type", "Command"};
+            const string TYPES [] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
         }
     }
 }

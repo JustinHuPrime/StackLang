@@ -36,7 +36,7 @@ namespace StackLang
             int getLocation () const;
             bool hasContext () const;
 
-            private:
+            protected:
 
             string message, context;
             int location;

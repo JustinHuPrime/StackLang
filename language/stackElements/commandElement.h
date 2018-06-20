@@ -26,7 +26,7 @@ namespace StackLang
 
     namespace CharSet
     {
-        const string ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?";
+        const string ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
     }
 }
 

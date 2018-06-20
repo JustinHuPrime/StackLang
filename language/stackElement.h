@@ -21,6 +21,7 @@ namespace StackLang
             Substack,
             Type,
             Command,
+            Any,
         };
 
         /**
