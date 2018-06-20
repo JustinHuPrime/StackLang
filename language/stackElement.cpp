@@ -41,7 +41,11 @@ StackElement* StackElement::parse (const string& s)
     {
         return new BooleanElement (s == "true");
     }
-    else if (isalpha(s[0]) && s.find_first_not_of (ALLOWED_COMMAND) == string::npos) //it's a valid command name
+    //else if (/* types contains this string */false)
+    //{
+    //    return new TypeElement ()
+    //}
+    else if (isalpha(s[0]) && s.find_first_not_of (ALLOWED_COMMAND) == string::npos) //it's a valid command name - starts with an alpha, had all
     {
         return new CommandElement (s);
     }
