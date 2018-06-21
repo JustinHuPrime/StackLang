@@ -1,6 +1,6 @@
 # StackLang Programming Language
 
-A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is heavily inspired by the xSL teaching languages and HP's RPL.
+A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is heavily inspired by the DrRacket xSL teaching languages and HP's RPL.
 
 # The Interpreter
 
@@ -51,7 +51,7 @@ Stack elements can be:
 
 * Substacks: enter `<<`, followed by a series of comma separated stack elements (whitespace after a comma is stripped when parsing), followed by `>>`. Do not include a comma before the ending delimiter. Displayed as `<<element, element, element>>`. When read from a file, the filereader will automatically build substacks: any newlines between a `<<` and the matching `>>` are converted into a comma.
 
-* Types: enter a valid type name. Valid type names are: `Any`, `Boolean`, `Command`, `Number`, `String`, `Substack`, `Type`.
+* Types: enter a valid type name. Valid type names are: `Boolean`, `Command`, `Number`, `String`, `Substack`, `Type`, and `Any`.
 
 ## The Parser
 

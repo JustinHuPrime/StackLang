@@ -1,8 +1,13 @@
 #include "language/stack.h"
 #include "language/stackIterator.h"
+#include "language/exceptions/stackOverflowError.h"
 using namespace StackLang;
+using namespace Exceptions;
 
-Stack::Stack () : head (nullptr), dataSize (0)
+Stack::Stack () : head (nullptr), dataSize (0), limited (false)
+{}
+
+Stack::Stack (unsigned long lim) : head (nullptr), dataSize (0), limit (lim), limited (true)
 {}
 
 Stack::~Stack ()
@@ -16,6 +21,11 @@ Stack::~Stack ()
 
 void Stack::push (StackElement* ptr)
 {
+    if (limited && dataSize > limit)
+    {
+        throw StackOverflowError (limit);
+    }
+
     Node* temp = new Node;
     temp -> elm = ptr;
     temp -> next = head;
@@ -42,6 +52,11 @@ StackElement* Stack::top ()
 unsigned long Stack::size () const
 {
     return dataSize;
+}
+
+unsigned long Stack::getLimit () const
+{
+    return limit;
 }
 
 Stack::StackIterator Stack::begin () const

@@ -14,6 +14,7 @@ namespace StackLang
         class StackIterator;
 
         Stack ();
+        Stack (unsigned long);
         Stack (const Stack& other);
 
         ~Stack ();
@@ -26,6 +27,7 @@ namespace StackLang
         StackIterator end () const;
 
         unsigned long size () const;
+        unsigned long getLimit () const;
 
         private:
 
@@ -37,6 +39,8 @@ namespace StackLang
 
         Node* head;
         unsigned long dataSize;
+        unsigned long limit;
+        bool limited;
     };
 }
 
