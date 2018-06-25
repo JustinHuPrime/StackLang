@@ -16,8 +16,8 @@ void init ()
         refresh ();
 
         clear (); //draw the screen
-        drawPrompt (*UPDATE_BUFFER);
         drawStack (*UPDATE_STACK);
+        drawPrompt (*UPDATE_BUFFER);
     });
 }
 
@@ -89,21 +89,25 @@ void drawError (const LanguageError& e)
 
     if (e.hasContext ())
     {
-        move (centerY - 1, 0);
+        move (centerY - 2, 0);
         addstring (e.getKind ());
-        move (centerY, 0);
+        move (centerY - 1, 0);
         addstring (e.getMessage ());
-        move (centerY + 1, 0);
+        move (centerY + 0, 0);
         addstring (e.getContext ());
-        move (centerY + 2, 0);
+        move (centerY + 1, 0);
         addstring (spaces (e.getLocation ()) + '^');
+        move (centerY + 3, 0);
+        addstring ("Press any key to continue...");
     }
     else
     {
-        move (centerY, 0);
-        addstring (e.getKind ());
         move (centerY - 1, 0);
+        addstring (e.getKind ());
+        move (centerY + 0, 0);
         addstring (e.getMessage ());
+        move (centerY + 2, 0);
+        addstring ("Press any key to continue...");
     }
 }
 
