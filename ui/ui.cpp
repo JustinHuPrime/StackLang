@@ -1,29 +1,42 @@
 #include "ui/ui.h"
+#include <ncurses.h>
+#include <csignal>
+#include <iostream>
+using std::cerr;
+using std::endl;
 
 void init ()
 {
     setlocale (LC_ALL, "");
+    
     initscr ();
+    
     cbreak ();
     nonl();
     noecho ();
     intrflush(stdscr, false);
     keypad(stdscr, true);
+    
     atexit (uninit);
+    
     signal (SIGWINCH, [] (int dummy)
     {(void) dummy; //ignore dummy value
         endwin (); //these commands resync ncurses with the terminal
         refresh ();
 
         clear (); //draw the screen
-        drawStack (*UPDATE_STACK);
-        drawPrompt (*UPDATE_BUFFER);
+        drawStack (*UpdateStack);
+        drawPrompt (*UpdateBuffer);
     });
-}
-
-void drawResized (int dummy)
-{
-    (void) dummy;
+    
+    signal (SIGINT, [] (int dummy)
+    {(void) dummy; //ignore dummy value
+        uninit ();
+        cerr << R"(Program interrupted by terminal interrupt sequence.
+Interpreter has been stopped without freeing resources
+This interrupt should have been expected and intentional.)" << endl;
+        exit (EXIT_FAILURE);
+    });
 }
 
 void uninit ()

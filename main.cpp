@@ -28,8 +28,8 @@ using StackElements::CommandElement;
 using Exceptions::LanguageError;
 using Exceptions::StackOverflowError;
 
-const Stack* UPDATE_STACK; //used for resize handlers - set once, then ignored
-const LineEditor* UPDATE_BUFFER;
+const Stack* UpdateStack; //used for resize handlers - set once, then ignored
+const LineEditor* UpdateBuffer;
 
 const string INFO = R"(StackLang interpreter version ALPHA 3
 by Justin Hu, 2018
@@ -72,8 +72,8 @@ int main (int argc, char* argv[])
     bool errorFlag = false;
     bool argsInclude = false;
 
-    UPDATE_STACK = &s; //set const pointers for data access from event handlers
-    UPDATE_BUFFER = &buffer;
+    UpdateStack = &s; //set const pointers for data access from event handlers
+    UpdateBuffer = &buffer;
 
 
     for (int i = 1; i < argc; i++) //command line args evaluation
@@ -103,7 +103,7 @@ int main (int argc, char* argv[])
             if (i + 1 >= argc)
             {
                 cerr << "Expected number after `-d`, found nothing. Abort." << endl;
-                exit (EXIT_FAILURE);
+                return EXIT_FAILURE;
             }
 
             try
@@ -113,7 +113,7 @@ int main (int argc, char* argv[])
             catch (const invalid_argument& e)
             {
                 cerr << "Expected number after `-d`, found `" << argv[i] << "`. Abort." << endl;
-                exit (EXIT_FAILURE);
+                return EXIT_FAILURE;
             }
         }
         else if (string (argv[i]) == "-I") //start of specified files to include
@@ -256,5 +256,5 @@ int main (int argc, char* argv[])
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

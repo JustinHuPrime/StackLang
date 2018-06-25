@@ -7,13 +7,6 @@
 #include "language/exceptions/languageError.h"
 #include "ui/lineEditor.h"
 #include "utils/stringUtils.h"
-#include <string>
-#include <ncurses.h>
-#include <locale.h>
-#include <stdlib.h>
-#include <signal.h>
-using std::list;
-using std::string;
 using StackLang::Stack;
 using StackLang::StackElement;
 using StackLang::Exceptions::LanguageError;
@@ -39,8 +32,8 @@ void addstring (const string& s);
 /**
  * constants used by window resize event handler to call drawStack
  */
-extern const Stack* UPDATE_STACK;
-extern const LineEditor* UPDATE_BUFFER;
+extern const Stack* UpdateStack;
+extern const LineEditor* UpdateBuffer;
 
 /**
  * cursor constants
