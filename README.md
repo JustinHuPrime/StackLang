@@ -1,6 +1,6 @@
 # StackLang Programming Language
 
-A stack-oriented programming language with an interpreter implemented in C++. StackLang uses lazy execution to enable a simple set of execution rules while maintaining a usable and extensible language. This language is heavily inspired by the DrRacket xSL teaching languages and HP's RPL.
+A stack-oriented programming language with an interpreter implemented in C++. This language is heavily inspired by the DrRacket xSL teaching languages and HP's RPL.
 
 # The Interpreter
 
@@ -45,7 +45,7 @@ Stack elements can be:
 
 * Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
 
-* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers have arbitrary precison, and have no size limits either in the positive or the negative. Displayed as plain text.
+* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using a `double`. 
 
 * Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
 

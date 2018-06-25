@@ -4,6 +4,7 @@
 #include "language/stackElement.h"
 #include "language/stackElements/stringElement.h"
 #include "language/exceptions/languageError.h"
+#include "language/exceptions/stackOverflowError.h"
 #include "ui/lineEditor.h"
 #include <ncurses.h>
 #include <string>
@@ -11,16 +12,21 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <limits>
 using namespace StackLang;
 using std::string;
+using std::stoi;
+using std::stol;
 using std::list;
 using std::ifstream;
 using std::cerr;
 using std::endl;
 using std::map;
+using std::numeric_limits;
 using StackElements::StringElement;
 using StackElements::CommandElement;
 using Exceptions::LanguageError;
+using Exceptions::StackOverflowError;
 
 const Stack* UPDATE_STACK; //used for resize handlers - set once, then ignored
 const LineEditor* UPDATE_BUFFER;
@@ -30,9 +36,6 @@ by Justin Hu, 2018
 Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)"; //introductory stuff
 
-const int INFOCURSX = 29; //co-ords of the end of the splash
-const int INFOCURSY = 3;
-
 namespace KeyInfo
 {
     const char KEY_CTRL_D = 4; //self defined constants
@@ -40,9 +43,9 @@ namespace KeyInfo
 
 void displayInfo () //displays info splash, they pauses
 {
+    curs_set (CURSOR_INVISIBLE);
     move (0, 0);
     addstring (INFO.c_str ());
-    move (INFOCURSY, INFOCURSX);
     getch ();
 }
 
@@ -75,30 +78,7 @@ int main (int argc, char* argv[])
 
     for (int i = 1; i < argc; i++) //command line args evaluation
     {
-        if (string (argv[i]) == "-d") //set debug mode
-        {
-            if (i + 1 >= argc)
-            {
-                cerr << "Expected number after `-d`, found nothing. Abort." << endl;
-                exit (EXIT_FAILURE);
-            }
-
-            try
-            {
-                debugmode = std::stoi (argv[i + 1]);
-                i++;
-            }
-            catch (const invalid_argument& e)
-            {
-                cerr << "Expected number after `-d`, found `" << argv[i + 1] << "`. Abort." << endl;
-                exit (EXIT_FAILURE);
-            }
-        }
-        else if (string (argv[i]) == "-I") //start of specified files to include
-        {
-            argsInclude = true;
-        }
-        else if (string (argv[i]) == "--") //end of specified files to include
+        if (string (argv[i]) == "--") //end of specified files to include
         {
             argsInclude = false;
         }
@@ -115,7 +95,49 @@ int main (int argc, char* argv[])
             {
                 printError (e);
                 cerr << "Aborting." << endl;
+                return EXIT_FAILURE;
+            }
+        }
+        else if (string (argv[i]) == "-d") //set debug mode
+        {
+            if (i + 1 >= argc)
+            {
+                cerr << "Expected number after `-d`, found nothing. Abort." << endl;
                 exit (EXIT_FAILURE);
+            }
+
+            try
+            {
+                debugmode = stoi (argv[++i]);
+            }
+            catch (const invalid_argument& e)
+            {
+                cerr << "Expected number after `-d`, found `" << argv[i] << "`. Abort." << endl;
+                exit (EXIT_FAILURE);
+            }
+        }
+        else if (string (argv[i]) == "-I") //start of specified files to include
+        {
+            argsInclude = true;
+        }
+        else if (string (argv[i]) == "-l") //set limit
+        {
+            if (i + 1 >= argc)
+            {
+                cerr << "Expected number after `-l`, found nothing. Abort" << endl;
+            }
+
+            try
+            {
+                s.setLimit (stol (argv[++i]));
+            }
+            catch (const invalid_argument& e)
+            {
+                cerr << "Expected number after `-l`, found `" << argv[i] << "`. Abort." << endl;
+            }
+            catch (const StackOverflowError& e)
+            {
+                cerr << "Specified limit is too low to contain " << s.size () << " elements, the current size of the stack. Abort." << endl;
             }
         }
     }
@@ -143,7 +165,7 @@ int main (int argc, char* argv[])
             continue;
         }
 
-        if (key < __SCHAR_MAX__ && isprint (key) && key != '\n' && key != '\r' && key != KEY_ENTER) //normal characters added to buffer.
+        if (key < numeric_limits<char> ().max () && isprint (key) && key != '\n' && key != '\r' && key != KEY_ENTER) //normal characters added to buffer.
         {
             buffer += key;
             drawPrompt (buffer);
