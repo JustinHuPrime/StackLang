@@ -68,11 +68,19 @@ StackElement* StackElement::parse (const string& s)
         }
         else if (isalpha (s[0])) //starts with an alphabetical character
         {
-            throw ParserError ("Input looks like a command, but has a special character that is not -, ?, or *.", s, s.find_first_not_of (ALLOWED_COMMAND));
+            int badIndex = s.find_first_not_of (ALLOWED_COMMAND);
+            if (s[badIndex] == ' ') //has a space
+            {
+                throw ParserError ("Input looks like a command, but has a space.", s, badIndex);
+            }
+            else
+            {
+                throw ParserError ("Input looks like a command, but has a symbol that is not a `-`, `?`, or `*`.", s, badIndex);
+            }
         }
         else //Starts with a symbol, I guess?
         {
-            throw ParserError ("Input doesn't look like any type - does it begin with a special character?", s, 0);
+            throw ParserError ("Input doesn't look like any type - does it begin with a symbol?", s, 0);
         }
     }
 
