@@ -22,14 +22,23 @@ StackLang requires:
 
 To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang`.
 
-### Using the Interpreter
+## Using the Interpreter
 
 The interpreter has several command line options:
 
 * `-d N`: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The default mode of 0 is guarenteed to have no effect.
-* `-I filepath ... --`: automatically includes files (at the specified path) to be read at startup. These files must only contain `define`s. The terminal `--` is optional, but if not included, any command line arguments after the `-I` will be interpreted as paths to files to include.
+* `-I filepath ... --`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. The terminal `--` is optional, but if not included, any command line arguments after the `-I` will be interpreted as paths to files to include.
 * `-l N`: *NYI* limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
-* `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits.
+* `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D`.
+
+### Keyboard Controls
+
+The interpreter recognizes two control sequences:
+
+* `Ctrl-D`: gracefully stops the interpreter. Will not interrupt currently running processes/execution.
+* `Ctrl-C`: 
+    * if the interpreter is executing a command: *NYI* forcefully stops the execution right after the current command has been exected.
+    * if the interpreter is not executing a command: forcefully stops the interpreter. Will interrupt any current operation, and exits without outputting the stack.
 
 # The Language
 
@@ -45,7 +54,7 @@ Stack elements can be:
 
 * Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
 
-* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using a `double`. 
+* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using a binary coded decimal, and as such, are inefficient but arbitrarily precise.  Displayed as the raw number, without a thousands separator.
 
 * Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
 
@@ -59,9 +68,11 @@ The parser reads raw input from the command line and turns that input into a str
 
 ## File Inclusion
 
+*NYI*
+
 Stacklang files may have any file extension, but the standard file extension used by the author is `.sl`. Stacklang files are encodable in ASCII, so the interpreter must, at a minimum, be able to read ASCII characters. Support for extended character sets is entierly implementation-specific.
 
-The file to be read is read line by line. If the line does not contain a `<<` at the start of the line, then it is passed to the command line parser, and parsed into a stack element as if that line had been entered on the command line. If the line contains a `<<` at the start of the line, 
+The file to be read is read line by line. If the line does not contain a `<<` at the start of the line, then it is passed to the command line parser, and parsed into a stack element as if that line had been entered on the command line. If the line contains a `<<` at the start of the line, then the file reader will read the next line. Then, the ending newline on the first line read is removed, a `", "` appended, and the second line appended. If the second line contains a `<<` at the start of the line, then the reader recurses to read in a substack. If the second line does not contain a `>>`, then the reader continues reading. If the second line contains a `>>` anywhere except in a string, then the lines read in so far are given to the parser or returned. A `>>` not at the end of the line will cause a ParserError when parsed.
 
 ## Execution Rules
 
