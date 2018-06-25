@@ -11,7 +11,7 @@ namespace StackLang
         {
             public:
             
-            StackOverflowError (int);
+            StackOverflowError (unsigned long);
 
             const string getKind () const override;
         };
