@@ -68,7 +68,7 @@ StackElement* StackElement::parse (const string& s)
         }
         else if (isalpha (s[0])) //starts with an alphabetical character
         {
-            int badIndex = s.find_first_not_of (ALLOWED_COMMAND);
+            unsigned badIndex = s.find_first_not_of (ALLOWED_COMMAND);
             if (s[badIndex] == ' ') //has a space
             {
                 throw ParserError ("Input looks like a command, but has a space.", s, badIndex);

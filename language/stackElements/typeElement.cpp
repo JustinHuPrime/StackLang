@@ -18,5 +18,5 @@ StackElement::DataType TypeElement::getData ()
 
 string TypeElement::to_string (StackElement::DataType type)
 {
-    return TYPES[(int) type];
+    return TYPES[int (type)];
 }

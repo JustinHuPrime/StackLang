@@ -1,7 +1,7 @@
 #include "language/exceptions/parserError.h"
 using namespace StackLang::Exceptions;
 
-ParserError::ParserError (const string& message, const string& context, int location) : LanguageError (message, context, location)
+ParserError::ParserError (const string& msg, const string& ctx, unsigned loc) : LanguageError (msg, ctx, loc)
 {}
 
 const string ParserError::getKind () const

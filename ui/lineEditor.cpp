@@ -65,7 +65,7 @@ void LineEditor::up ()
         return;
     }
 
-    postHistory.push (*this);
+    postHistory.push (string (*this));
     
     for (auto c : preHistory.top ())
     {
@@ -83,7 +83,7 @@ void LineEditor::down ()
         return;
     }
 
-    preHistory.push (*this);
+    preHistory.push (string (*this));
 
     for (auto c : postHistory.top ())
     {
@@ -93,7 +93,7 @@ void LineEditor::down ()
 
 void LineEditor::enter ()
 {
-    preHistory.push (*this);
+    preHistory.push (string (*this));
     preCursor.clear ();
     postCursor.clear ();
 }

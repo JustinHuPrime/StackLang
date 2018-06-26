@@ -1,39 +1,47 @@
+#command options
 CC := g++
 RM := rm -rf
-MKDIR := mkdir
-OPTIONS := -std=c++17 -Wall -Wextra -g# -O3
-LDFLAGS := -lncursesw
-INCLUDES := -I.
-MODULES := utils language ui
-SRCS := $(wildcard $(addsuffix /*.cpp, $(MODULES)) $(addsuffix /*/*.cpp, $(MODULES))) main.cpp
-OBJDIR := bin
-OBJS := $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.cpp=.o)))
-EXENAME := stacklang
-.PHONY: all clean run remake rerun
+MKDIR := mkdir -p
 
-all: $(EXENAME)
+#standard warning request list
+WARNINGS := -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Wzero-as-null-pointer-constant -Wuseless-cast -Wno-unused
+#always-included compiler options
+OPTIONS := -std=c++17 -pedantic -pedantic-errors $(WARNINGS)
+#build-specific compiler options
+DEBUGOPTIONS := -Og -ggdb
+RELEASEOPTIONS := -Os -Wunused
+#libraries and included files
+LIBS := -lncurses
+INCLUDES := -I.
+
+#list of folders to include code from. Code from base dir is automatically included
+MODULES := utils language ui
+#grabs source code files
+SRCS := $(foreach MODULE,$(MODULES),$(shell find -O3 $(MODULE)/ -type f -name '*.cpp')) $(wildcard *.cpp)
+#name of directory to put .o files in
+OBJDIR := bin
+#path names of .o files - preserves folder structure of source files.
+OBJS := $(addprefix $(OBJDIR)/,$(SRCS:.cpp=.o))
+#final executable name
+EXENAME := stacklang
+
+.PHONY: debug release clean
+.SECONDEXPANSION:
+
+debug: OPTIONS := $(OPTIONS) $(DEBUGOPTIONS)
+debug: $(EXENAME)
+
+release: OPTIONS := $(OPTIONS) $(RELEASEOPTIONS)
+release: $(EXENAME) | clean
 
 $(EXENAME): $(OBJS)
-	$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LDFLAGS)
+	@$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LIBS)
 
-$(OBJDIR)/main.o: main.cpp | bin
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+$(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@)  | $$(dir $$@)
+	@$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
 
-$(OBJDIR)/%.o: */%.cpp */%.h | bin
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-
-$(OBJDIR)/%.o: */*/%.cpp */*/%.h | bin
-	$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-
-run: | all
-	./$(EXENAME)
+%/:
+	@$(MKDIR) $@
 
 clean:
-	$(RM) bin $(EXENAME)
-
-remake: | clean all
-
-rerun: | remake run
-
-$(OBJDIR):
-	$(MKDIR) $(OBJDIR)
+	@$(RM) bin $(EXENAME)

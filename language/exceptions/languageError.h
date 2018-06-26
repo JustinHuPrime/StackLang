@@ -25,7 +25,7 @@ namespace StackLang
             /**
              * Creates an error with a message and context (plus exact location of error)
              */
-            LanguageError (const string&, const string&, int);
+            LanguageError (const string&, const string&, unsigned);
 
             /**
              * Get error details
@@ -33,13 +33,13 @@ namespace StackLang
             virtual const string getKind () const = 0;
             const string getMessage () const;
             const string getContext () const;
-            int getLocation () const;
+            unsigned getLocation () const;
             bool hasContext () const;
 
             protected:
 
             string message, context;
-            int location;
+            unsigned location;
             bool errorHasContext;
 
         };

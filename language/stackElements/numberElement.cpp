@@ -1,15 +1,18 @@
 #include "language/stackElements/numberElement.h"
+#include <cmath>
+#include <string>
 using namespace StackLang::StackElements;
+using std::to_string;
 
-NumberElement::NumberElement (BigDecimal d) : StackElement (StackElement::DataType::Number), data (d)
+NumberElement::NumberElement (double d) : StackElement (StackElement::DataType::Number), data (d)
 {}
 
 NumberElement::operator const string () const
 {
-    return string (data);
+    return to_string (data);
 }
 
-BigDecimal NumberElement::getData ()
+double NumberElement::getData ()
 {
     return data;
 }

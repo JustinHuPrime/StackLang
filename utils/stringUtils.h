@@ -32,7 +32,7 @@ size_t findImproperEscape (const string&);
 /**
  * produces 'n' spaces in a row
  */
-string spaces (int);
+string spaces (unsigned);
 
 /**
  * removes all occurences of character c from string s

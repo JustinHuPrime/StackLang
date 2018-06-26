@@ -11,7 +11,7 @@ namespace StackLang
         {
             public:
             
-            ParserError (const string&, const string&, int);
+            ParserError (const string&, const string&, unsigned);
 
             const string getKind () const override;
         };

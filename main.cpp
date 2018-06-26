@@ -8,7 +8,6 @@
 #include "ui/lineEditor.h"
 #include <ncurses.h>
 #include <string>
-#include <list>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -16,9 +15,7 @@
 using namespace StackLang;
 using std::string;
 using std::stoi;
-using std::stol;
-using std::list;
-using std::ifstream;
+using std::stoul;
 using std::cerr;
 using std::endl;
 using std::map;
@@ -63,7 +60,7 @@ void printError (const LanguageError& e)
 int main (int argc, char* argv[])
 {    
     Stack s;
-    //map<string, SubstackElement> defines;
+    //map<string, ???> defines;
 
     int key = 0;    
     LineEditor buffer;
@@ -74,7 +71,6 @@ int main (int argc, char* argv[])
 
     UpdateStack = &s; //set const pointers for data access from event handlers
     UpdateBuffer = &buffer;
-
 
     for (int i = 1; i < argc; i++) //command line args evaluation
     {
@@ -129,7 +125,7 @@ int main (int argc, char* argv[])
 
             try
             {
-                s.setLimit (stol (argv[++i]));
+                s.setLimit (stoul (argv[++i]));
             }
             catch (const invalid_argument& e)
             {

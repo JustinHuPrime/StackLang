@@ -2,7 +2,6 @@
 #define NUMBERELEMENT_H
 
 #include "language/stackElement.h"
-#include "utils/bigDecimal.h"
 #include <string>
 using std::string;
 
@@ -14,14 +13,14 @@ namespace StackLang
         {
             public:
 
-            NumberElement (BigDecimal);
+            NumberElement (double);
 
             operator const string () const override;
-            BigDecimal getData ();
+            double getData ();
 
             private:
 
-            BigDecimal data;
+            double data;
         };
     }
 

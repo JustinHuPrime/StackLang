@@ -97,7 +97,7 @@ size_t findImproperEscape (const string& str)
     return string::npos;
 }
 
-string spaces (int n)
+string spaces (unsigned n)
 {
     string acc = "";
     acc.resize (n, ' ');

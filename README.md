@@ -8,7 +8,7 @@ A StackLang interpreter has been implemented in C++, and can be found in this re
 
 ## Getting Started
 
-StackLang is built using the `c++17` standard, and compiled using `g++`. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix system.
+StackLang is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++.
 
 ### Prerequisites
 
@@ -20,16 +20,17 @@ StackLang requires:
 
 ### Building
 
-To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang`.
+To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang` in the same directory as the makefile.
 
-## Using the Interpreter
+## Using the Interpreter7
 
-The interpreter has several command line options:
+The interpreter has several command line options. These options are searched for in the order listed *NYI*.
 
+* `-?`, `-h`, `--help`: *NYI* prints a summary of the command line options, then exits immediately.
 * `-d N`: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The default mode of 0 is guarenteed to have no effect.
-* `-I filepath ... --`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. The terminal `--` is optional, but if not included, any command line arguments after the `-I` will be interpreted as paths to files to include.
-* `-l N`: *NYI* limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
-* `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D`.
+* `-l N`: *NYI* limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system. Multiple uses of this option are not supported.
+* `-I filepath ... --`: *NYI* automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. The terminal `--` is optional, but if not included, any command line arguments after the `-I` will be interpreted as paths to files to include. The interpreter will first search relative to its own directory (where the executable file is), then relative to the invoking directory (where the executable was called from). These files are called included files, and generally contain defines that are part of a library to be loaded.
+* `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D` or through any other graceful exit.
 
 ### Keyboard Controls
 

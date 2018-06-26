@@ -57,7 +57,7 @@ void drawStack (const Stack& s)
         clrtoeol ();
     }
 
-    unsigned i = maxY - 2;
+    int i = maxY - 2;
     auto it = s.begin ();
     for (; i > 0 && it != s.end (); i--, it++)
     {
@@ -65,7 +65,7 @@ void drawStack (const Stack& s)
         addstring (**it);
     }
 
-    if (s.size () >= (unsigned) getmaxy (stdscr) - 2)
+    if (long (s.size ()) >= getmaxy (stdscr) - 2)
     {
         move (0, 0);
         clrtoeol ();
@@ -126,8 +126,10 @@ void drawError (const LanguageError& e)
 
 void addstring (const string& s)
 {
+    unsigned char ch;
     for (const char c : s)
     {
-        addch (c);
+        ch = static_cast <unsigned char> (c);
+        addch (ch);
     }
 }
