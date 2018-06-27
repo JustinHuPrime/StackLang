@@ -52,8 +52,11 @@ $(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@) | $$(dir $$@)
 
 $(DEPS): $$(patsubst $(DEPDIR)/%.dep,%.cpp,$$@) | $$(dir $$@)
 	@set -e; $(RM) $@; \
-	 $(CC) $(OPTIONS) $(INCLUDES) -MM $< > $@.$$$$; \
+	 $(CC) $(OPTIONS) $(INCLUDES) -MM -MT $(patsubst $(DEPDIR)/%.dep,$(OBJDIR)/%.o,$@) $< > $@.$$$$; \
 	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	 rm -f $@.$$$$
 
--include $(DEPS)
+diagnose:
+	echo "$(DEPS)"
+
+include $(DEPS)
