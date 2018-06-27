@@ -1,7 +1,7 @@
 #ifndef BOOLEANELEMENT_H
 #define BOOLEANELEMENT_H
 
-#include "language/stackElement.h"
+#include "language/stack/stackElement.h"
 #include <string>
 using std::string;
 

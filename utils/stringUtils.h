@@ -1,12 +1,12 @@
 #ifndef STRINGUTILS_H
 #define STRINGUTILS_H
 
+#include <stdexcept>
 #include <string>
 #include <utility>
-#include <stdexcept>
-using std::string;
 using std::invalid_argument;
 using std::pair;
+using std::string;
 
 /**
  * Produce true if first string starts/ends with the second string

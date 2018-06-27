@@ -5,17 +5,16 @@
 
 namespace StackLang
 {
-    namespace Exceptions
-    {
-        class ParserError : public LanguageError
-        {
-            public:
-            
-            ParserError (const string&, const string&, unsigned);
+namespace Exceptions
+{
+class ParserError : public LanguageError
+{
+  public:
+    ParserError (const string&, const string&, unsigned);
 
-            const string getKind () const override;
-        };
-    }
-}
+    const string getKind () const override;
+};
+} // namespace Exceptions
+} // namespace StackLang
 
 #endif /* PARSERERROR_H */

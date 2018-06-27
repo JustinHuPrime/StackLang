@@ -1,7 +1,8 @@
-#include "language/stackElements/commandElement.h"
+#include "language/stack/stackElements/commandElement.h"
 using namespace StackLang::StackElements;
 
-CommandElement::CommandElement (string s) : StackElement (StackElement::DataType::Command), data (s)
+CommandElement::CommandElement (string s) :
+    StackElement (StackElement::DataType::Command), data (s)
 {}
 
 CommandElement::operator const string () const

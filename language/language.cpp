@@ -5,48 +5,47 @@ using namespace Primitives;
 
 namespace StackLang
 {
-    const map<string, stackFunction> PRIMITIVES = {
-        {"plus", [] (Stack& s)
-        {
-            //do things
-        }},
-        {"divide", [] (Stack& s)
-        {
-            //do other things
-        }} //and so on.
-    };
+const map< string, stackFunction > PRIMITIVES = {
+        {"plus", [](Stack& s) {
+             //do things
+         }},
+        {"divide", [](Stack& s) {
+             //do other things
+         }} //and so on.
+};
 
-    void execute (Stack& s)
+void execute (Stack& s)
+{
+    switch (s.top ()->getType ())
     {
-        switch (s.top () -> getType ())
+        case StackElement::DataType::Command:
         {
-            case StackElement::DataType::Command:
-            {
-                CommandElement* command = dynamic_cast<CommandElement*> (s.top ());
-                s.pop ();
+            CommandElement* command = dynamic_cast< CommandElement* > (s.top ());
+            s.pop ();
 
-                auto result = PRIMITIVES.find (command -> getData ());
-                
-                if (result != PRIMITIVES.end ())
+            auto result = PRIMITIVES.find (command->getData ());
+
+            if (result != PRIMITIVES.end ())
+            {
+                result->second (s);
+            }
+            else
+            {
+                //find from non-primitives
+                if (false)
                 {
-                    result -> second (s);
                 }
                 else
-                {
-                    //find from non-primitives
-                    if (false)
-                    {}
-                    else
-                    {}
-                }
-                
-                delete command;
-                break;
+                {}
             }
-            default:
-            {
-                return;
-            }
+
+            delete command;
+            break;
+        }
+        default:
+        {
+            return;
         }
     }
 }
+} // namespace StackLang

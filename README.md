@@ -16,7 +16,7 @@ StackLang requires:
 
 * ncurses
 * GNU-make
-* g++ OR clang++
+* g++ OR clang++ (clang++ does not support some configured warning options in the makefile)
 
 ### Building
 

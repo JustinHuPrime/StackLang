@@ -22,10 +22,14 @@ SRCS := $(foreach MODULE,$(MODULES),$(shell find -O3 $(MODULE)/ -type f -name '*
 OBJDIR := bin
 #path names of .o files - preserves folder structure of source files.
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:.cpp=.o))
+#location of dependencies
+DEPDIR := dependencies
+#dependency list
+DEPS := $(addprefix $(DEPDIR)/,$(SRCS:.cpp=.dep))
 #final executable name
 EXENAME := stacklang
 
-.PHONY: debug release clean
+.PHONY: debug release clean format
 .SECONDEXPANSION:
 
 debug: OPTIONS := $(OPTIONS) $(DEBUGOPTIONS)
@@ -37,11 +41,23 @@ release: $(EXENAME) | clean
 $(EXENAME): $(OBJS)
 	@$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LIBS)
 
-$(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@)  | $$(dir $$@)
+$(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@) | $$(dir $$@)
+	@clang-format -i $<
 	@$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
+
+%.h:
+	@clang-format -i $@
 
 %/:
 	@$(MKDIR) $@
 
 clean:
-	@$(RM) bin $(EXENAME)
+	@$(RM) $(OBJDIR) $(DEPDIR) $(EXENAME)
+
+$(DEPS): $$(patsubst $(DEPDIR)/%.dep,%.cpp,$$@) | $$(dir $$@)
+	@set -e; $(RM) $@; \
+	 $(CC) $(OPTIONS) $(INCLUDES) -MM $< > $@.$$$$; \
+	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	 rm -f $@.$$$$
+
+-include $(DEPS)

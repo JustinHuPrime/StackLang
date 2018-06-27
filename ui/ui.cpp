@@ -1,40 +1,42 @@
 #include "ui/ui.h"
-#include <ncurses.h>
+
 #include <csignal>
 #include <iostream>
+#include <ncurses.h>
 using std::cerr;
 using std::endl;
 
 void init ()
 {
     setlocale (LC_ALL, "");
-    
+
     initscr ();
-    
+
     cbreak ();
-    nonl();
+    nonl ();
     noecho ();
-    intrflush(stdscr, false);
-    keypad(stdscr, true);
-    
+    intrflush (stdscr, false);
+    keypad (stdscr, true);
+
     atexit (uninit);
-    
-    signal (SIGWINCH, [] (int dummy)
-    {(void) dummy; //ignore dummy value
-        endwin (); //these commands resync ncurses with the terminal
+
+    signal (SIGWINCH, [](int dummy) {
+        (void) dummy; //ignore dummy value
+        endwin ();    //these commands resync ncurses with the terminal
         refresh ();
 
         clear (); //draw the screen
         drawStack (*UpdateStack);
         drawPrompt (*UpdateBuffer);
     });
-    
-    signal (SIGINT, [] (int dummy)
-    {(void) dummy; //ignore dummy value
+
+    signal (SIGINT, [](int dummy) {
+        (void) dummy; //ignore dummy value
         uninit ();
         cerr << R"(Program interrupted by terminal interrupt sequence.
 Interpreter has been stopped without freeing resources
-This interrupt should have been expected and intentional.)" << endl;
+This interrupt should have been expected and intentional.)"
+             << endl;
         exit (EXIT_FAILURE);
     });
 }
@@ -65,7 +67,7 @@ void drawStack (const Stack& s)
         addstring (**it);
     }
 
-    if (long (s.size ()) >= getmaxy (stdscr) - 2)
+    if (long(s.size ()) >= getmaxy (stdscr) - 2)
     {
         move (0, 0);
         clrtoeol ();
@@ -129,7 +131,7 @@ void addstring (const string& s)
     unsigned char ch;
     for (const char c : s)
     {
-        ch = static_cast <unsigned char> (c);
+        ch = static_cast< unsigned char > (c);
         addch (ch);
     }
 }

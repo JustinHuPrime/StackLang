@@ -1,7 +1,7 @@
 #ifndef COMMANDELEMENT_H
 #define COMMANDELEMENT_H
 
-#include "language/stackElement.h"
+#include "language/stack/stackElement.h"
 #include <string>
 using std::string;
 

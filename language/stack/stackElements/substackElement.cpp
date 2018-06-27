@@ -1,9 +1,10 @@
-#include "language/stackElements/substackElement.h"
+#include "language/stack/stackElements/substackElement.h"
 using namespace StackLang;
 using namespace StackElements;
 using namespace SubstackConstants;
 
-SubstackElement::SubstackElement () : StackElement (StackElement::DataType::Substack)
+SubstackElement::SubstackElement () :
+    StackElement (StackElement::DataType::Substack)
 {}
 
 SubstackElement::~SubstackElement ()
@@ -31,7 +32,7 @@ SubstackElement::operator const string () const
     return buffer; //return value optimization
 }
 
-const list<StackElement*>& SubstackElement::getData ()
+const list< StackElement* >& SubstackElement::getData ()
 {
     return data;
 }

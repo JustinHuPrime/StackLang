@@ -2,7 +2,8 @@
 using namespace StackLang::Exceptions;
 using std::to_string;
 
-StackOverflowError::StackOverflowError (unsigned long limit) : LanguageError ("Stack has exceeded configured limit of " + to_string (limit) + ".")
+StackOverflowError::StackOverflowError (unsigned long limit) :
+    LanguageError ("Stack has exceeded configured limit of " + to_string (limit) + ".")
 {}
 
 const string StackOverflowError::getKind () const

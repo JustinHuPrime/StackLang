@@ -1,6 +1,7 @@
 #include "ui/lineEditor.h"
 
-LineEditor::LineEditor () : preCursor (), postCursor (), preHistory (), postHistory ()
+LineEditor::LineEditor () :
+    preCursor (), postCursor (), preHistory (), postHistory ()
 {}
 
 void LineEditor::right ()
@@ -66,7 +67,7 @@ void LineEditor::up ()
     }
 
     postHistory.push (string (*this));
-    
+
     for (auto c : preHistory.top ())
     {
         preCursor.push_back (c);

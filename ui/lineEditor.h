@@ -1,18 +1,17 @@
 #ifndef LINEEDITOR_H
 #define LINEEDITOR_H
 
-#include <string>
 #include <list>
-#include <stack>
 #include <ncurses.h>
-using std::stack;
+#include <stack>
+#include <string>
 using std::list;
+using std::stack;
 using std::string;
 
 class LineEditor
 {
-    public:
-
+  public:
     /**
      * Create blank lineEditor
      */
@@ -48,7 +47,7 @@ class LineEditor
      */
     int cursorPosition () const;
     bool isEmpty () const;
-    
+
     /**
      * Add a character or a string to the editor
      */
@@ -60,13 +59,12 @@ class LineEditor
      */
     operator const string () const;
 
-    private:
+  private:
+    list< char > preCursor;
+    list< char > postCursor;
 
-    list<char> preCursor;
-    list<char> postCursor;
-
-    stack<string> preHistory;
-    stack<string> postHistory;
+    stack< string > preHistory;
+    stack< string > postHistory;
 };
 
 #endif /* LINEEDITOR_H */

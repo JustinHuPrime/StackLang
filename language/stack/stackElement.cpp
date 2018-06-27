@@ -1,12 +1,14 @@
-#include "language/stackElement.h"
-#include "language/stackElements/numberElement.h"
-#include "language/stackElements/stringElement.h"
-#include "language/stackElements/booleanElement.h"
-#include "language/stackElements/commandElement.h"
-#include "language/stackElements/typeElement.h"
-#include "language/stackElements/substackElement.h"
+#include "language/stack/stackElement.h"
+
 #include "language/exceptions/parserError.h"
+#include "language/stack/stackElements/booleanElement.h"
+#include "language/stack/stackElements/commandElement.h"
+#include "language/stack/stackElements/numberElement.h"
+#include "language/stack/stackElements/stringElement.h"
+#include "language/stack/stackElements/substackElement.h"
+#include "language/stack/stackElements/typeElement.h"
 #include "utils/stringUtils.h"
+
 #include <algorithm>
 #include <string>
 using namespace StackLang;
@@ -20,7 +22,8 @@ StackElement::DataType StackElement::getType () const
     return dataType;
 }
 
-StackElement::StackElement (DataType type) : dataType (type)
+StackElement::StackElement (DataType type) :
+    dataType (type)
 {}
 
 StackElement::~StackElement ()
@@ -45,7 +48,7 @@ StackElement* StackElement::parse (const string& s)
     //{
     //    return new TypeElement ()
     //}
-    else if (isalpha(s[0]) && s.find_first_not_of (ALLOWED_COMMAND) == string::npos) //it's a valid command name - starts with an alpha, had all
+    else if (isalpha (s[0]) && s.find_first_not_of (ALLOWED_COMMAND) == string::npos) //it's a valid command name - starts with an alpha, had all
     {
         return new CommandElement (s);
     }
@@ -53,7 +56,7 @@ StackElement* StackElement::parse (const string& s)
     {
         if (isdigit (s[0])) //kinda looks like a number.
         {
-            if (!all_of (s.begin (), s.end (), [] (char c) {return isdigit (c) || c == '.';})) //doesn't have all numbers
+            if (!all_of (s.begin (), s.end (), [](char c) { return isdigit (c) || c == '.'; })) //doesn't have all numbers
             {
                 throw ParserError ("Input looks like a number, but has non-numeric characters.", s, s.find_first_not_of (ALLOWED_NUMBER));
             }

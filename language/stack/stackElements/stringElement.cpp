@@ -1,7 +1,8 @@
-#include "language/stackElements/stringElement.h"
+#include "language/stack/stackElements/stringElement.h"
 using namespace StackLang::StackElements;
 
-StringElement::StringElement (string s) : StackElement (StackElement::DataType::String), data (s)
+StringElement::StringElement (string s) :
+    StackElement (StackElement::DataType::String), data (s)
 {}
 
 StringElement::operator const string () const

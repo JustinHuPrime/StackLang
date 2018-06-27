@@ -1,23 +1,22 @@
 #ifndef TYPEERROR_H
 #define TYPEERROR_H
 
-#include "language/stackElement.h"
-#include "language/stackElements/typeElement.h"
 #include "language/exceptions/languageError.h"
+#include "language/stack/stackElement.h"
+#include "language/stack/stackElements/typeElement.h"
 
 namespace StackLang
 {
-    namespace Exceptions
-    {
-        class TypeError : public LanguageError
-        {
-            public:
-            
-            TypeError (StackElement::DataType, StackElement*);
+namespace Exceptions
+{
+class TypeError : public LanguageError
+{
+  public:
+    TypeError (StackElement::DataType, StackElement*);
 
-            const string getKind () const override;
-        };
-    }
-}
+    const string getKind () const override;
+};
+} // namespace Exceptions
+} // namespace StackLang
 
 #endif /* TYPEERROR_H */

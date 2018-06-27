@@ -1,7 +1,7 @@
 #ifndef SUBSTACKELEMENT_H
 #define SUBSTACKELEMENT_H
 
-#include "language/stackElement.h"
+#include "language/stack/stackElement.h"
 #include <list>
 #include <string>
 using std::list;

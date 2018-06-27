@@ -82,9 +82,9 @@ size_t findImproperEscape (const string& str)
 {
     for (unsigned i = 0; i < str.length (); i++)
     {
-        if ((str[i] == '\\' && i + 1 >= str.length ()) || //if the last char's a backslash
+        if ((str[i] == '\\' && i + 1 >= str.length ()) ||                                       //if the last char's a backslash
             (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' && str[i + 1] != '\\') || //make sure that we only escape \, n, and "
-            (str[i] == '"')) //it's an unescaped quote!
+            (str[i] == '"'))                                                                    //it's an unescaped quote!
         {
             return i;
         }

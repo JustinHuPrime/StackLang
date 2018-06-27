@@ -1,10 +1,10 @@
 #ifndef UI_H
 #define UI_H
 
-#include "language/stack.h"
-#include "language/stackIterator.h"
-#include "language/stackElement.h"
 #include "language/exceptions/languageError.h"
+#include "language/stack.h"
+#include "language/stack/stackElement.h"
+#include "language/stack/stackIterator.h"
 #include "ui/lineEditor.h"
 #include "utils/stringUtils.h"
 using StackLang::Stack;

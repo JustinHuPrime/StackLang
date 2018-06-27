@@ -1,10 +1,12 @@
-#include "language/stackElements/numberElement.h"
+#include "language/stack/stackElements/numberElement.h"
+
 #include <cmath>
 #include <string>
 using namespace StackLang::StackElements;
 using std::to_string;
 
-NumberElement::NumberElement (double d) : StackElement (StackElement::DataType::Number), data (d)
+NumberElement::NumberElement (double d) :
+    StackElement (StackElement::DataType::Number), data (d)
 {}
 
 NumberElement::operator const string () const
