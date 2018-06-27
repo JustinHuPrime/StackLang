@@ -30,6 +30,7 @@ The interpreter has several command line options:
 * `-I filepath ... --`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. The terminal `--` is optional, but if not included, any command line arguments after the `-I` will be interpreted as paths to files to include.
 * `-l N`: *NYI* limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
 * `-o file`: *NYI* file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D`.
+* `-Q element ... --`: adds the elements to the stack, one at a time, but does not enter interactive mode. When execution is complete, the interpreter exits. Should be combined with `-o`.
 
 ### Keyboard Controls
 
