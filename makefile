@@ -12,12 +12,12 @@ DEBUGOPTIONS := -Og -ggdb
 RELEASEOPTIONS := -Os -Wunused
 #libraries and included files
 LIBS := -lncurses
-INCLUDES := -I.
+INCLUDES := -Isrcs
 
 #list of folders to include code from. Code from base dir is automatically included
-MODULES := utils language ui
+SRCDIR := srcs
 #grabs source code files
-SRCS := $(foreach MODULE,$(MODULES),$(shell find -O3 $(MODULE)/ -type f -name '*.cpp')) $(wildcard *.cpp)
+SRCS := $(shell find -O3 $(SRCDIR)/ -type f -name '*.cpp')
 #name of directory to put .o files in
 OBJDIR := bin
 #path names of .o files - preserves folder structure of source files.
@@ -59,4 +59,4 @@ $(DEPS): $$(patsubst $(DEPDIR)/%.dep,%.cpp,$$@) | $$(dir $$@)
 diagnose:
 	echo "$(DEPS)"
 
-include $(DEPS)
+-include $(DEPS)
