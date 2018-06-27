@@ -29,7 +29,7 @@ DEPS := $(addprefix $(DEPDIR)/,$(SRCS:.cpp=.dep))
 #final executable name
 EXENAME := stacklang
 
-.PHONY: debug release clean format
+.PHONY: debug release clean
 .SECONDEXPANSION:
 
 debug: OPTIONS := $(OPTIONS) $(DEBUGOPTIONS)
@@ -38,21 +38,17 @@ debug: $(EXENAME)
 release: OPTIONS := $(OPTIONS) $(RELEASEOPTIONS)
 release: $(EXENAME) | clean
 
+clean:
+	@$(RM) $(OBJDIR) $(DEPDIR) $(EXENAME)
+
 $(EXENAME): $(OBJS)
 	@$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LIBS)
 
 $(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@) | $$(dir $$@)
-	@clang-format -i $<
 	@$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
-
-%.h:
-	@clang-format -i $@
 
 %/:
 	@$(MKDIR) $@
-
-clean:
-	@$(RM) $(OBJDIR) $(DEPDIR) $(EXENAME)
 
 $(DEPS): $$(patsubst $(DEPDIR)/%.dep,%.cpp,$$@) | $$(dir $$@)
 	@set -e; $(RM) $@; \
