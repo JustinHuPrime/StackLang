@@ -21,11 +21,11 @@ SRCS := $(shell find -O3 $(SRCDIR)/ -type f -name '*.cpp')
 #name of directory to put .o files in
 OBJDIR := bin
 #path names of .o files - preserves folder structure of source files.
-OBJS := $(addprefix $(OBJDIR)/,$(SRCS:.cpp=.o))
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 #location of dependencies
 DEPDIR := dependencies
 #dependency list
-DEPS := $(addprefix $(DEPDIR)/,$(SRCS:.cpp=.dep))
+DEPS := $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.dep,$(SRCS))
 #final executable name
 EXENAME := stacklang
 
@@ -44,19 +44,16 @@ clean:
 $(EXENAME): $(OBJS)
 	@$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LIBS)
 
-$(OBJS): $$(patsubst $(OBJDIR)/%.o,%.cpp,$$@) | $$(dir $$@)
+$(OBJS): $$(patsubst $(OBJDIR)/%.o,$(SRCDIR)/%.cpp,$$@) | $$(dir $$@)
 	@$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
 
 %/:
 	@$(MKDIR) $@
 
-$(DEPS): $$(patsubst $(DEPDIR)/%.dep,%.cpp,$$@) | $$(dir $$@)
+$(DEPS): $$(patsubst $(DEPDIR)/%.dep,$(SRCDIR)/%.cpp,$$@) | $$(dir $$@)
 	@set -e; $(RM) $@; \
 	 $(CC) $(OPTIONS) $(INCLUDES) -MM -MT $(patsubst $(DEPDIR)/%.dep,$(OBJDIR)/%.o,$@) $< > $@.$$$$; \
 	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	 rm -f $@.$$$$
-
-diagnose:
-	echo "$(DEPS)"
 
 -include $(DEPS)
