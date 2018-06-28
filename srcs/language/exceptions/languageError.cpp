@@ -1,5 +1,9 @@
 #include "language/exceptions/languageError.h"
-using namespace StackLang::Exceptions;
+
+namespace StackLang
+{
+namespace Exceptions
+{
 
 LanguageError::LanguageError (const string& msg) :
     message (msg), errorHasContext (false)
@@ -28,3 +32,5 @@ bool LanguageError::hasContext () const
 {
     return errorHasContext;
 }
+} // namespace Exceptions
+} // namespace StackLang

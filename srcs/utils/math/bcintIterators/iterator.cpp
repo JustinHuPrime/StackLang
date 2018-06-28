@@ -1,5 +1,9 @@
 #include "utils/math/bcintIterators/iterator.h"
 
+namespace Util
+{
+namespace Math
+{
 BCInt::iterator::iterator (bool half, list< unsigned char >::iterator digit) :
     lowerHalf (half), currByte (digit)
 {}
@@ -98,3 +102,5 @@ void BCInt::iterator::set (unsigned char nybble)
         byte |= nybble << 4;
     }
 }
+} // namespace Math
+} // namespace Util

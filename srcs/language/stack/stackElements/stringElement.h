@@ -3,27 +3,27 @@
 
 #include "language/stack/stackElement.h"
 #include "utils/stringUtils.h"
+
 #include <string>
-using std::string;
 
 namespace StackLang
 {
-    namespace StackElements
-    {
-        class StringElement : public StackElement
-        {
-            public:
+namespace StackElements
+{
+using std::string;
 
-            StringElement (string);
+class StringElement : public StackElement
+{
+  public:
+    StringElement (string);
 
-            operator const string () const override;
-            const string& getData ();
+    operator const string () const override;
+    const string& getData ();
 
-            private:
-
-            string data;
-        };
-    }
-}
+  private:
+    string data;
+};
+} // namespace StackElements
+} // namespace StackLang
 
 #endif /* STRINGELEMENT_H */

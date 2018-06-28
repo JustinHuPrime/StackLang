@@ -1,5 +1,9 @@
 #include "language/stack/stackElements/commandElement.h"
-using namespace StackLang::StackElements;
+
+namespace StackLang
+{
+namespace StackElements
+{
 
 CommandElement::CommandElement (string s) :
     StackElement (StackElement::DataType::Command), data (s)
@@ -14,3 +18,5 @@ const string& CommandElement::getData ()
 {
     return data;
 }
+} // namespace StackElements
+} // namespace StackLang

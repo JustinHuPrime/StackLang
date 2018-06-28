@@ -7,9 +7,16 @@
 #include "language/stack/stackIterator.h"
 #include "ui/lineEditor.h"
 #include "utils/stringUtils.h"
+
+#include <string>
+
+namespace TermUI
+{
 using StackLang::Stack;
 using StackLang::StackElement;
 using StackLang::Exceptions::LanguageError;
+using std::string;
+using Util::LineEditor;
 
 /**
  * initializes/uninitializes curses (and general stuff) with preset options
@@ -30,16 +37,17 @@ void drawError (const LanguageError&);
 void addstring (const string& s);
 
 /**
- * constants used by window resize event handler to call drawStack
- */
-extern const Stack* UpdateStack;
-extern const LineEditor* UpdateBuffer;
-
-/**
  * cursor constants
  */
 const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
+} // namespace TermUI
+
+/**
+ * constants used by window resize event handler to call drawStack
+ */
+extern const StackLang::Stack* UpdateStack;
+extern const Util::LineEditor* UpdateBuffer;
 
 #endif /* UI_H */

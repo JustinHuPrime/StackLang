@@ -1,5 +1,9 @@
 #include "stringUtils.h"
 
+namespace Util
+{
+using std::string;
+
 bool starts_with (const string& s, const string& s1)
 {
     return 0 == s.find (s1);
@@ -117,3 +121,4 @@ string removeChar (string s, char c)
 
     return s;
 }
+} // namespace Util

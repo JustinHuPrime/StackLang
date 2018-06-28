@@ -1,7 +1,10 @@
 #include "language/stack/stackElements/typeElement.h"
-using namespace StackLang;
-using namespace StackElements;
-using namespace TypeNameConstants;
+
+namespace StackLang
+{
+namespace StackElements
+{
+using StackLang::StackElement;
 
 TypeElement::TypeElement (DataType type) :
     StackElement (StackElement::DataType::Type), data (type)
@@ -21,3 +24,5 @@ string TypeElement::to_string (StackElement::DataType type)
 {
     return TYPES[int(type)];
 }
+} // namespace StackElements
+} // namespace StackLang

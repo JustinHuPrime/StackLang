@@ -1,5 +1,9 @@
 #include "language/exceptions/stackOverflowError.h"
-using namespace StackLang::Exceptions;
+
+namespace StackLang
+{
+namespace Exceptions
+{
 using std::to_string;
 
 StackOverflowError::StackOverflowError (unsigned long limit) :
@@ -10,3 +14,5 @@ const string StackOverflowError::getKind () const
 {
     return "Stack overflowed:";
 }
+} // namespace Exceptions
+} // namespace StackLang

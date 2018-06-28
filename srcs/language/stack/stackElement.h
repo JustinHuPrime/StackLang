@@ -2,10 +2,11 @@
 #define STACKELEMENT_H
 
 #include <string>
-using std::string;
 
 namespace StackLang
 {
+using std::string;
+
 /**
  * Represents a element in the stack. Subclassed to make a specific element.
  */

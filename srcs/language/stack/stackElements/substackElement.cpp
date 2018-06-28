@@ -1,7 +1,11 @@
 #include "language/stack/stackElements/substackElement.h"
-using namespace StackLang;
-using namespace StackElements;
-using namespace SubstackConstants;
+
+namespace StackLang
+{
+namespace StackElements
+{
+using StackLang::StackElement;
+using std::to_string;
 
 SubstackElement::SubstackElement () :
     StackElement (StackElement::DataType::Substack)
@@ -36,3 +40,5 @@ const list< StackElement* >& SubstackElement::getData ()
 {
     return data;
 }
+} // namespace StackElements
+} // namespace StackLang

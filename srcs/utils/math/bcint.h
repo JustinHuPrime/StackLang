@@ -4,6 +4,11 @@
 #include <iostream>
 #include <list>
 #include <string>
+
+namespace Util
+{
+namespace Math
+{
 using std::istream;
 using std::list;
 using std::ostream;
@@ -95,5 +100,7 @@ class BCInt
 
     int spaceship (const BCInt&) const;
 };
+} // namespace Math
+} // namespace Util
 
 #endif /* BCINT_H */

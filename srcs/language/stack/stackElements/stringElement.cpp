@@ -1,8 +1,16 @@
 #include "language/stack/stackElements/stringElement.h"
-using namespace StackLang::StackElements;
+
+#include "utils/stringUtils.h"
+
+namespace StackLang
+{
+namespace StackElements
+{
+using Util::escape;
 
 StringElement::StringElement (string s) :
-    StackElement (StackElement::DataType::String), data (s)
+    StackElement (StackElement::DataType::String),
+    data (s)
 {}
 
 StringElement::operator const string () const
@@ -14,3 +22,5 @@ const string& StringElement::getData ()
 {
     return data;
 }
+} // namespace StackElements
+} // namespace StackLang

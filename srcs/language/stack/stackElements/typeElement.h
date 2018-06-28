@@ -2,34 +2,30 @@
 #define TYPEELEMENT_H
 
 #include "language/stack/stackElement.h"
+
 #include <string>
 using std::string;
 
 namespace StackLang
 {
-    namespace StackElements
-    {
-        class TypeElement : public StackElement
-        {
-            public:
+namespace StackElements
+{
+class TypeElement : public StackElement
+{
+  public:
+    TypeElement (DataType);
 
-            TypeElement (DataType);
+    operator const string () const override;
+    DataType getData ();
 
-            operator const string () const override;
-            DataType getData ();
+    static string to_string (DataType);
 
-            static string to_string (DataType);
+  private:
+    DataType data;
+};
 
-            private:
-
-            DataType data;
-        };
-
-        namespace TypeNameConstants
-        {
-            const string TYPES [] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
-        }
-    }
-}
+const string TYPES[] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
+} // namespace StackElements
+} // namespace StackLang
 
 #endif /* TYPEELEMENT_H */

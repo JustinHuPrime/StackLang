@@ -1,11 +1,10 @@
 #ifndef STRINGUTILS_H
 #define STRINGUTILS_H
 
-#include <stdexcept>
 #include <string>
-#include <utility>
-using std::invalid_argument;
-using std::pair;
+
+namespace Util
+{
 using std::string;
 
 /**
@@ -38,5 +37,6 @@ string spaces (unsigned);
  * removes all occurences of character c from string s
  */
 string removeChar (string, char);
+} // namespace Util
 
 #endif /* STRINGUTILS_H */

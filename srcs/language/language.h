@@ -6,20 +6,18 @@
 #include "language/stack/stackElements/commandElement.h"
 
 #include <map>
-using std::map;
 
 namespace StackLang
 {
+using std::map;
+
 /**
  * Executes the top element of the stack
  */
 void execute (Stack&);
 
-namespace Primitives
-{
 typedef void (*stackFunction) (Stack&);
-const map< string, stackFunction > PRIMITIVES;
-} // namespace Primitives
+const map< string, stackFunction > PRIMITIVES = {};
 } // namespace StackLang
 
 #endif

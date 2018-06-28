@@ -5,6 +5,9 @@
 #include <ncurses.h>
 #include <stack>
 #include <string>
+
+namespace Util
+{
 using std::list;
 using std::stack;
 using std::string;
@@ -66,5 +69,6 @@ class LineEditor
     stack< string > preHistory;
     stack< string > postHistory;
 };
+} // namespace Util
 
 #endif /* LINEEDITOR_H */

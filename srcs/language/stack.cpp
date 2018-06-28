@@ -2,8 +2,11 @@
 
 #include "language/exceptions/stackOverflowError.h"
 #include "language/stack/stackIterator.h"
-using namespace StackLang;
-using namespace Exceptions;
+
+namespace StackLang
+{
+using StackLang::StackElement;
+using StackLang::Exceptions::StackOverflowError;
 
 Stack::Stack () :
     head (nullptr), dataSize (0), limit (__LONG_MAX__)
@@ -99,3 +102,4 @@ void Stack::clear ()
 
     dataSize = 0;
 }
+} // namespace StackLang

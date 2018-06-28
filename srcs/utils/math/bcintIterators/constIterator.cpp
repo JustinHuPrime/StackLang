@@ -1,5 +1,9 @@
 #include "utils/math/bcintIterators/constIterator.h"
 
+namespace Util
+{
+namespace Math
+{
 BCInt::const_iterator::const_iterator (bool half, list< unsigned char >::const_iterator digit) :
     lowerHalf (half), currByte (digit)
 {}
@@ -77,3 +81,5 @@ unsigned char BCInt::const_iterator::get () const
 {
     return **this;
 }
+} // namespace Math
+} // namespace Util

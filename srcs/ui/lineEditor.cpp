@@ -1,5 +1,7 @@
 #include "ui/lineEditor.h"
 
+namespace Util
+{
 LineEditor::LineEditor () :
     preCursor (), postCursor (), preHistory (), postHistory ()
 {}
@@ -68,6 +70,9 @@ void LineEditor::up ()
 
     postHistory.push (string (*this));
 
+    preCursor.clear ();
+    postCursor.clear ();
+
     for (auto c : preHistory.top ())
     {
         preCursor.push_back (c);
@@ -86,6 +91,9 @@ void LineEditor::down ()
 
     preHistory.push (string (*this));
 
+    preCursor.clear ();
+    postCursor.clear ();
+
     for (auto c : postHistory.top ())
     {
         preCursor.push_back (c);
@@ -94,6 +102,12 @@ void LineEditor::down ()
 
 void LineEditor::enter ()
 {
+    while (!postHistory.empty ())
+    {
+        preHistory.push (postHistory.top ());
+        postHistory.pop ();
+    }
+
     preHistory.push (string (*this));
     preCursor.clear ();
     postCursor.clear ();
@@ -158,3 +172,4 @@ LineEditor::operator const string () const
 
     return temp;
 }
+} // namespace Util

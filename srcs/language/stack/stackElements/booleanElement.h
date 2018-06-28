@@ -2,33 +2,29 @@
 #define BOOLEANELEMENT_H
 
 #include "language/stack/stackElement.h"
+
 #include <string>
-using std::string;
 
 namespace StackLang
 {
-    namespace StackElements
-    {
-        class BooleanElement : public StackElement
-        {
-            public:
+namespace StackElements
+{
+using std::string;
 
-            BooleanElement (bool);
+class BooleanElement : public StackElement
+{
+  public:
+    BooleanElement (bool);
 
-            operator const string () const override;
-            bool getData ();
+    operator const string () const override;
+    bool getData ();
 
-            private:
-
-            bool data;
-        };
-
-        namespace BooleanConstants
-        {
-            const string TSTR = "true";
-            const string FSTR = "false";
-        }
-    }
-}
+  private:
+    bool data;
+};
+const string TSTR = "true";
+const string FSTR = "false";
+} // namespace StackElements
+} // namespace StackLang
 
 #endif /* BOOLEANELEMENT_H */

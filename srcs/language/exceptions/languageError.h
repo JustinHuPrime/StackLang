@@ -3,13 +3,13 @@
 
 #include <exception>
 #include <string>
-using std::exception;
-using std::string;
 
 namespace StackLang
 {
 namespace Exceptions
 {
+using std::exception;
+using std::string;
 /**
  * Describes a StackLang runtime error
  */

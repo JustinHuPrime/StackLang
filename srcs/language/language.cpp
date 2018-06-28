@@ -1,18 +1,8 @@
 #include "language/language.h"
-using namespace StackLang;
-using namespace StackElements;
-using namespace Primitives;
 
 namespace StackLang
 {
-const map< string, stackFunction > PRIMITIVES = {
-        {"plus", [](Stack& s) {
-             //do things
-         }},
-        {"divide", [](Stack& s) {
-             //do other things
-         }} //and so on.
-};
+using StackLang::StackElements::CommandElement;
 
 void execute (Stack& s)
 {

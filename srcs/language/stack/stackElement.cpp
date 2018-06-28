@@ -11,13 +11,28 @@
 
 #include <algorithm>
 #include <string>
-using namespace StackLang;
-using namespace StackElements;
-using namespace Exceptions;
-using namespace BooleanConstants;
-using namespace CharSet;
 
-StackElement::DataType StackElement::getType () const
+namespace StackLang
+{
+using Exceptions::ParserError;
+using StackElements::ALLOWED_COMMAND;
+using StackElements::ALLOWED_NUMBER;
+using StackElements::BooleanElement;
+using StackElements::CommandElement;
+using StackElements::FSTR;
+using StackElements::NumberElement;
+using StackElements::StringElement;
+using StackElements::SubstackElement;
+using StackElements::TSTR;
+using std::stod;
+using Util::ends_with;
+using Util::findImproperEscape;
+using Util::removeChar;
+using Util::starts_with;
+using Util::unescape;
+
+StackElement::DataType
+        StackElement::getType () const
 {
     return dataType;
 }
@@ -36,7 +51,7 @@ StackElement* StackElement::parse (const string& s)
     {
         return new NumberElement (stod (removeChar (s, '\'')));
     }
-    else if (starts_with (s, "\"") && ends_with (s, "\"") && findImproperEscape (s) == string::npos) //is a string
+    else if (starts_with (s, "\"") && ends_with (s, "\"") && findImproperEscape (s.substr (1, s.length () - 2)) == string::npos) //is a string
     {
         return new StringElement (unescape (s.substr (1, s.length () - 2)));
     }
@@ -89,3 +104,4 @@ StackElement* StackElement::parse (const string& s)
 
     return nullptr; //shouldn't get here - keep the compiler happy
 }
+} // namespace StackLang

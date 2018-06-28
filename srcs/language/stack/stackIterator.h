@@ -2,10 +2,11 @@
 #define STACKITERATOR_H
 
 #include "language/stack.h"
-using StackLang::Stack;
 
 namespace StackLang
 {
+using StackLang::Stack;
+
 class Stack::StackIterator
 {
   public:

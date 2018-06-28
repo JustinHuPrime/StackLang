@@ -5,6 +5,11 @@
 
 #include <cmath>
 #include <stdexcept>
+
+namespace Util
+{
+namespace Math
+{
 using std::invalid_argument;
 using std::log10;
 
@@ -158,16 +163,47 @@ BCInt BCInt::operator-- (int)
 
 const BCInt BCInt::operator+ (const BCInt& other) const
 {
-    BCInt retval = *this;
-    retval += other;
-    return retval;
+    BCInt retval;
+    // implement
+
+    /*
+
+    if (other.negative == negative)
+    {
+        unsigned char carry = 0, sum;
+
+        auto myIter = --end ();
+        auto otherIter = --other.cend ();
+
+        while (myIter != begin () && otherIter != other.cbegin ()) //add everything but the last pair.
+        {
+            sum = *myIter + *otherIter + carry;
+            carry = sum / 10;
+            myIter.set (sum % 10);
+            myIter--;
+            otherIter--;
+        }
+
+        sum = *myIter + *otherIter + carry;
+        carry = sum / 10;
+        myIter.set (sum % 10);
+
+        if (otherIter != other.cbegin ())
+        {
+            // they are longer than us. add to zero and push digits.
+        }
+        else
+        {
+            // add the carry on to me.
+        }
+    }
+    */
 }
 
 const BCInt BCInt::operator- (const BCInt& other) const
 {
-    BCInt retval = *this;
-    retval -= other;
-    return retval;
+    BCInt retval;
+    // implement
 }
 
 const BCInt BCInt::operator* (const BCInt& other) const
@@ -191,14 +227,14 @@ const BCInt BCInt::operator% (const BCInt& other) const
 
 BCInt& BCInt::operator+= (const BCInt& other)
 {
-    unsigned char carry = 0, myDigit, otherDigit;
-
-    //auto myIter =
+    *this = *this + other;
+    return *this;
 }
 
 BCInt& BCInt::operator-= (const BCInt& other)
 {
-    // implement
+    *this = *this - other;
+    return *this;
 }
 
 BCInt& BCInt::operator*= (const BCInt& other)
@@ -375,3 +411,5 @@ BCInt::const_iterator BCInt::cend () const
         return const_iterator (false, --digits.cend ());
     }
 }
+} // namespace Math
+} // namespace Util

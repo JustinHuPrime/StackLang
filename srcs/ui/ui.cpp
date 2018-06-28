@@ -1,10 +1,16 @@
 #include "ui/ui.h"
 
+#include "utils/stringUtils.h"
+
 #include <csignal>
 #include <iostream>
 #include <ncurses.h>
+
+namespace TermUI
+{
 using std::cerr;
 using std::endl;
+using Util::spaces;
 
 void init ()
 {
@@ -135,3 +141,4 @@ void addstring (const string& s)
         addch (ch);
     }
 }
+} // namespace TermUI

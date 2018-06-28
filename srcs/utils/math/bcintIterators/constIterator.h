@@ -4,6 +4,11 @@
 #include "utils/math/bcint.h"
 
 #include <list>
+
+namespace Util
+{
+namespace Math
+{
 using std::list;
 
 class BCInt::const_iterator
@@ -27,5 +32,7 @@ class BCInt::const_iterator
     bool lowerHalf;
     list< unsigned char >::const_iterator currByte;
 };
+} // namespace Math
+} // namespace Util
 
 #endif /* BCINTCITERATOR_H */

@@ -2,7 +2,11 @@
 
 #include <cmath>
 #include <string>
-using namespace StackLang::StackElements;
+
+namespace StackLang
+{
+namespace StackElements
+{
 using std::to_string;
 
 NumberElement::NumberElement (double d) :
@@ -18,3 +22,5 @@ double NumberElement::getData ()
 {
     return data;
 }
+} // namespace StackElements
+} // namespace StackLang

@@ -12,32 +12,30 @@
 #include <limits>
 #include <map>
 #include <ncurses.h>
+#include <stdexcept>
 #include <string>
-using namespace StackLang;
-using Exceptions::LanguageError;
-using Exceptions::StackOverflowError;
-using StackElements::CommandElement;
-using StackElements::StringElement;
-using std::cerr;
-using std::endl;
-using std::map;
-using std::numeric_limits;
-using std::stoi;
-using std::stoul;
-using std::string;
+
+using StackLang::Stack;
+using Util::LineEditor;
 
 const Stack* UpdateStack; // used for resize handlers - set once, then ignored
 const LineEditor* UpdateBuffer;
-
-const string INFO = R"(StackLang interpreter version ALPHA 3
-by Justin Hu, 2018
-Use ^D to exit from prompt, and ^C to force quit
-Press any key to continue...)"; // introductory stuff
 
 namespace KeyInfo
 {
 const char KEY_CTRL_D = 4; // self defined constants
 }
+
+namespace TermUI
+{
+using std::cerr;
+using std::endl;
+using Util::spaces;
+
+const string INFO = R"(StackLang interpreter version ALPHA 3
+by Justin Hu, 2018
+Use ^D to exit from prompt, and ^C to force quit
+Press any key to continue...)"; // introductory stuff
 
 void displayInfo () // displays info splash, they pauses
 {
@@ -57,9 +55,31 @@ void printError (const LanguageError& e)
         cerr << spaces (e.getLocation ()) << "^" << endl;
     }
 }
+} // namespace TermUI
 
 int main (int argc, char* argv[])
 {
+    using StackLang::StackElement;
+    using StackLang::Exceptions::LanguageError;
+    using StackLang::Exceptions::StackOverflowError;
+    using StackLang::StackElements::CommandElement;
+    using StackLang::StackElements::StringElement;
+    using std::cerr;
+    using std::endl;
+    using std::invalid_argument;
+    using std::map;
+    using std::numeric_limits;
+    using std::stoi;
+    using std::stoul;
+    using std::string;
+    using TermUI::addstring;
+    using TermUI::displayInfo;
+    using TermUI::drawError;
+    using TermUI::drawPrompt;
+    using TermUI::drawStack;
+    using TermUI::init;
+    using TermUI::printError;
+
     Stack s;
     // map<string, ???> defines;
 

@@ -1,6 +1,9 @@
 #include "language/stack/stackElements/booleanElement.h"
-using namespace StackLang::StackElements;
-using namespace BooleanConstants;
+
+namespace StackLang
+{
+namespace StackElements
+{
 
 BooleanElement::BooleanElement (bool b) :
     StackElement (StackElement::DataType::Boolean), data (b)
@@ -15,3 +18,5 @@ bool BooleanElement::getData ()
 {
     return data;
 }
+} // namespace StackElements
+} // namespace StackLang

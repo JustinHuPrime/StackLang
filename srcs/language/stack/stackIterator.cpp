@@ -1,5 +1,9 @@
 #include "language/stack/stackIterator.h"
-using namespace StackLang;
+
+namespace StackLang
+{
+using StackLang::Stack;
+using StackLang::StackElement;
 
 Stack::StackIterator::StackIterator (Stack::Node* node) :
     curr (node)
@@ -53,3 +57,4 @@ Stack::StackIterator Stack::StackIterator::operator++ (int)
 
     return temp;
 }
+} // namespace StackLang
