@@ -3,6 +3,8 @@
 #include "language/exceptions/stackOverflowError.h"
 #include "language/stack/stackIterator.h"
 
+#include <memory>
+
 namespace StackLang
 {
 using StackLang::StackElement;
@@ -29,16 +31,17 @@ void Stack::push (StackElement* ptr)
     }
 
     Node* temp = new Node;
-    temp->elm = ptr;
+    temp->elm = unique_ptr< StackElement > (ptr);
     temp->next = head;
     head = temp;
     dataSize++;
 }
 
-void Stack::pop ()
+StackElement* Stack::pop ()
 {
     if (head != nullptr)
     {
+        StackElement* retval = head->elm.release ();
         Node* temp = head->next;
         delete head;
         head = temp;
@@ -49,7 +52,10 @@ void Stack::pop ()
 StackElement*
         Stack::top ()
 {
-    return head->elm;
+    if (head != nullptr)
+    {
+        return head->elm.get ();
+    }
 }
 
 unsigned long
@@ -96,7 +102,6 @@ void Stack::clear ()
 
     while (head != nullptr)
     {
-        delete head->elm;
         pop ();
     }
 

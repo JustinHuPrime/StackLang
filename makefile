@@ -44,7 +44,7 @@ clean:
 $(EXENAME): $(OBJS)
 	@$(CC) -o $(EXENAME) $(OPTIONS) $(OBJS) $(LIBS)
 
-$(OBJS): $$(patsubst $(OBJDIR)/%.o,$(SRCDIR)/%.cpp,$$@) | $$(dir $$@)
+$(OBJS): $$(patsubst $(OBJDIR)/%.o,$(SRCDIR)/%.cpp,$$@) $$(patsubst $(OBJDIR)/%.o,$(DEPDIR)/%.dep,$$@) | $$(dir $$@)
 	@$(CC) $(OPTIONS) $(INCLUDES) -c $< -o $@
 
 %/:

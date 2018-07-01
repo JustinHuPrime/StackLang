@@ -1,13 +1,13 @@
-#ifndef PARSERERROR_H
-#define PARSERERROR_H
+#ifndef STACKOVERFLOWERROR_H
+#define STACKOVERFLOWERROR_H
 
-#include "language/exceptions/languageError.h"
+#include "language/exceptions/languageException.h"
 
 namespace StackLang
 {
 namespace Exceptions
 {
-class StackOverflowError : public LanguageError
+class StackOverflowError : public LanguageException
 {
   public:
     StackOverflowError (unsigned long);
@@ -17,4 +17,4 @@ class StackOverflowError : public LanguageError
 } // namespace Exceptions
 } // namespace StackLang
 
-#endif /* PARSERERROR_H */
+#endif /* STACKOVERFLOWERROR_H */

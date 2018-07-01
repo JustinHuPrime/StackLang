@@ -1,4 +1,4 @@
-#include "language/exceptions/languageError.h"
+#include "language/exceptions/languageException.h"
 #include "language/exceptions/stackOverflowError.h"
 #include "language/language.h"
 #include "language/stack.h"
@@ -45,7 +45,7 @@ void displayInfo () // displays info splash, they pauses
     getch ();
 }
 
-void printError (const LanguageError& e)
+void printError (const LanguageException& e)
 {
     cerr << e.getKind () << endl;
     cerr << e.getMessage () << endl;
@@ -60,7 +60,7 @@ void printError (const LanguageError& e)
 int main (int argc, char* argv[])
 {
     using StackLang::StackElement;
-    using StackLang::Exceptions::LanguageError;
+    using StackLang::Exceptions::LanguageException;
     using StackLang::Exceptions::StackOverflowError;
     using StackLang::StackElements::CommandElement;
     using StackLang::StackElements::StringElement;
@@ -108,7 +108,7 @@ int main (int argc, char* argv[])
             {
                 execute (s);
             }
-            catch (const LanguageError& e)
+            catch (const LanguageException& e)
             {
                 printError (e);
                 cerr << "Aborting." << endl;
@@ -206,7 +206,7 @@ int main (int argc, char* argv[])
                     drawStack (s);
                     drawPrompt (buffer);
                 }
-                catch (const LanguageError& e)
+                catch (const LanguageException& e)
                 {
                     drawError (e);
                     errorFlag = true;

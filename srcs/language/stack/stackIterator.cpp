@@ -31,12 +31,12 @@ bool Stack::StackIterator::operator!= (const StackIterator& other) const
 
 const StackElement* Stack::StackIterator::operator* () const
 {
-    return curr->elm;
+    return curr->elm.get ();
 }
 
 const StackElement& Stack::StackIterator::operator-> () const
 {
-    return *(curr->elm);
+    return *(curr->elm.get ());
 }
 
 Stack::StackIterator& Stack::StackIterator::operator++ ()

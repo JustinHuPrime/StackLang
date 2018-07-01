@@ -3,8 +3,12 @@
 
 #include "language/stack/stackElement.h"
 
+#include <memory>
+
 namespace StackLang
 {
+using std::unique_ptr;
+
 class Stack
 {
     struct Node;
@@ -24,8 +28,8 @@ class Stack
      * Manipulates stack elements.
      * Pop does not delete the element, but the stack destructor does assume that when the stack is destroyed, it's managed elements should be deallocated.
      */
-    void push (StackElement* ptr);
-    void pop ();
+    void push (StackElement*);
+    StackElement* pop ();
     StackElement* top ();
 
     /**
@@ -56,7 +60,7 @@ class Stack
 
     struct Node
     {
-        StackElement* elm;
+        unique_ptr< StackElement > elm;
         Node* next;
     };
 

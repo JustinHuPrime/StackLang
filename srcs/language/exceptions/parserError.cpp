@@ -6,7 +6,7 @@ namespace Exceptions
 {
 
 ParserError::ParserError (const string& msg, const string& ctx, unsigned loc) :
-    LanguageError (msg, ctx, loc)
+    LanguageException (msg, ctx, loc)
 {}
 
 const string ParserError::getKind () const

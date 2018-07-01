@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
-#include "language/exceptions/languageError.h"
+#include "language/exceptions/languageException.h"
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
 #include "language/stack/stackIterator.h"
@@ -14,7 +14,7 @@ namespace TermUI
 {
 using StackLang::Stack;
 using StackLang::StackElement;
-using StackLang::Exceptions::LanguageError;
+using StackLang::Exceptions::LanguageException;
 using std::string;
 using Util::LineEditor;
 
@@ -29,7 +29,7 @@ void uninit ();
  */
 void drawStack (const Stack&);
 void drawPrompt (const LineEditor&);
-void drawError (const LanguageError&);
+void drawError (const LanguageException&);
 
 /**
  * adds an std::string at the current cursor position

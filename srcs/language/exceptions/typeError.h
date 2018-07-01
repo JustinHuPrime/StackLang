@@ -1,7 +1,7 @@
 #ifndef TYPEERROR_H
 #define TYPEERROR_H
 
-#include "language/exceptions/languageError.h"
+#include "language/exceptions/languageException.h"
 #include "language/stack/stackElement.h"
 #include "language/stack/stackElements/typeElement.h"
 
@@ -9,7 +9,7 @@ namespace StackLang
 {
 namespace Exceptions
 {
-class TypeError : public LanguageError
+class TypeError : public LanguageException
 {
   public:
     TypeError (StackElement::DataType, StackElement*);
