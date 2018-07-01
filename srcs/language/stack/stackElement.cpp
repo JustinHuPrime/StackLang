@@ -49,7 +49,7 @@ StackElement* StackElement::parse (const string& s)
 {
     if (s[0] != '\'' && s.find_first_not_of (ALLOWED_NUMBER) == string::npos && count (s.begin (), s.end (), '.') <= 1) //is a number
     {
-        return new NumberElement (stod (removeChar (s, '\'')));
+        return new NumberElement (removeChar (s, '\''));
     }
     else if (starts_with (s, "\"") && ends_with (s, "\"") && findImproperEscape (s.substr (1, s.length () - 2)) == string::npos) //is a string
     {

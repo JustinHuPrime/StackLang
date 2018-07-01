@@ -15,6 +15,7 @@ StackLang is built using the C++17 standard, and compiled using g++. However, th
 StackLang requires:
 
 * ncurses
+* gmpxx
 * GNU-make
 * g++ OR clang++ (clang++ does not support some configured warning options in the makefile)
 

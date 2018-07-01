@@ -3,6 +3,8 @@
 
 #include "language/stack/stackElement.h"
 
+#include <gmp.h>
+#include <gmpxx.h>
 #include <string>
 
 namespace StackLang
@@ -14,13 +16,13 @@ using std::string;
 class NumberElement : public StackElement
 {
   public:
-    NumberElement (double);
+    NumberElement (string);
 
     operator const string () const override;
-    double getData ();
+    mpq_class getData ();
 
   private:
-    double data;
+    mpq_class data;
 };
 const string ALLOWED_NUMBER = "1234567890.'";
 } // namespace StackElements

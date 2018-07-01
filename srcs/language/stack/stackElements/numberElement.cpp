@@ -9,16 +9,16 @@ namespace StackElements
 {
 using std::to_string;
 
-NumberElement::NumberElement (double d) :
-    StackElement (StackElement::DataType::Number), data (d)
+NumberElement::NumberElement (string d) :
+    StackElement (StackElement::DataType::Number), data (d, 10)
 {}
 
 NumberElement::operator const string () const
 {
-    return to_string (data);
+    return data.get_str ();
 }
 
-double NumberElement::getData ()
+mpq_class NumberElement::getData ()
 {
     return data;
 }

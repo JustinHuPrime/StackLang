@@ -47,9 +47,9 @@ class StackElement
 
     /**
      * Gets the data from the element (returns different type depending on dataType)
-     * should exist in all subclasses.
+     * should exist in all subclasses, where T is the closest dataTYpe to the element's type
      */
-    //dataType getData ();
+    //T getData () const;
 
     /**
      * Constructs an element of some type (takes different param type depending on dataType)
