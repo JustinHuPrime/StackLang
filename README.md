@@ -57,11 +57,11 @@ Stack elements can be:
 
 * Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
 
-* Numbers: enter a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using a binary coded decimal, and as such, are inefficient but arbitrarily precise.  Displayed as the raw number, without a thousands separator.
+* Numbers: enter a decimal (with a `.`) or a fraction (with a `/`), but not a fraction of a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using GMP's rationals, and as such, are inefficient but arbitrarily precise. Displayed a a fraction, without a thousands separator.
 
 * Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
 
-* Substacks: enter `<<`, followed by a series of comma separated stack elements (whitespace after a comma is stripped when parsing), followed by `>>`. Do not include a comma before the ending delimiter. Displayed as `<<element, element, element>>`. When read from a file, the filereader will automatically build substacks: any newlines between a `<<` and the matching `>>` are converted into a comma.
+* Substacks: *NYI* enter `<<`, followed by a series of comma separated stack elements (whitespace after a comma is stripped when parsing), followed by `>>`. Do not include a comma before the ending delimiter. Displayed as `<<element, element, element>>`. When read from a file, the filereader will automatically build substacks: any newlines between a `<<` and the matching `>>` are converted into a comma.
 
 * Types: enter a valid type name. Valid type names are: `Boolean`, `Command`, `Number`, `String`, `Substack`, `Type`, and `Any`.
 
