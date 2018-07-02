@@ -19,7 +19,6 @@ class Stack::StackIterator
     bool operator!= (const StackIterator&) const;
 
     const StackElement* operator* () const;
-    const StackElement& operator-> () const;
 
     StackIterator& operator++ ();
     StackIterator operator++ (int);

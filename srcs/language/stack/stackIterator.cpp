@@ -26,17 +26,12 @@ bool Stack::StackIterator::operator== (const StackIterator& other) const
 
 bool Stack::StackIterator::operator!= (const StackIterator& other) const
 {
-    return curr != other.curr;
+    return !(*this == other);
 }
 
 const StackElement* Stack::StackIterator::operator* () const
 {
     return curr->elm.get ();
-}
-
-const StackElement& Stack::StackIterator::operator-> () const
-{
-    return *(curr->elm.get ());
 }
 
 Stack::StackIterator& Stack::StackIterator::operator++ ()

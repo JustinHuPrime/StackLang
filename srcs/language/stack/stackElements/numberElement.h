@@ -24,7 +24,8 @@ class NumberElement : public StackElement
   private:
     mpq_class data;
 };
-const string ALLOWED_NUMBER = "1234567890.'";
+const string ALLOWED_NUMBER = "-+/1234567890.'";
+const string NUMBER_SIGNS = "-+";
 } // namespace StackElements
 } // namespace StackLang
 

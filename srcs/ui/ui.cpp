@@ -45,6 +45,11 @@ This interrupt should have been expected and intentional.)"
              << endl;
         exit (EXIT_FAILURE);
     });
+
+    signal (SIGABRT, [](int dummy) {
+        (void) dummy; //ignore
+        uninit ();
+    });
 }
 
 void uninit ()

@@ -1,6 +1,7 @@
 #include "language/stack.h"
 
 #include "language/exceptions/stackOverflowError.h"
+#include "language/exceptions/stackUnderflowError.h"
 #include "language/stack/stackIterator.h"
 
 #include <memory>
@@ -9,6 +10,7 @@ namespace StackLang
 {
 using StackLang::StackElement;
 using StackLang::Exceptions::StackOverflowError;
+using StackLang::Exceptions::StackUnderflowError;
 
 Stack::Stack () :
     head (nullptr), dataSize (0), limit (__LONG_MAX__)
@@ -47,6 +49,8 @@ StackElement* Stack::pop ()
         head = temp;
         dataSize--;
     }
+
+    throw StackUnderflowError ();
 }
 
 StackElement*
@@ -56,6 +60,8 @@ StackElement*
     {
         return head->elm.get ();
     }
+
+    throw StackUnderflowError ();
 }
 
 unsigned long
