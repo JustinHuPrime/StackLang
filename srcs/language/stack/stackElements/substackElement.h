@@ -1,16 +1,15 @@
 #ifndef SUBSTACKELEMENT_H
 #define SUBSTACKELEMENT_H
 
+#include "language/stack.h"
 #include "language/stack/stackElement.h"
 
-#include <list>
 #include <string>
 
 namespace StackLang
 {
 namespace StackElements
 {
-using std::list;
 using std::string;
 
 class SubstackElement : public StackElement
@@ -20,10 +19,10 @@ class SubstackElement : public StackElement
     ~SubstackElement () override;
 
     operator const string () const override;
-    const list< StackElement* >& getData ();
+    const Stack& getData ();
 
   private:
-    list< StackElement* > data;
+    Stack data;
 };
 const string SUBSTACK_BEGIN = "<<";
 const string SUBSTACK_END = ">>";

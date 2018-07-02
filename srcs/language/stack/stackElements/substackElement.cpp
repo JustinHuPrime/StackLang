@@ -1,5 +1,7 @@
 #include "language/stack/stackElements/substackElement.h"
 
+#include "language/stack/stackIterator.h"
+
 namespace StackLang
 {
 namespace StackElements
@@ -12,12 +14,7 @@ SubstackElement::SubstackElement () :
 {}
 
 SubstackElement::~SubstackElement ()
-{
-    for (StackElement* elm : data)
-    {
-        delete elm;
-    }
-}
+{}
 
 SubstackElement::operator const string () const
 {
@@ -36,7 +33,7 @@ SubstackElement::operator const string () const
     return buffer; //return value optimization
 }
 
-const list< StackElement* >& SubstackElement::getData ()
+const Stack& SubstackElement::getData ()
 {
     return data;
 }
