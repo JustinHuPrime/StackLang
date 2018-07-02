@@ -98,19 +98,30 @@ void LineEditor::down ()
     {
         preCursor.push_back (c);
     }
+
+    postHistory.pop ();
 }
 
 void LineEditor::enter ()
 {
-    while (!postHistory.empty ())
+    if (!postHistory.empty ()) //if we have stuff in the history
     {
-        preHistory.push (postHistory.top ());
-        postHistory.pop ();
+        preHistory.push (string (*this)); //save the current thing (return it to its place)
+        while (postHistory.size () > 1)   //put everything from before into it, but not our draft line
+        {
+            preHistory.push (postHistory.top ());
+            postHistory.pop ();
+        }
+
+        postHistory.pop (); //get rid of the draft line
     }
 
-    preHistory.push (string (*this));
-    preCursor.clear ();
+
+    preHistory.push (string (*this)); //add current line
+    preCursor.clear ();               //and clear
     postCursor.clear ();
+
+    return;
 }
 
 void LineEditor::backspace ()
