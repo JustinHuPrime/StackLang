@@ -13,8 +13,10 @@ SubstackElement::SubstackElement () :
     StackElement (StackElement::DataType::Substack)
 {}
 
-SubstackElement::~SubstackElement ()
-{}
+SubstackElement* SubstackElement::clone () const
+{
+    return new SubstackElement (*this);
+}
 
 SubstackElement::operator const string () const
 {

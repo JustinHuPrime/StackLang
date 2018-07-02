@@ -10,6 +10,11 @@ TypeElement::TypeElement (DataType type) :
     StackElement (StackElement::DataType::Type), data (type)
 {}
 
+TypeElement* TypeElement::clone () const
+{
+    return new TypeElement (*this);
+}
+
 TypeElement::operator const string () const
 {
     return to_string (data);

@@ -29,6 +29,11 @@ NumberElement::NumberElement (string d) :
     data.canonicalize ();
 }
 
+NumberElement* NumberElement::clone () const
+{
+    return new NumberElement (*this);
+}
+
 NumberElement::operator const string () const
 {
     return data.get_str ();

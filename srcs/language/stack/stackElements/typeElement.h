@@ -14,6 +14,7 @@ class TypeElement : public StackElement
 {
   public:
     TypeElement (DataType);
+    TypeElement* clone () const override;
 
     operator const string () const override;
     DataType getData ();

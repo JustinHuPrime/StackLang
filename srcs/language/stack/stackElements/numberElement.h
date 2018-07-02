@@ -17,6 +17,7 @@ class NumberElement : public StackElement
 {
   public:
     NumberElement (string);
+    NumberElement* clone () const override;
 
     operator const string () const override;
     mpq_class getData ();

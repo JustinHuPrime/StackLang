@@ -30,6 +30,11 @@ class StackElement
     virtual ~StackElement ();
 
     /**
+     * clone function - virtual constructor idiom
+     */
+    virtual StackElement* clone () const = 0;
+
+    /**
      * Produces a StackElement (of some type) from a terminal input string
      * Assumes that given string is not empty
      */

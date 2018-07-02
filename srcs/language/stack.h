@@ -22,7 +22,12 @@ class Stack
     Stack ();
     Stack (unsigned long);
 
+    /**
+     * Proper implemntation of rhe Big Three
+     */
     ~Stack ();
+    Stack (const Stack&);
+    Stack& operator= (const Stack&);
 
     /**
      * Manipulates stack elements.
@@ -55,9 +60,6 @@ class Stack
     bool empty () const;
 
   private:
-    Stack (const Stack&) = delete;
-    Stack& operator= (const Stack&) = delete;
-
     struct Node
     {
         unique_ptr< StackElement > elm;
@@ -70,6 +72,7 @@ class Stack
     unsigned long limit;
 
     void clear ();
+    Node* copy (Node*);
 };
 } // namespace StackLang
 

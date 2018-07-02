@@ -16,6 +16,7 @@ class StringElement : public StackElement
 {
   public:
     StringElement (string);
+    StringElement* clone () const override;
 
     operator const string () const override;
     const string& getData ();

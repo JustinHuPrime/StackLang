@@ -11,6 +11,7 @@ namespace StackLang
 using StackLang::StackElement;
 using StackLang::Exceptions::StackOverflowError;
 using StackLang::Exceptions::StackUnderflowError;
+using std::make_unique;
 
 Stack::Stack () :
     head (nullptr), dataSize (0), limit (__LONG_MAX__)
@@ -23,6 +24,18 @@ Stack::Stack (unsigned long lim) :
 Stack::~Stack ()
 {
     clear ();
+}
+
+Stack::Stack (const Stack& other) :
+    head (copy (other.head)), dataSize (other.dataSize), limit (other.limit)
+{}
+
+Stack& Stack::operator= (const Stack& other)
+{
+    clear ();
+    head = copy (other.head);
+    dataSize = other.dataSize;
+    limit = other.limit;
 }
 
 void Stack::push (StackElement* ptr)
@@ -110,6 +123,18 @@ void Stack::clear ()
     }
 
     dataSize = 0;
+}
+
+Stack::Node* Stack::copy (Node* other)
+{
+    if (other == nullptr)
+    {
+        return nullptr;
+    }
+    else
+    {
+        return new Node (other->elm->clone (), copy (other->next));
+    }
 }
 
 Stack::Node::Node (StackElement* ptr, Node* nxt) :

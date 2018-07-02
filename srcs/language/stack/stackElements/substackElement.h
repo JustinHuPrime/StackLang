@@ -16,7 +16,7 @@ class SubstackElement : public StackElement
 {
   public:
     SubstackElement ();
-    ~SubstackElement () override;
+    SubstackElement* clone () const override;
 
     operator const string () const override;
     const Stack& getData ();

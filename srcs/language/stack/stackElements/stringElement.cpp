@@ -13,6 +13,11 @@ StringElement::StringElement (string s) :
     data (s)
 {}
 
+StringElement* StringElement::clone () const
+{
+    return new StringElement (*this);
+}
+
 StringElement::operator const string () const
 {
     return "\"" + escape (data) + "\"";

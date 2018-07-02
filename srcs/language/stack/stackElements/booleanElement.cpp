@@ -9,6 +9,11 @@ BooleanElement::BooleanElement (bool b) :
     StackElement (StackElement::DataType::Boolean), data (b)
 {}
 
+BooleanElement* BooleanElement::clone () const
+{
+    return new BooleanElement (*this);
+}
+
 BooleanElement::operator const string () const
 {
     return data ? TSTR : FSTR;
