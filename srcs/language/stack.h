@@ -55,13 +55,14 @@ class Stack
     bool empty () const;
 
   private:
-    Stack (const Stack&);
-    Stack& operator= (const Stack&);
+    Stack (const Stack&) = delete;
+    Stack& operator= (const Stack&) = delete;
 
     struct Node
     {
         unique_ptr< StackElement > elm;
         Node* next;
+        Node (StackElement*, Node*);
     };
 
     Node* head;

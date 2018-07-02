@@ -32,9 +32,7 @@ void Stack::push (StackElement* ptr)
         throw StackOverflowError (limit);
     }
 
-    Node* temp = new Node;
-    temp->elm = unique_ptr< StackElement > (ptr);
-    temp->next = head;
+    Node* temp = new Node (ptr, head);
     head = temp;
     dataSize++;
 }
@@ -113,4 +111,8 @@ void Stack::clear ()
 
     dataSize = 0;
 }
+
+Stack::Node::Node (StackElement* ptr, Node* nxt) :
+    elm (ptr), next (nxt)
+{}
 } // namespace StackLang
