@@ -46,6 +46,11 @@ class LineEditor
     void del ();
 
     /**
+     * Clears the entire editor
+     */
+    void clear ();
+
+    /**
      * Get properties of the editor - current cursor left/right, or emptiness of the editor
      */
     int cursorPosition () const;

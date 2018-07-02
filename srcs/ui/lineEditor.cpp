@@ -144,6 +144,12 @@ void LineEditor::del ()
     postCursor.pop_front ();
 }
 
+void LineEditor::clear ()
+{
+    preCursor.clear ();
+    postCursor.clear ();
+}
+
 int LineEditor::cursorPosition () const
 {
     return preCursor.size ();
