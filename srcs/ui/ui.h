@@ -37,11 +37,26 @@ void drawError (const LanguageException&);
 void addstring (const string& s);
 
 /**
+ * displays info splash, then waits for a key
+ */
+void displayInfo ();
+
+/**
+ * prints an error mesage to stderr
+ */
+void printError (const LanguageException&);
+
+/**
  * cursor constants
  */
 const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
+
+const string INFO = R"(StackLang interpreter version ALPHA 3
+by Justin Hu, 2018
+Use ^D to exit from prompt, and ^C to force quit
+Press any key to continue...)"; // introductory stuff
 } // namespace TermUI
 
 /**

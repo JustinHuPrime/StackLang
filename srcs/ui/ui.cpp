@@ -3,10 +3,13 @@
 #include "utils/stringUtils.h"
 
 #include <csignal>
+#include <iostream>
 #include <ncurses.h>
 
 namespace TermUI
 {
+using std::cerr;
+using std::endl;
 using Util::spaces;
 
 void init ()
@@ -138,6 +141,25 @@ void addstring (const string& s)
     {
         ch = static_cast< unsigned char > (c);
         addch (ch);
+    }
+}
+
+void displayInfo ()
+{
+    curs_set (CURSOR_INVISIBLE);
+    move (0, 0);
+    addstring (INFO.c_str ());
+    getch ();
+}
+
+void printError (const LanguageException& e)
+{
+    cerr << e.getKind () << endl;
+    cerr << e.getMessage () << endl;
+    if (e.hasContext ())
+    {
+        cerr << e.getContext () << endl;
+        cerr << spaces (e.getLocation ()) << "^" << endl;
     }
 }
 } // namespace TermUI

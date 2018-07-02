@@ -3,6 +3,7 @@
 #include "language/language.h"
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
+#include "language/stack/stackElements/commandElement.h"
 #include "language/stack/stackElements/stringElement.h"
 #include "ui/lineEditor.h"
 #include "ui/ui.h"
@@ -15,50 +16,26 @@
 #include <stdexcept>
 #include <string>
 
+namespace TermUI
+{
+namespace SigHandler
+{
 using StackLang::Stack;
 using Util::LineEditor;
 
 const Stack* UpdateStack; // used for resize handlers - set once, then ignored
 const LineEditor* UpdateBuffer;
+} // namespace SigHandler
+} // namespace TermUI
 
 namespace KeyInfo
 {
 const char KEY_CTRL_D = 4; // self defined constants
 }
 
-namespace TermUI
-{
-using std::cerr;
-using std::endl;
-using Util::spaces;
-
-const string INFO = R"(StackLang interpreter version ALPHA 3
-by Justin Hu, 2018
-Use ^D to exit from prompt, and ^C to force quit
-Press any key to continue...)"; // introductory stuff
-
-void displayInfo () // displays info splash, they pauses
-{
-    curs_set (CURSOR_INVISIBLE);
-    move (0, 0);
-    addstring (INFO.c_str ());
-    getch ();
-}
-
-void printError (const LanguageException& e)
-{
-    cerr << e.getKind () << endl;
-    cerr << e.getMessage () << endl;
-    if (e.hasContext ())
-    {
-        cerr << e.getContext () << endl;
-        cerr << spaces (e.getLocation ()) << "^" << endl;
-    }
-}
-} // namespace TermUI
-
 int main (int argc, char* argv[])
 {
+    using StackLang::Stack;
     using StackLang::StackElement;
     using StackLang::Exceptions::LanguageException;
     using StackLang::Exceptions::StackOverflowError;
@@ -78,7 +55,10 @@ int main (int argc, char* argv[])
     using TermUI::drawPrompt;
     using TermUI::drawStack;
     using TermUI::init;
+    using TermUI::LineEditor;
     using TermUI::printError;
+    using TermUI::SigHandler::UpdateBuffer;
+    using TermUI::SigHandler::UpdateStack;
 
     Stack s;
     // map<string, ???> defines;
@@ -89,6 +69,7 @@ int main (int argc, char* argv[])
     int debugmode = 0;
     bool errorFlag = false;
     bool argsInclude = false;
+    bool argsQuiet = false;
 
     UpdateStack = &s; // set const pointers for data access from event handlers
     UpdateBuffer = &buffer;
@@ -112,7 +93,7 @@ int main (int argc, char* argv[])
             {
                 printError (e);
                 cerr << "Aborting." << endl;
-                return EXIT_FAILURE;
+                exit (EXIT_FAILURE);
             }
         }
         else if (string (argv[i]) == "-d") // set debug mode
@@ -120,7 +101,7 @@ int main (int argc, char* argv[])
             if (i + 1 >= argc)
             {
                 cerr << "Expected number after `-d`, found nothing. Abort." << endl;
-                return EXIT_FAILURE;
+                exit (EXIT_FAILURE);
             }
 
             try
@@ -131,7 +112,7 @@ int main (int argc, char* argv[])
             {
                 cerr << "Expected number after `-d`, found `" << argv[i] << "`. Abort."
                      << endl;
-                return EXIT_FAILURE;
+                exit (EXIT_FAILURE);
             }
         }
         else if (string (argv[i]) == "-I") // start of specified files to include
@@ -177,7 +158,7 @@ int main (int argc, char* argv[])
         {
             break;
         }
-        else if (errorFlag)
+        else if (errorFlag) //anything on an error is ignored, but the error is cleared
         {
             drawStack (s);
             drawPrompt (buffer);
@@ -191,27 +172,21 @@ int main (int argc, char* argv[])
             buffer += key;
             drawPrompt (buffer);
         }
-        else if (key == '\n' || key == '\r' || key == KEY_ENTER) // enter
+        else if (key == '\n' || key == '\r' || key == KEY_ENTER) // enter - add and execute
         {
-            if (buffer.isEmpty ()) // empty buffer - execute top of stack.
+            try
             {
+                s.push (StackElement::parse (buffer));
+                buffer.enter ();
+                drawStack (s);
+                drawPrompt (buffer);
                 execute (s);
             }
-            else // nonempty buffer - push onto stack.
+            catch (const LanguageException& e)
             {
-                try
-                {
-                    s.push (StackElement::parse (buffer));
-                    buffer.enter ();
-                    drawStack (s);
-                    drawPrompt (buffer);
-                }
-                catch (const LanguageException& e)
-                {
-                    drawError (e);
-                    errorFlag = true;
-                    buffer.enter ();
-                }
+                drawError (e);
+                errorFlag = true;
+                buffer.clear ();
             }
         }
         else if (key == KEY_BACKSPACE) // line editing.
@@ -259,7 +234,7 @@ int main (int argc, char* argv[])
             beep ();
         }
 
-        if (debugmode == 1) // debug options
+        if (debugmode == 1) // debug options - must not include 0
         {
             move (0, getmaxx (stdscr) - 3);
             clrtoeol ();
@@ -277,5 +252,5 @@ int main (int argc, char* argv[])
         }
     }
 
-    return EXIT_SUCCESS;
+    exit (EXIT_SUCCESS);
 }
