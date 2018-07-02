@@ -20,8 +20,13 @@ NumberElement::NumberElement (string d) :
     {
         int exponent = d.length () - 1 - d.find ('.');
         data = mpq_class (d.erase (d.find ('.'), 1));
-        data /= pow (10, exponent);
+        for (int i = 0; i < exponent; i++)
+        {
+            data /= 10;
+        }
     }
+
+    data.canonicalize ();
 }
 
 NumberElement::operator const string () const

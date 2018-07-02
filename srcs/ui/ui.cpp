@@ -3,13 +3,10 @@
 #include "utils/stringUtils.h"
 
 #include <csignal>
-#include <iostream>
 #include <ncurses.h>
 
 namespace TermUI
 {
-using std::cerr;
-using std::endl;
 using Util::spaces;
 
 void init ()
@@ -26,9 +23,9 @@ void init ()
 
     atexit (uninit);
 
-    signal (SIGWINCH, [](int dummy) {
-        (void) dummy; //ignore dummy value
-        endwin ();    //these commands resync ncurses with the terminal
+    signal (SIGWINCH, [](int sigNum) {
+        (void) sigNum; //ignore sigNum
+        endwin ();     //these commands resync ncurses with the terminal
         refresh ();
 
         clear (); //draw the screen
@@ -36,20 +33,17 @@ void init ()
         drawPrompt (*UpdateBuffer);
     });
 
-    signal (SIGINT, [](int dummy) {
-        (void) dummy; //ignore dummy value
+    auto defSigHandler = [](int sigNum) {
         uninit ();
-        cerr << R"(Program interrupted by terminal interrupt sequence.
-Interpreter has been stopped without freeing resources
-This interrupt should have been expected and intentional.)"
-             << endl;
-        exit (EXIT_FAILURE);
-    });
+        exit (sigNum);
+    };
 
-    signal (SIGABRT, [](int dummy) {
-        (void) dummy; //ignore
-        uninit ();
-    });
+    signal (SIGABRT, defSigHandler);
+    signal (SIGFPE, defSigHandler);
+    signal (SIGFPE, defSigHandler);
+    signal (SIGILL, defSigHandler);
+    signal (SIGSEGV, defSigHandler);
+    signal (SIGTERM, defSigHandler);
 }
 
 void uninit ()

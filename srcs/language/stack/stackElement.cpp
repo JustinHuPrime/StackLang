@@ -10,6 +10,7 @@
 #include "utils/stringUtils.h"
 
 #include <algorithm>
+#include <csignal>
 #include <string>
 
 namespace StackLang
@@ -27,6 +28,7 @@ using StackElements::SubstackElement;
 using StackElements::TSTR;
 using StackElements::TypeElement;
 using StackElements::TYPES;
+using std::any_of;
 using std::find;
 using std::stod;
 using Util::ends_with;
@@ -51,12 +53,12 @@ StackElement::~StackElement ()
 //ASSUME: s is not empty
 StackElement* StackElement::parse (const string& s)
 {
-    if ((isdigit (s[0] || NUMBER_SIGNS.find (s[0]) != string::npos)) &&                            //is digit or sign
-        s.find_first_not_of (ALLOWED_NUMBER) == string::npos &&                                    //has only allowed chars
-        count (s.begin (), s.end (), '.') + count (s.begin (), s.end (), '/') <= 1 &&              //has either a dot or a slash, and at most one of each
-        (s.find_first_of (NUMBER_SIGNS) == 0 || s.find_first_of (NUMBER_SIGNS) == string::npos) && //sign is at the beginning or nonexistent
-        s.find_first_of ('/') != 0 && s.find_first_of ('/') != s.length () - 1)                    //slash is not at the start and not at the end
-    {                                                                                              //is a number
+    if ((isdigit (s[0]) || NUMBER_SIGNS.find (s[0]) != string::npos) &&                          //is digit or sign
+        s.find_first_not_of (ALLOWED_NUMBER) == string::npos &&                                  //has only allowed chars
+        count (s.begin (), s.end (), '.') + count (s.begin (), s.end (), '/') <= 1 &&            //has either a dot or a slash, and at most one of each
+        (s.find_last_of (NUMBER_SIGNS) == 0 || s.find_last_of (NUMBER_SIGNS) == string::npos) && //sign is at the beginning or nonexistent
+        s.find_first_of ('/') != s.length () - 1)                                                //slash is not at the end
+    {                                                                                            //is a number
         return new NumberElement (removeChar (s, '\''));
     }
     else if (starts_with (s, "\"") && ends_with (s, "\"") &&                     //has quotes on either end
@@ -81,7 +83,7 @@ StackElement* StackElement::parse (const string& s)
     {
         if (isdigit (s[0]) || s[0] == '-' || s[0] == '+') //kinda looks like a number.
         {
-            if (!all_of (s.begin (), s.end (), [](char c) { return isdigit (c) || c == '.'; })) //doesn't have all numbers
+            if (any_of (s.begin (), s.end (), [](char c) { return ALLOWED_NUMBER.find (c) == string::npos; })) //doesn't have all valid chars
             {
                 throw ParserError ("Input looks like a number, but has non-numeric characters.", s, s.find_first_not_of (ALLOWED_NUMBER));
             }
@@ -93,13 +95,17 @@ StackElement* StackElement::parse (const string& s)
             {
                 throw ParserError ("Input looks like a number, but has more than one fraction bar.", s, s.find ('/', s.find ('/') + 1));
             }
-            else if (count (s.begin (), s.end (), '.') + count (s.begin (), s.end (), '/') > 1)
+            else if (count (s.begin (), s.end (), '.') + count (s.begin (), s.end (), '/') > 1) //dot and slash
             {
                 throw ParserError ("Input looks like a number, but has a decimal point in a fraction.", s, s.find_first_of ("."));
             }
-            else if (s.find_first_of (NUMBER_SIGNS) != 0 && s.find_first_of (NUMBER_SIGNS) != string::npos) //sign isn't at the start or nowhere
+            else if (s.find_last_of (NUMBER_SIGNS) != 0 && s.find_last_of (NUMBER_SIGNS) != string::npos) //sign isn't at the start or nowhere
             {
                 throw ParserError ("Input looks like a number, but has a + or - in the middle.", s, s.find_first_of (NUMBER_SIGNS));
+            }
+            else
+            {
+                throw ParserError ("Input looks like a number, but has an unknown issue.", s, 0);
             }
         }
         else if (s[0] == '"') //starts with a quote
@@ -123,7 +129,5 @@ StackElement* StackElement::parse (const string& s)
             throw ParserError ("Input doesn't look like any type - does it begin with a symbol?", s, 0);
         }
     }
-
-    return nullptr; //shouldn't get here - above if block has an else case, and it's else case's if block has another else case.
 }
 } // namespace StackLang
