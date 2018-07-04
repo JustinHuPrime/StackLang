@@ -28,12 +28,7 @@ void init ()
 
     signal (SIGWINCH, [](int sigNum) {
         (void) sigNum; //ignore sigNum
-        endwin ();     //these commands resync ncurses with the terminal
-        refresh ();
-
-        clear (); //draw the screen
-        drawStack (*UpdateStack);
-        drawPrompt (*UpdateBuffer);
+        ungetch (EINTR);
     });
 
     auto defSigHandler = [](int sigNum) {

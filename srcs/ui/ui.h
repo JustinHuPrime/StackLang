@@ -59,10 +59,5 @@ Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)"; // introductory stuff
 } // namespace TermUI
 
-/**
- * constants used by window resize event handler to call drawStack
- */
-extern const StackLang::Stack* UpdateStack;
-extern const Util::LineEditor* UpdateBuffer;
 
 #endif /* UI_H */
