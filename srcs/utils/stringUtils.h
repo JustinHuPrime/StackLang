@@ -37,6 +37,13 @@ string spaces (unsigned);
  * removes all occurences of character c from string s
  */
 string removeChar (string, char);
+
+/**
+ * trims any whitespace from the start and the end of the string
+ */
+string trim (string);
+
+const string WHITESPACE = " \t\n\r";
 } // namespace Util
 
 #endif /* STRINGUTILS_H */

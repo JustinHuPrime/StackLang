@@ -121,4 +121,11 @@ string removeChar (string s, char c)
 
     return s;
 }
+
+string trim (string s)
+{
+    s.erase (0, s.find_first_not_of (WHITESPACE));
+    s.erase (s.find_last_not_of (WHITESPACE) + 1);
+    return s;
+}
 } // namespace Util
