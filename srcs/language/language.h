@@ -3,21 +3,29 @@
 
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
-#include "language/stack/stackElements/commandElement.h"
+#include "language/stack/stackElements/typeElement.h"
 
+#include <list>
 #include <map>
+#include <utility>
 
 namespace StackLang
 {
+using StackElements::TypeElement;
+using std::list;
 using std::map;
+using std::pair;
+
+typedef pair< list< TypeElement >, list< StackElement > > DefinedFunction;
+typedef map< string, DefinedFunction > DefineMap;
+typedef void (*StackFunction) (Stack&, DefineMap&);
 
 /**
- * Executes the top element of the stack
+ * Executes the stack until it encounters a data element
  */
-void execute (Stack&);
+void execute (Stack&, DefineMap&);
 
-typedef void (*stackFunction) (Stack&);
-const map< string, stackFunction > PRIMITIVES = {};
+const map< string, StackFunction > PRIMITIVES = {};
 } // namespace StackLang
 
 #endif

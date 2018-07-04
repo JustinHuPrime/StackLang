@@ -1,10 +1,12 @@
 #include "language/language.h"
 
+#include "language/stack/stackElements/commandElement.h"
+
 namespace StackLang
 {
 using StackLang::StackElements::CommandElement;
 
-void execute (Stack& s)
+void execute (Stack& s, map< string, DefinedFunction >& defines)
 {
     switch (s.top ()->getType ())
     {
@@ -17,7 +19,7 @@ void execute (Stack& s)
 
             if (result != PRIMITIVES.end ())
             {
-                result->second (s);
+                result->second (s, defines);
             }
             else
             {
