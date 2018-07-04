@@ -35,7 +35,7 @@ SubstackElement::operator const string () const
     return buffer; //return value optimization
 }
 
-const Stack& SubstackElement::getData ()
+Stack& SubstackElement::getData ()
 {
     return data;
 }

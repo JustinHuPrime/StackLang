@@ -39,7 +39,7 @@ NumberElement::operator const string () const
     return data.get_str ();
 }
 
-mpq_class NumberElement::getData ()
+mpq_class& NumberElement::getData ()
 {
     return data;
 }

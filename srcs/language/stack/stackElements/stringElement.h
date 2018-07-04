@@ -19,7 +19,7 @@ class StringElement : public StackElement
     StringElement* clone () const override;
 
     operator const string () const override;
-    const string& getData ();
+    string& getData ();
 
   private:
     string data;

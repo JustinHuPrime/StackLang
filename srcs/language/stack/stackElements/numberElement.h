@@ -20,7 +20,7 @@ class NumberElement : public StackElement
     NumberElement* clone () const override;
 
     operator const string () const override;
-    mpq_class getData ();
+    mpq_class& getData ();
 
   private:
     mpq_class data;

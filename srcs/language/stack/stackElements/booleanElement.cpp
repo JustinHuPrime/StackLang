@@ -19,7 +19,7 @@ BooleanElement::operator const string () const
     return data ? TSTR : FSTR;
 }
 
-bool BooleanElement::getData ()
+bool& BooleanElement::getData ()
 {
     return data;
 }

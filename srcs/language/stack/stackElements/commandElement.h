@@ -18,7 +18,7 @@ class CommandElement : public StackElement
     CommandElement* clone () const override;
 
     operator const string () const override;
-    const string& getData ();
+    string& getData ();
 
   private:
     string data;

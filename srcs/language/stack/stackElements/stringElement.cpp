@@ -23,7 +23,7 @@ StringElement::operator const string () const
     return "\"" + escape (data) + "\"";
 }
 
-const string& StringElement::getData ()
+string& StringElement::getData ()
 {
     return data;
 }

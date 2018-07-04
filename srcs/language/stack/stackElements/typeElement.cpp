@@ -20,7 +20,7 @@ TypeElement::operator const string () const
     return to_string (data);
 }
 
-StackElement::DataType TypeElement::getData ()
+StackElement::DataType& TypeElement::getData ()
 {
     return data;
 }

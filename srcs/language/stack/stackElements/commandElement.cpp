@@ -19,7 +19,7 @@ CommandElement::operator const string () const
     return "<" + data + ">";
 }
 
-const string& CommandElement::getData ()
+string& CommandElement::getData ()
 {
     return data;
 }
