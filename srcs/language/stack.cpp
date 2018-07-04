@@ -36,6 +36,7 @@ Stack& Stack::operator= (const Stack& other)
     head = copy (other.head);
     dataSize = other.dataSize;
     limit = other.limit;
+    return *this;
 }
 
 void Stack::push (StackElement* ptr)
