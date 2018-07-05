@@ -14,18 +14,18 @@ const string SubstackElement::SUBSTACK_END = " >>";
 const string SubstackElement::SUBSTACK_SEPARATOR = ", ";
 const string SubstackElement::SUBSTACK_EMPTY = "<< (empty) >>";
 
-SubstackElement::SubstackElement () :
-    StackElement (StackElement::DataType::Substack)
+SubstackElement::SubstackElement() :
+    StackElement(StackElement::DataType::Substack)
 {}
 
-SubstackElement* SubstackElement::clone () const
+SubstackElement* SubstackElement::clone() const
 {
-    return new SubstackElement (*this);
+    return new SubstackElement(*this);
 }
 
-SubstackElement::operator const string () const
+SubstackElement::operator const string() const
 {
-    if (data.size () == 0)
+    if (data.size() == 0)
     {
         return SUBSTACK_EMPTY;
     }
@@ -33,18 +33,18 @@ SubstackElement::operator const string () const
 
     for (auto elm : data)
     {
-        buffer += string (*elm);
+        buffer += string(*elm);
         buffer += SUBSTACK_SEPARATOR;
     }
 
-    buffer.erase (buffer.length () - 2);
+    buffer.erase(buffer.length() - 2);
 
     buffer += SUBSTACK_END;
 
     return buffer; //return value optimization
 }
 
-Stack& SubstackElement::getData ()
+Stack& SubstackElement::getData()
 {
     return data;
 }

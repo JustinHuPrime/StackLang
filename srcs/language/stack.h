@@ -19,60 +19,60 @@ class Stack
     /**
      * Creates a stack, optionally with a limit on the number of elements.
      */
-    Stack ();
-    Stack (unsigned long);
+    Stack();
+    Stack(unsigned long);
 
     /**
      * Proper implemntation of rhe Big Three
      */
-    ~Stack ();
-    Stack (const Stack&);
-    Stack& operator= (const Stack&);
+    ~Stack();
+    Stack(const Stack&);
+    Stack& operator=(const Stack&);
 
     /**
      * Manipulates stack elements.
      * Pop does not delete the element, but the stack destructor does assume that when the stack is destroyed, it's managed elements should be deallocated.
      */
-    void push (StackElement*);
-    StackElement* pop ();
-    StackElement* top ();
+    void push(StackElement*);
+    StackElement* pop();
+    StackElement* top();
 
     /**
      * Stack iterator functions
      */
-    StackIterator begin () const;
-    StackIterator end () const;
+    StackIterator begin() const;
+    StackIterator end() const;
 
     /**
      * Gets the stack's size, size limit
      */
-    unsigned long size () const;
-    unsigned long getLimit () const;
+    unsigned long size() const;
+    unsigned long getLimit() const;
 
     /**
      * Sets a new limit. Throws StackOverflowError if too big.
      */
-    void setLimit (unsigned long);
+    void setLimit(unsigned long);
 
     /**
      * Returns true if the stack is empty
      */
-    bool empty () const;
+    bool empty() const;
 
   private:
     struct Node
     {
         unique_ptr< StackElement > elm;
         Node* next;
-        Node (StackElement*, Node*);
+        Node(StackElement*, Node*);
     };
 
     Node* head;
     unsigned long dataSize;
     unsigned long limit;
 
-    void clear ();
-    Node* copy (Node*);
+    void clear();
+    Node* copy(Node*);
 };
 } // namespace StackLang
 

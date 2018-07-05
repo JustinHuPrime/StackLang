@@ -21,30 +21,30 @@ using Util::LineEditor;
 /**
  * initializes/uninitializes curses (and general stuff) with preset options
  */
-void init ();
-void uninit ();
+void init();
+void uninit();
 
 /**
  * draws the stack, prompt, or error
  */
-void drawStack (const Stack&);
-void drawPrompt (const LineEditor&);
-void drawError (const LanguageException&);
+void drawStack(const Stack&);
+void drawPrompt(const LineEditor&);
+void drawError(const LanguageException&);
 
 /**
  * adds an std::string at the current cursor position
  */
-void addstring (const string& s);
+void addstring(const string& s);
 
 /**
  * displays info splash, then waits for a key
  */
-void displayInfo ();
+void displayInfo();
 
 /**
  * prints an error mesage to stderr
  */
-void printError (const LanguageException&);
+void printError(const LanguageException&);
 
 /**
  * cursor constants

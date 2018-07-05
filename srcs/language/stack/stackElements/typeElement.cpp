@@ -8,26 +8,26 @@ using StackLang::StackElement;
 
 const string TypeElement::TYPES[] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
 
-TypeElement::TypeElement (DataType type) :
-    StackElement (StackElement::DataType::Type), data (type)
+TypeElement::TypeElement(DataType type) :
+    StackElement(StackElement::DataType::Type), data(type)
 {}
 
-TypeElement* TypeElement::clone () const
+TypeElement* TypeElement::clone() const
 {
-    return new TypeElement (*this);
+    return new TypeElement(*this);
 }
 
-TypeElement::operator const string () const
+TypeElement::operator const string() const
 {
-    return to_string (data);
+    return to_string(data);
 }
 
-StackElement::DataType& TypeElement::getData ()
+StackElement::DataType& TypeElement::getData()
 {
     return data;
 }
 
-string TypeElement::to_string (StackElement::DataType type)
+string TypeElement::to_string(StackElement::DataType type)
 {
     return TYPES[int(type)];
 }

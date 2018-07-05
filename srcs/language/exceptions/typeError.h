@@ -12,9 +12,9 @@ namespace Exceptions
 class TypeError : public LanguageException
 {
   public:
-    TypeError (StackElement::DataType, StackElement*);
+    TypeError(StackElement::DataType, StackElement*);
 
-    const string getKind () const override;
+    const string getKind() const override;
 };
 } // namespace Exceptions
 } // namespace StackLang

@@ -19,21 +19,21 @@ class LanguageException
     /**
      * Creates an error with a message, but no context
      */
-    LanguageException (const string&);
+    LanguageException(const string&);
 
     /**
      * Creates an error with a message and context (plus exact location of error)
      */
-    LanguageException (const string&, const string&, unsigned);
+    LanguageException(const string&, const string&, unsigned);
 
     /**
      * Get error details
      */
-    virtual const string getKind () const = 0;
-    const string getMessage () const;
-    const string getContext () const;
-    unsigned getLocation () const;
-    bool hasContext () const;
+    virtual const string getKind() const = 0;
+    const string getMessage() const;
+    const string getContext() const;
+    unsigned getLocation() const;
+    bool hasContext() const;
 
   protected:
     string message, context;

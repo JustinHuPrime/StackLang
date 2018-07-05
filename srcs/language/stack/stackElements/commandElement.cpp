@@ -6,21 +6,21 @@ namespace StackElements
 {
 const string CommandElement::ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 
-CommandElement::CommandElement (string s) :
-    StackElement (StackElement::DataType::Command), data (s)
+CommandElement::CommandElement(string s) :
+    StackElement(StackElement::DataType::Command), data(s)
 {}
 
-CommandElement* CommandElement::clone () const
+CommandElement* CommandElement::clone() const
 {
-    return new CommandElement (*this);
+    return new CommandElement(*this);
 }
 
-CommandElement::operator const string () const
+CommandElement::operator const string() const
 {
     return "<" + data + ">";
 }
 
-string& CommandElement::getData ()
+string& CommandElement::getData()
 {
     return data;
 }

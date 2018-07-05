@@ -5,11 +5,11 @@ namespace StackLang
 namespace Exceptions
 {
 
-ParserException::ParserException (const string& msg, const string& ctx, unsigned loc) :
-    LanguageException (msg, ctx, loc)
+ParserException::ParserException(const string& msg, const string& ctx, unsigned loc) :
+    LanguageException(msg, ctx, loc)
 {}
 
-const string ParserException::getKind () const
+const string ParserException::getKind() const
 {
     return "Could not parse:";
 }

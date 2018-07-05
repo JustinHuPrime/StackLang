@@ -15,11 +15,11 @@ using std::string;
 class SubstackElement : public StackElement
 {
   public:
-    SubstackElement ();
-    SubstackElement* clone () const override;
+    SubstackElement();
+    SubstackElement* clone() const override;
 
-    operator const string () const override;
-    Stack& getData ();
+    operator const string() const override;
+    Stack& getData();
 
   private:
     Stack data;

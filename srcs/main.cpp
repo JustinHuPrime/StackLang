@@ -23,7 +23,7 @@ namespace KeyInfo
 const char KEY_CTRL_D = 4;
 }
 
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     using StackLang::DefineMap;
     using StackLang::Stack;
@@ -65,21 +65,21 @@ int main (int argc, char* argv[])
 
     for (int i = 1; i < argc; i++)
     {
-        args.push_back (argv[i]);
+        args.push_back(argv[i]);
     }
 
-    claReader (args, defines);
+    claReader(args, defines);
 
-    init ();
+    init();
 
-    displayInfo (); // splash screen
+    displayInfo(); // splash screen
 
-    drawStack (s);
-    drawPrompt (buffer); // draw the stack and prompt
+    drawStack(s);
+    drawPrompt(buffer); // draw the stack and prompt
 
     while (true)
     {
-        key = getch ();
+        key = getch();
 
         if (key == KeyInfo::KEY_CTRL_D) // overriding keypresses
         {
@@ -87,106 +87,106 @@ int main (int argc, char* argv[])
         }
         else if (key == EINTR)
         {
-            endwin (); //these commands resync ncurses with the terminal
-            refresh ();
+            endwin(); //these commands resync ncurses with the terminal
+            refresh();
 
-            clear ();
-            drawStack (s);
-            drawPrompt (buffer);
+            clear();
+            drawStack(s);
+            drawPrompt(buffer);
         }
         else if (errorFlag) //anything on an error is ignored, but the error is cleared
         {
-            drawStack (s);
-            drawPrompt (buffer);
+            drawStack(s);
+            drawPrompt(buffer);
             errorFlag = false;
             continue;
         }
 
-        if (key < numeric_limits< char > ().max () && isprint (key) && key != '\n' &&
+        if (key < numeric_limits< char >().max() && isprint(key) && key != '\n' &&
             key != '\r' && key != KEY_ENTER) // normal characters added to buffer.
         {
             buffer += key;
-            drawPrompt (buffer);
+            drawPrompt(buffer);
         }
         else if (key == '\n' || key == '\r' || key == KEY_ENTER) // enter - add and execute
         {
             string bufferStr = buffer;
-            buffer.enter ();
+            buffer.enter();
             try
             {
-                s.push (StackElement::parse (bufferStr));
-                drawStack (s);
-                drawPrompt (buffer);
-                execute (s, defines);
+                s.push(StackElement::parse(bufferStr));
+                drawStack(s);
+                drawPrompt(buffer);
+                execute(s, defines);
             }
             catch (const LanguageException& e)
             {
-                drawError (e);
+                drawError(e);
                 errorFlag = true;
             }
         }
         else if (key == KEY_BACKSPACE) // line editing.
         {
-            buffer.backspace ();
-            drawPrompt (buffer);
+            buffer.backspace();
+            drawPrompt(buffer);
         }
         else if (key == KEY_DC)
         {
-            buffer.del ();
-            drawPrompt (buffer);
+            buffer.del();
+            drawPrompt(buffer);
         }
         else if (key == KEY_UP)
         {
-            buffer.up ();
-            drawPrompt (buffer);
+            buffer.up();
+            drawPrompt(buffer);
         }
         else if (key == KEY_DOWN)
         {
-            buffer.down ();
-            drawPrompt (buffer);
+            buffer.down();
+            drawPrompt(buffer);
         }
         else if (key == KEY_RIGHT)
         {
-            buffer.right ();
-            drawPrompt (buffer);
+            buffer.right();
+            drawPrompt(buffer);
         }
         else if (key == KEY_LEFT)
         {
-            buffer.left ();
-            drawPrompt (buffer);
+            buffer.left();
+            drawPrompt(buffer);
         }
         else if (key == KEY_END)
         {
-            buffer.toEnd ();
-            drawPrompt (buffer);
+            buffer.toEnd();
+            drawPrompt(buffer);
         }
         else if (key == KEY_HOME)
         {
-            buffer.toHome ();
-            drawPrompt (buffer);
+            buffer.toHome();
+            drawPrompt(buffer);
         }
         else // not recognized.
         {
-            beep ();
+            beep();
         }
 
         if (debugmode == 1) // debug options - must not include 0
         {
-            move (0, getmaxx (stdscr) - 3);
-            clrtoeol ();
-            addstring (std::to_string (key).c_str ());
-            move (getmaxy (stdscr) - 1, buffer.cursorPosition () + 2);
+            move(0, getmaxx(stdscr) - 3);
+            clrtoeol();
+            addstring(std::to_string(key).c_str());
+            move(getmaxy(stdscr) - 1, buffer.cursorPosition() + 2);
         }
         else if (debugmode == 2)
         {
-            move (0, 0);
-            clrtoeol ();
-            addstring ("|");
-            addstring (buffer);
-            addstring ("|");
-            move (getmaxy (stdscr) - 1, buffer.cursorPosition () + 2);
+            move(0, 0);
+            clrtoeol();
+            addstring("|");
+            addstring(buffer);
+            addstring("|");
+            move(getmaxy(stdscr) - 1, buffer.cursorPosition() + 2);
         }
     }
 
-    exit (EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }

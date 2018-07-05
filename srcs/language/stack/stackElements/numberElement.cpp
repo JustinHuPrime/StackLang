@@ -12,37 +12,37 @@ using std::to_string;
 const string NumberElement::ALLOWED_NUMBER = "-+/1234567890.'";
 const string NumberElement::NUMBER_SIGNS = "-+";
 
-NumberElement::NumberElement (string d) :
-    StackElement (StackElement::DataType::Number)
+NumberElement::NumberElement(string d) :
+    StackElement(StackElement::DataType::Number)
 {
-    if (d.find ('.') == string::npos)
+    if (d.find('.') == string::npos)
     {
-        data = mpq_class (d, 10);
+        data = mpq_class(d, 10);
     }
     else
     {
-        int exponent = d.length () - 1 - d.find ('.');
-        data = mpq_class (d.erase (d.find ('.'), 1));
+        int exponent = d.length() - 1 - d.find('.');
+        data = mpq_class(d.erase(d.find('.'), 1));
         for (int i = 0; i < exponent; i++)
         {
             data /= 10;
         }
     }
 
-    data.canonicalize ();
+    data.canonicalize();
 }
 
-NumberElement* NumberElement::clone () const
+NumberElement* NumberElement::clone() const
 {
-    return new NumberElement (*this);
+    return new NumberElement(*this);
 }
 
-NumberElement::operator const string () const
+NumberElement::operator const string() const
 {
-    return data.get_str ();
+    return data.get_str();
 }
 
-mpq_class& NumberElement::getData ()
+mpq_class& NumberElement::getData()
 {
     return data;
 }

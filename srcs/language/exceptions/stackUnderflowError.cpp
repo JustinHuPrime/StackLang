@@ -6,11 +6,11 @@ namespace Exceptions
 {
 using std::to_string;
 
-StackUnderflowError::StackUnderflowError () :
-    LanguageException ("Stack is empty, but attempted to access element from stack.")
+StackUnderflowError::StackUnderflowError() :
+    LanguageException("Stack is empty, but attempted to access element from stack.")
 {}
 
-const string StackUnderflowError::getKind () const
+const string StackUnderflowError::getKind() const
 {
     return "Stack underflowed:";
 }

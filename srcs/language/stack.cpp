@@ -13,49 +13,49 @@ using StackLang::Exceptions::StackOverflowError;
 using StackLang::Exceptions::StackUnderflowError;
 using std::make_unique;
 
-Stack::Stack () :
-    head (nullptr), dataSize (0), limit (__LONG_MAX__)
+Stack::Stack() :
+    head(nullptr), dataSize(0), limit(__LONG_MAX__)
 {}
 
-Stack::Stack (unsigned long lim) :
-    head (nullptr), dataSize (0), limit (lim)
+Stack::Stack(unsigned long lim) :
+    head(nullptr), dataSize(0), limit(lim)
 {}
 
-Stack::~Stack ()
+Stack::~Stack()
 {
-    clear ();
+    clear();
 }
 
-Stack::Stack (const Stack& other) :
-    head (copy (other.head)), dataSize (other.dataSize), limit (other.limit)
+Stack::Stack(const Stack& other) :
+    head(copy(other.head)), dataSize(other.dataSize), limit(other.limit)
 {}
 
-Stack& Stack::operator= (const Stack& other)
+Stack& Stack::operator=(const Stack& other)
 {
-    clear ();
-    head = copy (other.head);
+    clear();
+    head = copy(other.head);
     dataSize = other.dataSize;
     limit = other.limit;
     return *this;
 }
 
-void Stack::push (StackElement* ptr)
+void Stack::push(StackElement* ptr)
 {
     if (dataSize >= limit)
     {
-        throw StackOverflowError (limit);
+        throw StackOverflowError(limit);
     }
 
-    Node* temp = new Node (ptr, head);
+    Node* temp = new Node(ptr, head);
     head = temp;
     dataSize++;
 }
 
-StackElement* Stack::pop ()
+StackElement* Stack::pop()
 {
     if (head != nullptr)
     {
-        StackElement* retval = head->elm.release ();
+        StackElement* retval = head->elm.release();
         Node* temp = head->next;
         delete head;
         head = temp;
@@ -63,60 +63,60 @@ StackElement* Stack::pop ()
         return retval;
     }
 
-    throw StackUnderflowError ();
+    throw StackUnderflowError();
 }
 
 StackElement*
-        Stack::top ()
+        Stack::top()
 {
     if (head != nullptr)
     {
-        return head->elm.get ();
+        return head->elm.get();
     }
 
-    throw StackUnderflowError ();
+    throw StackUnderflowError();
 }
 
 unsigned long
-        Stack::size () const
+        Stack::size() const
 {
     return dataSize;
 }
 
 unsigned long
-        Stack::getLimit () const
+        Stack::getLimit() const
 {
     return limit;
 }
 
-void Stack::setLimit (unsigned long newLimit)
+void Stack::setLimit(unsigned long newLimit)
 {
     if (dataSize > newLimit)
     {
-        throw StackOverflowError (newLimit);
+        throw StackOverflowError(newLimit);
     }
 
     limit = newLimit;
 }
 
-bool Stack::empty () const
+bool Stack::empty() const
 {
     return dataSize == 0;
 }
 
 Stack::StackIterator
-        Stack::begin () const
+        Stack::begin() const
 {
-    return StackIterator (head);
+    return StackIterator(head);
 }
 
 Stack::StackIterator
-        Stack::end () const
+        Stack::end() const
 {
-    return StackIterator (nullptr);
+    return StackIterator(nullptr);
 }
 
-void Stack::clear ()
+void Stack::clear()
 {
     Node* temp;
     while (head != nullptr)
@@ -129,7 +129,7 @@ void Stack::clear ()
     dataSize = 0;
 }
 
-Stack::Node* Stack::copy (Node* other)
+Stack::Node* Stack::copy(Node* other)
 {
     if (other == nullptr)
     {
@@ -137,11 +137,11 @@ Stack::Node* Stack::copy (Node* other)
     }
     else
     {
-        return new Node (other->elm->clone (), copy (other->next));
+        return new Node(other->elm->clone(), copy(other->next));
     }
 }
 
-Stack::Node::Node (StackElement* ptr, Node* nxt) :
-    elm (ptr), next (nxt)
+Stack::Node::Node(StackElement* ptr, Node* nxt) :
+    elm(ptr), next(nxt)
 {}
 } // namespace StackLang

@@ -15,11 +15,11 @@ using std::string;
 class StringElement : public StackElement
 {
   public:
-    StringElement (string);
-    StringElement* clone () const override;
+    StringElement(string);
+    StringElement* clone() const override;
 
-    operator const string () const override;
-    string& getData ();
+    operator const string() const override;
+    string& getData();
 
   private:
     string data;

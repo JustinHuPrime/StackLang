@@ -14,11 +14,11 @@ using std::string;
 class CommandElement : public StackElement
 {
   public:
-    CommandElement (string);
-    CommandElement* clone () const override;
+    CommandElement(string);
+    CommandElement* clone() const override;
 
-    operator const string () const override;
-    string& getData ();
+    operator const string() const override;
+    string& getData();
 
     static const string ALLOWED_COMMAND;
 

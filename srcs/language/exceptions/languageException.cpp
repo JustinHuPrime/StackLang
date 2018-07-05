@@ -5,30 +5,30 @@ namespace StackLang
 namespace Exceptions
 {
 
-LanguageException::LanguageException (const string& msg) :
-    message (msg), errorHasContext (false)
+LanguageException::LanguageException(const string& msg) :
+    message(msg), errorHasContext(false)
 {}
 
-LanguageException::LanguageException (const string& msg, const string& ctx, unsigned loc) :
-    message (msg), context (ctx), location (loc), errorHasContext (true)
+LanguageException::LanguageException(const string& msg, const string& ctx, unsigned loc) :
+    message(msg), context(ctx), location(loc), errorHasContext(true)
 {}
 
-const string LanguageException::getMessage () const
+const string LanguageException::getMessage() const
 {
     return message;
 }
 
-const string LanguageException::getContext () const
+const string LanguageException::getContext() const
 {
     return context;
 }
 
-unsigned LanguageException::getLocation () const
+unsigned LanguageException::getLocation() const
 {
     return location;
 }
 
-bool LanguageException::hasContext () const
+bool LanguageException::hasContext() const
 {
     return errorHasContext;
 }

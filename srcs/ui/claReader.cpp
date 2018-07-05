@@ -3,7 +3,7 @@
 namespace TermUI
 {
 
-void claReader (const vector< string >& args, DefineMap& defines)
+void claReader(const vector< string >& args, DefineMap& defines)
 {
     /* bool argsInclude = false;
     bool argsQuiet = false;

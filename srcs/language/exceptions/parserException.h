@@ -10,9 +10,9 @@ namespace Exceptions
 class ParserException : public LanguageException
 {
   public:
-    ParserException (const string&, const string&, unsigned);
+    ParserException(const string&, const string&, unsigned);
 
-    const string getKind () const override;
+    const string getKind() const override;
 };
 } // namespace Exceptions
 } // namespace StackLang

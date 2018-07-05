@@ -16,11 +16,11 @@ using std::string;
 class NumberElement : public StackElement
 {
   public:
-    NumberElement (string);
-    NumberElement* clone () const override;
+    NumberElement(string);
+    NumberElement* clone() const override;
 
-    operator const string () const override;
-    mpq_class& getData ();
+    operator const string() const override;
+    mpq_class& getData();
 
     static const string ALLOWED_NUMBER;
     static const string NUMBER_SIGNS;

@@ -4,24 +4,24 @@ namespace StackLang
 {
 namespace StackElements
 {
-    const string BooleanElement::TSTR = "true";
-    const string BooleanElement::FSTR = "false";
+const string BooleanElement::TSTR = "true";
+const string BooleanElement::FSTR = "false";
 
-BooleanElement::BooleanElement (bool b) :
-    StackElement (StackElement::DataType::Boolean), data (b)
+BooleanElement::BooleanElement(bool b) :
+    StackElement(StackElement::DataType::Boolean), data(b)
 {}
 
-BooleanElement* BooleanElement::clone () const
+BooleanElement* BooleanElement::clone() const
 {
-    return new BooleanElement (*this);
+    return new BooleanElement(*this);
 }
 
-BooleanElement::operator const string () const
+BooleanElement::operator const string() const
 {
     return data ? TSTR : FSTR;
 }
 
-bool& BooleanElement::getData ()
+bool& BooleanElement::getData()
 {
     return data;
 }

@@ -16,7 +16,7 @@ using std::map;
 using std::string;
 using std::vector;
 
-void claReader (const vector< string >&, DefineMap&);
+void claReader(const vector< string >&, DefineMap&);
 } // namespace TermUI
 
 #endif /* CLAREADER_H */

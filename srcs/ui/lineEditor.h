@@ -18,54 +18,54 @@ class LineEditor
     /**
      * Create blank lineEditor
      */
-    LineEditor ();
+    LineEditor();
 
     /**
      * Move the cursor
      */
-    void right ();
-    void left ();
-    void toEnd ();
-    void toHome ();
+    void right();
+    void left();
+    void toEnd();
+    void toHome();
 
     /**
      * Scroll through the command history - cursor defaults to right side.
      */
-    void up ();
-    void down ();
+    void up();
+    void down();
 
     /**
      * Add something to the history
      */
-    void enter ();
+    void enter();
 
     /**
      * Delete characters to the left or right of cursor
      */
-    void backspace ();
-    void del ();
+    void backspace();
+    void del();
 
     /**
      * Clears the entire editor
      */
-    void clear ();
+    void clear();
 
     /**
      * Get properties of the editor - current cursor left/right, or emptiness of the editor
      */
-    int cursorPosition () const;
-    bool isEmpty () const;
+    int cursorPosition() const;
+    bool isEmpty() const;
 
     /**
      * Add a character or a string to the editor
      */
-    void operator+= (char);
-    void operator+= (string);
+    void operator+=(char);
+    void operator+=(string);
 
     /**
      * Produce the string
      */
-    operator const string () const;
+    operator const string() const;
 
   private:
     list< char > preCursor;

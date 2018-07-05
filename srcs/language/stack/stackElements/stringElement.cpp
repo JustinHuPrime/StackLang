@@ -8,22 +8,22 @@ namespace StackElements
 {
 using Util::escape;
 
-StringElement::StringElement (string s) :
-    StackElement (StackElement::DataType::String),
-    data (s)
+StringElement::StringElement(string s) :
+    StackElement(StackElement::DataType::String),
+    data(s)
 {}
 
-StringElement* StringElement::clone () const
+StringElement* StringElement::clone() const
 {
-    return new StringElement (*this);
+    return new StringElement(*this);
 }
 
-StringElement::operator const string () const
+StringElement::operator const string() const
 {
-    return "\"" + escape (data) + "\"";
+    return "\"" + escape(data) + "\"";
 }
 
-string& StringElement::getData ()
+string& StringElement::getData()
 {
     return data;
 }

@@ -6,20 +6,20 @@ namespace StackLang
 {
 using StackLang::StackElements::CommandElement;
 
-void execute (Stack& s, map< string, DefinedFunction >& defines)
+void execute(Stack& s, map< string, DefinedFunction >& defines)
 {
-    switch (s.top ()->getType ())
+    switch (s.top()->getType())
     {
         case StackElement::DataType::Command:
         {
-            CommandElement* command = dynamic_cast< CommandElement* > (s.top ());
-            s.pop ();
+            CommandElement* command = dynamic_cast< CommandElement* >(s.top());
+            s.pop();
 
-            auto result = PRIMITIVES.find (command->getData ());
+            auto result = PRIMITIVES.find(command->getData());
 
-            if (result != PRIMITIVES.end ())
+            if (result != PRIMITIVES.end())
             {
-                result->second (s, defines);
+                result->second(s, defines);
             }
             else
             {

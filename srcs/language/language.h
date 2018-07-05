@@ -16,14 +16,14 @@ using std::list;
 using std::map;
 using std::pair;
 
-typedef pair< list< TypeElement >, list< StackElement > > DefinedFunction;
+typedef pair< list< TypeElement >, Stack > DefinedFunction;
 typedef map< string, DefinedFunction > DefineMap;
-typedef void (*StackFunction) (Stack&, DefineMap&);
+typedef void (*StackFunction)(Stack&, DefineMap&);
 
 /**
  * Executes the stack until it encounters a data element
  */
-void execute (Stack&, DefineMap&);
+void execute(Stack&, DefineMap&);
 
 const map< string, StackFunction > PRIMITIVES = {};
 } // namespace StackLang

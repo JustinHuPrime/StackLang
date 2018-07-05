@@ -10,9 +10,9 @@ namespace Exceptions
 class StackOverflowError : public LanguageException
 {
   public:
-    StackOverflowError (unsigned long);
+    StackOverflowError(unsigned long);
 
-    const string getKind () const override;
+    const string getKind() const override;
 };
 } // namespace Exceptions
 } // namespace StackLang
