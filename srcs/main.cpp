@@ -110,10 +110,11 @@ int main (int argc, char* argv[])
         }
         else if (key == '\n' || key == '\r' || key == KEY_ENTER) // enter - add and execute
         {
+            string bufferStr = buffer;
+            buffer.enter ();
             try
             {
-                s.push (StackElement::parse (buffer));
-                buffer.enter ();
+                s.push (StackElement::parse (bufferStr));
                 drawStack (s);
                 drawPrompt (buffer);
                 execute (s, defines);
@@ -122,7 +123,6 @@ int main (int argc, char* argv[])
             {
                 drawError (e);
                 errorFlag = true;
-                buffer.clear ();
             }
         }
         else if (key == KEY_BACKSPACE) // line editing.
