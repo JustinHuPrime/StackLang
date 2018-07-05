@@ -4,6 +4,8 @@ namespace StackLang
 {
 namespace StackElements
 {
+    const string BooleanElement::TSTR = "true";
+    const string BooleanElement::FSTR = "false";
 
 BooleanElement::BooleanElement (bool b) :
     StackElement (StackElement::DataType::Boolean), data (b)

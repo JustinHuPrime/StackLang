@@ -20,11 +20,12 @@ class BooleanElement : public StackElement
     operator const string () const override;
     bool& getData ();
 
+    static const string TSTR;
+    static const string FSTR;
+
   private:
     bool data;
 };
-const string TSTR = "true";
-const string FSTR = "false";
 } // namespace StackElements
 } // namespace StackLang
 

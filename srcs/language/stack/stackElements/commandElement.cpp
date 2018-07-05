@@ -4,6 +4,7 @@ namespace StackLang
 {
 namespace StackElements
 {
+const string CommandElement::ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 
 CommandElement::CommandElement (string s) :
     StackElement (StackElement::DataType::Command), data (s)

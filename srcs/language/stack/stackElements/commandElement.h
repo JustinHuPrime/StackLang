@@ -20,10 +20,11 @@ class CommandElement : public StackElement
     operator const string () const override;
     string& getData ();
 
+    static const string ALLOWED_COMMAND;
+
   private:
     string data;
 };
-const string ALLOWED_COMMAND = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 } // namespace StackElements
 } // namespace StackLang
 

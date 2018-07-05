@@ -23,10 +23,11 @@ class SubstackElement : public StackElement
 
   private:
     Stack data;
+    static const string SUBSTACK_BEGIN;
+    static const string SUBSTACK_END;
+    static const string SUBSTACK_SEPARATOR;
+    static const string SUBSTACK_EMPTY;
 };
-const string SUBSTACK_BEGIN = "<<";
-const string SUBSTACK_END = ">>";
-const string SUBSTACK_SEPARATOR = ", ";
 } // namespace StackElements
 } // namespace StackLang
 

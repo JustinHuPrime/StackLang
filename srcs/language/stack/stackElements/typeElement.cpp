@@ -6,6 +6,8 @@ namespace StackElements
 {
 using StackLang::StackElement;
 
+const string TypeElement::TYPES[] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
+
 TypeElement::TypeElement (DataType type) :
     StackElement (StackElement::DataType::Type), data (type)
 {}

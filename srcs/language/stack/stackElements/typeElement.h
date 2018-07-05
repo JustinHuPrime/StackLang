@@ -21,11 +21,11 @@ class TypeElement : public StackElement
 
     static string to_string (DataType);
 
+    static const string TYPES[];
+
   private:
     DataType data;
 };
-
-const string TYPES[] = {"Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
 } // namespace StackElements
 } // namespace StackLang
 

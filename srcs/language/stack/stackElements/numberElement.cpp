@@ -9,6 +9,9 @@ namespace StackElements
 {
 using std::to_string;
 
+const string NumberElement::ALLOWED_NUMBER = "-+/1234567890.'";
+const string NumberElement::NUMBER_SIGNS = "-+";
+
 NumberElement::NumberElement (string d) :
     StackElement (StackElement::DataType::Number)
 {

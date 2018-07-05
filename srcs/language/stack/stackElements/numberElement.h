@@ -22,11 +22,12 @@ class NumberElement : public StackElement
     operator const string () const override;
     mpq_class& getData ();
 
+    static const string ALLOWED_NUMBER;
+    static const string NUMBER_SIGNS;
+
   private:
     mpq_class data;
 };
-const string ALLOWED_NUMBER = "-+/1234567890.'";
-const string NUMBER_SIGNS = "-+";
 } // namespace StackElements
 } // namespace StackLang
 
