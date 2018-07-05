@@ -60,6 +60,7 @@ StackElement* Stack::pop ()
         delete head;
         head = temp;
         dataSize--;
+        return retval;
     }
 
     throw StackUnderflowError ();
@@ -117,10 +118,12 @@ Stack::StackIterator
 
 void Stack::clear ()
 {
-
+    Node* temp;
     while (head != nullptr)
     {
-        pop ();
+        temp = head->next;
+        delete head;
+        head = temp;
     }
 
     dataSize = 0;

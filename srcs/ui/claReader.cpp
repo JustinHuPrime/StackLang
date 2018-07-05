@@ -3,14 +3,14 @@
 namespace TermUI
 {
 
-void claReader (vector< string > args)
+void claReader (const vector< string >& args, DefineMap& defines)
 {
-    bool argsInclude = false;
+    /* bool argsInclude = false;
     bool argsQuiet = false;
 
     for (auto iter = args.begin (); iter != args.end (); iter++)
     {
-    }
+    } */
 
     /*
     for (int i = 1; i < argc; i++) // command line args evaluation
