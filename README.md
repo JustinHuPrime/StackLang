@@ -2,13 +2,9 @@
 
 A stack-oriented programming language with an interpreter implemented in C++. This language is heavily inspired by the DrRacket xSL teaching languages and HP's RPL.
 
-# The Interpreter
-
-A StackLang interpreter has been implemented in C++, and can be found in this repository.
-
 ## Getting Started
 
-StackLang is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++.
+A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++.
 
 ### Prerequisites
 
@@ -39,17 +35,17 @@ The interpreter has several command line options. These options are processed in
 The interpreter recognizes two control sequences:
 
 * `Ctrl-D`: gracefully stops the interpreter. Will not interrupt currently running processes/execution.
-* `Ctrl-C`: 
-    * if the interpreter is executing a command: *NYI* forcefully stops the execution right after the current command has been exected.
-    * if the interpreter is not executing a command: forcefully stops the interpreter. Will interrupt any current operation, and exits without outputting the stack.
+* `Ctrl-C`:
+  * if the interpreter is executing a command: *NYI* forcefully stops the execution right after the current command has been exected.
+  * if the interpreter is not executing a command: forcefully stops the interpreter. Will interrupt any current operation, and exits without outputting the stack.
 
-# The Language
+## The Language
 
 For a complete listing of builtin and standard library commands, see the [documentation pages](link)
 
 The core of StackLang is the stack. The stack is where any and all data your program will operate on will be stored. The command line will add elements to the stack. After an element has been added to the stack, it is executed.
 
-## Stack Elements
+### Stack Elements
 
 Stack elements can be:
 
@@ -65,11 +61,11 @@ Stack elements can be:
 
 * Types: enter a valid type name. Valid type names are: `Boolean`, `Command`, `Number`, `String`, `Substack`, `Type`, and `Any`.
 
-## The Parser
+### The Parser
 
 The parser reads raw input from the command line and turns that input into a string. Any errors with the given input result in a ParserError. The parser error will display an error message, the line of input that caused the error, and specify the character that caused the error.
 
-## File Inclusion
+### File Inclusion
 
 *NYI*
 
@@ -77,6 +73,6 @@ Stacklang files may have any file extension, but the standard file extension use
 
 The file to be read is read line by line. If the line does not contain a `<<` at the start of the line, then it is passed to the command line parser, and parsed into a stack element as if that line had been entered on the command line. If the line contains a `<<` at the start of the line, then the file reader will read the next line. Then, the ending newline on the first line read is removed, a `", "` appended, and the second line appended. If the second line contains a `<<` at the start of the line, then the reader recurses to read in a substack. If the second line does not contain a `>>`, then the reader continues reading. If the second line contains a `>>` anywhere except in a string, then the lines read in so far are given to the parser or returned. A `>>` not at the end of the line will cause a ParserError when parsed.
 
-## Execution Rules
+### Execution Rules
 
 The top item of the stack is popped, and the type of that element determined. If the top item on the stack any type other than a command, then the item is replaced onto the stack, and execution stops. If the top item is a primitive command (`plus`, `divide`, `swap`, other built-ins), then the arguments to the command are popped off of the stack, and the command executed by the interpreter. If the top item is a defined command (user definined commands, commands from included files), then the interpreter looks up the command body to go with the command name, and places those commands on the stack all at once, and will not execute commands after a single command has been put onto the stack. If execution has not been stopped by the evaluation of a data item, then the new top element of the stack is executed. If the command entered does not exist, an error is signalled.
