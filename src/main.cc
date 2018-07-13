@@ -1,15 +1,3 @@
-#include "language/exceptions/languageException.h"
-#include "language/exceptions/stackOverflowError.h"
-#include "language/language.h"
-#include "language/stack.h"
-#include "language/stack/stackElement.h"
-#include "language/stack/stackElements/commandElement.h"
-#include "language/stack/stackElements/stringElement.h"
-#include "ui/claReader.h"
-#include "ui/lineEditor.h"
-#include "ui/ui.h"
-
-#include <ncurses.h>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -17,6 +5,18 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+#include <ncurses.h>
+
+#include "language/exceptions/languageException.h"
+#include "language/language.h"
+#include "language/stack.h"
+#include "language/stack/stackElement.h"
+#include "language/stack/stackElements/commandElement.h"
+#include "language/stack/stackElements/stringElement.h"
+#include "ui/argReader.h"
+#include "ui/lineEditor.h"
+#include "ui/ui.h"
 
 namespace KeyInfo {
 const char KEY_CTRL_D = 4;
@@ -27,10 +27,10 @@ int main(int argc, char* argv[]) {
   using StackLang::Stack;
   using StackLang::StackElement;
   using StackLang::Exceptions::LanguageException;
-  using StackLang::Exceptions::StackOverflowError;
   using StackLang::StackElements::CommandElement;
   using StackLang::StackElements::StringElement;
   using std::cerr;
+  using std::cout;
   using std::endl;
   using std::invalid_argument;
   using std::map;
@@ -40,11 +40,12 @@ int main(int argc, char* argv[]) {
   using std::string;
   using std::vector;
   using TermUI::addstring;
-  using TermUI::claReader;
+  using TermUI::ArgReader;
   using TermUI::displayInfo;
   using TermUI::drawError;
   using TermUI::drawPrompt;
   using TermUI::drawStack;
+  using TermUI::HELPMSG;
   using TermUI::init;
   using TermUI::LineEditor;
   using TermUI::printError;
@@ -53,62 +54,71 @@ int main(int argc, char* argv[]) {
   DefineMap defines;
 
   LineEditor buffer;
-
-  int debugmode = 0;
-
   bool errorFlag = false;
 
-  bool argsInclude = false;
-  bool argsQuiet = false;
+  int debugMode = 0;
+  string outputFile;
 
-  // for (int i = 1; i < argc; i++) {  // command line args evaluation
-  //   if (string(argv[i]) == "--") {  // end of specified files to include
-  //     argsInclude = false;
-  //   } else if (argsInclude) {
-  //     s.push(new StringElement(argv[i]));
-  //     s.push(new CommandElement("include"));
+  ArgReader args;
 
-  //     try {
-  //       execute(s, defines);
-  //     } catch (const LanguageException& e) {
-  //       printError(e);
-  //       cerr << "Aborting." << endl;
-  //       exit(EXIT_FAILURE);
-  //     }
-  //   } else if (string(argv[i]) == "-d") {  // set debug mode
-  //     if (i + 1 >= argc) {
-  //       cerr << "Expected number after `-d`, found nothing. Abort." << endl;
-  //       exit(EXIT_FAILURE);
-  //     }
-
-  //     try {
-  //       debugmode = stoi(argv[++i]);
-  //     } catch (const invalid_argument& e) {
-  //       cerr << "Expected number after `-d`, found `" << argv[i] << "`.
-  //       Abort."
-  //            << endl;
-  //       exit(EXIT_FAILURE);
-  //     }
-  //   } else if (string(argv[i]) ==
-  //              "-I") {  // start of specified files to include
-  //     argsInclude = true;
-  //   } else if (string(argv[i]) == "-l") {  // set limit
-  //     if (i + 1 >= argc) {
-  //       cerr << "Expected number after `-l`, found nothing. Abort" << endl;
-  //     }
-
-  //     try {
-  //       s.setLimit(stoul(argv[++i]));
-  //     } catch (const invalid_argument& e) {
-  //       cerr << "Expected number after `-l`, found `" << argv[i] << "`.
-  //       Abort."
-  //            << endl;
-  //     } catch (const StackOverflowError& e) {
-  //       cerr << "Specified limit is too low to contain " << s.size()
-  //            << " elements, the current size of the stack. Abort." << endl;
-  //     }
-  //   }
-  // }
+  try {
+    args.read(argc, argv);
+    args.validate("?h", "dlo", "I");
+  } catch (const LanguageException& e) {
+    printError(e);
+    cerr << "Encountered error parsing command line arguments. Aborting."
+         << endl;
+    exit(EXIT_FAILURE);
+  }
+  if (args.hasFlag('?') || args.hasFlag('h')) {
+    cout << HELPMSG;
+    exit(EXIT_SUCCESS);
+  }
+  if (args.hasOpt('d')) {
+    try {
+      debugMode = stoi(args.getOpt('d'));
+    } catch (const invalid_argument&) {
+      cerr << "(Command line arguments invalid:\nExpected a number after `-d`, "
+              "but found" +
+                  args.getOpt('d') + ".\nAborting."
+           << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+  if (args.hasOpt('l')) {
+    try {
+      s.setLimit(stoul(args.getOpt('l')));
+    } catch (const invalid_argument&) {
+      cerr << "(Command line arguments invalid:\nExpected a number after `-l`, "
+              "but found" +
+                  args.getOpt('l') + ".\nAborting."
+           << endl;
+      exit(EXIT_FAILURE);
+    } catch (const LanguageException& e) {
+      printError(e);
+      cerr << "Encountered error parsing command line arguments. Aborting."
+           << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+  if (args.hasOpt('o')) {
+    outputFile = args.getOpt('o');
+  }
+  if (args.hasOpt('I')) {
+    vector<string> libs = args.getLongOpt('I');
+    for (string str : libs) {
+      s.push(new StringElement(str));
+      s.push(new CommandElement("include"));
+      try {
+        execute(s, defines);
+      } catch (const LanguageException& e) {
+        printError(e);
+        cerr << "Encountered error parsing command line arguments. Aborting."
+             << endl;
+        exit(EXIT_FAILURE);
+      }
+    }
+  }
 
   init();
 
@@ -183,12 +193,12 @@ int main(int argc, char* argv[]) {
       beep();
     }
 
-    if (debugmode == 1) {  // debug options - must not include 0
+    if (debugMode == 1) {  // debug options - must not include 0
       move(0, getmaxx(stdscr) - 3);
       clrtoeol();
       addstring(std::to_string(key).c_str());
       move(getmaxy(stdscr) - 1, buffer.cursorPosition() + 2);
-    } else if (debugmode == 2) {
+    } else if (debugMode == 2) {
       move(0, 0);
       clrtoeol();
       addstring("|");
