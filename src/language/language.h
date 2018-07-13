@@ -1,14 +1,14 @@
 #ifndef STACKLANG_LANGUAGE_LANGUAGE_H_
 #define STACKLANG_LANGUAGE_LANGUAGE_H_
 
-#include "language/stack.h"
-#include "language/stack/stackElement.h"
-#include "language/stack/stackElements/typeElement.h"
-
 #include <array>
 #include <list>
 #include <map>
 #include <utility>
+
+#include "language/stack.h"
+#include "language/stack/stackElement.h"
+#include "language/stack/stackElements/typeElement.h"
 
 namespace StackLang {
 using StackElements::TypeElement;

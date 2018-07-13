@@ -1,9 +1,9 @@
 #ifndef STACKLANG_LANGUAGE_STACK_H_
 #define STACKLANG_LANGUAGE_STACK_H_
 
-#include "language/stack/stackElement.h"
-
 #include <memory>
+
+#include "language/stack/stackElement.h"
 
 namespace StackLang {
 using std::unique_ptr;

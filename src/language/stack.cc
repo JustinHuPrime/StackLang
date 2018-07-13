@@ -1,11 +1,11 @@
 #include "language/stack.h"
 
+#include <memory>
+#include <queue>
+
 #include "language/exceptions/stackOverflowError.h"
 #include "language/exceptions/stackUnderflowError.h"
 #include "language/stack/stackIterator.h"
-
-#include <memory>
-#include <queue>
 
 namespace StackLang {
 using StackLang::StackElement;

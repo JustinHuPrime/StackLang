@@ -1,9 +1,9 @@
 #include "language/language.h"
 
-#include "language/stack/stackElements/commandElement.h"
-
 #include <algorithm>
 #include <iterator>
+
+#include "language/stack/stackElements/commandElement.h"
 
 namespace StackLang {
 using StackLang::StackElements::CommandElement;

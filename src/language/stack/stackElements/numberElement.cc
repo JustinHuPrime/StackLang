@@ -1,10 +1,10 @@
 #include "language/stack/stackElements/numberElement.h"
 
-#include "language/exceptions/parserException.h"
-#include "util/stringUtils.h"
-
 #include <cmath>
 #include <string>
+
+#include "language/exceptions/parserException.h"
+#include "util/stringUtils.h"
 
 namespace StackLang {
 namespace StackElements {

@@ -1,10 +1,10 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENTS_SUBSTACKELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENTS_SUBSTACKELEMENT_H_
 
+#include <string>
+
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
-
-#include <string>
 
 namespace StackLang {
 namespace StackElements {

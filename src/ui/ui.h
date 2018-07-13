@@ -1,13 +1,13 @@
 #ifndef STACKLANG_UI_UI_H_
 #define STACKLANG_UI_UI_H_
 
+#include <string>
+
 #include "language/exceptions/languageException.h"
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
 #include "language/stack/stackIterator.h"
 #include "ui/lineEditor.h"
-
-#include <string>
 
 namespace TermUI {
 using StackLang::Stack;
@@ -37,10 +37,18 @@ const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char* const INFO = R"(StackLang interpreter version ALPHA 4
+const char* INFO = R"(StackLang interpreter version ALPHA 4
 by Justin Hu, 2018
 Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)";
+
+const char* HELPMSG = R"(
+* `-?`, `-h`: prints this message.
+* `-d N`: sets debugger to mode N.
+* `-I filepath ... --`: includes files at filepath.
+* `-l N`: limits stack to N elements in size.
+* `-o file`: outputs formatted stack to file.
+)";
 }  // namespace TermUI
 
 #endif  // STACKLANG_UI_UI_H_

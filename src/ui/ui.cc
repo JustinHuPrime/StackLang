@@ -1,10 +1,11 @@
 #include "ui/ui.h"
 
-#include "util/stringUtils.h"
-
-#include <ncurses.h>
 #include <csignal>
 #include <iostream>
+
+#include <ncurses.h>
+
+#include "util/stringUtils.h"
 
 namespace TermUI {
 using std::cerr;

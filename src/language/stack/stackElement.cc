@@ -1,5 +1,10 @@
 #include "language/stack/stackElement.h"
 
+#include <algorithm>
+#include <iterator>
+#include <stack>
+#include <string>
+
 #include "language/exceptions/parserException.h"
 #include "language/stack/stackElements/booleanElement.h"
 #include "language/stack/stackElements/commandElement.h"
@@ -8,12 +13,6 @@
 #include "language/stack/stackElements/substackElement.h"
 #include "language/stack/stackElements/typeElement.h"
 #include "util/stringUtils.h"
-
-#include <algorithm>
-#include <csignal>
-#include <iterator>
-#include <stack>
-#include <string>
 
 namespace StackLang {
 using Exceptions::ParserException;

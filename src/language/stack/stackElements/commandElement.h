@@ -1,9 +1,9 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENTS_COMMANDELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENTS_COMMANDELEMENT_H_
 
-#include "language/stack/stackElement.h"
-
 #include <string>
+
+#include "language/stack/stackElement.h"
 
 namespace StackLang {
 namespace StackElements {

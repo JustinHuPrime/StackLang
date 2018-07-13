@@ -1,10 +1,10 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENTS_TYPEELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENTS_TYPEELEMENT_H_
 
-#include "language/stack/stackElement.h"
-
 #include <string>
 #include <vector>
+
+#include "language/stack/stackElement.h"
 
 namespace StackLang {
 namespace StackElements {
