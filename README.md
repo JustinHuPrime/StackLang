@@ -25,7 +25,7 @@ The interpreter has several command line options:
 
 * `-?`, `-h`: prints a summary of the command line options, then exits immediately.
 * `-d N`: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The default mode of 0 is guarenteed to have no effect.
-* `-I filepath ...`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. Filepaths may be enclosed in quotes. Any unquoted string that starts with `-` will cause it to parse a new option.
+* `-I filepath ...`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. Filepaths may be enclosed in quotes. Any unquoted string that starts with `-` will cause it to parse a new option. The `include` command will first look from the directory containing the `stacklang` executable for a `libraries` folder, then within that folder for the named file, the named file with a `.sl` extension, then search in the current working directory for the named file, then the named file with a `.sl` extension.
 * `-l N`: limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
 * `-o file`: file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D`. The active end of the stack will be the first line of the file.
 
@@ -33,10 +33,11 @@ The interpreter has several command line options:
 
 The interpreter recognizes two control sequences:
 
-* `Ctrl-D`: gracefully stops the interpreter. Will not interrupt currently running processes/execution.
-* `Ctrl-C`:
+* `Ctrl-D`: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently running processes/execution.
+* `Ctrl-C`: this key is terminal dependent, as it is really a raised `SIGINTR`.
   * if the interpreter is executing a command: *NYI* forcefully stops the execution.
   * if the interpreter is not executing a command: forcefully stops the interpreter. Exits without outputting the stack.
+* `Ctrl-\`: this forcefully and immediately stops the interpreter. This key is terminal dependent, as it is really a raised `SIGQUIT`.
 
 ## The Language
 
