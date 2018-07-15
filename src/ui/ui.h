@@ -37,12 +37,14 @@ const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char* INFO = R"(StackLang interpreter version ALPHA 4
+const char* const INFO = R"(StackLang interpreter version ALPHA 5
 by Justin Hu, 2018
+This is free software with ABSOLUTELY NO WARRANTY.
+See the COPYING.md file for information on redistribution.
 Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)";
 
-const char* HELPMSG = R"(
+const char* const HELPMSG = R"(
 * `-?`, `-h`: prints this message.
 * `-d N`: sets debugger to mode N.
 * `-I filepath ... --`: includes files at filepath.

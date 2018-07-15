@@ -5,9 +5,11 @@
 
 #include <ncurses.h>
 
+#include "language/language.h"
 #include "util/stringUtils.h"
 
 namespace TermUI {
+using StackLang::stopFlag;
 using std::cerr;
 using std::endl;
 using Util::spaces;
@@ -30,13 +32,16 @@ void init() {
     ungetch(EINTR);
   });
 
+  signal(SIGINT, [](int sigNum) {
+    (void)sigNum;  // ignore sigNum
+    stopFlag = true;
+  });
+
   auto defSigHandler = [](int sigNum) {
     uninit();
     signal(sigNum, SIG_DFL);
     raise(sigNum);
   };
-
-  signal(SIGINT, defSigHandler);
 
   signal(SIGABRT, defSigHandler);
   signal(SIGFPE, defSigHandler);

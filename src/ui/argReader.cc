@@ -10,10 +10,10 @@ using std::find;
 using std::min;
 using std::to_string;
 
-void ArgReader::read(int argc, char* argv[], bool restrictChar) {
+void ArgReader::read(int argc, char* argv[]) {
   vector<string> args;
 
-  for (int i = 0; i < argc; i++) {
+  for (int i = 1; i < argc; i++) {
     args.push_back(string(argv[i]));
   }
 
@@ -67,12 +67,14 @@ void ArgReader::read(int argc, char* argv[], bool restrictChar) {
     }
   }
 
-  if (acc.size() == 0) {  // again, commit the last option
-    flags.push_back(currentOpt);
-  } else if (acc.size() == 1) {
-    options[currentOpt] = acc.front();
-  } else {
-    longOpts[currentOpt] = acc;
+  if (args.size() != 0) {
+    if (acc.size() == 0) {  // again, commit the last option
+      flags.push_back(currentOpt);
+    } else if (acc.size() == 1) {
+      options[currentOpt] = acc.front();
+    } else {
+      longOpts[currentOpt] = acc;
+    }
   }
 }
 
@@ -102,10 +104,10 @@ bool ArgReader::hasFlag(char c) const {
   return find(flags.begin(), flags.end(), c) != flags.end();
 }
 bool ArgReader::hasOpt(char c) const {
-  return find(options.begin(), options.end(), c) != options.end();
+  return options.find(c) != options.end();
 }
 bool ArgReader::hasLongOpt(char c) const {
-  return find(longOpts.begin(), longOpts.end(), c) != longOpts.end();
+  return longOpts.find(c) != longOpts.end();
 }
 string ArgReader::getOpt(char c) const {
   auto atargst = options.find(c);

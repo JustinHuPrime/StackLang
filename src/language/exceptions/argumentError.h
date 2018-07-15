@@ -7,8 +7,8 @@ namespace StackLang {
 namespace Exceptions {
 class ArgumentError : public LanguageException {
  public:
-  ArgumentError(const string& message);
-  ArgumentError(const string& message, const string& actual, size_t posDif);
+  ArgumentError(const string& msg);
+  ArgumentError(const string& msg, const string& actual, size_t posDif);
   ArgumentError(const ArgumentError&) = default;
 
   ArgumentError& operator=(const ArgumentError&) = default;
