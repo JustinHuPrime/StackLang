@@ -18,7 +18,7 @@ class BooleanElement : public StackElement {
   BooleanElement* clone() const override;
 
   explicit operator const string() const override;
-  bool& getData();
+  bool getData() const;
 
  private:
   bool data;

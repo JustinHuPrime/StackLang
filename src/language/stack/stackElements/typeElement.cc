@@ -14,7 +14,7 @@ TypeElement* TypeElement::clone() const { return new TypeElement(data); }
 
 TypeElement::operator const string() const { return to_string(data); }
 
-StackElement::DataType& TypeElement::getData() { return data; }
+StackElement::DataType TypeElement::getData() const { return data; }
 
 string TypeElement::to_string(StackElement::DataType type) {
   return TYPES()[static_cast<unsigned>(type)];

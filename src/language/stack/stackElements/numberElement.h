@@ -20,10 +20,11 @@ class NumberElement : public StackElement {
   static NumberElement* parse(const string&);
 
   explicit NumberElement(string);
+  explicit NumberElement(const mpq_class&);
   NumberElement* clone() const override;
 
   explicit operator const string() const override;
-  mpq_class& getData();
+  const mpq_class& getData() const;
 
  private:
   mpq_class data;

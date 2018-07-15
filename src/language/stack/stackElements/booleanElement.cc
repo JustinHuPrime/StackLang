@@ -14,6 +14,6 @@ BooleanElement* BooleanElement::clone() const {
 
 BooleanElement::operator const string() const { return data ? TSTR : FSTR; }
 
-bool& BooleanElement::getData() { return data; }
+bool BooleanElement::getData() const { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

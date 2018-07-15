@@ -33,10 +33,8 @@ The interpreter has several command line options:
 
 The interpreter recognizes two control sequences:
 
-* `Ctrl-D`: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently running processes/execution.
-* `Ctrl-C`: this key is terminal dependent, as it is really a raised `SIGINTR`.
-  * if the interpreter is executing a command: *NYI* forcefully stops the execution.
-  * if the interpreter is not executing a command: forcefully stops the interpreter. Exits without outputting the stack.
+* `Ctrl-d`: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently running processes/execution.
+* `Ctrl-c`: stops execution of any commands. This key is terminal dependent, as it is really a raised `SIGINTR`.
 * `Ctrl-\`: this forcefully and immediately stops the interpreter. This key is terminal dependent, as it is really a raised `SIGQUIT`.
 
 ## The Language

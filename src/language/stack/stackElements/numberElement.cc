@@ -75,12 +75,15 @@ NumberElement::NumberElement(string d)
   data.canonicalize();
 }
 
+NumberElement::NumberElement(const mpq_class& d)
+    : StackElement(StackElement::DataType::Number), data(d) {}
+
 NumberElement* NumberElement::clone() const {
   return new NumberElement(data.get_str());
 }
 
 NumberElement::operator const string() const { return data.get_str(); }
 
-mpq_class& NumberElement::getData() { return data; }
+const mpq_class& NumberElement::getData() const { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

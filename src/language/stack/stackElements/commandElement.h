@@ -19,7 +19,7 @@ class CommandElement : public StackElement {
   CommandElement* clone() const override;
 
   explicit operator const string() const override;
-  string& getData();
+  const string& getData() const;
 
  private:
   static const char* COMMAND_LDELIM;

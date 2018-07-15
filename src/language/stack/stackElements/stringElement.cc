@@ -36,6 +36,6 @@ StringElement::operator const string() const {
   return "\"" + escape(data) + "\"";
 }
 
-string& StringElement::getData() { return data; }
+const string& StringElement::getData() const { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

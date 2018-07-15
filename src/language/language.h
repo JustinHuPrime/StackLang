@@ -18,14 +18,15 @@ using std::map;
 using std::pair;
 
 typedef pair<list<TypeElement>, Stack> DefinedFunction;
-typedef map<string, DefinedFunction> DefineMap;
-typedef void (*PrimitiveFunction)(Stack&, DefineMap&);
+typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
+typedef pair<list<StackElement::DataType>, Prim> PrimitiveFunction;
 
-// Executes the stack until it encounters a data element
-void execute(Stack&, DefineMap&);
+const map<string, PrimitiveFunction>& PRIMITIVES();
+void execute(Stack&,
+             map<string, DefinedFunction>&);  // Executes the stack until it
+                                              // encounters a data element
 
-const pair<const char*, PrimitiveFunction> PRIMITIVES[] = {
-    {"plus", [](Stack&, DefineMap&) { return; }}};
+extern bool stopFlag;
 }  // namespace StackLang
 
 #endif  // STACKLANG_LANGUAGE_

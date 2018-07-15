@@ -16,7 +16,7 @@ class TypeElement : public StackElement {
   TypeElement* clone() const override;
 
   explicit operator const string() const override;
-  DataType& getData();
+  DataType getData() const;
 
   static string to_string(DataType);
 

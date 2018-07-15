@@ -23,7 +23,7 @@ const char KEY_CTRL_D = 4;
 }
 
 int main(int argc, char* argv[]) {
-  using StackLang::DefineMap;
+  using StackLang::DefinedFunction;
   using StackLang::Stack;
   using StackLang::StackElement;
   using StackLang::Exceptions::LanguageException;
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
   using TermUI::printError;
 
   Stack s;
-  DefineMap defines;
+  map<string, DefinedFunction> defines;
 
   LineEditor buffer;
   bool errorFlag = false;
@@ -152,15 +152,15 @@ int main(int argc, char* argv[]) {
         key != KEY_ENTER) {  // normal characters added to buffer.
       buffer += key;
       drawPrompt(buffer);
-    } else if (key == '\n' || key == '\r' ||
-               key == KEY_ENTER) {  // enter - add and execute
+    } else if ((key == '\n' || key == '\r' || key == KEY_ENTER) &&
+               !buffer.isEmpty()) {  // enter - add and execute
       string bufferStr = string(buffer);
       buffer.enter();
       try {
         s.push(StackElement::parse(bufferStr));
+        execute(s, defines);
         drawStack(s);
         drawPrompt(buffer);
-        execute(s, defines);
       } catch (const LanguageException& e) {
         drawError(e);
         errorFlag = true;

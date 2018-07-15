@@ -42,6 +42,6 @@ CommandElement::operator const string() const {
   return COMMAND_LDELIM + data + COMMAND_RDELIM;
 }
 
-string& CommandElement::getData() { return data; }
+const string& CommandElement::getData() const { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

@@ -93,6 +93,6 @@ SubstackElement::operator const string() const {
   return buffer;  // return value optimization
 }
 
-Stack& SubstackElement::getData() { return data; }
+const Stack& SubstackElement::getData() const { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

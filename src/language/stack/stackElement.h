@@ -22,12 +22,12 @@ class StackElement {
   // Produces a StackElement (of some type) from a terminal input string
   static StackElement* parse(const string&);
 
-  StackElement(const StackElement&) = delete;
-  StackElement(StackElement&&) = delete;
+  StackElement(const StackElement&) = default;
+  StackElement(StackElement&&) = default;
   virtual StackElement* clone() const = 0;
 
-  StackElement& operator=(const StackElement&) = delete;
-  StackElement& operator=(StackElement&&) = delete;
+  StackElement& operator=(const StackElement&) = default;
+  StackElement& operator=(StackElement&&) = default;
 
   virtual ~StackElement();
 
