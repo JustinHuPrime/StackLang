@@ -17,7 +17,7 @@ using std::vector;
 // flags are not supported, not are long option names and synonyms.
 class ArgReader {
  public:
-  ArgReader() = default;
+  ArgReader();
   ArgReader(const ArgReader&) = default;
   ArgReader& operator=(const ArgReader&) = default;
   ArgReader(ArgReader&&) = default;

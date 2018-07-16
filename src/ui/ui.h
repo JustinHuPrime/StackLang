@@ -44,7 +44,7 @@ See the COPYING.md file for information on redistribution.
 Use ^D to exit from prompt, and ^C to force quit
 Press any key to continue...)";
 
-const char* const HELPMSG = R"(
+const char* const HELPMSG = R"( Usage: stacklang [OPTIONS]
 * `-?`, `-h`: prints this message.
 * `-d N`: sets debugger to mode N.
 * `-I filepath ... --`: includes files at filepath.

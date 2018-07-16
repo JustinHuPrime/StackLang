@@ -32,7 +32,7 @@ SubstackElement* SubstackElement::parse(const string& s) {
         parseLevel == 0)  // found a comma at top level - our responsibility
     {
       accumulator.erase(accumulator.end() - 1);  // remove the comma
-      buffer.push(parse(trim(accumulator)));
+      buffer.push(StackElement::parse(trim(accumulator)));
       accumulator = "";
     } else if (*iter == '"' && lastChar != '\\')  // found an unescaped quote
     {
@@ -61,7 +61,7 @@ SubstackElement* SubstackElement::parse(const string& s) {
                           s, s.length() - 1);
   } else if (trim(accumulator) != "")  // allow empty lists and terminal commas
   {
-    buffer.push(parse(trim(accumulator)));
+    buffer.push(StackElement::parse(trim(accumulator)));
   }
 
   buffer.reverse();
