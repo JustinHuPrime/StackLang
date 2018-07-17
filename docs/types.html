@@ -1,0 +1,92 @@
+<!doctype HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://techteamai.github.io/StackLang/linkStyle.css">
+
+    <title>
+        Stacklang Documentation - Types
+    </title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 bg-secondary h-100">
+                <script>
+                    (function ()
+                    {
+                        var cx = '013187363385035568625:b83vmcztnxu';
+                        var gcse = document.createElement('script');
+                        gcse.type = 'text/javascript';
+                        gcse.async = true;
+                        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(gcse, s);
+                    })();
+                </script>
+                <hr/>
+                <gcse:searchbox-only></gcse:searchbox-only>
+                <hr/>
+                <a href="https://techteamai.github.io/StackLang/index.html">StackLang Documentation</a>
+                <ul>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/language.html">The Language</a>
+                    </li>
+                    <li>
+                        <b>Data Types</b>
+                    </li>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/specialForms.html">Special Primitive Functions</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm">
+                <h1>Types in StackLang</h1>
+                <p>
+                    StackLang is a statically typed language. This typing is enforced with latent typing. There are six basic types in StackLang:
+                    <ul>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/booleans.html">Booleans</a>: Booleans are either
+                            <code>true</code> or
+                            <code>false</code>.</li>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/commands.html">Commands</a>: Commands are either the name of a primitive function or the named of a defined
+                            function.
+                        </li>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/numbers.html">Numbers</a>: StackLang numbers are arbitrary precision rational numbers. All StackLang numbers
+                            are displayed as fractions or as integers. However, numbers can be parsed as decimals or as fractions.
+                        </li>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/strings.html">Strings</a>: A StackLang string is an arbitrarily long string of ASCII characters.
+                        </li>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/substacks.html">Substacks</a>: Substacks are a way to "group" stack elements together in StackLang. Stacks are
+                            similar to lists in Lisp and Scheme - they can only be operated on from one end, and can be decomposed
+                            by getting the top and the rest of the substack.
+                        </li>
+                        <li>
+                            <a href="https://techteamai.github.io/StackLang/typeElements.html">Types</a>: StackLang has a limited capability for reflection - it is able to get the type of
+                            an element and manipulate that information. A type is one of the six primitive types, or the
+                            special
+                            <code>Any</code> type.
+                        </li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

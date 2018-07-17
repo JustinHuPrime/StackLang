@@ -1,0 +1,7 @@
+div#sidebar a:link {
+    color: #404040;
+}
+
+div#sidebar a:visited {
+    color: #202020;
+}

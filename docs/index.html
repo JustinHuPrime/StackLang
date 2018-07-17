@@ -2,16 +2,18 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+        crossorigin="anonymous" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://techteamai.github.io/StackLang/linkStyle.css" />
+    <!--<link rel="stylesheet" href="linkStyle.css" />-->
 
     <title>
         Stacklang Documentation
@@ -21,8 +23,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-2 bg-secondary">
-                <h1>SIDEBAR</h1>
+            <div class="col-sm-2 bg-secondary h-100" id="sidebar">
                 <script>
                     (function ()
                     {
@@ -35,10 +36,58 @@
                         s.parentNode.insertBefore(gcse, s);
                     })();
                 </script>
+                <hr/>
                 <gcse:searchbox-only></gcse:searchbox-only>
+                <hr/>
+                <b>StackLang Documentation</b>
+                <ul>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/language.html">The Language</a>
+                    </li>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/types.html">Data Types</a>
+                    </li>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/specialForms.html">Special Primitive Functions</a>
+                    </li>
+                </ul>
             </div>
             <div class="col-sm">
-                <h1>FILLER</h1>
+                <h1>StackLang Documentation</h1>
+                <h2>What is StackLang?</h2>
+                <p>STUFF!</p>
+                <h2>Using the Documentation</h2>
+                In these files, text is sometimes formatted
+                <code>like this</code>. The altered formatting indicates that the text is either interactions with the interpreter or not normal
+                prose in some way. When discussing interactions with the interpreter, both inputs and outputs are given as
+                how they would appear when printed. Booleans are written as
+                <code>true</code> or
+                <code>false</code>, commands
+                <code>&lt;like-this&gt;</code>, numbers
+                <code>12/34</code>, strings
+                <code>"like this"</code>, substacks
+                <code>&lt;&lt; "with content here", "and maybe more content" &gt;&gt;</code>, the special empty substack
+                <code>&lt;&lt; (empty) &gt;&gt;</code>, and types
+                <code>Type</code>.
+                <h3>Terms</h3>
+                <p>Throughout this documentation, certain terms have special meanings. These are documented below
+                    <ul>
+                        <li>
+                            <i>function</i>: synonym for
+                            <i>command</i>. A command is a stack element of type Command that is executed when on the top of
+                            the stack. It is preferred to use command instead of function.</li>
+                    </ul>
+                </p>
+                <h3>Notation</h3>
+                <p>When discussing a command, a signature will often be mentioned. Signatures are formatted as a list of space-separated
+                    input types, followed by a
+                    <code>-></code>, followed by another list of space-separated output types. For example:
+                    <br/>
+                    <code>Number Number -> Number</code>
+                    <br/> is the signature for the command
+                    <code>add</code>.</p>
+                <h2>About the Author</h2>
+                <p>About me!</p>
             </div>
         </div>
     </div>
