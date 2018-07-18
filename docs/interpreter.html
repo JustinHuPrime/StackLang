@@ -1,0 +1,110 @@
+<!doctype HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://techteamai.github.io/StackLang/linkStyle.css" />
+    <!--<link rel="stylesheet" href="linkStyle.css" />-->
+
+    <title>
+        Stacklang Documentation - Interpreter
+    </title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
+                <script>
+                    (function ()
+                    {
+                        var cx = '013187363385035568625:b83vmcztnxu';
+                        var gcse = document.createElement('script');
+                        gcse.type = 'text/javascript';
+                        gcse.async = true;
+                        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(gcse, s);
+                    })();
+                </script>
+                <hr/>
+                <gcse:searchbox-only>Search documentation...</gcse:searchbox-only>
+                <hr/>
+                <a href="https://techteamai.github.io/StackLang/index.html">StackLang Documentation</a>
+                <ul>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/language.html">The Language</a>
+                    </li>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/types.html">Data Types</a>
+                    </li>
+                    <li>
+                        <a href="https://techteamai.github.io/StackLang/specialForms.html">Special Primitive Functions</a>
+                    </li>
+                    <li>
+                        <b>The Interpreter</b>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg">
+                <h1>The Interpreter</h1>
+                <p>The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke
+                    the interpreter from becomes one of the two roots of the interpreter's search path. The other root is
+                    the "libs" folder within the folder where the executable is located.</p>
+                <h2>Command Line Options</h2>
+                <ul>
+                    <li>
+                        <code>-?</code>,
+                        <code>-h</code>: prints a summary of the command line options, then exits immediately.</li>
+                    <li>
+                        <code>-d N</code>: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The
+                        default mode of 0 is guarenteed to have no effect.</li>
+                    <li>
+                        <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at startup. Filepaths may be enclosed
+                        in quotes. Any unquoted string that starts with
+                        <code>-</code> will cause it to parse a new option. The
+                        <code>include</code> command will first look from the directory containing the interpreter for a
+                        <code>libs</code> folder, then within that folder for the named file, the named file, but adding a
+                        <code>.sl</code> extension, then search in the current working directory for the named file, then the named file,
+                        but adding a
+                        <code>.sl</code> extension.</li>
+                    <li>
+                        <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put more than
+                        N elements onto the stack. Default is limited by the size of a long int on the local system.</li>
+                    <li>
+                        <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
+                        <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.</li>
+                </ul>
+                <h2>Keyboard Controls</h2>
+                <p>The interpreter recognizes three control keys:
+                    <ul>
+                        <li>
+                            <kbd>Ctrl-d</kbd>: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently
+                            running processes/execution.
+                        </li>
+                        <li>
+                            <kbd>Ctrl-c</kbd>: stops execution of any commands. This key is terminal dependent, as it is really
+                            a raised
+                            <code>SIGINTR</code>.
+                        </li>
+                        <li>
+                            <kbd>Ctrl-\</kbd>: this forcefully and immediately stops the interpreter. This key is terminal dependent,
+                            as it is really a raised
+                            <code>SIGQUIT</code>.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

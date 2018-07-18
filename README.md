@@ -4,7 +4,7 @@ A stack-oriented programming language with an interpreter implemented in C++. Th
 
 ## Getting Started
 
-A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++.
+A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++. For a complete language reference, see the [documentation pages](https://techteamai.github.io/StackLang/index.html).
 
 ### Prerequisites
 
@@ -18,28 +18,6 @@ StackLang requires:
 ### Building
 
 To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang` in the same directory as the makefile.
-
-## Using the Interpreter
-
-The interpreter has several command line options:
-
-* `-?`, `-h`: prints a summary of the command line options, then exits immediately.
-* `-d N`: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The default mode of 0 is guarenteed to have no effect.
-* `-I filepath ...`: automatically includes files (at the specified path) to be read at startup. These files should only contain `define`s. Filepaths may be enclosed in quotes. Any unquoted string that starts with `-` will cause it to parse a new option. The `include` command will first look from the directory containing the `stacklang` executable for a `libraries` folder, then within that folder for the named file, the named file with a `.sl` extension, then search in the current working directory for the named file, then the named file with a `.sl` extension.
-* `-l N`: limits the stack to N elements in size - interpreter will abort if attempting to put more than N elements onto the stack. Default is limited by the size of a long int on the local system.
-* `-o file`: file to print the stack to (in formatted mode) when the interpreter exits via `Ctrl-D`. The active end of the stack will be the first line of the file.
-
-### Keyboard Controls
-
-The interpreter recognizes two control sequences:
-
-* `Ctrl-d`: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently running processes/execution.
-* `Ctrl-c`: stops execution of any commands. This key is terminal dependent, as it is really a raised `SIGINTR`.
-* `Ctrl-\`: this forcefully and immediately stops the interpreter. This key is terminal dependent, as it is really a raised `SIGQUIT`.
-
-## The Language
-
-For a complete language reference, see the [documentation pages](https://techteamai.github.io/StackLang/index.html).
 
 *TODO: MOVE EVERYTHING AFTER HERE TO DOCUMENTATION PAGES*
 
