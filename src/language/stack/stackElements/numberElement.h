@@ -16,11 +16,12 @@ class NumberElement : public StackElement {
  public:
   static const char* ALLOWED_NUMBER;
   static const char* NUMBER_SIGNS;
+  static const char INEXACT_SIGNAL;
 
   static NumberElement* parse(const string&);
 
-  explicit NumberElement(string);
-  explicit NumberElement(const mpq_class&);
+  explicit NumberElement(string, bool isExact = true);
+  explicit NumberElement(const mpq_class&, bool isExact = true);
   NumberElement* clone() const override;
 
   explicit operator const string() const override;
@@ -28,6 +29,7 @@ class NumberElement : public StackElement {
 
  private:
   mpq_class data;
+  bool exact;
 };
 }  // namespace StackElements
 }  // namespace StackLang

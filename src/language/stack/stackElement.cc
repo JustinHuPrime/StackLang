@@ -44,10 +44,9 @@ StackElement* StackElement::parse(const string& s) {
              find(NumberElement::NUMBER_SIGNS,
                   NumberElement::NUMBER_SIGNS +
                       strlen(NumberElement::NUMBER_SIGNS),
-                  s[0]) !=
-                 NumberElement::NUMBER_SIGNS +
-                     strlen(
-                         NumberElement::NUMBER_SIGNS))  // looks like a number.
+                  s[0]) != NumberElement::NUMBER_SIGNS +
+                               strlen(NumberElement::NUMBER_SIGNS) ||
+             s[0] == NumberElement::INEXACT_SIGNAL)  // looks like a number.
   {
     return NumberElement::parse(s);
   } else if (starts_with(s, "\""))  // starts with a quote
@@ -62,12 +61,12 @@ StackElement* StackElement::parse(const string& s) {
              s == BooleanElement::FSTR)  // it's either true or false
   {
     return new BooleanElement(s == "true");
-  } else if (find(begin(TypeElement::TYPES()), end(TypeElement::TYPES()), s) !=
-             end(TypeElement::TYPES()))  // exists in types
-  {                                      // is a type
-    return new TypeElement(DataType(
-        find(begin(TypeElement::TYPES()), end(TypeElement::TYPES()), s) -
-        begin(TypeElement::TYPES())));
+  } else if (s.find_first_of("()") != string::npos ||
+             find(TypeElement::TYPES().begin(), TypeElement::TYPES().end(),
+                  s) != TypeElement::TYPES()
+                            .end())  // has a subtype, or exists in types
+  {                                  // is a type
+    return TypeElement::parse(s);
   } else if (isalpha(s[0]))  // starts with a character
   {
     return CommandElement::parse(s);

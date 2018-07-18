@@ -12,8 +12,15 @@ using std::string;
 using std::vector;
 class TypeElement : public StackElement {
  public:
+  static TypeElement* parse(const string&);
   explicit TypeElement(DataType);
+  TypeElement(DataType, TypeElement*);
+  TypeElement(const TypeElement&);
+  TypeElement& operator=(const TypeElement&);
+  TypeElement(TypeElement&&);
+  TypeElement& operator=(TypeElement&&);
   TypeElement* clone() const override;
+  ~TypeElement();
 
   explicit operator const string() const override;
   DataType getData() const;
@@ -24,6 +31,7 @@ class TypeElement : public StackElement {
 
  private:
   DataType data;
+  TypeElement* specialization;
 };
 }  // namespace StackElements
 }  // namespace StackLang
