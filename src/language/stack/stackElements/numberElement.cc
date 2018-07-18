@@ -38,10 +38,20 @@ NumberElement* NumberElement::parse(const string& s) {
                   string::npos) {  // sign is first, second but has a tilde
                                    // before it, or doesn't exist
             if (removeChar(s, '\'').find_first_of('/') !=
-                removeChar(s, '\'').length() - 1) {
-              return new NumberElement(
-                  removeChar(removeChar(s, '\''), INEXACT_SIGNAL),
-                  s.find_first_of(INEXACT_SIGNAL) == string::npos);
+                removeChar(s, '\'').length() -
+                    1) {  // doesn't have a blank denominator
+              if (s.find_first_of('/') == string::npos ||
+                  s.substr(s.find_first_of('/') + 1).find_first_not_of('0') !=
+                      string::npos) {  // doesn't have all zeroes in the
+                                       // denominator.
+                return new NumberElement(
+                    removeChar(removeChar(s, '\''), INEXACT_SIGNAL),
+                    s.find_first_of(INEXACT_SIGNAL) == string::npos);
+              } else {
+                throw ParserException(
+                    "Fractions may not have a zero in the denominator.", s,
+                    s.find_first_of('0', s.find_first_of('/')));
+              }
             } else {
               throw ParserException(
                   "Looks like a fraction, but has an empty denominator.", s,
@@ -89,6 +99,7 @@ NumberElement* NumberElement::parse(const string& s) {
 
 NumberElement::NumberElement(string d, bool isExact)
     : StackElement(StackElement::DataType::Number), exact(isExact) {
+  d = removeChar(d, '+');
   if (d.find('.') == string::npos) {
     data = mpq_class(d, 10);
   } else {
