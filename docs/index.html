@@ -38,7 +38,7 @@
                     })();
                 </script>
                 <hr/>
-                <gcse:searchbox-only>Search documentation...</gcse:searchbox-only>
+                <gcse:searchbox-only>Search not working.</gcse:searchbox-only>
                 <hr/>
                 <b>StackLang Documentation</b>
                 <ul>
@@ -74,7 +74,9 @@
                 <code>"like this"</code>, substacks
                 <code>&lt;&lt; "with content here", "and maybe more content" &gt;&gt;</code>, the special empty substack
                 <code>&lt;&lt; (empty) &gt;&gt;</code>, and types
-                <code>Type</code>.
+                <code>Type</code>. Additionally, some text is formatted
+                <kbd>like this</kbd>. The formatting indicates that the text is supposed to be a raw keystroke, combination of
+                keystrokes, or raw input to the interpreter.
                 <h3>Terms</h3>
                 <p>Throughout this documentation, certain terms have special meanings. These are documented below.
                     <ul>
@@ -90,18 +92,22 @@
                     </ul>
                 </p>
                 <h3>Notation</h3>
-                <p>When discussing a command, a signature will often be mentioned. Signatures are formatted as a list of space-separated
-                    input types, followed by a
+                <p>When discussing a command, a signature will often be mentioned. Signatures are formatted as a function name,
+                    a colon, then a list of space-separated input types, followed by a
                     <code>-></code>, followed by another list of space-separated output types. For example:
                     <br/>
-                    <code>Number Number -> Number</code>
+                    <code>add : Number Number -> Number</code>
                     <br/> is the signature for the command
-                    <code>add</code>. The left hand side is the side closer to the active end of the stack. Occasionally, commands will be
-                    missing either an input, and output, or have multiple outputs. Example:
+                    <code>add</code>. The left hand side is the side closer to the active end of the stack. The side closer to the active
+                    end is also the side from which paramters are numbered. The first paramter would be the number closest
+                    to the active end, and so on. Occasionally, commands will be missing either an input, and output, or
+                    have multiple outputs. Example:
                     <br/>
-                    <code>Substack(Type) Substack(Type) Substack(Any) String -> </code>
+                    <code>define : Substack(Type) Substack(Type) Substack(Any) String -> </code>
                     <br/> is the signature for
-                    <code>define</code>. Finally, Substacks can have additional information attached to them. For example, a
+                    <code>define</code>. Functions and commands will always pop their parameters off of the stack, so
+                    <code>number? : Any -> Any Boolean</code> will still pop one element off of the stack, before pushing it back on, then pushing back on a Boolean
+                    as well. Finally, Substacks can have additional information attached to them. For example, a
                     <code>Substack(Number)</code> is a substack that may only contain numbers. A
                     <code>Substack(Substack(String))</code> is a substack that may only contain substacks of strings. As an aside,
                     <code>Substack</code> is equivalent to

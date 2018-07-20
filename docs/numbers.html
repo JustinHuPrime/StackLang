@@ -36,7 +36,7 @@
                     })();
                 </script>
                 <hr/>
-                <gcse:searchbox-only>Search documentation...</gcse:searchbox-only>
+                <gcse:searchbox-only>Search not working.</gcse:searchbox-only>
                 <hr/>
                 <a href="https://techteamai.github.io/StackLang/index.html">StackLang Documentation</a>
                 <ul>
@@ -72,37 +72,187 @@
                 </ul>
             </div>
             <div class="col-lg">
-                <h1>Types in StackLang</h1>
+                <h1>Numbers</h1>
+                <p>Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
+                    <code>mpq_class</code>). There are, however, two flavours of numbers - exact numbers or inexact numbers. Exact numbers are
+                    displayed as fractions, and represent "exactly" the value they have, while inexact numbers are displayed
+                    as decimals, and represent "approximately" some value. Commands that take multiple numbers will produce
+                    an inxact number if an inexact number is given as any of the arguments. Additionally, some commands,
+                    like
+                    <code>sqrt</code> will always produce an inexact result.
+                    <br/> To enter an exact number, optionally enter a sign,
+                    <kbd>+</kbd> or
+                    <kbd>-</kbd>, then either a decimal number or a fraction of two whole numbers. Any number of
+                    <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.</p>
+                <h2>Number-related Primtive Commands</h2>
+                <h3>Arithmetic</h3>
                 <p>
-                    StackLang is a statically typed language. This typing is enforced with latent typing. There are six basic types in StackLang:
-                    <ul>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/booleans.html">Booleans</a>: Booleans are either
-                            <code>true</code> or
-                            <code>false</code>.</li>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/commands.html">Commands</a>: Commands are either the name of a primitive function or the named of a defined
-                            function.
-                        </li>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/numbers.html">Numbers</a>: StackLang numbers are arbitrary precision rational numbers. All StackLang numbers
-                            are displayed as fractions or as integers. However, numbers can be parsed as decimals or as fractions.
-                        </li>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/strings.html">Strings</a>: A StackLang string is an arbitrarily long string of ASCII characters.
-                        </li>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/substacks.html">Substacks</a>: Substacks are a way to "group" stack elements together in StackLang. Stacks are
-                            similar to lists in Lisp and Scheme - they can only be operated on from one end, and can be decomposed
-                            by getting the top and the rest of the substack.
-                        </li>
-                        <li>
-                            <a href="https://techteamai.github.io/StackLang/typeElements.html">Types</a>: StackLang has a limited capability for reflection - it is able to get the type of
-                            an element and manipulate that information. A type is one of the six primitive types, or the
-                            special
-                            <code>Any</code> type.
-                        </li>
-                    </ul>
+                    <code>number? : Any -> Boolean</code>
+                    <br/> Produces true if given element is a number.
+                </p>
+                <p>
+                    <code>exact? : Any -> Boolean</code>
+                    <br/> Produces true if given element is an exact number.
+                </p>
+                <p>
+                    <code>integer? : Any -> Boolean</code>
+                    <br/> Produces true if given element is an integer number.
+                </p>
+                <p>
+                    <code>zero? : Any -> Boolean</code>
+                    <br/> Produces true if given element is an exact number equal to zero.
+                </p>
+                <p>
+                    <code>positive? : Any -> Boolean</code>
+                    <br/> Produces true if given element is a positive (zero not included) number.
+                </p>
+                <p>
+                    <code>negative? : Any -> Boolean</code>
+                    <br/> Produces true if given element is a negative (zero not included) number.
+                </p>
+                <p>
+                    <code>even? : Any -> Boolean</code>
+                    <br/> Produces true if given element is an even, exact, integer number.
+                </p>
+                <p>
+                    <code>odd? : Any -> Boolean</code>
+                    <br/> Produces true if given element is an odd, exact, integer number.
+                </p>
+                <p>
+                    <code>exact-to-inexact : Number -> Number</code>
+                    <br/> Produces the inexact version of the given number.
+                </p>
+                <p>
+                    <code>inexact-to-exact : Number -> Number</code>
+                    <br/> Produces the exact version of the given number.
+                </p>
+                <p>
+                    <code>negate : Number -> Number</code>
+                    <br/> Produces the negative of the number.
+                </p>
+                <p>
+                    <code>inverse : Number -> Number</code>
+                    <br/> Produces one divided by the number.
+                </p>
+                <p>
+                    <code>increment : Number -> Number</code>
+                    <br/> Produces the number plus one.
+                </p>
+                <p>
+                    <code>decrement : Number -> Number</code>
+                    <br/> Produces the number minus one.
+                </p>
+                <p>
+                    <code>add : Number Number -> Number</code>
+                    <br/> Adds two numbers together.
+                </p>
+                <p>
+                    <code>subtract : Number Number -> Number</code>
+                    <br/> Subtracts the first number from the second.
+                </p>
+                <p>
+                    <code>multiply : Number Number -> Number</code>
+                    <br/> Multiplies two numbers together.
+                </p>
+                <p>
+                    <code>divide : Number Number -> Number</code>
+                    <br/> Divides the second number by the first. Will produce a syntax error when dividing by zero.
+                </p>
+                <p>
+                    <code>modulo : Number Number -> Number</code>
+                    <br/> If both numbers have the same sign: subtracts the first from the second until the absolute value of
+                    the first is less than the absolute value of the second. If the numbers have a different sign, adds the
+                    first to the second until the absolute value oof the first is less than the absolute value of the sceond.
+                </p>
+                <p>
+                    <code>floor : Number -> Number</code>
+                    <br/> Produces the floor of the number (closest integer, rounding down).
+                </p>
+                <p>
+                    <code>ceil : Number -> Number</code>
+                    <br/> Produces the ceiling of the number (closest integer, rounding up).
+                </p>
+                <p>
+                    <code>round : Number -> Number</code>
+                    <br/> Produces the closest integer, rounding to even.
+                </p>
+                <p>
+                    <code>trunc : Number -> Number</code>
+                    <br/> Produces the number, without any decimal digits.
+                </p>
+                <p>
+                    <code>abs : Number -> Number</code>
+                    <br/> Produces the absolute value of the number.
+                </p>
+                <p>
+                    <code>max : Number Number -> Number</code>
+                    <br/> Produces the larger of the two numbers.
+                </p>
+                <p>
+                    <code>min : Number -> Number</code>
+                    <br/> Produces the smaller of the two numbers.
+                </p>
+                <p>
+                    <code>gcd : Number Number -> Number</code>
+                    <br/> Produces the greatest common divisor of two integers (always positive). If at least one of the numbers
+                    is a fraction, produces the greatest common divisor of the numerators, divided by the least common multiple
+                    of the denominators.
+                </p>
+                <p>
+                    <code>lcm : Number Number -> Number</code>
+                    <br/> Produces the least common multiple of the two numbers (always positive).
+                </p>
+                <p>
+                    <code>numerator : Number -> Number</code>
+                    <br/> Produces the numerator of the number.
+                </p>
+                <p>
+                    <code>denominator : Number -> Number</code>
+                    <br/> Produces the denominator of the number.
+                </p>
+                <p>
+                    <code>sqrt : Number -> Number</code>
+                    <br/> Produces the square root of the number - inexact unless the number is a square of a rational number.
+                </p>
+                <p>
+                    <code>pow : Number Number -> Number</code>
+                    <br/> Produces the second number raised to the power of the first number.
+                </p>
+                <h3>Comparison</h3>
+                <p>
+                    <code>equal? : Number Number -> Boolean</code>
+                    <br/> Produces true if the number is equal to the other number. Inexact numbers are never equal.
+                </p>
+                <p>
+                    <code>not-equal? : Number Number -> Boolean</code>
+                    <br/> Produces true if the numbers are not equal. Inexact numbers are always not equal.
+                </p>
+                <p>
+                    <code>less-than? : Number Number -> Boolean</code>
+                    <br/> Produces true if the second number is less than the first.
+                </p>
+                <p>
+                    <code>greater-than? : Number Number -> Boolean</code>
+                    <br/> Produces true if the second number is greater than the first.
+                </p>
+                <p>
+                    <code>less-than-equal? : Number Number -> Boolean</code>
+                    <br/> Produces true if the second number is less than or equal to the first. Equivalent to
+                    <code>less-than?</code> for inexact numbers.
+                </p>
+                <p>
+                    <code>greater-than-equal? : Number Number -> Boolean</code>
+                    <br/> Produces true if the second number is greater than or equal to the first. Equivalent to
+                    <code>greater-than?</code> for inexact numbers.
+                </p>
+                <h3>Constants</h3>
+                <p>
+                    <code>euler : -> Number</code>
+                    <br/> Produces Euler's number.
+                </p>
+                <p>
+                    <code>pi : -> Number</code>
+                    <br/> Produces &pi;.
                 </p>
             </div>
         </div>

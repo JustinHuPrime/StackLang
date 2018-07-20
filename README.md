@@ -31,7 +31,7 @@ Stack elements can be:
 
 * Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
 
-* Numbers: enter a decimal (with a `.`) or a fraction (with a `/`), but not a fraction of a decimal. Numbers may use the `'` as a thousands separator. When a number is parsed, this separator is discarded. Numbers are represented in this implementation using GMP's rationals, and as such, are inefficient but arbitrarily precise. Displayed a a fraction, without a thousands separator.
+* Numbers:
 
 * Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
 

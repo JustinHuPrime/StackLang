@@ -37,7 +37,7 @@
                     })();
                 </script>
                 <hr/>
-                <gcse:searchbox-only>Search documentation...</gcse:searchbox-only>
+                <gcse:searchbox-only>Search not working.</gcse:searchbox-only>
                 <hr/>
                 <a href="https://techteamai.github.io/StackLang/index.html">StackLang Documentation</a>
                 <ul>
@@ -71,18 +71,27 @@
                     <li>
                         <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at startup. Filepaths may be enclosed
                         in quotes. Any unquoted string that starts with
-                        <code>-</code> will cause it to parse a new option. The
+                        <code>-</code> will cause it to parse a new option. For relative paths, the
                         <code>include</code> command will first look from the directory containing the interpreter for a
                         <code>libs</code> folder, then within that folder for the named file, the named file, but adding a
                         <code>.sl</code> extension, then search in the current working directory for the named file, then the named file,
                         but adding a
-                        <code>.sl</code> extension.</li>
+                        <code>.sl</code> extension. For absolute paths, the
+                        <code>include</code> command will look for the file along the path, then for the file, but adding a
+                        <code>.sl</code> extension. Note that
+                        <code>-I std</code> is implied.</li>
+                    <li>
+                        <code>-b</code>: prevents automatic inclusion of standard library.
+                    </li>
                     <li>
                         <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put more than
                         N elements onto the stack. Default is limited by the size of a long int on the local system.</li>
                     <li>
                         <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
                         <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.</li>
+                    <li>
+                        <code></code>
+                    </li>
                 </ul>
                 <h2>Keyboard Controls</h2>
                 <p>The interpreter recognizes three control keys:
