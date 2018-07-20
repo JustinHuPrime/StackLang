@@ -14,7 +14,7 @@ using std::cerr;
 using std::endl;
 using Util::spaces;
 
-void init() {
+void init() noexcept {
   setlocale(LC_ALL, "");
 
   initscr();
@@ -51,9 +51,9 @@ void init() {
   signal(SIGQUIT, defSigHandler);
 }
 
-void uninit() { endwin(); }
+void uninit() noexcept { endwin(); }
 
-void drawStack(const Stack& s) {
+void drawStack(const Stack& s) noexcept {
   int maxY = getmaxy(stdscr);
   int offset = getcurx(stdscr);
 
@@ -83,7 +83,7 @@ void drawStack(const Stack& s) {
   refresh();
 }
 
-void drawPrompt(const LineEditor& s) {
+void drawPrompt(const LineEditor& s) noexcept {
   int maxY = getmaxy(stdscr);
 
   curs_set(CURSOR_INVISIBLE);
@@ -97,7 +97,7 @@ void drawPrompt(const LineEditor& s) {
   refresh();
 }
 
-void drawError(const LanguageException& e) {
+void drawError(const LanguageException& e) noexcept {
   int centerY = getmaxy(stdscr) / 2;
 
   curs_set(CURSOR_INVISIBLE);
@@ -130,21 +130,21 @@ void drawError(const LanguageException& e) {
   }
 }
 
-void addstring(const string& s) {
+void addstring(const string& s) noexcept {
   for (const char c : s) {
     unsigned char ch = static_cast<unsigned char>(c);
     addch(ch);
   }
 }
 
-void displayInfo() {
+void displayInfo() noexcept {
   curs_set(CURSOR_INVISIBLE);
   move(0, 0);
   addstring(INFO);
   getch();
 }
 
-void printError(const LanguageException& e) {
+void printError(const LanguageException& e) noexcept {
   cerr << e.getKind() << endl;
   cerr << e.getMessage() << endl;
   if (e.hasContext()) {

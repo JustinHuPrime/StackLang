@@ -3,13 +3,15 @@
 namespace Util {
 using std::string;
 
-bool starts_with(const string& s, const string& s1) { return 0 == s.find(s1); }
+bool starts_with(const string& s, const string& s1) noexcept {
+  return 0 == s.find(s1);
+}
 
-bool ends_with(const string& s, const string& s1) {
+bool ends_with(const string& s, const string& s1) noexcept {
   return s.length() - s1.length() == s.find(s1, s.length() - s1.length());
 }
 
-string escape(string s) {
+string escape(string s) noexcept {
   for (unsigned i = 0; i < s.length(); i++) {
     if (s[i] == '"')  // escape quotes
     {
@@ -32,7 +34,7 @@ string escape(string s) {
   return s;
 }
 
-string unescape(string s) {
+string unescape(string s) noexcept {
   bool prevBackslash = false;
   bool prevPrevBackslash = false;
 
@@ -68,7 +70,7 @@ string unescape(string s) {
   return s;
 }
 
-size_t findImproperEscape(const string& str) {
+size_t findImproperEscape(const string& str) noexcept {
   for (unsigned i = 0; i < str.length(); i++) {
     if ((str[i] == '\\' &&
          i + 1 >= str.length()) ||  // if the last char's a backslash
@@ -86,13 +88,13 @@ size_t findImproperEscape(const string& str) {
   return string::npos;
 }
 
-string spaces(unsigned n) {
+string spaces(unsigned n) noexcept {
   string acc = "";
   acc.resize(n, ' ');
   return acc;
 }
 
-string removeChar(string s, char c) {
+string removeChar(string s, char c) noexcept {
   for (unsigned i = 0; i < s.length(); i++) {
     if (s[i] == c) {
       s.erase(i, 1);
@@ -103,7 +105,7 @@ string removeChar(string s, char c) {
   return s;
 }
 
-string trim(string s) {
+string trim(string s) noexcept {
   s.erase(0, s.find_first_not_of(WHITESPACE));
   s.erase(s.find_last_not_of(WHITESPACE) + 1);
   return s;

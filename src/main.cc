@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 
   try {
     args.read(argc, argv);
-    args.validate("?h", "dlo", "I");
+    args.validate("?hb", "dlo", "I");
   } catch (const LanguageException& e) {
     printError(e);
     cerr << "Encountered error parsing command line arguments. Aborting."
@@ -74,11 +74,25 @@ int main(int argc, char* argv[]) {
     cout << HELPMSG;
     exit(EXIT_SUCCESS);
   }
+  if (!args.hasFlag('b')) {
+    s.push(new StringElement("std"));
+    s.push(new CommandElement("include"));
+    try {
+      execute(s, defines);
+    } catch (const LanguageException& e) {
+      printError(e);
+      cerr << "Encountered error in standard library. Please report this "
+              "error. Aborting."
+           << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
   if (args.hasOpt('d')) {
     try {
       debugMode = stoi(args.getOpt('d'));
     } catch (const invalid_argument&) {
-      cerr << "(Command line arguments invalid:\nExpected a number after `-d`, "
+      cerr << "(Command line arguments invalid:\nExpected a number after "
+              "`-d`, "
               "but found" +
                   args.getOpt('d') + ".\nAborting."
            << endl;

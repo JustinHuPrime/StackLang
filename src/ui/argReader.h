@@ -17,11 +17,11 @@ using std::vector;
 // flags are not supported, not are long option names and synonyms.
 class ArgReader {
  public:
-  ArgReader();
-  ArgReader(const ArgReader&) = default;
-  ArgReader& operator=(const ArgReader&) = default;
-  ArgReader(ArgReader&&) = default;
-  ArgReader& operator=(ArgReader&&) = default;
+  ArgReader() noexcept;
+  ArgReader(const ArgReader&) noexcept = default;
+  ArgReader& operator=(const ArgReader&) noexcept = default;
+  ArgReader(ArgReader&&) noexcept = default;
+  ArgReader& operator=(ArgReader&&) noexcept = default;
   // Reads in to the object from argv. If restrictChar is true, then the reader
   // will only consider arguments with a dash and a char to be option flags
   void read(int, char* []);
@@ -32,9 +32,9 @@ class ArgReader {
                 const string& allowedLongOpts) const;
 
   // Getters. Will also throw ArgumentErrors.
-  bool hasFlag(char) const;  // Doesn't check that given flag is valid
-  bool hasOpt(char) const;
-  bool hasLongOpt(char) const;
+  bool hasFlag(char) const noexcept;  // Doesn't check that given flag is valid
+  bool hasOpt(char) const noexcept;
+  bool hasLongOpt(char) const noexcept;
   string getOpt(char) const;
   vector<string> getLongOpt(char) const;
 

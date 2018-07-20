@@ -17,27 +17,27 @@ using std::string;
 using Util::LineEditor;
 
 // initializes/uninitializes curses (and general stuff) with preset options
-void init();
-void uninit();
+void init() noexcept;
+void uninit() noexcept;
 
-void drawStack(const Stack&);
-void drawPrompt(const LineEditor&);
-void drawError(const LanguageException&);
+void drawStack(const Stack&) noexcept;
+void drawPrompt(const LineEditor&) noexcept;
+void drawError(const LanguageException&) noexcept;
 
 // adds an std::string at the current cursor position
-void addstring(const string& s);
+void addstring(const string& s) noexcept;
 
 // displays info splash, then waits for a key
-void displayInfo();
+void displayInfo() noexcept;
 
 // prints an error mesage to stderr
-void printError(const LanguageException&);
+void printError(const LanguageException&) noexcept;
 
 const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char* const INFO = R"(StackLang interpreter version ALPHA 5
+const char* const INFO = R"(StackLang interpreter version ALPHA 6
 by Justin Hu, 2018
 This is free software with ABSOLUTELY NO WARRANTY.
 See the COPYING.md file for information on redistribution.

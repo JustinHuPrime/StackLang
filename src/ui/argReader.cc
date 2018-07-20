@@ -10,7 +10,7 @@ using std::find;
 using std::min;
 using std::to_string;
 
-ArgReader::ArgReader() : flags(), options(), longOpts() {}
+ArgReader::ArgReader() noexcept : flags(), options(), longOpts() {}
 
 void ArgReader::read(int argc, char* argv[]) {
   vector<string> args;
@@ -106,13 +106,13 @@ void ArgReader::validate(const string& allowedFlag, const string& allowedOpts,
   }
 }
 
-bool ArgReader::hasFlag(char c) const {
+bool ArgReader::hasFlag(char c) const noexcept {
   return find(flags.begin(), flags.end(), c) != flags.end();
 }
-bool ArgReader::hasOpt(char c) const {
+bool ArgReader::hasOpt(char c) const noexcept {
   return options.find(c) != options.end();
 }
-bool ArgReader::hasLongOpt(char c) const {
+bool ArgReader::hasLongOpt(char c) const noexcept {
   return longOpts.find(c) != longOpts.end();
 }
 string ArgReader::getOpt(char c) const {
