@@ -28,10 +28,10 @@ void ArgReader::read(int argc, char* argv[]) {
       if (vIter->back() == '"' &&
           (vIter->size() < 2 || (*vIter)[vIter->size() - 2] !=
                                     '\\')) {  // ending a quote, not a backslash
-        acc.back() += vIter->substr(0, vIter->size() - 1);
+        acc.back() += " " + vIter->substr(0, vIter->size() - 1);
         inQuote = false;
       } else {
-        acc.back() += *vIter;
+        acc.back() += " " + *vIter;
       }
     } else {
       if (vIter->front() == '-') {  // Found an option
@@ -47,7 +47,7 @@ void ArgReader::read(int argc, char* argv[]) {
         }
         acc.clear();
 
-        if (vIter->size() != 2) {  //
+        if (vIter->size() != 2) {  // is a combined flag or something.
           throw ArgumentError("Expected an single character after the `-`.",
                               *vIter, min(vIter->size(), 2UL));
         } else if (*vIter == "--") {  // ignore end of long-opts.

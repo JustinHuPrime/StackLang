@@ -1,5 +1,5 @@
 #include "language/exceptions/argumentError.h"
-#include "ui/argReader.cc"
+#include "ui/argReader.h"
 
 #include <assert.h>
 #include <iostream>
@@ -15,7 +15,8 @@ void testArgReader() {
 
   ArgReader ar;
 
-  char* argv[] = {"-a",
+  char* argv[] = {"discard",
+                  "-a",
                   "-b",
                   "data",
                   "-c",
@@ -32,10 +33,10 @@ void testArgReader() {
                   "two\"",
                   "three"};
 
-  char* badArgv[] = {"-ab"};
+  char* badArgv[] = {"discard", "-ab", "-f"};
 
   try {
-    ar.read(1, argv);
+    ar.read(3, badArgv);
     cerr << "Expected an exception, but none thrown.\n";
     assert(false);
   } catch (const ArgumentError&) {
@@ -46,7 +47,7 @@ void testArgReader() {
   }
 
   try {
-    ar.read(15, argv);
+    ar.read(16, argv);
     ar.validate("a", "bd", "ce");
   } catch (...) {
     cerr << "Threw exception, but shouldn't have.\n";
@@ -98,8 +99,13 @@ void testArgReader() {
   assert(!ar.hasLongOpt('a'));
   assert(!ar.hasLongOpt('x'));
 
-  assert(ar.getOpt('b') == "data");
-  assert(ar.getOpt('d') == "-words in quotes-");
+  try {
+    assert(ar.getOpt('b') == "data");
+    assert(ar.getOpt('d') == "-words in quotes-");
+  } catch (...) {
+    cerr << "Exception thrown, but expected none.\n";
+    assert(false);
+  }
   try {
     ar.getOpt('c');
     cerr << "Expected an exception, but none thrown.\n";
@@ -118,9 +124,13 @@ void testArgReader() {
     cerr << "Threw wrong exception.\n";
     assert(false);
   }
-
-  assert(ar.getLongOpt('c') == vector<string>({"more", "stuff"}));
-  assert(ar.getOpt('d') == "-words in quotes-");
+  try {
+    assert(ar.getLongOpt('c') == vector<string>({"more", "stuff"}));
+    assert(ar.getOpt('d') == "-words in quotes-");
+  } catch (...) {
+    cerr << "Exception thrown, but expected none.\n";
+    assert(false);
+  }
   try {
     ar.getOpt('c');
     cerr << "Expected an exception, but none thrown.\n";
