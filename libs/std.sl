@@ -1,1 +1,0 @@
-; StackLang standard library file, version ALPHA 6
