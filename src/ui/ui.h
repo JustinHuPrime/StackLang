@@ -14,7 +14,7 @@ using StackLang::Stack;
 using StackLang::StackElement;
 using StackLang::Exceptions::LanguageException;
 using std::string;
-using Util::LineEditor;
+using TermUI::LineEditor;
 
 // initializes/uninitializes curses (and general stuff) with preset options
 void init() noexcept;

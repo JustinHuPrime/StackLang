@@ -1,10 +1,14 @@
 #include "ui/lineEditor.h"
 
-namespace Util {
-LineEditor::LineEditor()
-    : preCursor(), postCursor(), preHistory(), postHistory() {}
+namespace TermUI {
+LineEditor::LineEditor() noexcept
+    : preCursor(),
+      postCursor(),
+      history(),
+      histPos(history.end()),
+      draftLine() {}
 
-void LineEditor::right() {
+void LineEditor::right() noexcept {
   if (postCursor.size() == 0) {
     beep();
     return;
@@ -14,7 +18,7 @@ void LineEditor::right() {
   postCursor.pop_front();
 }
 
-void LineEditor::left() {
+void LineEditor::left() noexcept {
   if (preCursor.size() == 0) {
     beep();
     return;
@@ -24,7 +28,7 @@ void LineEditor::left() {
   preCursor.pop_back();
 }
 
-void LineEditor::toEnd() {
+void LineEditor::toEnd() noexcept {
   if (postCursor.size() == 0) {
     beep();
     return;
@@ -36,7 +40,7 @@ void LineEditor::toEnd() {
   }
 }
 
-void LineEditor::toHome() {
+void LineEditor::toHome() noexcept {
   if (preCursor.size() == 0) {
     beep();
     return;
@@ -48,65 +52,51 @@ void LineEditor::toHome() {
   }
 }
 
-void LineEditor::up() {
-  if (preHistory.size() == 0) {
+void LineEditor::up() noexcept {
+  if (histPos == history.begin() || history.empty()) {
     beep();
     return;
+  } else {
+    if (histPos == history.end()) draftLine = static_cast<string>(*this);
+    --histPos;
   }
-
-  postHistory.push(string(*this));
 
   preCursor.clear();
   postCursor.clear();
-
-  for (auto c : preHistory.top()) {
+  for (auto c : *histPos) {
     preCursor.push_back(c);
   }
-
-  preHistory.pop();
 }
 
-void LineEditor::down() {
-  if (postHistory.size() == 0) {
+void LineEditor::down() noexcept {
+  if (histPos == history.end()) {
     beep();
     return;
-  }
-
-  preHistory.push(string(*this));
-
-  preCursor.clear();
-  postCursor.clear();
-
-  for (auto c : postHistory.top()) {
-    preCursor.push_back(c);
-  }
-
-  postHistory.pop();
-}
-
-void LineEditor::enter() {
-  if (!postHistory.empty())  // if we have stuff in the history
-  {
-    preHistory.push(
-        string(*this));  // save the current thing (return it to its place)
-    while (postHistory.size() >
-           1)  // put everything from before into it, but not our draft line
-    {
-      preHistory.push(postHistory.top());
-      postHistory.pop();
+  } else {
+    ++histPos;
+    preCursor.clear();
+    postCursor.clear();
+    if (histPos == history.end()) {
+      for (auto c : draftLine) {
+        preCursor.push_back(c);
+      }
+    } else {
+      for (auto c : *histPos) {
+        preCursor.push_back(c);
+      }
     }
-
-    postHistory.pop();  // get rid of the draft line
   }
-
-  preHistory.push(string(*this));  // add current line
-  preCursor.clear();               // and clear
-  postCursor.clear();
-
-  return;
 }
 
-void LineEditor::backspace() {
+void LineEditor::enter() noexcept {
+  history.push_back(static_cast<string>(*this));
+  histPos = history.end();
+  draftLine.clear();
+  preCursor.clear();
+  postCursor.clear();
+}
+
+void LineEditor::backspace() noexcept {
   if (preCursor.size() == 0) {
     beep();
     return;
@@ -114,7 +104,7 @@ void LineEditor::backspace() {
   preCursor.pop_back();
 }
 
-void LineEditor::del() {
+void LineEditor::del() noexcept {
   if (postCursor.size() == 0) {
     beep();
     return;
@@ -122,35 +112,28 @@ void LineEditor::del() {
   postCursor.pop_front();
 }
 
-void LineEditor::clear() {
+void LineEditor::clear() noexcept {
   preCursor.clear();
   postCursor.clear();
 }
 
-void LineEditor::clearHist() {
-  while (!preHistory.empty()) {
-    preHistory.pop();
-  }
-  while (!postHistory.empty()) {
-    postHistory.pop();
-  }
-}
+void LineEditor::clearHist() noexcept { history.clear(); }
 
-int LineEditor::cursorPosition() const { return preCursor.size(); }
+int LineEditor::cursorPosition() const noexcept { return preCursor.size(); }
 
-bool LineEditor::isEmpty() const {
+bool LineEditor::isEmpty() const noexcept {
   return preCursor.empty() && postCursor.empty();
 }
 
-void LineEditor::operator+=(char c) { preCursor.push_back(c); }
+void LineEditor::operator+=(char c) noexcept { preCursor.push_back(c); }
 
-void LineEditor::operator+=(string s) {
+void LineEditor::operator+=(string s) noexcept {
   for (auto c : s) {
     preCursor.push_back(c);
   }
 }
 
-LineEditor::operator const string() const {
+LineEditor::operator const string() const noexcept {
   string temp;
 
   for (auto c : preCursor) {
@@ -163,4 +146,4 @@ LineEditor::operator const string() const {
 
   return temp;
 }
-}  // namespace Util
+}  // namespace TermUI

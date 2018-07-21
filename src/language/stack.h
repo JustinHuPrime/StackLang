@@ -15,15 +15,15 @@ class Stack {
   class StackIterator;
 
   // Creates a stack, optionally with a limit on the number of elements.
-  Stack();
-  explicit Stack(unsigned long);
-  Stack(const Stack&);
-  Stack(Stack&&);
+  Stack() noexcept;
+  explicit Stack(unsigned long) noexcept;
+  Stack(const Stack&) noexcept;
+  Stack(Stack&&) noexcept;
 
-  ~Stack();
+  ~Stack() noexcept;
 
-  Stack& operator=(const Stack&);
-  Stack& operator=(Stack&&);
+  Stack& operator=(const Stack&) noexcept;
+  Stack& operator=(Stack&&) noexcept;
 
   // Manipulates stack elements. Pop does not delete the element, but the stack
   // destructor does assume that when the stack is destroyed, it's managed
@@ -32,28 +32,28 @@ class Stack {
   StackElement* pop();
   StackElement* top();
 
-  StackIterator begin() const;
-  StackIterator end() const;
+  void clear() noexcept;
 
-  unsigned long size() const;
-  unsigned long getLimit() const;
+  StackIterator begin() const noexcept;
+  StackIterator end() const noexcept;
+
+  unsigned long size() const noexcept;
+  unsigned long getLimit() const noexcept;
 
   // Sets a new limit. Throws StackOverflowError if too big.
   void setLimit(unsigned long);
 
-  void reverse();
+  void reverse() noexcept;
 
-  bool empty() const;
+  bool isEmpty() const noexcept;
 
  private:
   struct Node {
     unique_ptr<StackElement> elm;
     Node* next;
-    Node(StackElement*, Node*);
+    Node(StackElement*, Node*) noexcept;
   };
-
-  void clear();
-  Node* copy(Node*);
+  Node* copy(Node*) noexcept;
 
   Node* head;
   unsigned long dataSize;

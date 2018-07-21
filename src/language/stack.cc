@@ -1,5 +1,6 @@
 #include "language/stack.h"
 
+#include <limits>
 #include <memory>
 #include <queue>
 
@@ -12,27 +13,30 @@ using StackLang::StackElement;
 using StackLang::Exceptions::StackOverflowError;
 using StackLang::Exceptions::StackUnderflowError;
 using std::make_unique;
+using std::numeric_limits;
 using std::queue;
 
-Stack::Stack() : head(nullptr), dataSize(0), limit(__LONG_MAX__) {}
+Stack::Stack() noexcept
+    : head(nullptr),
+      dataSize(0),
+      limit(numeric_limits<unsigned long>().max()) {}
 
-Stack::Stack(unsigned long lim) : head(nullptr), dataSize(0), limit(lim) {}
+Stack::Stack(unsigned long lim) noexcept
+    : head(nullptr), dataSize(0), limit(lim) {}
 
-Stack::~Stack() { clear(); }
+Stack::~Stack() noexcept { clear(); }
 
-Stack::Stack(const Stack& other)
+Stack::Stack(const Stack& other) noexcept
     : head(copy(other.head)), dataSize(other.dataSize), limit(other.limit) {}
 
-Stack::Stack(Stack&& other) {
+Stack::Stack(Stack&& other) noexcept {
   head = other.head;
   dataSize = other.dataSize;
   limit = other.limit;
   other.head = nullptr;
-  other.dataSize = 0;
-  other.limit = 0;
 }
 
-Stack& Stack::operator=(const Stack& other) {
+Stack& Stack::operator=(const Stack& other) noexcept {
   clear();
   head = copy(other.head);
   dataSize = other.dataSize;
@@ -40,14 +44,12 @@ Stack& Stack::operator=(const Stack& other) {
   return *this;
 }
 
-Stack& Stack::operator=(Stack&& other) {
+Stack& Stack::operator=(Stack&& other) noexcept {
   clear();
   head = other.head;
   dataSize = other.dataSize;
   limit = other.limit;
   other.head = nullptr;
-  other.dataSize = 0;
-  other.limit = 0;
   return *this;
 }
 
@@ -82,9 +84,9 @@ StackElement* Stack::top() {
   throw StackUnderflowError();
 }
 
-unsigned long Stack::size() const { return dataSize; }
+unsigned long Stack::size() const noexcept { return dataSize; }
 
-unsigned long Stack::getLimit() const { return limit; }
+unsigned long Stack::getLimit() const noexcept { return limit; }
 
 void Stack::setLimit(unsigned long newLimit) {
   if (dataSize > newLimit) {
@@ -94,9 +96,9 @@ void Stack::setLimit(unsigned long newLimit) {
   limit = newLimit;
 }
 
-void Stack::reverse() {
+void Stack::reverse() noexcept {
   queue<StackElement*> s;
-  while (!empty()) {
+  while (!isEmpty()) {
     s.push(pop());
   }
   while (!s.empty()) {
@@ -105,13 +107,17 @@ void Stack::reverse() {
   }
 }
 
-bool Stack::empty() const { return dataSize == 0; }
+bool Stack::isEmpty() const noexcept { return dataSize == 0; }
 
-Stack::StackIterator Stack::begin() const { return StackIterator(head); }
+Stack::StackIterator Stack::begin() const noexcept {
+  return StackIterator(head);
+}
 
-Stack::StackIterator Stack::end() const { return StackIterator(nullptr); }
+Stack::StackIterator Stack::end() const noexcept {
+  return StackIterator(nullptr);
+}
 
-void Stack::clear() {
+void Stack::clear() noexcept {
   while (head != nullptr) {
     Node* temp = head->next;
     delete head;
@@ -121,7 +127,7 @@ void Stack::clear() {
   dataSize = 0;
 }
 
-Stack::Node* Stack::copy(Node* other) {
+Stack::Node* Stack::copy(Node* other) noexcept {
   if (other == nullptr) {
     return nullptr;
   } else {
@@ -129,5 +135,6 @@ Stack::Node* Stack::copy(Node* other) {
   }
 }
 
-Stack::Node::Node(StackElement* ptr, Node* nxt) : elm(ptr), next(nxt) {}
+Stack::Node::Node(StackElement* ptr, Node* nxt) noexcept
+    : elm(ptr), next(nxt) {}
 }  // namespace StackLang
