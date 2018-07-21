@@ -28,61 +28,13 @@ bool stopFlag = false;
 const map<string, PrimitiveFunction>& PRIMITIVES() {
   static map<string, PrimitiveFunction>* prims =
       new map<string, PrimitiveFunction>{
-          {"add",
-           {{StackElement::DataType::Number, StackElement::DataType::Number},
-            [](Stack& s, map<string, DefinedFunction>&) {
-              NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* result =
-                  new NumberElement(lower->getData() + higher->getData());
-              delete lower;
-              delete higher;
-              s.push(result);
-            }}},
-          {"subtract",
-           {{StackElement::DataType::Number, StackElement::DataType::Number},
-            [](Stack& s, map<string, DefinedFunction>&) {
-              NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* result =
-                  new NumberElement(higher->getData() - lower->getData());
-              delete lower;
-              delete higher;
-              s.push(result);
-            }}},
-          {"multiply",
-           {{StackElement::DataType::Number, StackElement::DataType::Number},
-            [](Stack& s, map<string, DefinedFunction>&) {
-              NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* result =
-                  new NumberElement(higher->getData() * lower->getData());
-              delete lower;
-              delete higher;
-              s.push(result);
-            }}},
-          {"divide",
-           {{StackElement::DataType::Number, StackElement::DataType::Number},
-            [](Stack& s, map<string, DefinedFunction>&) {
-              if (dynamic_cast<NumberElement*>(s.top())->getData() == 0) {
-                throw SyntaxError("Attempted division by zero.");
-              }
-              NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* result =
-                  new NumberElement(higher->getData() / lower->getData());
-              delete lower;
-              delete higher;
-              s.push(result);
-            }}},
-          {"negate",
-           {{StackElement::DataType::Number},
-            [](Stack& s, map<string, DefinedFunction>&) {
-              NumberElement* input = dynamic_cast<NumberElement*>(s.pop());
-              NumberElement* result = new NumberElement(-input->getData());
-              delete input;
-              s.push(result);
-            }}},
+#include "language/primitives/boolean.inc"
+#include "language/primitives/command.inc"
+#include "language/primitives/number.inc"
+#include "language/primitives/special.inc"
+#include "language/primitives/string.inc"
+#include "language/primitives/substack.inc"
+#include "language/primitives/type.inc"
       };
   return *prims;
 }
@@ -95,7 +47,8 @@ void execute(Stack& s, map<string, DefinedFunction>& defines) {
 
   const auto& PRIMS = PRIMITIVES();
 
-  if (s.top()->getType() == StackElement::DataType::Command) {
+  if (s.top()->getType() == StackElement::DataType::Command &&
+      !dynamic_cast<CommandElement*>(s.top())->isQuoted()) {
     CommandElement* command = dynamic_cast<CommandElement*>(s.pop());
     const auto& primResult =
         find_if(PRIMS.begin(), PRIMS.end(),
