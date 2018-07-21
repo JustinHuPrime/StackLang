@@ -3,13 +3,9 @@
 #include <assert.h>
 #include <string>
 
-#include <iostream>
-
-void testLineEditor() {
+void testLineEditor() noexcept {
   using std::string;
   using TermUI::LineEditor;
-
-  using std::cerr;
 
   LineEditor ed;
   assert(ed.isEmpty());

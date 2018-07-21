@@ -1,12 +1,12 @@
 #include <iostream>
 
-void testStringUtils();
-void testArgReader();
-void testLineEditor();
-void testStack();
-// void testParsers();
-// void testTypeCheck();
-// void testPrimitives();
+void testStringUtils() noexcept;
+void testArgReader() noexcept;
+void testLineEditor() noexcept;
+void testStack() noexcept;
+// void testParsers() noexcept;
+// void testTypeCheck() noexcept;
+// void testPrimitives() noexcept;
 
 int main() {
   using std::cout;

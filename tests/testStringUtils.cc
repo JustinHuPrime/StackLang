@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string>
 
-void testStringUtils() {
+void testStringUtils() noexcept {
   using std::string;
   using Util::ends_with;
   using Util::escape;

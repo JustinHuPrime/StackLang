@@ -48,7 +48,7 @@ CommandElement* CommandElement::clone() const {
 }
 
 CommandElement::operator const string() const {
-  return COMMAND_LDELIM + (quoted ? string(1, QUOTE_CHAR) : "") + data +
+  return (quoted ? string(1, QUOTE_CHAR) : "") + COMMAND_LDELIM + data +
          COMMAND_RDELIM;
 }
 

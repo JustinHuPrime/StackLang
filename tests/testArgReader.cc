@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-void testArgReader() {
+void testArgReader() noexcept {
   using StackLang::Exceptions::ArgumentError;
   using std::cerr;
   using std::string;
@@ -37,12 +37,12 @@ void testArgReader() {
 
   try {
     ar.read(3, badArgv);
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
     assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
 
@@ -50,40 +50,40 @@ void testArgReader() {
     ar.read(16, argv);
     ar.validate("a", "bd", "ce");
   } catch (...) {
-    cerr << "Threw exception, but shouldn't have.\n";
+    cerr << " FAILED: Threw exception, but shouldn't have.\n";
     assert(false);
   }
 
   try {
     ar.validate("", "bd", "ce");
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
     assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
 
   try {
     ar.validate("a", "d", "ce");
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
     assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
 
   try {
     ar.validate("a", "bd", "c");
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
     assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
 
@@ -103,50 +103,54 @@ void testArgReader() {
     assert(ar.getOpt('b') == "data");
     assert(ar.getOpt('d') == "-words in quotes-");
   } catch (...) {
-    cerr << "Exception thrown, but expected none.\n";
+    cerr << " FAILED: Exception thrown, but expected none.\n";
     assert(false);
   }
   try {
     ar.getOpt('c');
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
+    assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
   try {
     ar.getOpt('x');
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
+    assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
   try {
     assert(ar.getLongOpt('c') == vector<string>({"more", "stuff"}));
     assert(ar.getOpt('d') == "-words in quotes-");
   } catch (...) {
-    cerr << "Exception thrown, but expected none.\n";
+    cerr << " FAILED: Exception thrown, but expected none.\n";
     assert(false);
   }
   try {
     ar.getOpt('c');
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
+    assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
   try {
     ar.getOpt('x');
-    cerr << "Expected an exception, but none thrown.\n";
+    cerr << " FAILED: Expected an exception, but none thrown.\n";
+    assert(false);
   } catch (const ArgumentError&) {
     // do nothing.
   } catch (...) {
-    cerr << "Threw wrong exception.\n";
+    cerr << " FAILED: Threw wrong exception.\n";
     assert(false);
   }
 }
