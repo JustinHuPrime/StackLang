@@ -21,7 +21,7 @@ typedef pair<list<TypeElement>, Stack> DefinedFunction;
 typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
 typedef pair<list<StackElement::DataType>, Prim> PrimitiveFunction;
 
-const map<string, PrimitiveFunction>& PRIMITIVES();
+const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;
 void execute(Stack&,
              map<string, DefinedFunction>&);  // Executes the stack until it
                                               // encounters a data element

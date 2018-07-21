@@ -25,7 +25,7 @@ using std::find_if;
 
 bool stopFlag = false;
 
-const map<string, PrimitiveFunction>& PRIMITIVES() {
+const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   static map<string, PrimitiveFunction>* prims =
       new map<string, PrimitiveFunction>{
 #include "language/primitives/boolean.inc"
