@@ -11,6 +11,8 @@ using Util::escape;
 using Util::findImproperEscape;
 using Util::unescape;
 
+const char StringElement::QUOTE_CHAR = '"';
+
 StringElement* StringElement::parse(const string& s) {
   if (ends_with(s, "\""))  // has quotes on either end
   {

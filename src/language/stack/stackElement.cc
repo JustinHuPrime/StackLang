@@ -49,25 +49,32 @@ StackElement* StackElement::parse(const string& s) {
              s[0] == NumberElement::INEXACT_SIGNAL)  // looks like a number.
   {
     return NumberElement::parse(s);
-  } else if (starts_with(s, "\""))  // starts with a quote
+  } else if (starts_with(
+                 s,
+                 string(1, StringElement::QUOTE_CHAR)))  // starts with a quote
   {
     return StringElement::parse(s);
-  } else if (starts_with(s, "<<") &&
-             ends_with(s, ">>"))  // has a pair of substack delmiters on either
-                                  // end - must be a substack.
+  } else if (starts_with(s, SubstackElement::SUBSTACK_BEGIN) &&
+             ends_with(
+                 s,
+                 SubstackElement::SUBSTACK_END))  // has a pair of substack
+                                                  // delmiters on either end
+                                                  // - must be a substack.
   {
     return SubstackElement::parse(s);
   } else if (s == BooleanElement::TSTR ||
              s == BooleanElement::FSTR)  // it's either true or false
   {
-    return new BooleanElement(s == "true");
-  } else if (s.find_first_of("()") != string::npos ||
+    return new BooleanElement(s == string(BooleanElement::TSTR));
+  } else if (s.find_first_of(TypeElement::PARENS) != string::npos ||
              find(TypeElement::TYPES().begin(), TypeElement::TYPES().end(),
                   s) != TypeElement::TYPES()
                             .end())  // has a subtype, or exists in types
   {                                  // is a type
     return TypeElement::parse(s);
-  } else if (isalpha(s[0]))  // starts with a character
+  } else if (isalpha(s[0]) ||
+             s[0] == CommandElement::QUOTE_CHAR)  // starts with a character or
+                                                  // a command-quote
   {
     return CommandElement::parse(s);
   } else  // error case

@@ -3,17 +3,17 @@
 //    [](Stack& s, map<string, DefinedFunction>&) {
 //      PRIMITIVE BODY...
 //    }}},
-    {"add",
-     {{StackElement::DataType::Number, StackElement::DataType::Number},
-      [](Stack& s, map<string, DefinedFunction>&) {
-        NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
-        NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
-        NumberElement* result =
-            new NumberElement(lower->getData() + higher->getData());
-        delete lower;
-        delete higher;
-        s.push(result);
-      }}},
+{"add",
+ {{StackElement::DataType::Number, StackElement::DataType::Number},
+  [](Stack& s, map<string, DefinedFunction>&) {
+    NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
+    NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
+    NumberElement* result =
+        new NumberElement(lower->getData() + higher->getData());
+    delete lower;
+    delete higher;
+    s.push(result);
+  }}},
     {"subtract",
      {{StackElement::DataType::Number, StackElement::DataType::Number},
       [](Stack& s, map<string, DefinedFunction>&) {

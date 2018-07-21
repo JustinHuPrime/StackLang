@@ -19,9 +19,10 @@ class SubstackElement : public StackElement {
   explicit operator const string() const override;
   const Stack& getData() const;
 
- private:
   static const char* SUBSTACK_BEGIN;
   static const char* SUBSTACK_END;
+
+ private:
   static const char* SUBSTACK_SEPARATOR;
   static const char* SUBSTACK_EMPTY;
 

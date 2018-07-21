@@ -29,6 +29,8 @@ class TypeElement : public StackElement {
 
   static const vector<string>& TYPES();
 
+  static const char* PARENS;
+
  private:
   DataType data;
   TypeElement* specialization;

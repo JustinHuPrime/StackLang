@@ -11,8 +11,8 @@ using StackLang::Exceptions::ParserException;
 using std::to_string;
 using Util::trim;
 
-const char* SubstackElement::SUBSTACK_BEGIN = "<< ";
-const char* SubstackElement::SUBSTACK_END = " >>";
+const char* SubstackElement::SUBSTACK_BEGIN = "<<";
+const char* SubstackElement::SUBSTACK_END = ">>";
 const char* SubstackElement::SUBSTACK_SEPARATOR = ", ";
 const char* SubstackElement::SUBSTACK_EMPTY = "<< (empty) >>";
 
@@ -80,6 +80,7 @@ SubstackElement::operator const string() const {
     return SUBSTACK_EMPTY;
   }
   string buffer = SUBSTACK_BEGIN;
+  buffer += " ";
 
   for (auto elm : data) {
     buffer += string(*elm);
@@ -88,6 +89,7 @@ SubstackElement::operator const string() const {
 
   buffer.erase(buffer.length() - 2);
 
+  buffer += " ";
   buffer += SUBSTACK_END;
 
   return buffer;  // return value optimization

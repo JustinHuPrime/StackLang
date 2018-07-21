@@ -18,6 +18,8 @@ class StringElement : public StackElement {
   explicit operator const string() const override;
   const string& getData() const;
 
+  static const char QUOTE_CHAR;
+
  private:
   string data;
 };

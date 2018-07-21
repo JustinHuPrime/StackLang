@@ -13,19 +13,23 @@ class CommandElement : public StackElement {
  public:
   static const char* ALLOWED_COMMAND;
 
-  static CommandElement* parse(const string& s);
+  static CommandElement* parse(const string&);
 
-  explicit CommandElement(string);
+  explicit CommandElement(const string&, bool isQuoted = false);
   CommandElement* clone() const override;
 
   explicit operator const string() const override;
   const string& getData() const;
+  bool isQuoted() const;
+
+  static const char QUOTE_CHAR;
 
  private:
   static const char* COMMAND_LDELIM;
   static const char* COMMAND_RDELIM;
 
   string data;
+  bool quoted;
 };
 }  // namespace StackElements
 }  // namespace StackLang

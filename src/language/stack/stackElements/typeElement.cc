@@ -17,6 +17,8 @@ using std::find;
 using std::string;
 using Util::starts_with;
 
+const char* TypeElement::PARENS = "()";
+
 TypeElement* TypeElement::parse(const string& s) {
   if (s.find('(') == string::npos) {
     auto value = find(TYPES().begin(), TYPES().end(), s);
