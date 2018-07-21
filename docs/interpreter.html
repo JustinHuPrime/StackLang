@@ -55,7 +55,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-lg">
+            <div class="col-lg-6">
                 <h1>The Interpreter</h1>
                 <p>The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke
                     the interpreter from becomes one of the two roots of the interpreter's search path. The other root is
@@ -74,18 +74,19 @@
                         <code>-</code> will cause it to parse a new option. For relative paths, the
                         <code>include</code> command will first look from the directory containing the interpreter for a
                         <code>libs</code> folder, then within that folder for the named file, the named file, but adding a
-                        <code>.sl</code> extension, then search in the current working directory for the named file, then the named file,
+                        <code>.skl</code> extension, then search in the current working directory for the named file, then the named file,
                         but adding a
-                        <code>.sl</code> extension. For absolute paths, the
+                        <code>.skl</code> extension. For absolute paths, the
                         <code>include</code> command will look for the file along the path, then for the file, but adding a
-                        <code>.sl</code> extension. Note that
+                        <code>.skl</code> extension. Note that
                         <code>-I std</code> is implied.</li>
                     <li>
                         <code>-b</code>: prevents automatic inclusion of standard library.
                     </li>
                     <li>
                         <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put more than
-                        N elements onto the stack. Default is limited by the size of a long int on the local system.</li>
+                        N elements onto the stack. Default is limited by the size of a long int on the local system (although
+                        the system will likely run out of memory before it reaches that many stack elements).</li>
                     <li>
                         <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
                         <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.</li>

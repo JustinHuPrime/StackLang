@@ -71,7 +71,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-lg">
+            <div class="col-lg-6">
                 <h1>Numbers</h1>
                 <p>Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
                     <code>mpq_class</code>). There are, however, two flavours of numbers - exact numbers or inexact numbers. Exact numbers are
@@ -84,6 +84,32 @@
                     <kbd>+</kbd> or
                     <kbd>-</kbd>, then either a decimal number or a fraction of two whole numbers. Any number of
                     <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.</p>
+                <p>An EBNF definition of a Number is given below.
+                    <pre>
+nonzero-digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+digit = "0" | nonzero-digit ;
+
+separator-symbol = "'" ;
+
+processed-nonzero-digit = nonzero-digit, {separator-symbol} ;
+processed-digit = digit-symbol, {separator-symbol} ;
+
+nonzero-digit-string = {processed-digit}, processed-nonzero-digit, {processed-digit} ;
+digit-string = {processed-digit} ;
+
+inexact-symbol = "~" ;
+sign-symbol = "+" | "-" ;
+decimal-point-symbol = "." ;
+fraction-bar-symbol = "/" ;
+
+modifier-sequence = [inexact-symbol], [sign-symbol] ;
+
+decimal = modifier-sequence, digit-string, [decimal point, digit-string] ;
+fraction = modifier-sequence, digit-string, fraction-bar-symbol, nonzero-digit-string ;
+
+number = decimal | fraction ;
+                </pre>
+                </p>
                 <h2>Number-related Primtive Commands</h2>
                 <h3>Arithmetic</h3>
                 <p>
