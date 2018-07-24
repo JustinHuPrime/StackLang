@@ -4,7 +4,7 @@ void testStringUtils() noexcept;
 void testArgReader() noexcept;
 void testLineEditor() noexcept;
 void testStack() noexcept;
-// void testParsers() noexcept;
+void testParsers() noexcept;
 // void testTypeCheck() noexcept;
 // void testPrimitives() noexcept;
 
@@ -30,9 +30,9 @@ int main() {
   cout << "stack";
   testStack();
   cout << " PASSED\n";
-  // cout << "parsers";
-  // testParsers();
-  // cout << " PASSED\n";
+  cout << "parsers";
+  testParsers();
+  cout << " PASSED\n";
 
   // cout << "\nTesting language:\n";
   // cout << "Type checking";
