@@ -111,7 +111,7 @@ number = decimal | fraction ;
                 </pre>
                 </p>
                 <h2>Number-related Primtive Commands</h2>
-                <h3>Arithmetic</h3>
+                <h3>Type Predicates</h3>
                 <p>
                     <code>number? : Any -> Boolean</code>
                     <br/> Produces true if given element is a number.
@@ -144,6 +144,7 @@ number = decimal | fraction ;
                     <code>odd? : Any -> Boolean</code>
                     <br/> Produces true if given element is an odd, exact, integer number.
                 </p>
+                <h3>Type Conversion</h3>
                 <p>
                     <code>exact-to-inexact : Number -> Number</code>
                     <br/> Produces the inexact version of the given number.
@@ -152,6 +153,15 @@ number = decimal | fraction ;
                     <code>inexact-to-exact : Number -> Number</code>
                     <br/> Produces the exact version of the given number.
                 </p>
+                <p>
+                    <code>number-to-string : Number -> String</code>
+                    <br/> Produces the number as a fraction (exact number), or as a decimal (inexact number).
+                </p>
+                <p>
+                    <code>string-to-number : String -> Number</code>
+                    <br/> Produces a number from a string as if it were read in from the interpreter.
+                </p>
+                <h3>Arithmetic</h3>
                 <p>
                     <code>negate : Number -> Number</code>
                     <br/> Produces the negative of the number.
@@ -243,6 +253,11 @@ number = decimal | fraction ;
                 <p>
                     <code>pow : Number Number -> Number</code>
                     <br/> Produces the second number raised to the power of the first number.
+                </p>
+                <p>
+                    <code>log : Number Number -> Number</code>
+                    <br/> Produces the second number's logarithm, using the first number as the base. Result is inexact unless
+                    both numbers are exact, and second number is a perfect power of the base.
                 </p>
                 <h3>Comparison</h3>
                 <p>
