@@ -29,15 +29,17 @@ StringElement* StringElement::parse(const string& s) {
   }
 }
 
-StringElement::StringElement(string s)
+StringElement::StringElement(string s) noexcept
     : StackElement(StackElement::DataType::String), data(s) {}
 
-StringElement* StringElement::clone() const { return new StringElement(data); }
+StringElement* StringElement::clone() const noexcept {
+  return new StringElement(data);
+}
 
-StringElement::operator const string() const {
+StringElement::operator const string() const noexcept {
   return "\"" + escape(data) + "\"";
 }
 
-const string& StringElement::getData() const { return data; }
+const string& StringElement::getData() const noexcept { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

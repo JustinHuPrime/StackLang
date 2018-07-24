@@ -4,13 +4,13 @@ namespace StackLang {
 using StackLang::Stack;
 using StackLang::StackElement;
 
-Stack::StackIterator::StackIterator(Stack::Node* node) : curr(node) {}
+Stack::StackIterator::StackIterator(Stack::Node* node) noexcept : curr(node) {}
 
-const StackElement* Stack::StackIterator::operator*() {
+const StackElement* Stack::StackIterator::operator*() noexcept {
   return curr->elm.get();
 }
 
-Stack::StackIterator& Stack::StackIterator::operator++() {
+Stack::StackIterator& Stack::StackIterator::operator++() noexcept {
   if (curr != nullptr) {
     curr = curr->next;
   }
@@ -18,7 +18,7 @@ Stack::StackIterator& Stack::StackIterator::operator++() {
   return *this;
 }
 
-Stack::StackIterator Stack::StackIterator::operator++(int) {
+Stack::StackIterator Stack::StackIterator::operator++(int) noexcept {
   StackIterator temp = *this;
 
   operator++();
@@ -27,12 +27,12 @@ Stack::StackIterator Stack::StackIterator::operator++(int) {
 }
 
 bool operator==(const Stack::StackIterator& first,
-                const Stack::StackIterator& second) {
+                const Stack::StackIterator& second) noexcept {
   return first.curr == second.curr;
 }
 
 bool operator!=(const Stack::StackIterator& first,
-                const Stack::StackIterator& second) {
+                const Stack::StackIterator& second) noexcept {
   return !(first == second);
 }
 }  // namespace StackLang

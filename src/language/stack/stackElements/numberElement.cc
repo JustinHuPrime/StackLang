@@ -97,7 +97,7 @@ NumberElement* NumberElement::parse(const string& s) {
   }
 }
 
-NumberElement::NumberElement(string d, bool isExact)
+NumberElement::NumberElement(string d, bool isExact) noexcept
     : StackElement(StackElement::DataType::Number), exact(isExact) {
   d = removeChar(d, '+');
   if (d.find('.') == string::npos) {
@@ -112,14 +112,14 @@ NumberElement::NumberElement(string d, bool isExact)
   data.canonicalize();
 }
 
-NumberElement::NumberElement(const mpq_class& d, bool isExact)
+NumberElement::NumberElement(const mpq_class& d, bool isExact) noexcept
     : StackElement(StackElement::DataType::Number), data(d), exact(isExact) {}
 
-NumberElement* NumberElement::clone() const {
+NumberElement* NumberElement::clone() const noexcept {
   return new NumberElement(data.get_str(), exact);
 }
 
-NumberElement::operator const string() const {
+NumberElement::operator const string() const noexcept {
   if (exact) {
     return data.get_str();
   } else {
@@ -131,6 +131,6 @@ NumberElement::operator const string() const {
   }
 }
 
-const mpq_class& NumberElement::getData() const { return data; }
+const mpq_class& NumberElement::getData() const noexcept { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

@@ -22,20 +22,20 @@ class StackElement {
   // Produces a StackElement (of some type) from a terminal input string
   static StackElement* parse(const string&);
 
-  StackElement(const StackElement&) = default;
-  StackElement(StackElement&&) = default;
-  virtual StackElement* clone() const = 0;
+  StackElement(const StackElement&) noexcept = default;
+  StackElement(StackElement&&) noexcept = default;
+  virtual StackElement* clone() const noexcept = 0;
 
-  StackElement& operator=(const StackElement&) = default;
-  StackElement& operator=(StackElement&&) = default;
+  StackElement& operator=(const StackElement&) noexcept = default;
+  StackElement& operator=(StackElement&&) noexcept = default;
 
-  virtual ~StackElement();
+  virtual ~StackElement() noexcept = default;
 
   // Produces a nicely formatted string of the string (for print to console)
-  explicit virtual operator const string() const = 0;
+  explicit virtual operator const string() const noexcept = 0;
 
   // Getter for the DataType
-  DataType getType() const;
+  DataType getType() const noexcept;
 
   // Gets the data from the element (returns different type depending on
   // dataType) should exist in all subclasses, where T is the closest dataTYpe
@@ -48,7 +48,7 @@ class StackElement {
 
  protected:
   // Constructs a StackElement by setting the dataType
-  explicit StackElement(DataType);
+  explicit StackElement(DataType) noexcept;
 
   DataType dataType;
 };

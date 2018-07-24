@@ -12,11 +12,11 @@ using std::string;
 class StringElement : public StackElement {
  public:
   static StringElement* parse(const string&);
-  explicit StringElement(string);
-  StringElement* clone() const override;
+  explicit StringElement(string) noexcept;
+  StringElement* clone() const noexcept override;
 
-  explicit operator const string() const override;
-  const string& getData() const;
+  explicit operator const string() const noexcept override;
+  const string& getData() const noexcept;
 
   static const char QUOTE_CHAR;
 

@@ -68,14 +68,14 @@ SubstackElement* SubstackElement::parse(const string& s) {
   return new SubstackElement(buffer);
 }
 
-SubstackElement::SubstackElement(const Stack& s)
+SubstackElement::SubstackElement(const Stack& s) noexcept
     : StackElement(StackElement::DataType::Substack), data(s) {}
 
-SubstackElement* SubstackElement::clone() const {
+SubstackElement* SubstackElement::clone() const noexcept {
   return new SubstackElement(data);
 }
 
-SubstackElement::operator const string() const {
+SubstackElement::operator const string() const noexcept {
   if (data.size() == 0) {
     return SUBSTACK_EMPTY;
   }
@@ -95,6 +95,6 @@ SubstackElement::operator const string() const {
   return buffer;  // return value optimization
 }
 
-const Stack& SubstackElement::getData() const { return data; }
+const Stack& SubstackElement::getData() const noexcept { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

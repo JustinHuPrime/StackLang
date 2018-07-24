@@ -38,21 +38,21 @@ CommandElement* CommandElement::parse(const string& s) {
   }
 }
 
-CommandElement::CommandElement(const string& s, bool isQuoted)
+CommandElement::CommandElement(const string& s, bool isQuoted) noexcept
     : StackElement(StackElement::DataType::Command),
       data(s),
       quoted(isQuoted) {}
 
-CommandElement* CommandElement::clone() const {
+CommandElement* CommandElement::clone() const noexcept {
   return new CommandElement(data, quoted);
 }
 
-CommandElement::operator const string() const {
+CommandElement::operator const string() const noexcept {
   return (quoted ? string(1, QUOTE_CHAR) : "") + COMMAND_LDELIM + data +
          COMMAND_RDELIM;
 }
 
-const string& CommandElement::getData() const { return data; }
-bool CommandElement::isQuoted() const { return quoted; }
+const string& CommandElement::getData() const noexcept { return data; }
+bool CommandElement::isQuoted() const noexcept { return quoted; }
 }  // namespace StackElements
 }  // namespace StackLang

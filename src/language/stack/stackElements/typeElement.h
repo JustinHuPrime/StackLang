@@ -13,21 +13,21 @@ using std::vector;
 class TypeElement : public StackElement {
  public:
   static TypeElement* parse(const string&);
-  explicit TypeElement(DataType);
-  TypeElement(DataType, TypeElement*);
-  TypeElement(const TypeElement&);
-  TypeElement& operator=(const TypeElement&);
-  TypeElement(TypeElement&&);
-  TypeElement& operator=(TypeElement&&);
-  TypeElement* clone() const override;
-  ~TypeElement();
+  explicit TypeElement(DataType) noexcept;
+  TypeElement(DataType, TypeElement*) noexcept;
+  TypeElement(const TypeElement&) noexcept;
+  TypeElement& operator=(const TypeElement&) noexcept;
+  TypeElement(TypeElement&&) noexcept;
+  TypeElement& operator=(TypeElement&&) noexcept;
+  TypeElement* clone() const noexcept override;
+  ~TypeElement() noexcept;
 
-  explicit operator const string() const override;
-  DataType getData() const;
+  explicit operator const string() const noexcept override;
+  DataType getData() const noexcept;
 
-  static string to_string(DataType);
+  static string to_string(DataType) noexcept;
 
-  static const vector<string>& TYPES();
+  static const vector<string>& TYPES() noexcept;
 
   static const char* PARENS;
 

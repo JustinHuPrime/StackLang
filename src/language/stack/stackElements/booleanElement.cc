@@ -5,15 +5,17 @@ namespace StackElements {
 const char* BooleanElement::TSTR = "true";
 const char* BooleanElement::FSTR = "false";
 
-BooleanElement::BooleanElement(bool b)
+BooleanElement::BooleanElement(bool b) noexcept
     : StackElement(StackElement::DataType::Boolean), data(b) {}
 
-BooleanElement* BooleanElement::clone() const {
+BooleanElement* BooleanElement::clone() const noexcept {
   return new BooleanElement(data);
 }
 
-BooleanElement::operator const string() const { return data ? TSTR : FSTR; }
+BooleanElement::operator const string() const noexcept {
+  return data ? TSTR : FSTR;
+}
 
-bool BooleanElement::getData() const { return data; }
+bool BooleanElement::getData() const noexcept { return data; }
 }  // namespace StackElements
 }  // namespace StackLang

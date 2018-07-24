@@ -8,27 +8,29 @@ using StackLang::Stack;
 
 class Stack::StackIterator {
  public:
-  StackIterator(Stack::Node*);
-  StackIterator(const StackIterator&) = default;
+  StackIterator(Stack::Node*) noexcept;
+  StackIterator(const StackIterator&) noexcept = default;
 
-  StackIterator& operator=(const StackIterator&) = default;
+  StackIterator& operator=(const StackIterator&) noexcept = default;
 
   friend bool operator==(const Stack::StackIterator&,
-                         const Stack::StackIterator&);
+                         const Stack::StackIterator&) noexcept;
   friend bool operator!=(const Stack::StackIterator&,
-                         const Stack::StackIterator&);
+                         const Stack::StackIterator&) noexcept;
 
-  const StackElement* operator*();
+  const StackElement* operator*() noexcept;
 
-  StackIterator& operator++();
-  StackIterator operator++(int);
+  StackIterator& operator++() noexcept;
+  StackIterator operator++(int) noexcept;
 
  private:
   Stack::Node* curr;
 };
 
-bool operator==(const Stack::StackIterator&, const Stack::StackIterator&);
-bool operator!=(const Stack::StackIterator&, const Stack::StackIterator&);
+bool operator==(const Stack::StackIterator&,
+                const Stack::StackIterator&) noexcept;
+bool operator!=(const Stack::StackIterator&,
+                const Stack::StackIterator&) noexcept;
 }  // namespace StackLang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKITERATOR_H_

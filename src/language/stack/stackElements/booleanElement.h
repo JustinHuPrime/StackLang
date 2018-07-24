@@ -14,11 +14,11 @@ class BooleanElement : public StackElement {
   static const char* TSTR;
   static const char* FSTR;
 
-  explicit BooleanElement(bool);
-  BooleanElement* clone() const override;
+  explicit BooleanElement(bool) noexcept;
+  BooleanElement* clone() const noexcept override;
 
-  explicit operator const string() const override;
-  bool getData() const;
+  explicit operator const string() const noexcept override;
+  bool getData() const noexcept;
 
  private:
   bool data;

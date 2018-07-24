@@ -85,9 +85,9 @@ StackElement* StackElement::parse(const string& s) {
   }
 }
 
-StackElement::~StackElement() {}
+StackElement::DataType StackElement::getType() const noexcept {
+  return dataType;
+}
 
-StackElement::DataType StackElement::getType() const { return dataType; }
-
-StackElement::StackElement(DataType type) : dataType(type) {}
+StackElement::StackElement(DataType type) noexcept : dataType(type) {}
 }  // namespace StackLang

@@ -20,12 +20,12 @@ class NumberElement : public StackElement {
 
   static NumberElement* parse(const string&);
 
-  explicit NumberElement(string, bool isExact = true);
-  explicit NumberElement(const mpq_class&, bool isExact = true);
-  NumberElement* clone() const override;
+  explicit NumberElement(string, bool isExact = true) noexcept;
+  explicit NumberElement(const mpq_class&, bool isExact = true) noexcept;
+  NumberElement* clone() const noexcept override;
 
-  explicit operator const string() const override;
-  const mpq_class& getData() const;
+  explicit operator const string() const noexcept override;
+  const mpq_class& getData() const noexcept;
 
  private:
   mpq_class data;

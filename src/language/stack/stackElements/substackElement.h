@@ -13,11 +13,11 @@ using std::string;
 class SubstackElement : public StackElement {
  public:
   static SubstackElement* parse(const string&);
-  explicit SubstackElement(const Stack&);
-  SubstackElement* clone() const override;
+  explicit SubstackElement(const Stack&) noexcept;
+  SubstackElement* clone() const noexcept override;
 
-  explicit operator const string() const override;
-  const Stack& getData() const;
+  explicit operator const string() const noexcept override;
+  const Stack& getData() const noexcept;
 
   static const char* SUBSTACK_BEGIN;
   static const char* SUBSTACK_END;

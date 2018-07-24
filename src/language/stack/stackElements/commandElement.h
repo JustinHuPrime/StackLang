@@ -15,12 +15,12 @@ class CommandElement : public StackElement {
 
   static CommandElement* parse(const string&);
 
-  explicit CommandElement(const string&, bool isQuoted = false);
-  CommandElement* clone() const override;
+  explicit CommandElement(const string&, bool isQuoted = false) noexcept;
+  CommandElement* clone() const noexcept override;
 
-  explicit operator const string() const override;
-  const string& getData() const;
-  bool isQuoted() const;
+  explicit operator const string() const noexcept override;
+  const string& getData() const noexcept;
+  bool isQuoted() const noexcept;
 
   static const char QUOTE_CHAR;
 

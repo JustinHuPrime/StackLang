@@ -22,7 +22,7 @@ namespace KeyInfo {
 const char KEY_CTRL_D = 4;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) noexcept {
   using StackLang::DefinedFunction;
   using StackLang::Stack;
   using StackLang::StackElement;
