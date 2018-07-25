@@ -107,6 +107,33 @@
                     will be caught at the soonest time possible. When this happens, a
                     <code>TypeError</code> is thrown.
                 </p>
+                <h2>Type Specialziation</h2>
+                <p>A type specialziation is when there is additional information after the type in parenthesis. For example,
+                    a
+                    <code>Command(Quoted)</code> is a quoted command. Substacks, commands, and numbers may have specialized types. (This means that their
+                    type has additional information, and that the element itself has some different forms possible). Substacks
+                    may be specialized to indicate what type they can hold. In between the parenthesis should be another
+                    type (including further specialized types). For example,
+                    <code>Substack(String)</code> is a substack of strings. A
+                    <code>Substack(Substack(Number(Inexact)))</code> is a substack of substacks of inexact numbers - a 2d grid of inexact numbers. An unspecialized Substack
+                    is a substack of any type. Numbers can be specialized with their exactness. The three allowed Number
+                    types are:
+                    <ul>
+                        <li>
+                            <code>Number</code>: An unspecialized number - may be either exact or inexact.</li>
+                        <li>
+                            <code>Number(Exact)</code>: An exact number.</li>
+                        <li>
+                            <code>Number(Inexact)</code>: An inexact number.</li>
+                    </ul>
+                    Commannds are specialized when quoted. The two allowed command types are:
+                    <ul>
+                        <li>
+                            <code>Command</code>: An unspecialized, unquoted command.</li>
+                        <li>
+                            <code>Command(Quoted)</code>: A specialized, quoted command.</li>
+                    </ul>
+                </p>
             </div>
         </div>
     </div>

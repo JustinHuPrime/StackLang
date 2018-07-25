@@ -81,9 +81,9 @@
                 <p>Throughout this documentation, certain terms have special meanings. These are documented below.
                     <ul>
                         <li>
-                            <i>function</i>: synonym for command. A command is a stack element of type Command that is executed
-                            when on the top of the stack. It is preferred to use command for primitives, and function for
-                            used-defined commands.</li>
+                            <i>function</i>: synonym for command. A command is a stack element of type Command(Unquoted) that
+                            is executed when on the top of the stack. It is preferred to use command for primitives (or both
+                            primitives and user-defined commands), and function for used-defined commands.</li>
                         <li>
                             <i>active end</i>: the end of the stack that can be operated on. The terms "top" and "bottom" are
                             strictly forbidden, since the visual layout of the interpreter means that "top", in the technical
@@ -103,15 +103,14 @@
                     to the active end, and so on. Occasionally, commands will be missing either an input, and output, or
                     have multiple outputs. Example:
                     <br/>
-                    <code>define : Substack(Type) Substack(Type) Substack(Any) String -> </code>
+                    <code>define : Substack(Type) Substack(Any) Command(Quoted) -> </code>
                     <br/> is the signature for
                     <code>define</code>. Functions and commands will always pop their parameters off of the stack, so
-                    <code>number? : Any -> Any Boolean</code> will still pop one element off of the stack, before pushing it back on, then pushing back on a Boolean
-                    as well. Finally, Substacks can have additional information attached to them. For example, a
-                    <code>Substack(Number)</code> is a substack that may only contain numbers. A
-                    <code>Substack(Substack(String))</code> is a substack that may only contain substacks of strings. As an aside,
-                    <code>Substack</code> is equivalent to
-                    <code>Substack(Any)</code>.
+                    <code>foo? : Any -> Any Boolean</code> will still pop one element off of the stack, before pushing it back on, then pushing back on a Boolean
+                    as well. Finally, Substacks, numbers, and commands can have additional information attached to them.
+                    For example, a
+                    <code>Substack(Number)</code> is a substack that may only contain numbers. More detail on type specializations is given in the
+                    <a href="https://techteamai.github.io/StackLang/types.html">types</a> section.
                 </p>
                 <h2>About the Author</h2>
                 <address>StackLang, and the interpreter, was written and designed by

@@ -102,15 +102,28 @@ sign-symbol = "+" | "-" ;
 decimal-point-symbol = "." ;
 fraction-bar-symbol = "/" ;
 
-modifier-sequence = [inexact-symbol], [sign-symbol] ;
+exact-decimal = [sign-symbol], digit-string, [decimal point, digit-string] ;
+exact-fraction = [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
 
-decimal = modifier-sequence, digit-string, [decimal point, digit-string] ;
-fraction = modifier-sequence, digit-string, fraction-bar-symbol, nonzero-digit-string ;
+inexact-decimal = inexact-symbol, [sign-symbol], digit-string, [decimal point, digit-string] ;
+inexact-fraction = inexact-symbol, [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
 
-number = decimal | fraction ;
+exact-number = exact-decimal | exact-fraction ;
+inexact-number = inexact-decimal | inexact-fraction ;
+
+number = exact-number | inexact-number ;
                 </pre>
                 </p>
                 <h2>Number-related Primtive Commands</h2>
+                <h3>Constants</h3>
+                <p>
+                    <code>euler : -> Number</code>
+                    <br/> Produces Euler's number.
+                </p>
+                <p>
+                    <code>pi : -> Number</code>
+                    <br/> Produces &pi;.
+                </p>
                 <h3>Type Predicates</h3>
                 <p>
                     <code>number? : Any -> Boolean</code>
@@ -146,20 +159,22 @@ number = decimal | fraction ;
                 </p>
                 <h3>Type Conversion</h3>
                 <p>
-                    <code>exact-to-inexact : Number -> Number</code>
+                    <code>exact-to-inexact : Number -> Number(Inexact)</code>
                     <br/> Produces the inexact version of the given number.
                 </p>
                 <p>
-                    <code>inexact-to-exact : Number -> Number</code>
+                    <code>inexact-to-exact : Number -> Number(Exact)</code>
                     <br/> Produces the exact version of the given number.
                 </p>
                 <p>
                     <code>number-to-string : Number -> String</code>
-                    <br/> Produces the number as a fraction (exact number), or as a decimal (inexact number).
+                    <br/> Produces the number as a fraction (exact number), or as a decimal with inexact symbol (inexact number).
                 </p>
                 <p>
                     <code>string-to-number : String -> Number</code>
                     <br/> Produces a number from a string as if it were read in from the interpreter.
+                    <code>number-to-string</code> is the exact inverse of
+                    <code>string-to-number</code>.
                 </p>
                 <h3>Arithmetic</h3>
                 <p>
@@ -198,22 +213,34 @@ number = decimal | fraction ;
                     <code>modulo : Number Number -> Number</code>
                     <br/> If both numbers have the same sign: subtracts the first from the second until the absolute value of
                     the first is less than the absolute value of the second. If the numbers have a different sign, adds the
-                    first to the second until the absolute value oof the first is less than the absolute value of the sceond.
+                    first to the second until the absolute value of the first is less than the absolute value of the sceond.
                 </p>
                 <p>
-                    <code>floor : Number -> Number</code>
+                    <code>quotient : Number(Exact) Number(Exact) -> Number(Exact)</code>
+                    <br/> Produces the whole-number part of the second number divided by the first number.
+                </p>
+                <p>
+                    <code>remainder : Number(Exact) Number(Exact) -> Number(Exact)</code>
+                    <br/> Produces the remainder when two numbers are divided.
+                </p>
+                <p>
+                    <code>floor : Number -> Number(Exact)</code>
                     <br/> Produces the floor of the number (closest integer, rounding down).
                 </p>
                 <p>
-                    <code>ceil : Number -> Number</code>
+                    <code>ceil : Number -> Number(Exact)</code>
                     <br/> Produces the ceiling of the number (closest integer, rounding up).
                 </p>
                 <p>
-                    <code>round : Number -> Number</code>
+                    <code>round : Number -> Number(Exact)</code>
                     <br/> Produces the closest integer, rounding to even.
                 </p>
                 <p>
-                    <code>trunc : Number -> Number</code>
+                    <code>round* : Number -> Number(Exact)</code>
+                    <br/> Produces the closest integer, rounding up at 0.5.
+                </p>
+                <p>
+                    <code>trunc : Number -> Number(Exact)</code>
                     <br/> Produces the number, without any decimal digits.
                 </p>
                 <p>
@@ -229,21 +256,21 @@ number = decimal | fraction ;
                     <br/> Produces the smaller of the two numbers.
                 </p>
                 <p>
-                    <code>gcd : Number Number -> Number</code>
+                    <code>gcd : Number(Exact) Number(Exact) -> Number(Exact)</code>
                     <br/> Produces the greatest common divisor of two integers (always positive). If at least one of the numbers
                     is a fraction, produces the greatest common divisor of the numerators, divided by the least common multiple
                     of the denominators.
                 </p>
                 <p>
-                    <code>lcm : Number Number -> Number</code>
+                    <code>lcm : Number(Exact) Number(Exact) -> Number(Exact)</code>
                     <br/> Produces the least common multiple of the two numbers (always positive).
                 </p>
                 <p>
-                    <code>numerator : Number -> Number</code>
+                    <code>numerator : Number(Exact) -> Number(Exact)</code>
                     <br/> Produces the numerator of the number.
                 </p>
                 <p>
-                    <code>denominator : Number -> Number</code>
+                    <code>denominator : Number(Exact) -> Number(Exact)</code>
                     <br/> Produces the denominator of the number.
                 </p>
                 <p>
@@ -261,12 +288,12 @@ number = decimal | fraction ;
                 </p>
                 <h3>Comparison</h3>
                 <p>
-                    <code>equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the number is equal to the other number. Inexact numbers are never equal.
+                    <code>equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <br/> Produces true if the number is equal to the other number.
                 </p>
                 <p>
-                    <code>not-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the numbers are not equal. Inexact numbers are always not equal.
+                    <code>not-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <br/> Produces true if the numbers are not equal.
                 </p>
                 <p>
                     <code>less-than? : Number Number -> Boolean</code>
@@ -277,23 +304,16 @@ number = decimal | fraction ;
                     <br/> Produces true if the second number is greater than the first.
                 </p>
                 <p>
-                    <code>less-than-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is less than or equal to the first. Equivalent to
-                    <code>less-than?</code> for inexact numbers.
+                    <code>less-than-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <br/> Produces true if the second number is less than or equal to the first.
                 </p>
                 <p>
-                    <code>greater-than-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is greater than or equal to the first. Equivalent to
-                    <code>greater-than?</code> for inexact numbers.
+                    <code>greater-than-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <br/> Produces true if the second number is greater than or equal to the first.
                 </p>
-                <h3>Constants</h3>
+                <h3>Trigonometric Functions</h3>
                 <p>
-                    <code>euler : -> Number</code>
-                    <br/> Produces Euler's number.
-                </p>
-                <p>
-                    <code>pi : -> Number</code>
-                    <br/> Produces &pi;.
+                    <code>sine : Number -> Number</code>
                 </p>
             </div>
         </div>
