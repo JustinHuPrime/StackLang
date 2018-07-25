@@ -132,5 +132,6 @@ NumberElement::operator const string() const noexcept {
 }
 
 const mpq_class& NumberElement::getData() const noexcept { return data; }
+bool NumberElement::isExact() const noexcept { return exact; }
 }  // namespace StackElements
 }  // namespace StackLang

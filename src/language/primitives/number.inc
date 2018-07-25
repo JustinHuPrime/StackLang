@@ -4,7 +4,8 @@
 //      PRIMITIVE BODY...
 //    }}},
 {"add",
- {{StackElement::DataType::Number, StackElement::DataType::Number},
+ {{TypeElement(StackElement::DataType::Number),
+   TypeElement(StackElement::DataType::Number)},
   [](Stack& s, map<string, DefinedFunction>&) {
     NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
     NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -15,7 +16,8 @@
     s.push(result);
   }}},
     {"subtract",
-     {{StackElement::DataType::Number, StackElement::DataType::Number},
+     {{TypeElement(StackElement::DataType::Number),
+       TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -26,7 +28,8 @@
         s.push(result);
       }}},
     {"multiply",
-     {{StackElement::DataType::Number, StackElement::DataType::Number},
+     {{TypeElement(StackElement::DataType::Number),
+       TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -37,7 +40,8 @@
         s.push(result);
       }}},
     {"divide",
-     {{StackElement::DataType::Number, StackElement::DataType::Number},
+     {{TypeElement(StackElement::DataType::Number),
+       TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         if (dynamic_cast<NumberElement*>(s.top())->getData() == 0) {
           throw SyntaxError("Attempted division by zero.");
@@ -51,7 +55,7 @@
         s.push(result);
       }}},
     {"negate",
-     {{StackElement::DataType::Number},
+     {{TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* input = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* result = new NumberElement(-input->getData());

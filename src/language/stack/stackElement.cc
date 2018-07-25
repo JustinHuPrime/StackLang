@@ -36,6 +36,8 @@ using Util::starts_with;
 using Util::trim;
 using Util::unescape;
 
+const unsigned StackElement::NUM_PRIM_TYPES = 7;
+
 // ASSUME: s is not empty
 StackElement* StackElement::parse(const string& s) {
   if (s.empty()) {

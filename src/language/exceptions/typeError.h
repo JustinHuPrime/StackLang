@@ -7,10 +7,11 @@
 
 namespace StackLang {
 namespace Exceptions {
+using StackLang::StackElements::TypeElement;
 class TypeError : public LanguageException {
  public:
-  TypeError(const StackElement::DataType, const StackElement*);
-  TypeError(const StackElement::DataType);
+  TypeError(const TypeElement, const StackElement*);
+  TypeError(const TypeElement);
   TypeError(const TypeError&) = default;
 
   TypeError& operator=(const TypeError&) = default;

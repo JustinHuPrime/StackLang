@@ -4,13 +4,12 @@ namespace StackLang {
 namespace Exceptions {
 using StackLang::StackElements::TypeElement;
 
-TypeError::TypeError(const StackElement::DataType expected,
-                     const StackElement* given)
-    : LanguageException("Expected " + TypeElement::to_string(expected) +
-                        "\nGiven " + string(*given)) {}
+TypeError::TypeError(const TypeElement expected, const StackElement* given)
+    : LanguageException("Expected " + static_cast<string>(expected) +
+                        "\nGiven " + static_cast<string>(*given)) {}
 
-TypeError::TypeError(const StackElement::DataType expected)
-    : LanguageException("Expected " + TypeElement::to_string(expected) +
+TypeError::TypeError(const TypeElement expected)
+    : LanguageException("Expected " + static_cast<string>(expected) +
                         " but reached the bottom of the stack instead.") {}
 
 const string TypeError::getKind() const { return "Type Mismatch:"; }

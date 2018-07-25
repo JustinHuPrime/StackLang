@@ -26,6 +26,7 @@ class NumberElement : public StackElement {
 
   explicit operator const string() const noexcept override;
   const mpq_class& getData() const noexcept;
+  bool isExact() const noexcept;
 
  private:
   mpq_class data;

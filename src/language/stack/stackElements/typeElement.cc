@@ -25,18 +25,54 @@ TypeElement* TypeElement::parse(const string& s) {
     if (value == TYPES().end()) {
       throw ParserException("Input is not a type.", s, 0);
     }
-    return new TypeElement(static_cast<DataType>(value - begin(TYPES())));
-  } else if (starts_with(
-                 s, "Substack")) {  // has to be a substack - no way around it.
-    return new TypeElement(
+    TypeElement* elm =
+        new TypeElement(static_cast<DataType>(value - begin(TYPES())));
+    if (static_cast<unsigned>(elm->specialization->data) >= NUM_PRIM_TYPES) {
+      delete elm;
+      throw ParserException("Cannot have a specialization type on its own.", s,
+                            0);
+    }
+    return elm;
+  } else if (starts_with(s, "Substack")) {  // substack specializations
+    TypeElement* elm = new TypeElement(
         DataType::Substack,
-        parse(s.substr(s.find_first_of('(') + 1,
-                       s.length() - s.find_first_of('(') - 2)));
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
+    if (static_cast<unsigned>(elm->specialization->data) >= NUM_PRIM_TYPES) {
+      delete elm;
+      throw ParserException("Bad specialization on a Substack type.", s,
+                            s.find('(') + 1);
+    }
+    return elm;
+  } else if (starts_with(s, "Number")) {
+    TypeElement* elm = new TypeElement(
+        DataType::Number,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
+    if (elm->specialization->data != DataType::Exact &&
+        elm->specialization->data != DataType::Inexact) {
+      delete elm;
+      throw ParserException("Bad specialization on a Number type.", s,
+                            s.find('(') + 1);
+    }
+    return elm;
+  } else if (starts_with(s, "Command")) {
+    TypeElement* elm = new TypeElement(
+        DataType::Command,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
+    if (elm->specialization->data != DataType::Quoted) {
+      delete elm;
+      throw ParserException("Wrong specialization on a Command type.", s,
+                            s.find('(') + 1);
+    }
+    return elm;
   } else {
-    throw ParserException("Cannot have a specialzation except on Substacks.", s,
-                          s.find('('));
+    throw ParserException(
+        "Cannot have a specialzation except on a Substack, Number, or Command.",
+        s, s.find('('));
   }
-}
+}  // namespace StackElements
 
 TypeElement::TypeElement(DataType type) noexcept
     : StackElement(StackElement::DataType::Type),
@@ -58,7 +94,7 @@ TypeElement::TypeElement(const TypeElement& other) noexcept
 
 TypeElement& TypeElement::operator=(const TypeElement& other) noexcept {
   data = other.data;
-  if (specialization == nullptr) delete specialization;
+  if (specialization != nullptr) delete specialization;
   specialization =
       other.specialization == nullptr ? nullptr : other.specialization->clone();
   return *this;
@@ -93,14 +129,18 @@ TypeElement::operator const string() const noexcept {
 }
 
 StackElement::DataType TypeElement::getData() const noexcept { return data; }
+const TypeElement* TypeElement::getSpecialization() const noexcept {
+  return specialization;
+}
 
 string TypeElement::to_string(StackElement::DataType type) noexcept {
   return TYPES()[static_cast<unsigned>(type)];
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES = new vector<string>{
-      "Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
+  static vector<string>* TYPES =
+      new vector<string>{"Number",  "String", "Boolean", "Substack", "Type",
+                         "Command", "Any",    "Exact",   "Inexact",  "Quoted"};
   return *TYPES;
 }
 }  // namespace StackElements

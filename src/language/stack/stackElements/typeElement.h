@@ -24,6 +24,7 @@ class TypeElement : public StackElement {
 
   explicit operator const string() const noexcept override;
   DataType getData() const noexcept;
+  const TypeElement* getSpecialization() const noexcept;
 
   static string to_string(DataType) noexcept;
 

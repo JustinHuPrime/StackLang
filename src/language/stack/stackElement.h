@@ -9,6 +9,7 @@ using std::string;
 // Represents a element in the stack. Subclassed to make a specific element.
 class StackElement {
  public:
+  static const unsigned NUM_PRIM_TYPES;
   enum class DataType {
     Number,
     String,
@@ -17,6 +18,9 @@ class StackElement {
     Type,
     Command,
     Any,
+    Exact,
+    Inexact,
+    Quoted,
   };
 
   // Produces a StackElement (of some type) from a terminal input string
@@ -38,13 +42,12 @@ class StackElement {
   DataType getType() const noexcept;
 
   // Gets the data from the element (returns different type depending on
-  // dataType) should exist in all subclasses, where T is the closest dataTYpe
-  // to the element's type
-  // T getData () const;
+  // dataType) should exist in all subclasses, where T is the closest
+  // dataTYpe to the element's type T getData () const;
 
-  // Constructs an element of some type (takes different param type depending on
-  // dataType) should exist in all subclasses.
-  // Element (dataType);
+  // Constructs an element of some type (takes different param type
+  // depending on dataType) should exist in all subclasses. Element
+  // (dataType);
 
  protected:
   // Constructs a StackElement by setting the dataType

@@ -19,14 +19,15 @@ using std::pair;
 
 typedef pair<list<TypeElement>, Stack> DefinedFunction;
 typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
-typedef pair<list<StackElement::DataType>, Prim> PrimitiveFunction;
+typedef pair<list<TypeElement>, Prim> PrimitiveFunction;
 
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;
+bool typeCheck(const StackElement*, TypeElement) noexcept;
 void execute(Stack&,
              map<string, DefinedFunction>&);  // Executes the stack until it
                                               // encounters a data element
 
-extern bool stopFlag;
+extern bool stopFlag;  // signal handlers set this to stop execution.
 }  // namespace StackLang
 
 #endif  // STACKLANG_LANGUAGE_
