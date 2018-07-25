@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) noexcept {
   using StackLang::DefinedFunction;
   using StackLang::Stack;
   using StackLang::StackElement;
+  using StackLang::stopFlag;
   using StackLang::Exceptions::LanguageException;
   using StackLang::StackElements::CommandElement;
   using StackLang::StackElements::StringElement;
@@ -78,6 +79,7 @@ int main(int argc, char* argv[]) noexcept {
     s.push(new StringElement("std"));
     s.push(new CommandElement("include"));
     try {
+      stopFlag = false;
       execute(s, defines);
     } catch (const LanguageException& e) {
       printError(e);
@@ -124,6 +126,7 @@ int main(int argc, char* argv[]) noexcept {
       s.push(new StringElement(str));
       s.push(new CommandElement("include"));
       try {
+        stopFlag = false;
         execute(s, defines);
       } catch (const LanguageException& e) {
         printError(e);
@@ -172,6 +175,7 @@ int main(int argc, char* argv[]) noexcept {
       buffer.enter();
       try {
         s.push(StackElement::parse(bufferStr));
+        stopFlag = false;
         execute(s, defines);
         drawStack(s);
         drawPrompt(buffer);
