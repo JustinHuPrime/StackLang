@@ -21,7 +21,8 @@ drop
 2, rotate
 >>
 `foldr-bc
-define
+`foldr
+define*
 
 << Any, Command, Substack(Any) >> ; -> Any
 <<
@@ -37,9 +38,10 @@ foldr
 eval
 >>
 `foldr-rc
-define
+`foldr
+define*
 
-;<< Number Number Number >> << Number >>
+;<< Number Number Number >> ; -> Number
 ;<<
 ;add
 ;add
