@@ -9,16 +9,25 @@
 #include "language/exceptions/stopError.h"
 #include "language/exceptions/syntaxError.h"
 #include "language/exceptions/typeError.h"
+#include "language/stack.h"
+#include "language/stack/stackElements/booleanElement.h"
 #include "language/stack/stackElements/commandElement.h"
 #include "language/stack/stackElements/numberElement.h"
-#include "language/stack/stackIterator.h"
+#include "language/stack/stackElements/stringElement.h"
+#include "language/stack/stackElements/substackElement.h"
+#include "language/stack/stackElements/typeElement.h"
 
 namespace StackLang {
 using StackLang::Exceptions::StopError;
 using StackLang::Exceptions::SyntaxError;
 using StackLang::Exceptions::TypeError;
+using StackLang::StackElements::BooleanElement;
 using StackLang::StackElements::CommandElement;
 using StackLang::StackElements::NumberElement;
+using StackLang::StackElements::StringElement;
+using StackLang::StackElements::SubstackElement;
+using StackLang::StackElements::TypeElement;
+using std::all_of;
 using std::begin;
 using std::end;
 using std::find_if;
@@ -39,7 +48,61 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   return *prims;
 }
 
-void execute(Stack& s, map<string, DefinedFunction>& defines) {
+bool checkType(const StackElement* elm, const TypeElement type) noexcept {
+  if (type.getSpecialization() == nullptr ||
+      type.getSpecialization()->getData() ==
+          StackElement::DataType::Any)  // has no specialization or is an Any
+                                        // specialized substack.
+  {
+    return elm->getType() == type.getData() &&
+           (elm->getType() != StackElement::DataType::Command ||
+            !static_cast<const CommandElement*>(elm)
+                 ->isQuoted());  // type matches plainly and any commands are
+                                 // unquoted
+  } else if (elm->getType() == type.getData() &&
+             type.getData() ==
+                 StackElement::DataType::Number) {  // is a specialized number
+    return type.getSpecialization()->getData() ==
+           (static_cast<const NumberElement*>(elm)->isExact()
+                ? StackElement::DataType::Exact
+                : StackElement::DataType::Inexact);
+  } else if (elm->getType() == type.getData() &&
+             type.getData() ==
+                 StackElement::DataType::Command) {  // is a specialized command
+    // - has to be quoted.
+    return static_cast<const CommandElement*>(elm)->isQuoted();
+  } else if (elm->getType() == type.getData() &&
+             type.getData() ==
+                 StackElement::DataType::Substack) {  // is a specialized
+                                                      // substack
+    const Stack& s = static_cast<const SubstackElement*>(elm)->getData();
+    const TypeElement* spec = type.getSpecialization();
+
+    return all_of(s.begin(), s.end(), [&spec](const StackElement* e) {
+      return checkType(e, *spec);
+    });
+  } else {         // is a specialized non-substack, non-number
+    return false;  // can't happen!
+  }
+}
+
+void checkTypes(const Stack& s, const list<TypeElement>& types) {
+  auto typeIter = types.begin();
+  auto stackIter = s.begin();
+
+  for (; typeIter != types.end() && stackIter != s.end();
+       typeIter++, stackIter++) {
+    if (!checkType(*stackIter, *typeIter)) {
+      throw TypeError(*typeIter, *stackIter);
+    }
+  }
+  if (typeIter != types.end()) {
+    throw TypeError(*typeIter);
+  }
+}
+
+void execute(Stack& s, map<string, DefinedFunction>& defines,
+             list<CommandElement*> context) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError();
@@ -62,15 +125,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines) {
       auto typeIter = types.begin();
       auto stackIter = s.begin();
 
-      for (; typeIter != types.end() && stackIter != s.end();
-           typeIter++, stackIter++) {
-        if (*typeIter != (*stackIter)->getType()) {
-          throw TypeError(*typeIter, *stackIter);
-        }
-      }
-      if (typeIter != types.end()) {
-        throw TypeError(*typeIter);
-      }
+      checkTypes(s, types);
 
       primResult->second.second(s, defines);
     } else {
@@ -82,25 +137,15 @@ void execute(Stack& s, map<string, DefinedFunction>& defines) {
                   });
 
       if (defResult != defines.end()) {
-        const auto& types = defResult->second.first;
-        const auto& commands = defResult->second.second;
+        const auto& types = defResult->second.signature;
+        const auto& commands = defResult->second.body;
 
-        auto typeIter = types.begin();
-        auto stackIter = s.begin();
+        checkTypes(s, types);
 
-        for (; typeIter != types.end() && stackIter != s.end();
-             typeIter++, stackIter++) {
-          if (typeIter->getData() != (*stackIter)->getType()) {
-            throw TypeError(typeIter->getData(), *stackIter);
-          }
-        }
-        if (typeIter != types.end()) {
-          throw TypeError(typeIter->getData());
-        }
-
+        context.push_back(command);
         for (auto c : commands) {
           s.push(c->clone());
-          execute(s, defines);
+          execute(s, defines, context);
         }
       } else {
         throw SyntaxError("Given command is not recognized.",
