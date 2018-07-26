@@ -50,7 +50,7 @@ DEBUGOPTIONS := -Og -ggdb
 RELEASEOPTIONS := -Os -Wunused
 
 #libraries and included files
-LIBS := -lncurses -lgmp -lgmpxx
+LIBS := $(shell pkg-config --libs ncurses) -lgmp -lgmpxx
 INCLUDES := -I$(SRCDIR)
 TINCLUDES := -I$(TSRCDIR)
 
@@ -72,7 +72,7 @@ debug: $(EXENAME) $(TEXENAME)
 	@echo "Debug build finished."
 
 release: OPTIONS := $(OPTIONS) $(RELEASEOPTIONS)
-release: $(EXENAME) c | clean
+release: $(EXENAME) | clean
 	@echo "Done with release."
 	@echo ""
 	@./$(TEXENAME)
