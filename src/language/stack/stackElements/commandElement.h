@@ -18,7 +18,7 @@ class CommandElement : public StackElement {
   explicit CommandElement(const string&, bool isQuoted = false) noexcept;
   CommandElement* clone() const noexcept override;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   const string& getData() const noexcept;
   bool isQuoted() const noexcept;
 

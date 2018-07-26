@@ -36,7 +36,7 @@ class StackElement {
   virtual ~StackElement() noexcept = default;
 
   // Produces a nicely formatted string of the string (for print to console)
-  explicit virtual operator const string() const noexcept = 0;
+  explicit virtual operator string() const noexcept = 0;
 
   // Getter for the DataType
   DataType getType() const noexcept;

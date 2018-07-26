@@ -119,7 +119,7 @@ NumberElement* NumberElement::clone() const noexcept {
   return new NumberElement(data.get_str(), exact);
 }
 
-NumberElement::operator const string() const noexcept {
+NumberElement::operator string() const noexcept {
   if (exact) {
     return data.get_str();
   } else {

@@ -32,7 +32,7 @@ CommandElement* CommandElement::parse(const string& s) {
     } else {
       throw ParserException(
           "Input looks like a command, but has a symbol "
-          "that is not `-`, `?`, or `*`.",
+          "that is not in `-?*`.",
           s, badIndex);
     }
   }
@@ -47,7 +47,7 @@ CommandElement* CommandElement::clone() const noexcept {
   return new CommandElement(data, quoted);
 }
 
-CommandElement::operator const string() const noexcept {
+CommandElement::operator string() const noexcept {
   return (quoted ? string(1, QUOTE_CHAR) : "") + COMMAND_LDELIM + data +
          COMMAND_RDELIM;
 }

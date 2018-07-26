@@ -16,7 +16,7 @@ class SubstackElement : public StackElement {
   explicit SubstackElement(const Stack&) noexcept;
   SubstackElement* clone() const noexcept override;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   const Stack& getData() const noexcept;
 
   static const char* SUBSTACK_BEGIN;

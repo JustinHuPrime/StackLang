@@ -1,13 +1,22 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKITERATOR_H_
 #define STACKLANG_LANGUAGE_STACK_STACKITERATOR_H_
 
-#include "language/stack.h"
+#include "language/stack/stackElement.h"
+#include "language/stackImpl.h"
 
 namespace StackLang {
 using StackLang::Stack;
+using StackLang::StackElement;
 
 class Stack::StackIterator {
  public:
+  typedef size_t difference_type;
+  typedef StackElement* value_type;
+  typedef StackElement** pointer;
+  typedef StackElement*& reference;
+  typedef size_t size_type;
+  typedef std::input_iterator_tag iterator_category;
+
   StackIterator(Stack::Node*) noexcept;
   StackIterator(const StackIterator&) noexcept = default;
 

@@ -15,7 +15,7 @@ class StringElement : public StackElement {
   explicit StringElement(string) noexcept;
   StringElement* clone() const noexcept override;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   const string& getData() const noexcept;
 
   static const char QUOTE_CHAR;

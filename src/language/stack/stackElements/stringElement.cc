@@ -36,7 +36,7 @@ StringElement* StringElement::clone() const noexcept {
   return new StringElement(data);
 }
 
-StringElement::operator const string() const noexcept {
+StringElement::operator string() const noexcept {
   return "\"" + escape(data) + "\"";
 }
 

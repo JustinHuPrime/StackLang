@@ -1,7 +1,7 @@
 #include "language/stack/stackElements/substackElement.h"
 
 #include "language/exceptions/parserException.h"
-#include "language/stack/stackIterator.h"
+#include "language/stack.h"
 #include "util/stringUtils.h"
 
 namespace StackLang {
@@ -29,20 +29,17 @@ SubstackElement* SubstackElement::parse(const string& s) {
     accumulator += *iter;
 
     if (!inString && *iter == ',' &&
-        parseLevel == 0)  // found a comma at top level - our responsibility
-    {
+        parseLevel == 0) {  // found a comma at top level - our responsibility
       accumulator.erase(accumulator.end() - 1);  // remove the comma
       buffer.push(StackElement::parse(trim(accumulator)));
       accumulator = "";
-    } else if (*iter == '"' && lastChar != '\\')  // found an unescaped quote
-    {
+    } else if (*iter == '"' && lastChar != '\\') {  // found an unescaped quote
       inString = !inString;
     } else if (!inString && *iter == '<' &&
-               lastChar == '<')  // start of substack
-    {
+               lastChar == '<') {  // start of substack
       parseLevel++;
-    } else if (!inString && *iter == '>' && lastChar == '>')  // end of substack
-    {
+    } else if (!inString && *iter == '>' &&
+               lastChar == '>') {  // end of substack
       parseLevel--;
       if (parseLevel < 0) {
         throw ParserException(
@@ -59,8 +56,8 @@ SubstackElement* SubstackElement::parse(const string& s) {
                               " closing substack delimiter" +
                               (parseLevel == 1 ? "" : "s") + ".",
                           s, s.length() - 1);
-  } else if (trim(accumulator) != "")  // allow empty lists and terminal commas
-  {
+  } else if (trim(accumulator) !=
+             "") {  // allow empty lists and terminal commas
     buffer.push(StackElement::parse(trim(accumulator)));
   }
 
@@ -75,7 +72,7 @@ SubstackElement* SubstackElement::clone() const noexcept {
   return new SubstackElement(data);
 }
 
-SubstackElement::operator const string() const noexcept {
+SubstackElement::operator string() const noexcept {
   if (data.size() == 0) {
     return SUBSTACK_EMPTY;
   }

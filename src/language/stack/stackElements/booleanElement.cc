@@ -12,9 +12,7 @@ BooleanElement* BooleanElement::clone() const noexcept {
   return new BooleanElement(data);
 }
 
-BooleanElement::operator const string() const noexcept {
-  return data ? TSTR : FSTR;
-}
+BooleanElement::operator string() const noexcept { return data ? TSTR : FSTR; }
 
 bool BooleanElement::getData() const noexcept { return data; }
 }  // namespace StackElements

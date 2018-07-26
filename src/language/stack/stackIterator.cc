@@ -1,4 +1,4 @@
-#include "language/stack/stackIterator.h"
+#include "language/stack.h"
 
 namespace StackLang {
 using StackLang::Stack;

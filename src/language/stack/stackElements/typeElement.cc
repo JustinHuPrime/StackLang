@@ -25,14 +25,7 @@ TypeElement* TypeElement::parse(const string& s) {
     if (value == TYPES().end()) {
       throw ParserException("Input is not a type.", s, 0);
     }
-    TypeElement* elm =
-        new TypeElement(static_cast<DataType>(value - begin(TYPES())));
-    if (static_cast<unsigned>(elm->specialization->data) >= NUM_PRIM_TYPES) {
-      delete elm;
-      throw ParserException("Cannot have a specialization type on its own.", s,
-                            0);
-    }
-    return elm;
+    return new TypeElement(static_cast<DataType>(value - begin(TYPES())));
   } else if (starts_with(s, "Substack")) {  // substack specializations
     TypeElement* elm = new TypeElement(
         DataType::Substack,
@@ -121,7 +114,7 @@ TypeElement* TypeElement::clone() const noexcept {
   return new TypeElement(data, specialization);
 }
 
-TypeElement::operator const string() const noexcept {
+TypeElement::operator string() const noexcept {
   if (specialization == nullptr)
     return to_string(data);
   else

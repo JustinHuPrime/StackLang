@@ -17,7 +17,7 @@ class BooleanElement : public StackElement {
   explicit BooleanElement(bool) noexcept;
   BooleanElement* clone() const noexcept override;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   bool getData() const noexcept;
 
  private:

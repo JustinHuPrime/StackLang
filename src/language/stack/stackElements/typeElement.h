@@ -22,7 +22,7 @@ class TypeElement : public StackElement {
   TypeElement* clone() const noexcept override;
   ~TypeElement() noexcept;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   DataType getData() const noexcept;
   const TypeElement* getSpecialization() const noexcept;
 

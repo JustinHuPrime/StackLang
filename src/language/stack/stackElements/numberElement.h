@@ -24,7 +24,7 @@ class NumberElement : public StackElement {
   explicit NumberElement(const mpq_class&, bool isExact = true) noexcept;
   NumberElement* clone() const noexcept override;
 
-  explicit operator const string() const noexcept override;
+  explicit operator string() const noexcept override;
   const mpq_class& getData() const noexcept;
   bool isExact() const noexcept;
 
