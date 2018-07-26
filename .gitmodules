@@ -2,4 +2,5 @@
 	path = extern/Catch2
 	url = https://github.com/catchorg/Catch2.git
 [submodule "extern/gmpxx"]
-	path = extern/gmpxx
+	path = extern/gmpxx4
+	url =  https://gmplib.org/repo/gmp-6.1/
