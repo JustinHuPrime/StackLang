@@ -6,7 +6,6 @@
 
 #include "language/exceptions/stackOverflowError.h"
 #include "language/exceptions/stackUnderflowError.h"
-#include "language/stack/stackIterator.h"
 
 namespace StackLang {
 using StackLang::StackElement;
@@ -17,12 +16,9 @@ using std::numeric_limits;
 using std::queue;
 
 Stack::Stack() noexcept
-    : head(nullptr),
-      dataSize(0),
-      limit(numeric_limits<unsigned long>().max()) {}
+    : head(nullptr), dataSize(0), limit(numeric_limits<size_t>().max()) {}
 
-Stack::Stack(unsigned long lim) noexcept
-    : head(nullptr), dataSize(0), limit(lim) {}
+Stack::Stack(size_t lim) noexcept : head(nullptr), dataSize(0), limit(lim) {}
 
 Stack::~Stack() noexcept { clear(); }
 
@@ -84,11 +80,11 @@ StackElement* Stack::top() {
   throw StackUnderflowError();
 }
 
-unsigned long Stack::size() const noexcept { return dataSize; }
+size_t Stack::size() const noexcept { return dataSize; }
 
-unsigned long Stack::getLimit() const noexcept { return limit; }
+size_t Stack::getLimit() const noexcept { return limit; }
 
-void Stack::setLimit(unsigned long newLimit) {
+void Stack::setLimit(size_t newLimit) {
   if (dataSize > newLimit) {
     throw StackOverflowError(newLimit);
   }

@@ -6,7 +6,6 @@
 #include "language/exceptions/languageException.h"
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
-#include "language/stack/stackIterator.h"
 #include "ui/lineEditor.h"
 
 namespace TermUI {

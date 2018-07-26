@@ -3,7 +3,6 @@
 #include "language/stack.h"
 #include "language/stack/stackElement.h"
 #include "language/stack/stackElements/numberElement.h"
-#include "language/stack/stackIterator.h"
 
 #include <assert.h>
 #include <iostream>
