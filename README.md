@@ -12,12 +12,14 @@ StackLang requires:
 
 * ncurses
 * gmpxx
-* GNU-make
-* g++ OR clang++ (clang++ does not support some configured warning options in the makefile)
 
 ### Building
 
 To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang` in the same directory as the makefile.
+
+## Contact Info
+
+StackLang is written by [Justin Hu](mailto:justin.hu@alumni.ubc.ca).
 
 *TODO: MOVE EVERYTHING AFTER HERE TO DOCUMENTATION PAGES*
 
