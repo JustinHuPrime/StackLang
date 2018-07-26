@@ -5,9 +5,9 @@
 #include "language/stack/stackElement.h"
 #include "language/stack/stackElements/typeElement.h"
 
-namespace StackLang {
-namespace Exceptions {
-using StackLang::StackElements::TypeElement;
+namespace stacklang {
+namespace exceptions {
+using stacklang::stackelements::TypeElement;
 class TypeError : public LanguageException {
  public:
   TypeError(const TypeElement, const StackElement*);
@@ -18,7 +18,7 @@ class TypeError : public LanguageException {
 
   const string getKind() const override;
 };
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_EXCEPTONS_TYPEERROR_H_

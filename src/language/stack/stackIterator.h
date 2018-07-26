@@ -4,9 +4,9 @@
 #include "language/stack/stackElement.h"
 #include "language/stackImpl.h"
 
-namespace StackLang {
-using StackLang::Stack;
-using StackLang::StackElement;
+namespace stacklang {
+using stacklang::Stack;
+using stacklang::StackElement;
 
 class Stack::StackIterator {
  public:
@@ -40,6 +40,6 @@ bool operator==(const Stack::StackIterator&,
                 const Stack::StackIterator&) noexcept;
 bool operator!=(const Stack::StackIterator&,
                 const Stack::StackIterator&) noexcept;
-}  // namespace StackLang
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKITERATOR_H_

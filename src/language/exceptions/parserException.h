@@ -3,8 +3,8 @@
 
 #include "language/exceptions/languageException.h"
 
-namespace StackLang {
-namespace Exceptions {
+namespace stacklang {
+namespace exceptions {
 class ParserException : public LanguageException {
  public:
   ParserException(const string&, const string&, unsigned);
@@ -14,7 +14,7 @@ class ParserException : public LanguageException {
 
   const string getKind() const override;
 };
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_EXCEPTONS_PARSEREXCEPTION_H_

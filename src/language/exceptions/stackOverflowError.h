@@ -3,8 +3,8 @@
 
 #include "language/exceptions/languageException.h"
 
-namespace StackLang {
-namespace Exceptions {
+namespace stacklang {
+namespace exceptions {
 class StackOverflowError : public LanguageException {
  public:
   explicit StackOverflowError(unsigned long);
@@ -14,7 +14,7 @@ class StackOverflowError : public LanguageException {
 
   const string getKind() const override;
 };
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_EXCEPTONS_STACKOVERFLOWERROR_H_

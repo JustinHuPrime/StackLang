@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace Util {
+namespace util {
 using std::string;
 
 // Produce true if first string starts/ends with the second string
@@ -31,6 +31,6 @@ string removeChar(string, char) noexcept;
 string trim(string) noexcept;
 
 const char WHITESPACE[] = " \t\n\r";
-}  // namespace Util
+}  // namespace util
 
 #endif  // STACKLANG_UTILS_STRINGUTILS_H_

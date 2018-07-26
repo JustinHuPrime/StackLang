@@ -1,7 +1,7 @@
 #include "language/stack/stackElements/booleanElement.h"
 
-namespace StackLang {
-namespace StackElements {
+namespace stacklang {
+namespace stackelements {
 const char* BooleanElement::TSTR = "true";
 const char* BooleanElement::FSTR = "false";
 
@@ -15,5 +15,5 @@ BooleanElement* BooleanElement::clone() const noexcept {
 BooleanElement::operator string() const noexcept { return data ? TSTR : FSTR; }
 
 bool BooleanElement::getData() const noexcept { return data; }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

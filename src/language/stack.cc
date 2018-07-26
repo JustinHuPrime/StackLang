@@ -7,10 +7,10 @@
 #include "language/exceptions/stackOverflowError.h"
 #include "language/exceptions/stackUnderflowError.h"
 
-namespace StackLang {
-using StackLang::StackElement;
-using StackLang::Exceptions::StackOverflowError;
-using StackLang::Exceptions::StackUnderflowError;
+namespace stacklang {
+using stacklang::StackElement;
+using stacklang::exceptions::StackOverflowError;
+using stacklang::exceptions::StackUnderflowError;
 using std::make_unique;
 using std::numeric_limits;
 using std::queue;
@@ -133,4 +133,4 @@ Stack::Node* Stack::copy(Node* other) noexcept {
 
 Stack::Node::Node(StackElement* ptr, Node* nxt) noexcept
     : elm(ptr), next(nxt) {}
-}  // namespace StackLang
+}  // namespace stacklang

@@ -1,7 +1,7 @@
 #include "language/exceptions/languageException.h"
 
-namespace StackLang {
-namespace Exceptions {
+namespace stacklang {
+namespace exceptions {
 LanguageException::LanguageException(const string& msg)
     : message(msg), errorHasContext(false) {}
 
@@ -16,5 +16,5 @@ const string LanguageException::getContext() const { return context; }
 unsigned LanguageException::getLocation() const { return location; }
 
 bool LanguageException::hasContext() const { return errorHasContext; }
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang

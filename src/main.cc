@@ -18,18 +18,18 @@
 #include "ui/lineEditor.h"
 #include "ui/ui.h"
 
-namespace KeyInfo {
+namespace util {
 const char KEY_CTRL_D = 4;
 }
 
 int main(int argc, char* argv[]) noexcept {
-  using StackLang::DefinedFunction;
-  using StackLang::Stack;
-  using StackLang::StackElement;
-  using StackLang::stopFlag;
-  using StackLang::Exceptions::LanguageException;
-  using StackLang::StackElements::CommandElement;
-  using StackLang::StackElements::StringElement;
+  using stacklang::DefinedFunction;
+  using stacklang::Stack;
+  using stacklang::StackElement;
+  using stacklang::stopFlag;
+  using stacklang::exceptions::LanguageException;
+  using stacklang::stackelements::CommandElement;
+  using stacklang::stackelements::StringElement;
   using std::cerr;
   using std::cout;
   using std::endl;
@@ -40,16 +40,17 @@ int main(int argc, char* argv[]) noexcept {
   using std::stoul;
   using std::string;
   using std::vector;
-  using TermUI::addstring;
-  using TermUI::ArgReader;
-  using TermUI::displayInfo;
-  using TermUI::drawError;
-  using TermUI::drawPrompt;
-  using TermUI::drawStack;
-  using TermUI::HELPMSG;
-  using TermUI::init;
-  using TermUI::LineEditor;
-  using TermUI::printError;
+  using terminalui::addstring;
+  using terminalui::ArgReader;
+  using terminalui::displayInfo;
+  using terminalui::drawError;
+  using terminalui::drawPrompt;
+  using terminalui::drawStack;
+  using terminalui::HELPMSG;
+  using terminalui::init;
+  using terminalui::LineEditor;
+  using terminalui::printError;
+  using util::KEY_CTRL_D;
 
   Stack s;
   map<string, DefinedFunction> defines;
@@ -147,7 +148,7 @@ int main(int argc, char* argv[]) noexcept {
   while (true) {
     int key = getch();
 
-    if (key == KeyInfo::KEY_CTRL_D) {  // overriding keypresses
+    if (key == KEY_CTRL_D) {  // overriding keypresses
       break;
     } else if (key == EINTR) {
       endwin();  // these commands resync ncurses with the terminal

@@ -5,7 +5,7 @@
 
 void testLineEditor() noexcept {
   using std::string;
-  using TermUI::LineEditor;
+  using terminalui::LineEditor;
 
   LineEditor ed;
   assert(ed.isEmpty());

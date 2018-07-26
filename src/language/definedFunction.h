@@ -7,9 +7,9 @@
 
 #include <list>
 
-namespace StackLang {
-using StackLang::StackElements::CommandElement;
-using StackLang::StackElements::TypeElement;
+namespace stacklang {
+using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::TypeElement;
 using std::list;
 
 struct DefinedFunction {
@@ -19,6 +19,6 @@ struct DefinedFunction {
   DefinedFunction(const list<TypeElement>& sig, const Stack& b,
                   const CommandElement* ctx = nullptr) noexcept;
 };
-}  // namespace StackLang
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_DEFINEDFUNCTION_H_

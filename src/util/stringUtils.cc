@@ -1,6 +1,6 @@
 #include "util/stringUtils.h"
 
-namespace Util {
+namespace util {
 using std::string;
 
 bool starts_with(const string& s, const string& s1) noexcept {
@@ -110,4 +110,4 @@ string trim(string s) noexcept {
   s.erase(s.find_last_not_of(WHITESPACE) + 1);
   return s;
 }
-}  // namespace Util
+}  // namespace util

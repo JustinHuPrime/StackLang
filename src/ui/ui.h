@@ -8,12 +8,12 @@
 #include "language/stack/stackElement.h"
 #include "ui/lineEditor.h"
 
-namespace TermUI {
-using StackLang::Stack;
-using StackLang::StackElement;
-using StackLang::Exceptions::LanguageException;
+namespace terminalui {
+using stacklang::Stack;
+using stacklang::StackElement;
+using stacklang::exceptions::LanguageException;
 using std::string;
-using TermUI::LineEditor;
+using terminalui::LineEditor;
 
 // initializes/uninitializes curses (and general stuff) with preset options
 void init() noexcept;
@@ -36,7 +36,7 @@ const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char* const INFO = R"(StackLang interpreter version ALPHA 6
+const char* const INFO = R"(stacklang interpreter version ALPHA 6
 by Justin Hu, 2018
 This is free software with ABSOLUTELY NO WARRANTY.
 See the COPYING.md file for information on redistribution.
@@ -50,6 +50,6 @@ const char* const HELPMSG = R"( Usage: stacklang [OPTIONS]
 * `-l N`: limits stack to N elements in size.
 * `-o file`: outputs formatted stack to file.
 )";
-}  // namespace TermUI
+}  // namespace terminalui
 
 #endif  // STACKLANG_UI_UI_H_

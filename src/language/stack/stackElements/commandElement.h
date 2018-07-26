@@ -5,8 +5,8 @@
 
 #include "language/stack/stackElement.h"
 
-namespace StackLang {
-namespace StackElements {
+namespace stacklang {
+namespace stackelements {
 using std::string;
 
 class CommandElement : public StackElement {
@@ -31,7 +31,7 @@ class CommandElement : public StackElement {
   string data;
   bool quoted;
 };
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENTS_COMMANDELEMENT_H_

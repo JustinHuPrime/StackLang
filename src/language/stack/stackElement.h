@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace StackLang {
+namespace stacklang {
 using std::string;
 
 // Represents a element in the stack. Subclassed to make a specific element.
@@ -55,6 +55,6 @@ class StackElement {
 
   DataType dataType;
 };
-}  // namespace StackLang
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_

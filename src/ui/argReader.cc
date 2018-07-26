@@ -4,8 +4,8 @@
 
 #include "language/exceptions/argumentError.h"
 
-namespace TermUI {
-using StackLang::Exceptions::ArgumentError;
+namespace terminalui {
+using stacklang::exceptions::ArgumentError;
 using std::find;
 using std::min;
 using std::to_string;
@@ -77,7 +77,7 @@ void ArgReader::read(int argc, char* argv[]) {
       longOpts[currentOpt] = acc;
     }
   }
-}  // namespace TermUI
+}
 
 void ArgReader::validate(const string& allowedFlag, const string& allowedOpts,
                          const string& allowedLongOpts) const {
@@ -129,4 +129,4 @@ vector<string> ArgReader::getLongOpt(char c) const {
   }
   return atargst->second;
 }
-}  // namespace TermUI
+}  // namespace terminalui

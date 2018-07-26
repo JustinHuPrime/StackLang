@@ -3,10 +3,10 @@
 #include "language/exceptions/parserException.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-namespace StackElements {
-using StackLang::Exceptions::ParserException;
-using Util::removeChar;
+namespace stacklang {
+namespace stackelements {
+using stacklang::exceptions::ParserException;
+using util::removeChar;
 
 const char* CommandElement::COMMAND_LDELIM = "<";
 const char* CommandElement::COMMAND_RDELIM = ">";
@@ -54,5 +54,5 @@ CommandElement::operator string() const noexcept {
 
 const string& CommandElement::getData() const noexcept { return data; }
 bool CommandElement::isQuoted() const noexcept { return quoted; }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

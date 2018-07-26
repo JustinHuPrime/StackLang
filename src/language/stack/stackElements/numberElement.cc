@@ -8,14 +8,14 @@
 #include "language/exceptions/parserException.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-namespace StackElements {
-using StackLang::Exceptions::ParserException;
+namespace stacklang {
+namespace stackelements {
+using stacklang::exceptions::ParserException;
 using std::fixed;
 using std::setprecision;
 using std::stringstream;
 using std::to_string;
-using Util::removeChar;
+using util::removeChar;
 
 const char* NumberElement::ALLOWED_NUMBER = "~-+/1234567890.'";
 const char* NumberElement::NUMBER_SIGNS = "-+";
@@ -133,5 +133,5 @@ NumberElement::operator string() const noexcept {
 
 const mpq_class& NumberElement::getData() const noexcept { return data; }
 bool NumberElement::isExact() const noexcept { return exact; }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

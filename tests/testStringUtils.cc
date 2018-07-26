@@ -3,27 +3,41 @@
 #include <assert.h>
 #include <string>
 
+#include "catch.hpp"
+
+TEST_CASE("Test starts with", "[stringUtils]") {
+  using util::starts_with;
+  CHECK(starts_with("abcd", "ab"));
+  CHECK(!starts_with("abcd", "ad"));
+  CHECK(starts_with("abcd", "abcd"));
+}
+
+TEST_CASE("Test ends_with", "[stringUtils]") {
+  using util::ends_with;
+  CHECK(ends_with("abcd", "cd"));
+  CHECK(!ends_with("abcd", "ce"));
+  CHECK(ends_with("abcd", "abcd"));
+}
+
+TEST_CASE("Test escape and unescape", "[stringUtils]") {
+  using util::escape;
+  using util::unescape;
+  CHECK(escape("a\\b\"c\nd") == "a\\\\b\\\"c\\nd");
+  CHECK(unescape("b\\\"a\\\\c\\nd") == "b\"a\\c\nd");
+  CHECK(unescape(escape("a\\b\"c\n")) == "a\\b\"c\n");
+  CHECK(escape(unescape("a\\\\c\\nb\\\"d")) == "a\\\\c\\nb\\\"d");
+}
+
 void testStringUtils() noexcept {
   using std::string;
-  using Util::ends_with;
-  using Util::escape;
-  using Util::findImproperEscape;
-  using Util::removeChar;
-  using Util::spaces;
-  using Util::starts_with;
-  using Util::trim;
-  using Util::unescape;
-
-  assert(starts_with("abcd", "ab"));
-  assert(!starts_with("abcd", "ad"));
-  assert(starts_with("abcd", "abcd"));
-  assert(ends_with("abcd", "cd"));
-  assert(!ends_with("abcd", "ce"));
-  assert(ends_with("abcd", "abcd"));
-  assert(escape("a\\b\"c\nd") == "a\\\\b\\\"c\\nd");
-  assert(unescape("b\\\"a\\\\c\\nd") == "b\"a\\c\nd");
-  assert(unescape(escape("a\\b\"c\n")) == "a\\b\"c\n");
-  assert(escape(unescape("a\\\\c\\nb\\\"d")) == "a\\\\c\\nb\\\"d");
+  using util::ends_with;
+  using util::escape;
+  using util::findImproperEscape;
+  using util::removeChar;
+  using util::spaces;
+  using util::starts_with;
+  using util::trim;
+  using util::unescape;
   assert(findImproperEscape("012345\\") == 6);
   assert(findImproperEscape("lotsa stuff \\\\") == string::npos);
   assert(findImproperEscape("0123456\\aother stuff goes here.") == 7);

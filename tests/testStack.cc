@@ -9,11 +9,11 @@
 #include <limits>
 
 void testStack() {
-  using StackLang::Stack;
-  using StackLang::StackElement;
-  using StackLang::Exceptions::StackOverflowError;
-  using StackLang::Exceptions::StackUnderflowError;
-  using StackLang::StackElements::NumberElement;
+  using stacklang::Stack;
+  using stacklang::StackElement;
+  using stacklang::exceptions::StackOverflowError;
+  using stacklang::exceptions::StackUnderflowError;
+  using stacklang::stackelements::NumberElement;
   using std::cerr;
   using std::numeric_limits;
 

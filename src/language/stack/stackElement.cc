@@ -14,14 +14,14 @@
 #include "language/stack/stackElements/typeElement.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-using Exceptions::ParserException;
-using StackElements::BooleanElement;
-using StackElements::CommandElement;
-using StackElements::NumberElement;
-using StackElements::StringElement;
-using StackElements::SubstackElement;
-using StackElements::TypeElement;
+namespace stacklang {
+using stacklang::exceptions::ParserException;
+using stacklang::stackelements::BooleanElement;
+using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::StringElement;
+using stacklang::stackelements::SubstackElement;
+using stacklang::stackelements::TypeElement;
 using std::any_of;
 using std::begin;
 using std::end;
@@ -29,12 +29,12 @@ using std::find;
 using std::stack;
 using std::stod;
 using std::to_string;
-using Util::ends_with;
-using Util::findImproperEscape;
-using Util::removeChar;
-using Util::starts_with;
-using Util::trim;
-using Util::unescape;
+using util::ends_with;
+using util::findImproperEscape;
+using util::removeChar;
+using util::starts_with;
+using util::trim;
+using util::unescape;
 
 const unsigned StackElement::NUM_PRIM_TYPES = 7;
 
@@ -92,4 +92,4 @@ StackElement::DataType StackElement::getType() const noexcept {
 }
 
 StackElement::StackElement(DataType type) noexcept : dataType(type) {}
-}  // namespace StackLang
+}  // namespace stacklang

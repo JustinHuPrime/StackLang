@@ -8,8 +8,8 @@
 
 #include "language/stack/stackElement.h"
 
-namespace StackLang {
-namespace StackElements {
+namespace stacklang {
+namespace stackelements {
 using std::string;
 
 class NumberElement : public StackElement {
@@ -32,7 +32,7 @@ class NumberElement : public StackElement {
   mpq_class data;
   bool exact;
 };
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENTS_NUMBERELEMENT_H_

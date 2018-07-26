@@ -8,11 +8,11 @@
 #include "language/language.h"
 #include "util/stringUtils.h"
 
-namespace TermUI {
-using StackLang::stopFlag;
+namespace terminalui {
+using stacklang::stopFlag;
 using std::cerr;
 using std::endl;
-using Util::spaces;
+using util::spaces;
 
 void init() noexcept {
   setlocale(LC_ALL, "");
@@ -152,4 +152,4 @@ void printError(const LanguageException& e) noexcept {
     cerr << spaces(e.getLocation()) << "^" << endl;
   }
 }
-}  // namespace TermUI
+}  // namespace terminalui

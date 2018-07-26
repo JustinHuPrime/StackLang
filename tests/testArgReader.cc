@@ -7,11 +7,11 @@
 #include <vector>
 
 void testArgReader() noexcept {
-  using StackLang::Exceptions::ArgumentError;
+  using stacklang::exceptions::ArgumentError;
   using std::cerr;
   using std::string;
   using std::vector;
-  using TermUI::ArgReader;
+  using terminalui::ArgReader;
 
   ArgReader ar;
 

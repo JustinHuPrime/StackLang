@@ -18,9 +18,9 @@ void testSubstack() noexcept;
 void testType() noexcept;
 
 void testParsers() noexcept {
-  using StackLang::StackElement;
-  using StackLang::Exceptions::ParserException;
-  using StackLang::StackElements::NumberElement;
+  using stacklang::StackElement;
+  using stacklang::exceptions::ParserException;
+  using stacklang::stackelements::NumberElement;
   using std::cerr;
 
   testBoolean();
@@ -56,17 +56,17 @@ void testParsers() noexcept {
 }
 
 void testBoolean() noexcept {
-  using StackLang::Exceptions::ParserException;
-  using StackLang::StackElements::NumberElement;
+  using stacklang::exceptions::ParserException;
+  using stacklang::stackelements::NumberElement;
   using std::cerr;
 }
 
 void testCommand() noexcept {}
 
 void testNumber() noexcept {
-  using StackLang::StackElement;
-  using StackLang::Exceptions::ParserException;
-  using StackLang::StackElements::NumberElement;
+  using stacklang::StackElement;
+  using stacklang::exceptions::ParserException;
+  using stacklang::stackelements::NumberElement;
   using std::cerr;
 
   StackElement* elm;

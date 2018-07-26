@@ -1,6 +1,6 @@
 #include "ui/lineEditor.h"
 
-namespace TermUI {
+namespace terminalui {
 LineEditor::LineEditor() noexcept
     : preCursor(),
       postCursor(),
@@ -146,4 +146,4 @@ LineEditor::operator const string() const noexcept {
 
   return temp;
 }
-}  // namespace TermUI
+}  // namespace terminalui

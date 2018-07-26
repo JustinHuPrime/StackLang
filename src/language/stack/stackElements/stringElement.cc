@@ -3,13 +3,13 @@
 #include "language/exceptions/parserException.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-namespace StackElements {
-using StackLang::Exceptions::ParserException;
-using Util::ends_with;
-using Util::escape;
-using Util::findImproperEscape;
-using Util::unescape;
+namespace stacklang {
+namespace stackelements {
+using stacklang::exceptions::ParserException;
+using util::ends_with;
+using util::escape;
+using util::findImproperEscape;
+using util::unescape;
 
 const char StringElement::QUOTE_CHAR = '"';
 
@@ -41,5 +41,5 @@ StringElement::operator string() const noexcept {
 }
 
 const string& StringElement::getData() const noexcept { return data; }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

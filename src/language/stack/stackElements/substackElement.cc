@@ -4,12 +4,12 @@
 #include "language/stack.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-namespace StackElements {
-using StackLang::StackElement;
-using StackLang::Exceptions::ParserException;
+namespace stacklang {
+namespace stackelements {
+using stacklang::StackElement;
+using stacklang::exceptions::ParserException;
 using std::to_string;
-using Util::trim;
+using util::trim;
 
 const char* SubstackElement::SUBSTACK_BEGIN = "<<";
 const char* SubstackElement::SUBSTACK_END = ">>";
@@ -93,5 +93,5 @@ SubstackElement::operator string() const noexcept {
 }
 
 const Stack& SubstackElement::getData() const noexcept { return data; }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

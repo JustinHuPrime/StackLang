@@ -5,8 +5,8 @@
 
 #include "language/stack/stackElement.h"
 
-namespace StackLang {
-namespace StackElements {
+namespace stacklang {
+namespace stackelements {
 using std::string;
 
 class StringElement : public StackElement {
@@ -23,7 +23,7 @@ class StringElement : public StackElement {
  private:
   string data;
 };
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENTS_STRINGELEMENT_H_

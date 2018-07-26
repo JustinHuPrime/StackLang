@@ -4,8 +4,8 @@
 #include <exception>
 #include <string>
 
-namespace StackLang {
-namespace Exceptions {
+namespace stacklang {
+namespace exceptions {
 using std::exception;
 using std::string;
 
@@ -32,7 +32,7 @@ class LanguageException {
   unsigned location;
   bool errorHasContext;
 };
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTION_H_

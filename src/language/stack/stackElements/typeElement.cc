@@ -7,15 +7,15 @@
 #include "language/exceptions/parserException.h"
 #include "util/stringUtils.h"
 
-namespace StackLang {
-namespace StackElements {
-using StackLang::StackElement;
-using StackLang::Exceptions::ParserException;
+namespace stacklang {
+namespace stackelements {
+using stacklang::StackElement;
+using stacklang::exceptions::ParserException;
 using std::array;
 using std::distance;
 using std::find;
 using std::string;
-using Util::starts_with;
+using util::starts_with;
 
 const char* TypeElement::PARENS = "()";
 
@@ -136,5 +136,5 @@ const vector<string>& TypeElement::TYPES() noexcept {
                          "Command", "Any",    "Exact",   "Inexact",  "Quoted"};
   return *TYPES;
 }
-}  // namespace StackElements
-}  // namespace StackLang
+}  // namespace stackelements
+}  // namespace stacklang

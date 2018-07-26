@@ -5,7 +5,7 @@
 
 #include "language/stack/stackElement.h"
 
-namespace StackLang {
+namespace stacklang {
 using std::unique_ptr;
 
 class Stack {
@@ -59,6 +59,6 @@ class Stack {
   size_t dataSize;
   size_t limit;
 };
-}  // namespace StackLang
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACKIMPL_H_

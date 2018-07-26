@@ -17,16 +17,16 @@
 #include "language/stack/stackElements/substackElement.h"
 #include "language/stack/stackElements/typeElement.h"
 
-namespace StackLang {
-using StackLang::Exceptions::StopError;
-using StackLang::Exceptions::SyntaxError;
-using StackLang::Exceptions::TypeError;
-using StackLang::StackElements::BooleanElement;
-using StackLang::StackElements::CommandElement;
-using StackLang::StackElements::NumberElement;
-using StackLang::StackElements::StringElement;
-using StackLang::StackElements::SubstackElement;
-using StackLang::StackElements::TypeElement;
+namespace stacklang {
+using stacklang::exceptions::StopError;
+using stacklang::exceptions::SyntaxError;
+using stacklang::exceptions::TypeError;
+using stacklang::stackelements::BooleanElement;
+using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::StringElement;
+using stacklang::stackelements::SubstackElement;
+using stacklang::stackelements::TypeElement;
 using std::all_of;
 using std::begin;
 using std::end;
@@ -156,4 +156,4 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
     delete command;
   }
 }
-}  // namespace StackLang
+}  // namespace stacklang

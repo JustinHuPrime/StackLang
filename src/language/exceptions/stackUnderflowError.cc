@@ -1,7 +1,7 @@
 #include "language/exceptions/stackUnderflowError.h"
 
-namespace StackLang {
-namespace Exceptions {
+namespace stacklang {
+namespace exceptions {
 using std::to_string;
 
 StackUnderflowError::StackUnderflowError()
@@ -11,5 +11,5 @@ StackUnderflowError::StackUnderflowError()
 const string StackUnderflowError::getKind() const {
   return "Stack underflowed:";
 }
-}  // namespace Exceptions
-}  // namespace StackLang
+}  // namespace exceptions
+}  // namespace stacklang

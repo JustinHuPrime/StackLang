@@ -1,8 +1,8 @@
 #include "language/stack.h"
 
-namespace StackLang {
-using StackLang::Stack;
-using StackLang::StackElement;
+namespace stacklang {
+using stacklang::Stack;
+using stacklang::StackElement;
 
 Stack::StackIterator::StackIterator(Stack::Node* node) noexcept : curr(node) {}
 
@@ -35,4 +35,4 @@ bool operator!=(const Stack::StackIterator& first,
                 const Stack::StackIterator& second) noexcept {
   return !(first == second);
 }
-}  // namespace StackLang
+}  // namespace stacklang

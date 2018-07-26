@@ -6,7 +6,7 @@
 #include <stack>
 #include <string>
 
-namespace TermUI {
+namespace terminalui {
 using std::list;
 using std::stack;
 using std::string;
@@ -61,6 +61,6 @@ class LineEditor {
   list<string>::const_iterator histPos;
   string draftLine;
 };
-}  // namespace TermUI
+}  // namespace terminalui
 
 #endif  // STACKLANG_UI_LINEEDITOR_H_

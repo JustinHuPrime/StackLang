@@ -11,8 +11,9 @@
 #include "language/stack/stackElement.h"
 #include "language/stack/stackElements/typeElement.h"
 
-namespace StackLang {
-using StackElements::TypeElement;
+namespace stacklang {
+using stackelements::CommandElement;
+using stackelements::TypeElement;
 using std::array;
 using std::list;
 using std::map;
@@ -30,6 +31,6 @@ void execute(Stack&, map<string, DefinedFunction>&,
                                // encounters a data element
 
 extern bool stopFlag;  // signal handlers set this to stop execution.
-}  // namespace StackLang
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_

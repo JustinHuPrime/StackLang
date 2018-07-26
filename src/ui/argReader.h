@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace TermUI {
+namespace terminalui {
 using std::map;
 using std::string;
 using std::vector;
@@ -43,6 +43,6 @@ class ArgReader {
   map<char, string> options;
   map<char, vector<string>> longOpts;
 };
-}  // namespace TermUI
+}  // namespace terminalui
 
 #endif  // STACKLANG_UI_CLAREADER_H_
