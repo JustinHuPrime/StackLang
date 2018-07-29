@@ -13,17 +13,6 @@
 // Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.s
+// the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "language/exceptions/syntaxError.h"
-
-namespace stacklang {
-namespace exceptions {
-SyntaxError::SyntaxError(const string& msg) : LanguageException(msg) {}
-
-SyntaxError::SyntaxError(const string& msg, const string& ctx, size_t pos)
-    : LanguageException(msg, ctx, pos) {}
-
-const string SyntaxError::getKind() const { return "Syntax error:"; }
-}  // namespace exceptions
-}  // namespace stacklang
+// Special included file for implementation of the standard library functions

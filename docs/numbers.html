@@ -75,7 +75,7 @@
                 </ul>
             </div>
             <div class="col-lg-6">
-                <h1>Numbers</h1>
+                <h1 id="top">Numbers</h1>
                 <p>Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
                     <code>mpq_class</code>). There are, however, two flavours of numbers - exact numbers or inexact numbers. Exact numbers are
                     displayed as fractions, and represent "exactly" the value they have, while inexact numbers are displayed
@@ -88,7 +88,7 @@
                     <kbd>-</kbd>, then either a decimal number or a fraction of two whole numbers. Any number of
                     <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.</p>
                 <p>An EBNF definition of a Number is given below.
-                    <pre>
+                    <pre id="ebnf">
 nonzero-digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 digit = "0" | nonzero-digit ;
 
@@ -117,8 +117,8 @@ inexact-number = inexact-decimal | inexact-fraction ;
 number = exact-number | inexact-number ;
                 </pre>
                 </p>
-                <h2>Number-related Primtive Commands</h2>
-                <h3>Constants</h3>
+                <h2 id="primitives">Number-related Primtive Commands</h2>
+                <h3 id="constants">Constants</h3>
                 <p>
                     <code>euler : -> Number</code>
                     <br/> Produces Euler's number.
@@ -127,7 +127,7 @@ number = exact-number | inexact-number ;
                     <code>pi : -> Number</code>
                     <br/> Produces &pi;.
                 </p>
-                <h3>Type Predicates</h3>
+                <h3 id="type">Type Predicates</h3>
                 <p>
                     <code>number? : Any -> Boolean</code>
                     <br/> Produces true if given element is a number.
@@ -160,7 +160,7 @@ number = exact-number | inexact-number ;
                     <code>odd? : Any -> Boolean</code>
                     <br/> Produces true if given element is an odd, exact, integer number.
                 </p>
-                <h3>Type Conversion</h3>
+                <h3 id="conversion">Type Conversion</h3>
                 <p>
                     <code>exact-to-inexact : Number -> Number(Inexact)</code>
                     <br/> Produces the inexact version of the given number.
@@ -179,7 +179,7 @@ number = exact-number | inexact-number ;
                     <code>number-to-string</code> is the exact inverse of
                     <code>string-to-number</code>.
                 </p>
-                <h3>Arithmetic</h3>
+                <h3 id="arithmetic">Arithmetic</h3>
                 <p>
                     <code>negate : Number -> Number</code>
                     <br/> Produces the negative of the number.
@@ -289,7 +289,7 @@ number = exact-number | inexact-number ;
                     <br/> Produces the second number's logarithm, using the first number as the base. Result is inexact unless
                     both numbers are exact, and second number is a perfect power of the base.
                 </p>
-                <h3>Comparison</h3>
+                <h3 id="comparison">Comparison</h3>
                 <p>
                     <code>equal? : Number(Exact) Number(Exact) -> Boolean</code>
                     <br/> Produces true if the number is equal to the other number.
@@ -314,14 +314,71 @@ number = exact-number | inexact-number ;
                     <code>greater-than-equal? : Number(Exact) Number(Exact) -> Boolean</code>
                     <br/> Produces true if the second number is greater than or equal to the first.
                 </p>
-                <h3>Trigonometric Functions</h3>
+                <h3 id="trigonometry">Trigonometric Functions</h3>
                 <p>
                     <code>sine : Number -> Number</code>
+                    <br/> Produces the sine of the number. Number is expected to be in radians. Output is exact only if input
+                    is exact zero.
+                </p>
+                <p>
+                    <code>cosine : Number -> Number</code>
+                    <br/> Produces the cosine of the number. Number is expected to be in radians. Output is exact only if input
+                    is exact zero.
+                </p>
+                <p>
+                    <code>tangent : Number -> Number</code>
+                    <br/> Produces the tangent of the number. Number is expected to be in radians. Output is exact only if input
+                    is exact zero.
+                </p>
+                <p>
+                    <code>arcsine : Number -> Number</code>
+                    <br/> Produces the arcsine of the number. Number is expected to be between 1 and -1. Output is between -&pi;/2
+                    and &pi;/2. Output is exact only if input is exact zero.
+                </p>
+                <p>
+                    <code>arccosine : Number -> Number</code>
+                    <br/> Produces the arccosine of the number. Number is expected to be between 1 and -1. Output is between 0
+                    and &pi;. Output is exact only if input is exact zero.
+                </p>
+                <p>
+                    <code>arctangent : Number -> Number</code>
+                    <br/> Produces the arctangent of the number. Output is between -&pi;/2 and &pi;/2. Output is exact only if
+                    input is exact zero.
+                </p>
+                <p>
+                    <code>cosecant : Number -> Number</code>
+                    <br/> Produces the cosecant of the number. Number is expected to be in radians.
+                </p>
+                <p>
+                    <code>secant : Number -> Number</code>
+                    <br/> Produces the secant of the number. Number is expected to be in radians.
+                </p>
+                <p>
+                    <code>cotangent : Number -> Number</code>
+                    <br/> Produces the cotangent of the number. Number is expected to be in radians.
+                </p>
+                <p>
+                    <code>arccosecant : Number -> Number</code>
+                    <br/> Produces the arccosecant of the number. Number is expected to be less than or equal to -1 or greater
+                    than or equal to 1. Output is between -&pi;/2 and 0 for inputs less than or equal to -1, and between
+                    0 and &pi;/2 for input greater than or equal to 1.
+                </p>
+                <p>
+                    <code>arcsecant : Number -> Number</code>
+                    <br/> Produces the arcsecant of the number. Number is expected to be less than or equal to -1 or greater than
+                    or equal to 1. Output is between &pi;/2 and &pi; for inputs less than or equal to -1, and between 0 and
+                    &pi;/2 for inputs greater than or equal to 1.
+                </p>
+                <p>
+                    <code>arccotangent : Number -> Number</code>
+                    <br/> Produces the arccotangent of the number. Output is between 0 and &pi;
                 </p>
                 <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
                 </a>
-                <br />This work is licensed under a
+                <br /><span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title"
+                    rel="dct:type">StackLang Documentation</span>by
+                <a xmlns:cc="https://creativecommons.org/ns#" href="mailto:justin.hu@alumni.ubc.ca" property="cc:attributionName" rel="cc:attributionURL">Justin Hu</a> is licensed under a
                 <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
             </div>
         </div>

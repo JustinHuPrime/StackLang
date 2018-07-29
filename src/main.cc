@@ -1,3 +1,23 @@
+// Copyright 2018 Justin Hu
+//
+// This file is part of the StackLang interpreter.
+//
+// The StackLang interpreter is free software: you can redistribute it and / or
+// modify it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// The StackLang interpreter is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+// Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
+
+// Main function for the interpreter. Parses command line arugments then runs
+// main loop of ui.
+
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -17,10 +37,6 @@
 #include "ui/argReader.h"
 #include "ui/lineEditor.h"
 #include "ui/ui.h"
-
-namespace util {
-const char KEY_CTRL_D = 4;
-}
 
 int main(int argc, char* argv[]) noexcept {
   using stacklang::DefinedFunction;
@@ -50,7 +66,8 @@ int main(int argc, char* argv[]) noexcept {
   using terminalui::init;
   using terminalui::LineEditor;
   using terminalui::printError;
-  using util::KEY_CTRL_D;
+
+  const char KEY_CTRL_D = 4;  // FIXME: ctrl-d and EINTR collide.
 
   Stack s;
   map<string, DefinedFunction> defines;
@@ -62,6 +79,8 @@ int main(int argc, char* argv[]) noexcept {
   string outputFile;
 
   ArgReader args;
+
+  // flags parsing
 
   try {
     args.read(argc, argv);
@@ -137,6 +156,8 @@ int main(int argc, char* argv[]) noexcept {
       }
     }
   }
+
+  // TUI stuff
 
   init();
 

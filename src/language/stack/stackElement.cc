@@ -1,3 +1,23 @@
+// Copyright 2018 Justin Hu
+//
+// This file is part of the StackLang interpreter.
+//
+// The StackLang interpreter is free software: you can redistribute it and / or
+// modify it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// The StackLang interpreter is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+// Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
+
+// Implementation of stackElement, including parse function. See stackElements
+// folder for specific stack element type implenentations and parse functions.
+
 #include "language/stack/stackElement.h"
 
 #include <algorithm>
@@ -38,7 +58,8 @@ using util::unescape;
 
 const unsigned StackElement::NUM_PRIM_TYPES = 7;
 
-// ASSUME: s is not empty
+// Acts as a dispatcher for specific types, and handles parsing of trivially
+// parsed types (currently just Booleans).
 StackElement* StackElement::parse(const string& s) {
   if (s.empty()) {
     throw ParserException("Given input is empty.", s, 0);

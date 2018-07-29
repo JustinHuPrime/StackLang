@@ -4,7 +4,7 @@ A stack-oriented programming language with an interpreter implemented in C++. Th
 
 ## Getting Started
 
-A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++. For a complete language reference, see the [documentation pages](https://techteamai.github.io/StackLang/index.html).
+A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++. For a complete language reference, see the [documentation pages](https://justinhuprime.github.io/StackLang/index.html).
 
 ### Prerequisites
 
@@ -19,7 +19,7 @@ To build ncurses, edit the makefile to specify the correct commands for removing
 
 ## Contact Info
 
-StackLang is written by [Justin Hu](mailto:justin.hu@alumni.ubc.ca).
+StackLang is written by [Justin Hu](mailto:justin.hu@alumni.ubc.ca). See the [contact info](https://justinhuprime.github.io/StackLang/index.html#about) in the documentation pages.
 
 *TODO: MOVE EVERYTHING AFTER HERE TO DOCUMENTATION PAGES*
 
