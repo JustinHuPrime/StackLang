@@ -1,25 +1,25 @@
 # StackLang Programming Language
 
-A stack-oriented programming language with an interpreter implemented in C++. This language is heavily inspired by the DrRacket xSL teaching languages and HP's RPL.
+A stack-oriented programming language with an interpreter implemented in C++. This language is heavily inspired by the HtDP xSL teaching languages and HP's RPL.
 
-## Getting Started
-
-A StackLang interpreter has been implemented in C++. This interpreter is built using the C++17 standard, and compiled using g++. However, this project should be able to be built on any system. The included makefile is set up to compile the interpreter on a Linux/Unix-like system using g++. For a complete language reference, see the [documentation pages](https://justinhuprime.github.io/StackLang/index.html).
-
-### Prerequisites
-
-StackLang requires:
-
-* ncurses
-* gmpxx
-
-### Building
-
-To build ncurses, edit the makefile to specify the correct commands for removing files, making a directory, and invoking your chosen compiler. Afterwards, run `make` or `make all`. This should generate a file named `stacklang` in the same directory as the makefile.
+* For a complete language reference, see the [documentation pages](https://justinhuprime.github.io/StackLang/index.html).
+* For instructions on compiling the interpreter, see the file [INSTALLING](https://justinhuprime.github.io/StackLang/index.html).
 
 ## Contact Info
 
 StackLang is written by [Justin Hu](mailto:justin.hu@alumni.ubc.ca). See the [contact info](https://justinhuprime.github.io/StackLang/index.html#about) in the documentation pages.
+
+
+
+
+
+
+
+
+
+
+
+
 
 *TODO: MOVE EVERYTHING AFTER HERE TO DOCUMENTATION PAGES*
 
@@ -49,7 +49,7 @@ The parser reads raw input from the command line and turns that input into a str
 
 *NYI*
 
-Stacklang files may have any file extension, but the standard file extension used by the author is `.sl`. Stacklang files are encodable in ASCII, so the interpreter must, at a minimum, be able to read ASCII characters. Support for extended character sets is entierly implementation-specific.
+Stacklang files may have any file extension, but the standard file extension used by the author is `.sta`. Stacklang files are encodable in ASCII, so the interpreter must, at a minimum, be able to read ASCII characters. Support for extended character sets is entierly implementation-specific.
 
 The file to be read is read line by line. If the line does not contain a `<<` at the start of the line, then it is passed to the command line parser, and parsed into a stack element as if that line had been entered on the command line. If the line contains a `<<` at the start of the line, then the file reader will read the next line. Then, the ending newline on the first line read is removed, a `", "` appended (unless the previous line was blank, or only contained a `<<`), and the second line appended. If the second line contains a `<<` at the start of the line, then the reader recurses to read in a substack. If the second line does not contain a `>>`, then the reader continues reading. If the second line contains a `>>` anywhere except in a string, then the lines read in so far are given to the parser or returned. A `>>` not at the end of the line will cause a ParserError when parsed.
 

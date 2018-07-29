@@ -1,0 +1,34 @@
+Copyright 2018 Justin Hu
+
+This file is part of the StackLang interpreter.
+
+The StackLang interpreter is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+The StackLang interpreter is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+the StackLang interpreter.  If not, see <https:www.gnu.org/licenses/>.
+
+The interpreter requires the following libraries. Please install these libraries
+and their dependencies for your particular system:
+
+* ncurses
+* gmpxx
+* Catch2 (included as git submodile in extern)
+
+You will also need the following tools:
+
+* A C++17 capable compiler
+* gnu-make
+
+Then, edit the included makefile to specify the appropriate shell commands.
+
+Finally, run `make`, or `make release`. This will compile the interpreter, run
+the included test suite, and should produce both the `stacklang` executable,
+and the `stacklangTest` executable.
