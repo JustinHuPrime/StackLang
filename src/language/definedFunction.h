@@ -32,10 +32,10 @@ using stacklang::stackelements::TypeElement;
 using std::list;
 
 struct DefinedFunction {
-  const list<TypeElement>& signature;
+  const Stack& signature;
   const Stack& body;
   const CommandElement* context;
-  DefinedFunction(const list<TypeElement>& sig, const Stack& b,
+  DefinedFunction(const Stack& sig, const Stack& b,
                   const CommandElement* ctx = nullptr) noexcept;
 };
 }  // namespace stacklang

@@ -56,7 +56,7 @@ bool stopFlag = false;
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   static map<string, PrimitiveFunction>* prims =
       new map<string, PrimitiveFunction>{
-          // Special include files to group definition of primitives.
+  // Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
 #include "language/primitives/number.inc"
@@ -122,6 +122,21 @@ void checkTypes(const Stack& s, const list<TypeElement>& types) {
   }
 }
 
+void checkContext(const CommandElement* actual, const CommandElement* required,
+                  const string& name) {
+  if (required != nullptr) {
+    if (actual == nullptr) {
+      throw new SyntaxError("Attempted to use `" + name +
+                            "` at top level. Expected to be within `" +
+                            actual->getData() + "`.");
+    } else if (actual->getData() != required->getData()) {
+      throw new SyntaxError("Attempted to use `" + name + "` within `" +
+                            actual->getData() + "`. Expected to be within `" +
+                            actual->getData() + "`.");
+    }
+  }
+}
+
 void execute(Stack& s, map<string, DefinedFunction>& defines,
              list<CommandElement*> context) {
   if (stopFlag) {
@@ -134,40 +149,41 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
   if (s.top()->getType() == StackElement::DataType::Command &&
       !dynamic_cast<CommandElement*>(s.top())->isQuoted()) {
     CommandElement* command = dynamic_cast<CommandElement*>(s.pop());
-    const auto& primResult =
-        find_if(PRIMS.begin(), PRIMS.end(),
-                [&command](const pair<string, PrimitiveFunction>& entry) {
+    const auto& defResult =
+        find_if(defines.begin(), defines.end(),
+                [&command](const pair<string, DefinedFunction>& entry) {
                   return entry.first == command->getData();
-                });
+                });  // find from non-primitives
 
-    if (primResult != PRIMS.end()) {
-      const auto& types = primResult->second.first;
-
-      auto typeIter = types.begin();
-      auto stackIter = s.begin();
+    if (defResult != defines.end()) {
+      const auto& types = defResult->second.signature;
+      const auto& commands = defResult->second.body;
 
       checkTypes(s, types);
+      checkContext(context.front(), defResult->second.context,
+                   command->getData());
 
-      primResult->second.second(s, defines);
+      context.push_back(command);
+      for (auto c : commands) {
+        s.push(c->clone());
+        execute(s, defines, context);
+      }
     } else {
-      // find from non-primitives
-      const auto& defResult =
-          find_if(defines.begin(), defines.end(),
-                  [&command](const pair<string, DefinedFunction>& entry) {
+      const auto& primResult =
+          find_if(PRIMS.begin(), PRIMS.end(),
+                  [&command](const pair<string, PrimitiveFunction>& entry) {
                     return entry.first == command->getData();
-                  });
+                  });  // check the primitives
 
-      if (defResult != defines.end()) {
-        const auto& types = defResult->second.signature;
-        const auto& commands = defResult->second.body;
+      if (primResult != PRIMS.end()) {
+        const auto& types = primResult->second.first;
+
+        auto typeIter = types.begin();
+        auto stackIter = s.begin();
 
         checkTypes(s, types);
 
-        context.push_back(command);
-        for (auto c : commands) {
-          s.push(c->clone());
-          execute(s, defines, context);
-        }
+        primResult->second.second(s, defines);
       } else {
         throw SyntaxError("Given command is not recognized.",
                           command->getData(), 0);
@@ -176,5 +192,5 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
     delete command;
   }
-}
+}  // namespace stacklang
 }  // namespace stacklang
