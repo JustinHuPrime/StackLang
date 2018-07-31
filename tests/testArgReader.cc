@@ -36,19 +36,19 @@ char* argv[] = {"discard", "-a",    "-b",       "data",  "-c",        "more",
                 "\"part",  "one\"", "\"part",   "two\"", "three"};
 }  // namespace
 
-TEST_CASE("argReader discards bad argv", "[argReader][read]") {
+TEST_CASE("argReader discards bad argv", "[ArgReader][read]") {
   ArgReader ar;
   char* badArgv[] = {"discard", "-ab", "-f"};
   REQUIRE_THROWS_AS(ar.read(3, badArgv), ArgumentError);
 }
 
-TEST_CASE("argReader read and validate args", "[argReader][read][validate]") {
+TEST_CASE("argReader read and validate args", "[ArgReader][read][validate]") {
   ArgReader ar;
   REQUIRE_NOTHROW(ar.read(17, argv));
   REQUIRE_NOTHROW(ar.validate("a", "bd", "ce"));
 }
 
-TEST_CASE("argReader validate", "[argReader][validate]") {
+TEST_CASE("argReader validate", "[ArgReader][validate]") {
   ArgReader ar;
   ar.read(17, argv);
   REQUIRE_THROWS_AS(ar.validate("", "bd", "ce"), ArgumentError);
@@ -57,7 +57,7 @@ TEST_CASE("argReader validate", "[argReader][validate]") {
 }
 
 TEST_CASE("argReader has* predicates",
-          "[argReader][hasFlag][hasOpt][hasLongOpt]") {
+          "[ArgReader][hasFlag][hasOpt][hasLongOpt]") {
   ArgReader ar;
   ar.read(17, argv);
   REQUIRE(ar.hasFlag('a'));
@@ -73,7 +73,7 @@ TEST_CASE("argReader has* predicates",
   REQUIRE_FALSE(ar.hasLongOpt('x'));
 }
 
-TEST_CASE("argReader get*", "[argReader][getOpt][getLongOpt]") {
+TEST_CASE("argReader get*", "[ArgReader][getOpt][getLongOpt]") {
   ArgReader ar;
   ar.read(17, argv);
   REQUIRE(ar.getOpt('b') == "data");

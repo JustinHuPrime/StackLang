@@ -26,31 +26,40 @@ namespace {
 using stacklang::StackElement;
 using stacklang::exceptions::ParserException;
 using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::StringElement;
 }  // namespace
 
 TEST_CASE("empty parse throws", "[parse][StackElement]") {
   REQUIRE_THROWS_AS(StackElement::parse(""), ParserException);
 }
 
-TEST_CASE("initial number parses as number", "[parse][StackElement]") {
+TEST_CASE("initial number parses as number", "[parse][StackElement][number]") {
   StackElement* elm = StackElement::parse("22/7");
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("22/7"));
 }
 
-TEST_CASE("initial sign parses as number", "[parse][StackElement]") {
+TEST_CASE("initial sign parses as number", "[parse][StackElement][number]") {
   StackElement* elm = StackElement::parse("-22/7");
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("-22/7"));
 }
 
-TEST_CASE("initial inexact sign parses as number", "[parse][StackElement]") {
+TEST_CASE("initial inexact sign parses as number",
+          "[parse][StackElement][number]") {
   StackElement* elm = StackElement::parse("~22/7");
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("22/7"));
+}
+
+TEST_CASE("initial quote parses as string", "[parse][StackElement][string]") {
+  StackElement* elm = StackElement::parse("\"string\"");
+  StringElement* str = dynamic_cast<StringElement*>(elm);
+  REQUIRE(str != nullptr);
+  REQUIRE(str->getData() == "string");
 }
 
 // void testNumber() noexcept {

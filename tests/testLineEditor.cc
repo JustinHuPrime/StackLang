@@ -28,20 +28,20 @@ using std::string;
 using terminalui::LineEditor;
 }  // namespace
 
-TEST_CASE("editor constructor sanity", "[lineEditor][constructor]") {
+TEST_CASE("editor constructor sanity", "[LineEditor][constructor]") {
   LineEditor ed;
   REQUIRE(ed.isEmpty());
   REQUIRE(static_cast<string>(ed) == "");
 }
 
-TEST_CASE("editor adding strings", "[lineEditor][add]") {
+TEST_CASE("editor adding strings", "[LineEditor][add]") {
   LineEditor ed;
   ed += "123456";
   REQUIRE(static_cast<string>(ed) == "123456");
   REQUIRE_FALSE(ed.isEmpty());
 }
 
-TEST_CASE("editor backspace", "[lineEditor][backspace]") {
+TEST_CASE("editor backspace", "[LineEditor][backspace]") {
   LineEditor ed;
   ed += "123456";
   ed.left();
@@ -52,7 +52,7 @@ TEST_CASE("editor backspace", "[lineEditor][backspace]") {
   REQUIRE(static_cast<string>(ed) == "1234");
 }
 
-TEST_CASE("editor add character", "[lineEditor][add]") {
+TEST_CASE("editor add character", "[LineEditor][add]") {
   LineEditor ed;
   ed += "123456";
   ed.left();
@@ -61,7 +61,7 @@ TEST_CASE("editor add character", "[lineEditor][add]") {
   REQUIRE(static_cast<string>(ed) == "123456");
 }
 
-TEST_CASE("editor delete", "[lineEditor][del]") {
+TEST_CASE("editor delete", "[LineEditor][del]") {
   LineEditor ed;
   ed += "123456";
   ed.left();
@@ -73,7 +73,7 @@ TEST_CASE("editor delete", "[lineEditor][del]") {
 }
 
 TEST_CASE("editor home and backspace limiting",
-          "[lineEditor][toHome][backspace]") {
+          "[LineEditor][toHome][backspace]") {
   LineEditor ed;
   ed += "12345";
   ed.toHome();
@@ -81,7 +81,7 @@ TEST_CASE("editor home and backspace limiting",
   REQUIRE(static_cast<string>(ed) == "12345");
 }
 
-TEST_CASE("editor end and del limiting", "[lineEditor][toEnd][del]") {
+TEST_CASE("editor end and del limiting", "[LineEditor][toEnd][del]") {
   LineEditor ed;
   ed += "12345";
   ed.left();
@@ -90,7 +90,7 @@ TEST_CASE("editor end and del limiting", "[lineEditor][toEnd][del]") {
   REQUIRE(static_cast<string>(ed) == "12345");
 }
 
-TEST_CASE("editor clear", "[lineEditor][clear]") {
+TEST_CASE("editor clear", "[LineEditor][clear]") {
   LineEditor ed;
   ed += "123";
   ed.clear();
@@ -98,7 +98,7 @@ TEST_CASE("editor clear", "[lineEditor][clear]") {
   REQUIRE(static_cast<string>(ed) == "");
 }
 
-TEST_CASE("empty editor backspace and del", "[lineEditor][del][backspace]") {
+TEST_CASE("empty editor backspace and del", "[LineEditor][del][backspace]") {
   LineEditor ed;
   ed.del();
   ed.backspace();
@@ -106,12 +106,12 @@ TEST_CASE("empty editor backspace and del", "[lineEditor][del][backspace]") {
 }
 
 TEST_CASE("editor initial cursor position",
-          "[lineEditor][cursorPosition][constructor]") {
+          "[LineEditor][cursorPosition][constructor]") {
   LineEditor ed;
   REQUIRE(ed.cursorPosition() == 0);
 }
 
-TEST_CASE("editor moving cursor", "[lineEditor][cursorPosition]") {
+TEST_CASE("editor moving cursor", "[LineEditor][cursorPosition]") {
   LineEditor ed;
   ed += "012345";
   ed.left();
@@ -119,7 +119,7 @@ TEST_CASE("editor moving cursor", "[lineEditor][cursorPosition]") {
   REQUIRE(ed.cursorPosition() == 4);
 }
 
-TEST_CASE("editor initial history", "[lineEditor][constructor]") {
+TEST_CASE("editor initial history", "[LineEditor][constructor]") {
   LineEditor ed;
   ed += "something";
   ed.up();
@@ -128,7 +128,7 @@ TEST_CASE("editor initial history", "[lineEditor][constructor]") {
   REQUIRE(static_cast<string>(ed) == "something");
 }
 
-TEST_CASE("editor history scrolling", "[lineEditor][history]") {
+TEST_CASE("editor history scrolling", "[LineEditor][history]") {
   LineEditor ed;
   ed += "first";
   ed.enter();
@@ -144,7 +144,7 @@ TEST_CASE("editor history scrolling", "[lineEditor][history]") {
   REQUIRE(static_cast<string>(ed) == "third");
 }
 
-TEST_CASE("editor history immutability", "[lineEditor][history]") {
+TEST_CASE("editor history immutability", "[LineEditor][history]") {
   LineEditor ed;
   ed += "first";
   ed.enter();
@@ -167,7 +167,7 @@ TEST_CASE("editor history immutability", "[lineEditor][history]") {
   REQUIRE(static_cast<string>(ed) == "first");
 }
 
-TEST_CASE("editor history grabbing", "[lineEditor][history]") {
+TEST_CASE("editor history grabbing", "[LineEditor][history]") {
   LineEditor ed;
   ed += "first";
   ed.enter();
@@ -214,7 +214,7 @@ TEST_CASE("editor history grabbing", "[lineEditor][history]") {
 }
 
 TEST_CASE("editor limits on history and preserving current line",
-          "[lineEditor][history]") {
+          "[LineEditor][history]") {
   LineEditor ed;
   ed += "first";
   ed.enter();
@@ -233,7 +233,7 @@ TEST_CASE("editor limits on history and preserving current line",
   REQUIRE(static_cast<string>(ed) == "third");
 }
 
-TEST_CASE("editor clearing history", "[lineEditor][history]") {
+TEST_CASE("editor clearing history", "[LineEditor][history]") {
   LineEditor ed;
   ed += "something";
   ed.enter();

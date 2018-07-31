@@ -34,12 +34,12 @@ using stacklang::stackelements::NumberElement;
 using std::numeric_limits;
 }  // namespace
 
-TEST_CASE("stack constructor sanity", "[stack][constructor]") {
+TEST_CASE("stack constructor sanity", "[Stack][constructor]") {
   Stack s;
   REQUIRE(s.isEmpty());
 }
 
-TEST_CASE("stack initializer", "[stack][constructor]") {
+TEST_CASE("stack initializer", "[Stack][constructor]") {
   NumberElement* elm1 = new NumberElement("1");
   NumberElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -50,7 +50,7 @@ TEST_CASE("stack initializer", "[stack][constructor]") {
   REQUIRE(s.isEmpty());
 }
 
-TEST_CASE("stack push, top, and pop", "[stack][push][pop][top]") {
+TEST_CASE("stack push, top, and pop", "[Stack][push][pop][top]") {
   Stack s;
   NumberElement* elm1 = new NumberElement("1");
   NumberElement* elm2 = new NumberElement("2");
@@ -64,7 +64,7 @@ TEST_CASE("stack push, top, and pop", "[stack][push][pop][top]") {
   delete disc;
 }
 
-TEST_CASE("stack clearing", "[stack][clear]") {
+TEST_CASE("stack clearing", "[Stack][clear]") {
   NumberElement* elm1 = new NumberElement("1");
   NumberElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -72,7 +72,7 @@ TEST_CASE("stack clearing", "[stack][clear]") {
   REQUIRE(s.isEmpty());
 }
 
-TEST_CASE("stack reverse", "[stack][reverse]") {
+TEST_CASE("stack reverse", "[Stack][reverse]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   StackElement* elm3 = new NumberElement("3");
@@ -84,12 +84,12 @@ TEST_CASE("stack reverse", "[stack][reverse]") {
   REQUIRE(s.isEmpty());
 }
 
-TEST_CASE("default stack limit", "[stack][getLimit][constructor]") {
+TEST_CASE("default stack limit", "[Stack][getLimit][constructor]") {
   Stack s;
   REQUIRE(s.getLimit() == numeric_limits<unsigned long>().max());
 }
 
-TEST_CASE("stack size", "[stack][size]") {
+TEST_CASE("stack size", "[Stack][size]") {
   Stack s;
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
@@ -101,7 +101,7 @@ TEST_CASE("stack size", "[stack][size]") {
   REQUIRE(s.size() == 0);
 }
 
-TEST_CASE("stack copy constructor", "[stack][constructor]") {
+TEST_CASE("stack copy constructor", "[Stack][constructor]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -115,7 +115,7 @@ TEST_CASE("stack copy constructor", "[stack][constructor]") {
   REQUIRE(sprime.isEmpty());
 }
 
-TEST_CASE("stack move constructor", "[stack][constructor]") {
+TEST_CASE("stack move constructor", "[Stack][constructor]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack sprime = [&elm1, &elm2]() {
@@ -129,7 +129,7 @@ TEST_CASE("stack move constructor", "[stack][constructor]") {
   REQUIRE(sprime.isEmpty());
 }
 
-TEST_CASE("stack iterator begin, end", "[stack][stackIterator][begin][end]") {
+TEST_CASE("stack iterator begin, end", "[Stack][stackIterator][begin][end]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -140,7 +140,7 @@ TEST_CASE("stack iterator begin, end", "[stack][stackIterator][begin][end]") {
   REQUIRE(iter == s.end());
 }
 
-TEST_CASE("stack iterator increment", "[stack][stackIterator][increment]") {
+TEST_CASE("stack iterator increment", "[Stack][stackIterator][increment]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -151,7 +151,7 @@ TEST_CASE("stack iterator increment", "[stack][stackIterator][increment]") {
   REQUIRE(iter == s.end());
 }
 
-TEST_CASE("stack setLimit valid", "[stack][setLimit]") {
+TEST_CASE("stack setLimit valid", "[Stack][setLimit]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -159,14 +159,14 @@ TEST_CASE("stack setLimit valid", "[stack][setLimit]") {
   REQUIRE(s.getLimit() == 3);
 }
 
-TEST_CASE("stack setLimit too small", "[stack][setLimit]") {
+TEST_CASE("stack setLimit too small", "[Stack][setLimit]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
   REQUIRE_THROWS_AS(s.setLimit(1), StackOverflowError);
 }
 
-TEST_CASE("stack setLimit edge case", "[stack][setLimit]") {
+TEST_CASE("stack setLimit edge case", "[Stack][setLimit]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -174,7 +174,7 @@ TEST_CASE("stack setLimit edge case", "[stack][setLimit]") {
   REQUIRE(s.getLimit() == 2);
 }
 
-TEST_CASE("stack pop underflow error", "[stack][pop]") {
+TEST_CASE("stack pop underflow error", "[Stack][pop]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   Stack s{elm1, elm2};
@@ -185,7 +185,7 @@ TEST_CASE("stack pop underflow error", "[stack][pop]") {
   REQUIRE_THROWS_AS(s.pop(), StackUnderflowError);
 }
 
-TEST_CASE("stack top underflow error", "[stack][top]") {
+TEST_CASE("stack top underflow error", "[Stack][top]") {
   StackElement* elm1 = new NumberElement("1");
   Stack s{elm1};
   REQUIRE_NOTHROW(s.top());
@@ -193,7 +193,7 @@ TEST_CASE("stack top underflow error", "[stack][top]") {
   REQUIRE_THROWS_AS(s.top(), StackUnderflowError);
 }
 
-TEST_CASE("stack push overflow error", "[stack][push]") {
+TEST_CASE("stack push overflow error", "[Stack][push]") {
   StackElement* elm1 = new NumberElement("1");
   StackElement* elm2 = new NumberElement("2");
   StackElement* elm3 = new NumberElement("3");
@@ -203,7 +203,7 @@ TEST_CASE("stack push overflow error", "[stack][push]") {
   REQUIRE_THROWS_AS(s.push(elm3), StackOverflowError);
 }
 
-TEST_CASE("stack constructor with size limit sanity", "[stack][constructor]") {
+TEST_CASE("stack constructor with size limit sanity", "[Stack][constructor]") {
   Stack s(4);
   REQUIRE(s.getLimit() == 4);
   REQUIRE(s.isEmpty());
