@@ -70,9 +70,8 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
 bool checkType(const StackElement* elm, const TypeElement type) noexcept {
   if (type.getSpecialization() == nullptr ||
       type.getSpecialization()->getData() ==
-          StackElement::DataType::Any)  // has no specialization or is an Any
-                                        // specialized substack.
-  {
+          StackElement::DataType::Any) {  // has no specialization or is an Any
+                                          // specialized substack.
     return elm->getType() == type.getData() &&
            (elm->getType() != StackElement::DataType::Command ||
             !static_cast<const CommandElement*>(elm)
@@ -175,9 +174,6 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
-
-        auto typeIter = types.begin();
-        auto stackIter = s.begin();
 
         checkTypes(s, types);
 

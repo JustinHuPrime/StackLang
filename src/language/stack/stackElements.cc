@@ -67,15 +67,13 @@ CommandElement* CommandElement::parse(const string& s) {
   if (s.find_first_not_of(CommandElement::ALLOWED_COMMAND, 1) == string::npos &&
       (isalpha(s[0]) ||
        (s[0] == QUOTE_CHAR && s.length() >= 2 &&
-        isalpha(s[1]))))  // has only allowed characters, starts with a
-                          // quote char and a letter or a letter
-  {
+        isalpha(s[1])))) {  // has only allowed characters, starts with a
+                            // quote char and a letter or a letter
     return new CommandElement(removeChar(s, QUOTE_CHAR), s[0] == QUOTE_CHAR);
   } else {
     unsigned badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
                                             s[0] == QUOTE_CHAR ? 1 : 0);
-    if (s[badIndex] == ' ')  // has a space
-    {
+    if (s[badIndex] == ' ') {  // has a space
       throw ParserException("Input looks like a command, but has a space.", s,
                             badIndex);
     } else {
@@ -109,8 +107,8 @@ const char* NumberElement::NUMBER_SIGNS = "-+";
 const char NumberElement::INEXACT_SIGNAL = '~';
 
 NumberElement* NumberElement::parse(const string& s) {
-  if (s.find_first_not_of(ALLOWED_NUMBER) == string::npos)  // has allowed chars
-  {
+  if (s.find_first_not_of(ALLOWED_NUMBER) ==
+      string::npos) {  // has allowed chars
     if (count(s.begin(), s.end(), '.') + count(s.begin(), s.end(), '/') <=
         1) {  // only one dot or decimal point
       if (count(s.begin(), s.end(),
@@ -222,8 +220,7 @@ bool NumberElement::isExact() const noexcept { return exact; }
 const char StringElement::QUOTE_CHAR = '"';
 
 StringElement* StringElement::parse(const string& s) {
-  if (ends_with(s, "\""))  // has quotes on either end
-  {
+  if (ends_with(s, "\"")) {  // has quotes on either end
     if (findImproperEscape(s.substr(1, s.length() - 2)) == string::npos) {
       return new StringElement(unescape(s.substr(1, s.length() - 2)));
     } else {
@@ -263,8 +260,7 @@ SubstackElement* SubstackElement::parse(const string& s) {
   Stack buffer;
 
   for (auto iter = s.begin() + 2; iter != s.end() - 2;
-       iter++)  // loop between the << and >>'s
-  {
+       iter++) {  // loop between the << and >>'s
     accumulator += *iter;
 
     if (!inString && *iter == ',' &&
