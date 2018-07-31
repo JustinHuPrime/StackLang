@@ -15,23 +15,36 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef STACKLANG_LANGUAGE_EXCEPTONS_STACKOVERFLOWERROR_H_
-#define STACKLANG_LANGUAGE_EXCEPTONS_STACKOVERFLOWERROR_H_
+// Definition of interpreter level errors and exceptions
 
-#include "language/exceptions/languageException.h"
+#ifndef STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
+#define STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
+
+#include "language/exceptions/languageExceptions.h"
 
 namespace stacklang {
 namespace exceptions {
-class StackOverflowError : public LanguageException {
+class ArgumentError : public LanguageException {
  public:
-  explicit StackOverflowError(unsigned long);
-  StackOverflowError(const StackOverflowError&) = default;
+  ArgumentError(const string& msg);
+  ArgumentError(const string& msg, const string& actual, size_t posDif);
+  ArgumentError(const ArgumentError&) = default;
 
-  StackOverflowError& operator=(const StackOverflowError&) = default;
+  ArgumentError& operator=(const ArgumentError&) = default;
+
+  const string getKind() const override;
+};
+
+class ParserException : public LanguageException {
+ public:
+  ParserException(const string&, const string&, unsigned);
+  ParserException(const ParserException&) = default;
+
+  ParserException& operator=(const ParserException&) = default;
 
   const string getKind() const override;
 };
 }  // namespace exceptions
 }  // namespace stacklang
 
-#endif  // STACKLANG_LANGUAGE_EXCEPTONS_STACKOVERFLOWERROR_H_
+#endif  // STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETERERROR_H_

@@ -15,19 +15,22 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-// Pure virtual base exception class used to signal interpreter error
-// conditions. See other classes in this directory for specializations.
+// Definitions of language-related errors. See interpreterExceptions.h for
+// derived interpreter errors.
 
-#ifndef STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTION_H_
-#define STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTION_H_
+#ifndef STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
+#define STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
 
-#include <exception>
 #include <string>
+
+#include "language/stackElements.h"
 
 namespace stacklang {
 namespace exceptions {
-using std::exception;
+namespace {
+using stacklang::stackelements::TypeElement;
 using std::string;
+}  // namespace
 
 // Describes a StackLang runtime error
 class LanguageException {
@@ -51,6 +54,58 @@ class LanguageException {
   string message, context;
   unsigned location;
   bool errorHasContext;
+};
+
+class StackOverflowError : public LanguageException {
+ public:
+  explicit StackOverflowError(unsigned long);
+  StackOverflowError(const StackOverflowError&) = default;
+
+  StackOverflowError& operator=(const StackOverflowError&) = default;
+
+  const string getKind() const override;
+};
+
+class StackUnderflowError : public LanguageException {
+ public:
+  StackUnderflowError();
+  StackUnderflowError(const StackUnderflowError&) = default;
+
+  StackUnderflowError& operator=(const StackUnderflowError&) = default;
+
+  const string getKind() const override;
+};
+
+class StopError : public LanguageException {
+ public:
+  StopError();
+  StopError(const StopError&) = default;
+
+  StopError& operator=(const StopError&) = default;
+
+  const string getKind() const override;
+};
+
+class SyntaxError : public LanguageException {
+ public:
+  SyntaxError(const string& msg);
+  SyntaxError(const string& msg, const string& ctx, size_t pos);
+  SyntaxError(const SyntaxError&) = default;
+
+  SyntaxError& operator=(const SyntaxError&) = default;
+
+  const string getKind() const override;
+};
+
+class TypeError : public LanguageException {
+ public:
+  TypeError(const StackElement&, const StackElement&);
+  TypeError(const StackElement&);
+  TypeError(const TypeError&) = default;
+
+  TypeError& operator=(const TypeError&) = default;
+
+  const string getKind() const override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

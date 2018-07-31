@@ -25,18 +25,11 @@
 #include <gmp.h>
 #include <gmpxx.h>
 
-#include "language/exceptions/stopError.h"
-#include "language/exceptions/syntaxError.h"
-#include "language/exceptions/typeError.h"
+#include "language/exceptions/languageExceptions.h"
 #include "language/stack.h"
-#include "language/stack/stackElements/booleanElement.h"
-#include "language/stack/stackElements/commandElement.h"
-#include "language/stack/stackElements/numberElement.h"
-#include "language/stack/stackElements/stringElement.h"
-#include "language/stack/stackElements/substackElement.h"
-#include "language/stack/stackElements/typeElement.h"
 
 namespace stacklang {
+namespace {
 using stacklang::exceptions::StopError;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
@@ -50,13 +43,18 @@ using std::all_of;
 using std::begin;
 using std::end;
 using std::find_if;
+}  // namespace
 
 bool stopFlag = false;
+
+DefinedFunction::DefinedFunction(const Stack& sig, const Stack& b,
+                                 const CommandElement* ctx) noexcept
+    : signature(sig), body(b), context(ctx) {}
 
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   static map<string, PrimitiveFunction>* prims =
       new map<string, PrimitiveFunction>{
-  // Special include files to group definition of primitives.
+// Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
 #include "language/primitives/number.inc"
@@ -107,18 +105,18 @@ bool checkType(const StackElement* elm, const TypeElement type) noexcept {
   }
 }
 
-void checkTypes(const Stack& s, const list<TypeElement>& types) {
+void checkTypes(const Stack& s, const Stack& types) {
   auto typeIter = types.begin();
   auto stackIter = s.begin();
 
   for (; typeIter != types.end() && stackIter != s.end();
        typeIter++, stackIter++) {
-    if (!checkType(*stackIter, *typeIter)) {
-      throw TypeError(*typeIter, *stackIter);
+    if (!checkType(*stackIter, *static_cast<const TypeElement*>(*typeIter))) {
+      throw TypeError(**stackIter, **typeIter);
     }
   }
   if (typeIter != types.end()) {
-    throw TypeError(*typeIter);
+    throw TypeError(**typeIter);
   }
 }
 
@@ -128,11 +126,11 @@ void checkContext(const CommandElement* actual, const CommandElement* required,
     if (actual == nullptr) {
       throw new SyntaxError("Attempted to use `" + name +
                             "` at top level. Expected to be within `" +
-                            actual->getData() + "`.");
-    } else if (actual->getData() != required->getData()) {
+                            actual->getName() + "`.");
+    } else if (actual->getName() != required->getName()) {
       throw new SyntaxError("Attempted to use `" + name + "` within `" +
-                            actual->getData() + "`. Expected to be within `" +
-                            actual->getData() + "`.");
+                            actual->getName() + "`. Expected to be within `" +
+                            actual->getName() + "`.");
     }
   }
 }
@@ -152,7 +150,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
     const auto& defResult =
         find_if(defines.begin(), defines.end(),
                 [&command](const pair<string, DefinedFunction>& entry) {
-                  return entry.first == command->getData();
+                  return entry.first == command->getName();
                 });  // find from non-primitives
 
     if (defResult != defines.end()) {
@@ -161,7 +159,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
       checkTypes(s, types);
       checkContext(context.front(), defResult->second.context,
-                   command->getData());
+                   command->getName());
 
       context.push_back(command);
       for (auto c : commands) {
@@ -172,7 +170,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       const auto& primResult =
           find_if(PRIMS.begin(), PRIMS.end(),
                   [&command](const pair<string, PrimitiveFunction>& entry) {
-                    return entry.first == command->getData();
+                    return entry.first == command->getName();
                   });  // check the primitives
 
       if (primResult != PRIMS.end()) {
@@ -186,7 +184,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
         primResult->second.second(s, defines);
       } else {
         throw SyntaxError("Given command is not recognized.",
-                          command->getData(), 0);
+                          command->getName(), 0);
       }
     }
 

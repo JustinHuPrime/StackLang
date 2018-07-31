@@ -23,7 +23,10 @@
 #include <string>
 
 namespace util {
+
+namespace {
 using std::string;
+}
 
 // Produce true if first string starts/ends with the second string
 bool starts_with(const string&, const string&) noexcept;

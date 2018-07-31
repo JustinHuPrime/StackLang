@@ -28,47 +28,47 @@
 
 #include <ncurses.h>
 
-#include "language/exceptions/languageException.h"
+#include "language/exceptions/languageExceptions.h"
 #include "language/language.h"
 #include "language/stack.h"
-#include "language/stack/stackElement.h"
-#include "language/stack/stackElements/commandElement.h"
-#include "language/stack/stackElements/stringElement.h"
+#include "language/stackElements.h"
 #include "ui/argReader.h"
 #include "ui/lineEditor.h"
 #include "ui/ui.h"
 
+namespace {
+using stacklang::DefinedFunction;
+using stacklang::Stack;
+using stacklang::StackElement;
+using stacklang::stopFlag;
+using stacklang::exceptions::LanguageException;
+using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::StringElement;
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::invalid_argument;
+using std::map;
+using std::numeric_limits;
+using std::stoi;
+using std::stoul;
+using std::string;
+using std::vector;
+using terminalui::addstring;
+using terminalui::ArgReader;
+using terminalui::displayInfo;
+using terminalui::drawError;
+using terminalui::drawPrompt;
+using terminalui::drawStack;
+using terminalui::HELPMSG;
+using terminalui::init;
+using terminalui::LineEditor;
+using terminalui::printError;
+
+const char KEY_CTRL_D = 4;  // FIXME: ctrl-d and EINTR collide.
+}  // namespace
+
 int main(int argc, char* argv[]) noexcept {
-  using stacklang::DefinedFunction;
-  using stacklang::Stack;
-  using stacklang::StackElement;
-  using stacklang::stopFlag;
-  using stacklang::exceptions::LanguageException;
-  using stacklang::stackelements::CommandElement;
-  using stacklang::stackelements::StringElement;
-  using std::cerr;
-  using std::cout;
-  using std::endl;
-  using std::invalid_argument;
-  using std::map;
-  using std::numeric_limits;
-  using std::stoi;
-  using std::stoul;
-  using std::string;
-  using std::vector;
-  using terminalui::addstring;
-  using terminalui::ArgReader;
-  using terminalui::displayInfo;
-  using terminalui::drawError;
-  using terminalui::drawPrompt;
-  using terminalui::drawStack;
-  using terminalui::HELPMSG;
-  using terminalui::init;
-  using terminalui::LineEditor;
-  using terminalui::printError;
-
-  const char KEY_CTRL_D = 4;  // FIXME: ctrl-d and EINTR collide.
-
   Stack s;
   map<string, DefinedFunction> defines;
 

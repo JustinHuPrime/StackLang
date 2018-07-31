@@ -19,55 +19,118 @@
 
 #include "util/stringUtils.h"
 
-#include <assert.h>
 #include <string>
 
 #include "catch.hpp"
 
-TEST_CASE("Test starts with", "[stringUtils]") {
-  using util::starts_with;
-  CHECK(starts_with("abcd", "ab"));
-  CHECK(!starts_with("abcd", "ad"));
-  CHECK(starts_with("abcd", "abcd"));
+namespace {
+using std::string;
+using util::ends_with;
+using util::escape;
+using util::findImproperEscape;
+using util::removeChar;
+using util::spaces;
+using util::starts_with;
+using util::trim;
+using util::unescape;
+}  // namespace
+
+TEST_CASE("starts with simple true case", "[stringUtils][starts_with]") {
+  REQUIRE(starts_with("abcd", "ab"));
 }
 
-TEST_CASE("Test ends_with", "[stringUtils]") {
-  using util::ends_with;
-  CHECK(ends_with("abcd", "cd"));
-  CHECK(!ends_with("abcd", "ce"));
-  CHECK(ends_with("abcd", "abcd"));
+TEST_CASE("starts with simple false case", "[stringUtils][starts_with]") {
+  REQUIRE_FALSE(starts_with("abcd", "ad"));
 }
 
-TEST_CASE("Test escape and unescape", "[stringUtils]") {
-  using util::escape;
-  using util::unescape;
-  CHECK(escape("a\\b\"c\nd") == "a\\\\b\\\"c\\nd");
-  CHECK(unescape("b\\\"a\\\\c\\nd") == "b\"a\\c\nd");
-  CHECK(unescape(escape("a\\b\"c\n")) == "a\\b\"c\n");
-  CHECK(escape(unescape("a\\\\c\\nb\\\"d")) == "a\\\\c\\nb\\\"d");
+TEST_CASE("starts with true edge case", "[stringUtils][starts_with]") {
+  REQUIRE(starts_with("abcd", "abcd"));
 }
 
-void testStringUtils() noexcept {
-  using std::string;
-  using util::ends_with;
-  using util::escape;
-  using util::findImproperEscape;
-  using util::removeChar;
-  using util::spaces;
-  using util::starts_with;
-  using util::trim;
-  using util::unescape;
-  assert(findImproperEscape("012345\\") == 6);
-  assert(findImproperEscape("lotsa stuff \\\\") == string::npos);
-  assert(findImproperEscape("0123456\\aother stuff goes here.") == 7);
-  assert(findImproperEscape("012\\\\stuff after this...") == string::npos);
-  assert(findImproperEscape("012\"stuff after this...") == 3);
-  assert(findImproperEscape("012\\\\\"stuff after this...") == 5);
-  assert(spaces(5) == "     ");
-  assert(spaces(0) == "");
-  assert(removeChar("aabaacdebba", 'a') == "bcdebb");
-  assert(removeChar("doesn't contain that letter", 'j') ==
-         "doesn't contain that letter");
-  assert(trim(" \n\tabc \n\tdef\n \t") == "abc \n\tdef");
-  assert(trim("no whitespace to trim") == "no whitespace to trim");
+TEST_CASE("starts with complex false case", "[stringUtils][starts_with]") {
+  REQUIRE_FALSE(starts_with("abcd", "abcde"));
+}
+
+TEST_CASE("ends_with simple true case", "[stringUtils][ends_with]") {
+  REQUIRE(ends_with("abcd", "cd"));
+}
+
+TEST_CASE("ends_with simple false case", "[stringUtils][ends_with]") {
+  REQUIRE_FALSE(ends_with("abcd", "ce"));
+}
+
+TEST_CASE("ends_with true edge case", "[stringUtils][ends_with]") {
+  REQUIRE(ends_with("abcd", "abcd"));
+}
+
+TEST_CASE("ends_with complex false case", "[stringUtils][ends_with]") {
+  REQUIRE_FALSE(ends_with("abcd", "0abcd"));
+}
+
+TEST_CASE("escape", "[stringUtils][escape]") {
+  REQUIRE(escape("a\\b\"c\nd") == "a\\\\b\\\"c\\nd");
+}
+
+TEST_CASE("unescape", "[stringUtils][unescape]") {
+  REQUIRE(unescape("b\\\"a\\\\c\\nd") == "b\"a\\c\nd");
+}
+
+TEST_CASE("escape/unescape identity", "[stringUtils][escape][unescape]") {
+  REQUIRE(unescape(escape("a\\b\"c\n")) == "a\\b\"c\n");
+  REQUIRE(escape(unescape("a\\\\c\\nb\\\"d")) == "a\\\\c\\nb\\\"d");
+}
+
+TEST_CASE("findImproperEscape escaped ending quote",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("012345\\") == 6);
+}
+
+TEST_CASE("findImproperEscape nothing wrong ending quote",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("lotsa stuff \\\\") == string::npos);
+}
+
+TEST_CASE("findImproperEscape bad escape",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("0123456\\aother stuff goes here.") == 7);
+}
+
+TEST_CASE("findImproperEscape nothing wrong escaped escape",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("012\\\\stuff after this...") == string::npos);
+}
+
+TEST_CASE("findImproperEscape unescaped quote",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("012\"stuff after this...") == 3);
+}
+
+TEST_CASE("findImproperEscape backslash before unescaped quote",
+          "[stringUtils][findImproperEscape]") {
+  REQUIRE(findImproperEscape("012\\\\\"stuff after this...") == 5);
+}
+
+TEST_CASE("spaces function simple", "[stringUtils][spaces]") {
+  REQUIRE(spaces(5) == "     ");
+}
+
+TEST_CASE("spaces function edge case", "[stringUtils][spaces]") {
+  REQUIRE(spaces(0) == "");
+}
+
+TEST_CASE("removeChar simple", "[stringUtils][removeChar]") {
+  REQUIRE(removeChar("aabaacdebba", 'a') == "bcdebb");
+}
+
+TEST_CASE("removeChar no change", "[stringUtils][removeChar]") {
+  REQUIRE(removeChar("doesn't contain that letter", 'j') ==
+          "doesn't contain that letter");
+}
+
+TEST_CASE("trim with whitespace", "[stringUtils][trim]") {
+  REQUIRE(trim(" \n\tabc \n\tdef\n \t") == "abc \n\tdef");
+}
+
+TEST_CASE("trim no whitespace", "[stringUtils][trim]") {
+  REQUIRE(trim("no whitespace to trim") == "no whitespace to trim");
 }

@@ -23,17 +23,19 @@
 
 #include <string>
 
-#include "language/exceptions/languageException.h"
+#include "language/exceptions/languageExceptions.h"
 #include "language/stack.h"
-#include "language/stack/stackElement.h"
+#include "language/stackElements.h"
 #include "ui/lineEditor.h"
 
 namespace terminalui {
+namespace {
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::exceptions::LanguageException;
 using std::string;
 using terminalui::LineEditor;
+}  // namespace
 
 // initializes/uninitializes curses (and general stuff) with preset options
 void init() noexcept;
@@ -56,7 +58,7 @@ const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char* const INFO = R"(StackLang interpreter version ALPHA 6
+const char INFO[] = R"(StackLang interpreter version ALPHA 6
 Copyright 2018 Justin Hu
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under certain conditions. For more detail see
@@ -65,7 +67,7 @@ the COPYING file that should have been included with this program.
 Use ^D to exit from prompt, and ^C to force quit.
 Press any key to continue...)";
 
-const char* const HELPMSG = R"(Usage: stacklang [OPTIONS]
+const char HELPMSG[] = R"(Usage: stacklang [OPTIONS]
 * `-?`, `-h`: prints this message.
 * `-W`: show warranty information.
 * `-C`: show copying information

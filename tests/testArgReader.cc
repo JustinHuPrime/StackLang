@@ -17,7 +17,7 @@
 
 // Tests for the ArgReader class
 
-#include "language/exceptions/argumentError.h"
+#include "language/exceptions/interpreterExceptions.h"
 #include "ui/argReader.h"
 
 #include <assert.h>

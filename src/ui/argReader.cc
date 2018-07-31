@@ -21,13 +21,15 @@
 
 #include <algorithm>
 
-#include "language/exceptions/argumentError.h"
+#include "language/exceptions/interpreterExceptions.h"
 
 namespace terminalui {
+namespace {
 using stacklang::exceptions::ArgumentError;
 using std::find;
 using std::min;
 using std::to_string;
+}  // namespace
 
 ArgReader::ArgReader() noexcept : flags(), options(), longOpts() {}
 

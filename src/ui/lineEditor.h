@@ -26,9 +26,11 @@
 #include <string>
 
 namespace terminalui {
+namespace {
 using std::list;
 using std::stack;
 using std::string;
+}  // namespace
 
 class LineEditor {
  public:

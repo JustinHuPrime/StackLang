@@ -15,24 +15,30 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef STACKLANG_LANGUAGE_EXCEPTONS_ARGUMENTERROR_H_
-#define STACKLANG_LANGUAGE_EXCEPTONS_ARGUMENTERROR_H_
+// Implementation of interpreter-level errors and exceptions
 
-#include "language/exceptions/languageException.h"
+#include "language/exceptions/interpreterExceptions.h"
 
 namespace stacklang {
 namespace exceptions {
-class ArgumentError : public LanguageException {
- public:
-  ArgumentError(const string& msg);
-  ArgumentError(const string& msg, const string& actual, size_t posDif);
-  ArgumentError(const ArgumentError&) = default;
+namespace {
+using std::to_string;
+}
 
-  ArgumentError& operator=(const ArgumentError&) = default;
+ArgumentError::ArgumentError(const string& msg) : LanguageException(msg) {}
 
-  const string getKind() const override;
-};
+ArgumentError::ArgumentError(const string& msg, const string& actual,
+                             size_t posDif)
+    : LanguageException(msg, actual, posDif) {}
+
+const string ArgumentError::getKind() const {
+  return "Command line arguments invalid:";
+}
+
+ParserException::ParserException(const string& msg, const string& ctx,
+                                 unsigned loc)
+    : LanguageException(msg, ctx, loc) {}
+
+const string ParserException::getKind() const { return "Could not parse:"; }
 }  // namespace exceptions
 }  // namespace stacklang
-
-#endif  // STACKLANG_LANGUAGE_EXCEPTONS_ARGUMENTERROR_H_

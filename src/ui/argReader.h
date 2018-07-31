@@ -25,9 +25,11 @@
 #include <vector>
 
 namespace terminalui {
+namespace {
 using std::map;
 using std::string;
 using std::vector;
+}  // namespace
 
 // A commannd line argument reader that can infer the intended syntax of command
 // line arguments. An option followed by another option is a flag, an option

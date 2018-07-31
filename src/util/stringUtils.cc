@@ -20,14 +20,13 @@
 #include "util/stringUtils.h"
 
 namespace util {
-using std::string;
-
 bool starts_with(const string& s, const string& s1) noexcept {
   return 0 == s.find(s1);
 }
 
 bool ends_with(const string& s, const string& s1) noexcept {
-  return s.length() - s1.length() == s.find(s1, s.length() - s1.length());
+  return s.length() >= s1.length() &&
+         s.length() - s1.length() == s.find(s1, s.length() - s1.length());
 }
 
 string escape(string s) noexcept {

@@ -19,13 +19,14 @@
 // primitives
 
 //  {"NAME",
-//   {{INPUT TYPES...},
+//   {Stack{INPUT TYPES...},
 //    [](Stack& s, map<string, DefinedFunction>&) {
 //      PRIMITIVE BODY...
 //    }}},
+
 {"add",
- {{TypeElement(StackElement::DataType::Number),
-   TypeElement(StackElement::DataType::Number)},
+ {Stack{new TypeElement(StackElement::DataType::Number),
+        new TypeElement(StackElement::DataType::Number)},
   [](Stack& s, map<string, DefinedFunction>&) {
     NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
     NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -36,8 +37,8 @@
     s.push(result);
   }}},
     {"subtract",
-     {{TypeElement(StackElement::DataType::Number),
-       TypeElement(StackElement::DataType::Number)},
+     {Stack{new TypeElement(StackElement::DataType::Number),
+            new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -48,8 +49,8 @@
         s.push(result);
       }}},
     {"multiply",
-     {{TypeElement(StackElement::DataType::Number),
-       TypeElement(StackElement::DataType::Number)},
+     {Stack{new TypeElement(StackElement::DataType::Number),
+            new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* lower = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* higher = dynamic_cast<NumberElement*>(s.pop());
@@ -60,8 +61,8 @@
         s.push(result);
       }}},
     {"divide",
-     {{TypeElement(StackElement::DataType::Number),
-       TypeElement(StackElement::DataType::Number)},
+     {Stack{new TypeElement(StackElement::DataType::Number),
+            new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         if (dynamic_cast<NumberElement*>(s.top())->getData() == 0) {
           throw SyntaxError("Attempted division by zero.");
@@ -75,7 +76,7 @@
         s.push(result);
       }}},
     {"negate",
-     {{TypeElement(StackElement::DataType::Number)},
+     {Stack{new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&) {
         NumberElement* input = dynamic_cast<NumberElement*>(s.pop());
         NumberElement* result = new NumberElement(-input->getData());

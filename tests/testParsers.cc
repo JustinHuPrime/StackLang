@@ -17,14 +17,8 @@
 
 // tests for the StackElement parse method
 
-#include "language/exceptions/parserException.h"
-#include "language/stack/stackElement.h"
-#include "language/stack/stackElements/booleanElement.h"
-#include "language/stack/stackElements/commandElement.h"
-#include "language/stack/stackElements/numberElement.h"
-#include "language/stack/stackElements/stringElement.h"
-#include "language/stack/stackElements/substackElement.h"
-#include "language/stack/stackElements/typeElement.h"
+#include "language/exceptions/interpreterExceptions.h"
+#include "language/stackElements.h"
 
 #include <assert.h>
 #include <iostream>

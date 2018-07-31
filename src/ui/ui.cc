@@ -28,10 +28,12 @@
 #include "util/stringUtils.h"
 
 namespace terminalui {
+namespace {
 using stacklang::stopFlag;
 using std::cerr;
 using std::endl;
 using util::spaces;
+}  // namespace
 
 void init() noexcept {
   setlocale(LC_ALL, "");
