@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include "language/stackElements.h"
+#include "language/stack/stackElements.h"
 
 namespace stacklang {
 namespace exceptions {

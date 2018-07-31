@@ -25,8 +25,8 @@
 #include <map>
 #include <utility>
 
-#include "language/stack.h"
-#include "language/stackElements.h"
+#include "language/stack/stack.h"
+#include "language/stack/stackElements.h"
 
 namespace stacklang {
 namespace {

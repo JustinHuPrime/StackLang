@@ -17,7 +17,7 @@
 
 // Implementation of stackElement for various types.
 
-#include "language/stackElements.h"
+#include "language/stack/stackElements.h"
 
 #include <iomanip>
 #include <sstream>

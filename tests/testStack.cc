@@ -18,8 +18,8 @@
 // tests for the Stack class
 
 #include "language/exceptions/languageExceptions.h"
-#include "language/stack.h"
-#include "language/stackElements.h"
+#include "language/stack/stack.h"
+#include "language/stack/stackElements.h"
 
 #include <limits>
 

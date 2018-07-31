@@ -26,7 +26,7 @@
 #include <gmpxx.h>
 
 #include "language/exceptions/languageExceptions.h"
-#include "language/stack.h"
+#include "language/stack/stack.h"
 
 namespace stacklang {
 namespace {

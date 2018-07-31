@@ -18,7 +18,7 @@
 // Implementation of the stack, iterator, and base StackElement, including the
 // parse method.
 
-#include "language/stack.h"
+#include "language/stack/stack.h"
 
 #include <algorithm>
 #include <queue>
@@ -26,7 +26,7 @@
 
 #include "language/exceptions/interpreterExceptions.h"
 #include "language/exceptions/languageExceptions.h"
-#include "language/stackElements.h"
+#include "language/stack/stackElements.h"
 #include "util/stringUtils.h"
 
 namespace stacklang {
@@ -47,6 +47,64 @@ using std::queue;
 using util::ends_with;
 using util::starts_with;
 }  // namespace
+
+const unsigned StackElement::NUM_PRIM_TYPES = 7;
+
+// Acts as a dispatcher for specific types, and handles parsing of trivially
+// parsed types (currently just Booleans).
+StackElement* StackElement::parse(const string& s) {
+  if (s.empty()) {
+    throw ParserException("Given input is empty.", s, 0);
+  } else if (isdigit(s[0]) ||
+             find(NumberElement::NUMBER_SIGNS,
+                  NumberElement::NUMBER_SIGNS +
+                      strlen(NumberElement::NUMBER_SIGNS),
+                  s[0]) != NumberElement::NUMBER_SIGNS +
+                               strlen(NumberElement::NUMBER_SIGNS) ||
+             s[0] == NumberElement::INEXACT_SIGNAL)  // looks like a number.
+  {
+    return NumberElement::parse(s);
+  } else if (starts_with(
+                 s,
+                 string(1, StringElement::QUOTE_CHAR)))  // starts with a quote
+  {
+    return StringElement::parse(s);
+  } else if (starts_with(s, SubstackElement::SUBSTACK_BEGIN) &&
+             ends_with(
+                 s,
+                 SubstackElement::SUBSTACK_END))  // has a pair of substack
+                                                  // delmiters on either end
+                                                  // - must be a substack.
+  {
+    return SubstackElement::parse(s);
+  } else if (s == BooleanElement::TSTR ||
+             s == BooleanElement::FSTR)  // it's either true or false
+  {
+    return new BooleanElement(s == string(BooleanElement::TSTR));
+  } else if (s.find_first_of(TypeElement::PARENS) != string::npos ||
+             find(TypeElement::TYPES().begin(), TypeElement::TYPES().end(),
+                  s) != TypeElement::TYPES()
+                            .end())  // has a subtype, or exists in types
+  {                                  // is a type
+    return TypeElement::parse(s);
+  } else if (isalpha(s[0]) ||
+             s[0] == CommandElement::QUOTE_CHAR)  // starts with a character or
+                                                  // a command-quote
+  {
+    return CommandElement::parse(s);
+  } else  // error case
+  {
+    throw ParserException(
+        "Input doesn't look like any type - does it begin with a symbol?", s,
+        0);
+  }
+}
+
+StackElement::DataType StackElement::getType() const noexcept {
+  return dataType;
+}
+
+StackElement::StackElement(DataType type) noexcept : dataType(type) {}
 
 Stack::Stack(size_t lim) noexcept : head(nullptr), dataSize(0), limit(lim) {}
 
@@ -202,62 +260,4 @@ bool operator!=(const Stack::StackIterator& first,
                 const Stack::StackIterator& second) noexcept {
   return !(first == second);
 }
-
-const unsigned StackElement::NUM_PRIM_TYPES = 7;
-
-// Acts as a dispatcher for specific types, and handles parsing of trivially
-// parsed types (currently just Booleans).
-StackElement* StackElement::parse(const string& s) {
-  if (s.empty()) {
-    throw ParserException("Given input is empty.", s, 0);
-  } else if (isdigit(s[0]) ||
-             find(NumberElement::NUMBER_SIGNS,
-                  NumberElement::NUMBER_SIGNS +
-                      strlen(NumberElement::NUMBER_SIGNS),
-                  s[0]) != NumberElement::NUMBER_SIGNS +
-                               strlen(NumberElement::NUMBER_SIGNS) ||
-             s[0] == NumberElement::INEXACT_SIGNAL)  // looks like a number.
-  {
-    return NumberElement::parse(s);
-  } else if (starts_with(
-                 s,
-                 string(1, StringElement::QUOTE_CHAR)))  // starts with a quote
-  {
-    return StringElement::parse(s);
-  } else if (starts_with(s, SubstackElement::SUBSTACK_BEGIN) &&
-             ends_with(
-                 s,
-                 SubstackElement::SUBSTACK_END))  // has a pair of substack
-                                                  // delmiters on either end
-                                                  // - must be a substack.
-  {
-    return SubstackElement::parse(s);
-  } else if (s == BooleanElement::TSTR ||
-             s == BooleanElement::FSTR)  // it's either true or false
-  {
-    return new BooleanElement(s == string(BooleanElement::TSTR));
-  } else if (s.find_first_of(TypeElement::PARENS) != string::npos ||
-             find(TypeElement::TYPES().begin(), TypeElement::TYPES().end(),
-                  s) != TypeElement::TYPES()
-                            .end())  // has a subtype, or exists in types
-  {                                  // is a type
-    return TypeElement::parse(s);
-  } else if (isalpha(s[0]) ||
-             s[0] == CommandElement::QUOTE_CHAR)  // starts with a character or
-                                                  // a command-quote
-  {
-    return CommandElement::parse(s);
-  } else  // error case
-  {
-    throw ParserException(
-        "Input doesn't look like any type - does it begin with a symbol?", s,
-        0);
-  }
-}
-
-StackElement::DataType StackElement::getType() const noexcept {
-  return dataType;
-}
-
-StackElement::StackElement(DataType type) noexcept : dataType(type) {}
 }  // namespace stacklang

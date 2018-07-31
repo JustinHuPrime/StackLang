@@ -26,7 +26,7 @@
 #include <gmp.h>
 #include <gmpxx.h>
 
-#include "language/stack.h"
+#include "language/stack/stack.h"
 
 namespace stacklang {
 namespace stackelements {

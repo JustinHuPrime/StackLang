@@ -30,8 +30,8 @@
 
 #include "language/exceptions/languageExceptions.h"
 #include "language/language.h"
-#include "language/stack.h"
-#include "language/stackElements.h"
+#include "language/stack/stack.h"
+#include "language/stack/stackElements.h"
 #include "ui/argReader.h"
 #include "ui/lineEditor.h"
 #include "ui/ui.h"
