@@ -19,106 +19,231 @@
 
 #include "ui/lineEditor.h"
 
-#include <assert.h>
 #include <string>
 
 #include "catch.hpp"
 
-void testLineEditor() noexcept {
-  using std::string;
-  using terminalui::LineEditor;
+namespace {
+using std::string;
+using terminalui::LineEditor;
+}  // namespace
 
+TEST_CASE("editor constructor sanity", "[lineEditor][constructor]") {
   LineEditor ed;
-  assert(ed.isEmpty());
-  assert(static_cast<string>(ed) == "");
+  REQUIRE(ed.isEmpty());
+  REQUIRE(static_cast<string>(ed) == "");
+}
+
+TEST_CASE("editor adding strings", "[lineEditor][add]") {
+  LineEditor ed;
   ed += "123456";
-  assert(static_cast<string>(ed) == "123456");
-  assert(!ed.isEmpty());
+  REQUIRE(static_cast<string>(ed) == "123456");
+  REQUIRE_FALSE(ed.isEmpty());
+}
+
+TEST_CASE("editor backspace", "[lineEditor][backspace]") {
+  LineEditor ed;
+  ed += "123456";
   ed.left();
   ed.backspace();
-  assert(static_cast<string>(ed) == "12346");
+  REQUIRE(static_cast<string>(ed) == "12346");
+  ed.toEnd();
+  ed.backspace();
+  REQUIRE(static_cast<string>(ed) == "1234");
+}
+
+TEST_CASE("editor add character", "[lineEditor][add]") {
+  LineEditor ed;
+  ed += "123456";
+  ed.left();
+  ed.backspace();
   ed += '5';
-  assert(static_cast<string>(ed) == "123456");
+  REQUIRE(static_cast<string>(ed) == "123456");
+}
+
+TEST_CASE("editor delete", "[lineEditor][del]") {
+  LineEditor ed;
+  ed += "123456";
+  ed.left();
   ed.del();
-  assert(static_cast<string>(ed) == "12345");
+  REQUIRE(static_cast<string>(ed) == "12345");
+  ed.toHome();
+  ed.del();
+  REQUIRE(static_cast<string>(ed) == "2345");
+}
+
+TEST_CASE("editor home and backspace limiting",
+          "[lineEditor][toHome][backspace]") {
+  LineEditor ed;
+  ed += "12345";
   ed.toHome();
   ed.backspace();
-  assert(static_cast<string>(ed) == "12345");
+  REQUIRE(static_cast<string>(ed) == "12345");
+}
+
+TEST_CASE("editor end and del limiting", "[lineEditor][toEnd][del]") {
+  LineEditor ed;
+  ed += "12345";
+  ed.left();
   ed.toEnd();
   ed.del();
-  assert(static_cast<string>(ed) == "12345");
-  ed.right();
-  ed.backspace();
-  assert(static_cast<string>(ed) == "1234");
-  ed.toHome();
-  ed.del();
-  assert(static_cast<string>(ed) == "234");
-  assert(!ed.isEmpty());
+  REQUIRE(static_cast<string>(ed) == "12345");
+}
+
+TEST_CASE("editor clear", "[lineEditor][clear]") {
+  LineEditor ed;
+  ed += "123";
   ed.clear();
-  assert(static_cast<string>(ed) == "");
-  assert(ed.isEmpty());
+  REQUIRE(ed.isEmpty());
+  REQUIRE(static_cast<string>(ed) == "");
+}
+
+TEST_CASE("empty editor backspace and del", "[lineEditor][del][backspace]") {
+  LineEditor ed;
+  ed.del();
+  ed.backspace();
+  REQUIRE(ed.cursorPosition() == 0);
+}
+
+TEST_CASE("editor initial cursor position",
+          "[lineEditor][cursorPosition][constructor]") {
+  LineEditor ed;
+  REQUIRE(ed.cursorPosition() == 0);
+}
+
+TEST_CASE("editor moving cursor", "[lineEditor][cursorPosition]") {
+  LineEditor ed;
   ed += "012345";
   ed.left();
   ed.left();
-  assert(ed.cursorPosition() == 4);
-  ed.clear();
-  ed.clearHist();
-  ed += "first";
+  REQUIRE(ed.cursorPosition() == 4);
+}
+
+TEST_CASE("editor initial history", "[lineEditor][constructor]") {
+  LineEditor ed;
+  ed += "something";
   ed.up();
-  assert(static_cast<string>(ed) == "first");
+  REQUIRE(static_cast<string>(ed) == "something");
   ed.down();
-  assert(static_cast<string>(ed) == "first");
+  REQUIRE(static_cast<string>(ed) == "something");
+}
+
+TEST_CASE("editor history scrolling", "[lineEditor][history]") {
+  LineEditor ed;
+  ed += "first";
   ed.enter();
   ed += "second";
-  assert(static_cast<string>(ed) == "second");
+  REQUIRE(static_cast<string>(ed) == "second");
   ed.enter();
   ed += "third";
   ed.enter();
   ed.up();
   ed.up();
-  assert(static_cast<string>(ed) == "second");
+  REQUIRE(static_cast<string>(ed) == "second");
   ed.down();
-  assert(static_cast<string>(ed) == "third");
+  REQUIRE(static_cast<string>(ed) == "third");
+}
+
+TEST_CASE("editor history immutability", "[lineEditor][history]") {
+  LineEditor ed;
+  ed += "first";
+  ed.enter();
+  ed += "second";
+  ed.enter();
+  ed += "third";
+  ed.enter();
+  ed.up();
   ed.clear();
   ed += "fourth";
   ed.enter();
-  ed += "shouldn't be here.";
+  ed += "filler";
   ed.up();
-  assert(static_cast<string>(ed) == "fourth");
+  REQUIRE(static_cast<string>(ed) == "fourth");
   ed.up();
-  assert(static_cast<string>(ed) == "third");
+  REQUIRE(static_cast<string>(ed) == "third");
   ed.up();
-  assert(static_cast<string>(ed) == "second");
+  REQUIRE(static_cast<string>(ed) == "second");
   ed.up();
-  assert(static_cast<string>(ed) == "first");
+  REQUIRE(static_cast<string>(ed) == "first");
+}
+
+TEST_CASE("editor history grabbing", "[lineEditor][history]") {
+  LineEditor ed;
+  ed += "first";
   ed.enter();
-  assert(ed.isEmpty());
-  ed.up();
-  assert(static_cast<string>(ed) == "first");
-  ed.up();
-  assert(static_cast<string>(ed) == "fourth");
-  ed.up();
-  assert(static_cast<string>(ed) == "third");
-  ed.up();
-  assert(static_cast<string>(ed) == "second");
-  ed.up();
-  assert(static_cast<string>(ed) == "first");
-  ed.down();
-  ed.down();
+  ed += "second";
+  ed.enter();
+  ed += "third";
   ed.enter();
   ed.up();
-  assert(static_cast<string>(ed) == "third");
+  ed.clear();
+  ed += "fourth";
+  ed.enter();
   ed.up();
-  assert(static_cast<string>(ed) == "first");
   ed.up();
-  assert(static_cast<string>(ed) == "fourth");
   ed.up();
-  assert(static_cast<string>(ed) == "third");
+  SECTION("at end of history") {
+    ed.up();
+    ed.enter();
+    REQUIRE(ed.isEmpty());
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "first");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "fourth");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "third");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "second");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "first");
+  }
+  SECTION("in middle of history") {
+    ed.enter();
+    REQUIRE(ed.isEmpty());
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "second");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "fourth");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "third");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "second");
+    ed.up();
+    REQUIRE(static_cast<string>(ed) == "first");
+  }
+}
+
+TEST_CASE("editor limits on history and preserving current line",
+          "[lineEditor][history]") {
+  LineEditor ed;
+  ed += "first";
+  ed.enter();
+  ed += "second";
+  ed.enter();
+  ed += "third";
   ed.up();
-  assert(static_cast<string>(ed) == "second");
   ed.up();
-  assert(static_cast<string>(ed) == "first");
+  REQUIRE(static_cast<string>(ed) == "first");
+  ed.up();
+  REQUIRE(static_cast<string>(ed) == "first");
+  ed.down();
+  ed.down();
+  REQUIRE(static_cast<string>(ed) == "third");
+  ed.down();
+  REQUIRE(static_cast<string>(ed) == "third");
+}
+
+TEST_CASE("editor clearing history", "[lineEditor][history]") {
+  LineEditor ed;
+  ed += "something";
+  ed.enter();
+  ed += "else";
+  ed.enter();
+  ed += "keep";
   ed.clearHist();
+  REQUIRE(static_cast<string>(ed) == "keep");
   ed.up();
-  assert(static_cast<string>(ed) == "first");
+  REQUIRE(static_cast<string>(ed) == "keep");
+  ed.down();
+  REQUIRE(static_cast<string>(ed) == "keep");
 }

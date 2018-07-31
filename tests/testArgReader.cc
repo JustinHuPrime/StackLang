@@ -20,158 +20,69 @@
 #include "language/exceptions/interpreterExceptions.h"
 #include "ui/argReader.h"
 
-#include <assert.h>
-#include <iostream>
 #include <string>
 #include <vector>
 
 #include "catch.hpp"
 
-void testArgReader() noexcept {
-  using stacklang::exceptions::ArgumentError;
-  using std::cerr;
-  using std::string;
-  using std::vector;
-  using terminalui::ArgReader;
+namespace {
+using Catch::Matchers::Equals;
+using stacklang::exceptions::ArgumentError;
+using std::string;
+using std::vector;
+using terminalui::ArgReader;
+char* argv[] = {"discard", "-a",    "-b",       "data",  "-c",        "more",
+                "stuff",   "-d",    "\"-words", "in",    "quotes-\"", "-e",
+                "\"part",  "one\"", "\"part",   "two\"", "three"};
+}  // namespace
 
+TEST_CASE("argReader discards bad argv", "[argReader][read]") {
   ArgReader ar;
-
-  char* argv[] = {"discard",
-                  "-a",
-                  "-b",
-                  "data",
-                  "-c",
-                  "more",
-                  "stuff",
-                  "-d",
-                  "\"-words",
-                  "in",
-                  "quotes-\"",
-                  "-e",
-                  "\"part",
-                  "one\"",
-                  "\"part"
-                  "two\"",
-                  "three"};
-
   char* badArgv[] = {"discard", "-ab", "-f"};
+  REQUIRE_THROWS_AS(ar.read(3, badArgv), ArgumentError);
+}
 
-  try {
-    ar.read(3, badArgv);
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
+TEST_CASE("argReader read and validate args", "[argReader][read][validate]") {
+  ArgReader ar;
+  REQUIRE_NOTHROW(ar.read(17, argv));
+  REQUIRE_NOTHROW(ar.validate("a", "bd", "ce"));
+}
 
-  try {
-    ar.read(16, argv);
-    ar.validate("a", "bd", "ce");
-  } catch (...) {
-    cerr << " FAILED: Threw exception, but shouldn't have.\n";
-    assert(false);
-  }
+TEST_CASE("argReader validate", "[argReader][validate]") {
+  ArgReader ar;
+  ar.read(17, argv);
+  REQUIRE_THROWS_AS(ar.validate("", "bd", "ce"), ArgumentError);
+  REQUIRE_THROWS_AS(ar.validate("a", "d", "ce"), ArgumentError);
+  REQUIRE_THROWS_AS(ar.validate("a", "bd", "c"), ArgumentError);
+}
 
-  try {
-    ar.validate("", "bd", "ce");
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
+TEST_CASE("argReader has* predicates",
+          "[argReader][hasFlag][hasOpt][hasLongOpt]") {
+  ArgReader ar;
+  ar.read(17, argv);
+  REQUIRE(ar.hasFlag('a'));
+  REQUIRE_FALSE(ar.hasFlag('b'));
+  REQUIRE_FALSE(ar.hasFlag('x'));
 
-  try {
-    ar.validate("a", "d", "ce");
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
+  REQUIRE(ar.hasOpt('b'));
+  REQUIRE_FALSE(ar.hasOpt('c'));
+  REQUIRE_FALSE(ar.hasOpt('x'));
 
-  try {
-    ar.validate("a", "bd", "c");
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
+  REQUIRE(ar.hasLongOpt('c'));
+  REQUIRE_FALSE(ar.hasLongOpt('a'));
+  REQUIRE_FALSE(ar.hasLongOpt('x'));
+}
 
-  assert(ar.hasFlag('a'));
-  assert(!ar.hasFlag('b'));
-  assert(!ar.hasFlag('x'));
-
-  assert(ar.hasOpt('b'));
-  assert(!ar.hasOpt('c'));
-  assert(!ar.hasOpt('x'));
-
-  assert(ar.hasLongOpt('c'));
-  assert(!ar.hasLongOpt('a'));
-  assert(!ar.hasLongOpt('x'));
-
-  try {
-    assert(ar.getOpt('b') == "data");
-    assert(ar.getOpt('d') == "-words in quotes-");
-  } catch (...) {
-    cerr << " FAILED: Exception thrown, but expected none.\n";
-    assert(false);
-  }
-  try {
-    ar.getOpt('c');
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
-  try {
-    ar.getOpt('x');
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
-  try {
-    assert(ar.getLongOpt('c') == vector<string>({"more", "stuff"}));
-    assert(ar.getOpt('d') == "-words in quotes-");
-  } catch (...) {
-    cerr << " FAILED: Exception thrown, but expected none.\n";
-    assert(false);
-  }
-  try {
-    ar.getOpt('c');
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
-  try {
-    ar.getOpt('x');
-    cerr << " FAILED: Expected an exception, but none thrown.\n";
-    assert(false);
-  } catch (const ArgumentError&) {
-    // do nothing.
-  } catch (...) {
-    cerr << " FAILED: Threw wrong exception.\n";
-    assert(false);
-  }
+TEST_CASE("argReader get*", "[argReader][getOpt][getLongOpt]") {
+  ArgReader ar;
+  ar.read(17, argv);
+  REQUIRE(ar.getOpt('b') == "data");
+  REQUIRE(ar.getOpt('d') == "-words in quotes-");
+  REQUIRE_THROWS_AS(ar.getOpt('c'), ArgumentError);
+  REQUIRE_THROWS_AS(ar.getOpt('x'), ArgumentError);
+  REQUIRE_THAT(ar.getLongOpt('c'), Equals(vector<string>{"more", "stuff"}));
+  REQUIRE_THAT(ar.getLongOpt('e'),
+               Equals(vector<string>{"part one", "part two", "three"}));
+  REQUIRE_THROWS_AS(ar.getLongOpt('b'), ArgumentError);
+  REQUIRE_THROWS_AS(ar.getLongOpt('z'), ArgumentError);
 }
