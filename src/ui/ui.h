@@ -64,7 +64,7 @@ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under certain conditions. For more detail see
 the COPYING file that should have been included with this program.
 
-Use ^D to exit from prompt, and ^C to force quit.
+Use ^D to exit from prompt, ^C to stop execution, and ^\ to force quit.
 Press any key to continue...)";
 
 const char HELPMSG[] = R"(Usage: stacklang [OPTIONS]

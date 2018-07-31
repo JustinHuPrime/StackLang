@@ -128,7 +128,7 @@ NumberElement* NumberElement::parse(const string& s) {
                 removeChar(s, '\'').length() -
                     1) {  // doesn't have a blank denominator
               if (s.find_first_of('/') == string::npos ||
-                  s.substr(s.find_first_of('/') + 1).find_first_not_of('0') !=
+                  s.substr(s.find_first_of('/') + 1).find_first_not_of("0'") !=
                       string::npos) {  // doesn't have all zeroes in the
                                        // denominator.
                 return new NumberElement(
@@ -160,18 +160,16 @@ NumberElement* NumberElement::parse(const string& s) {
             s.find(INEXACT_SIGNAL, s.find(INEXACT_SIGNAL) + 1));
       }
     } else {
-      if (count(s.begin(), s.end(), '.') > 1)  // more than one dot
-      {
+      if (count(s.begin(), s.end(), '.') > 1) {  // more than one dot
         throw ParserException(
             "Looks like a number, but has more than one deminal point.", s,
             s.find('.', s.find('.') + 1));
-      } else if (count(s.begin(), s.end(), '/') > 1)  // has more than one slash
-      {
+      } else if (count(s.begin(), s.end(), '/') >
+                 1) {  // has more than one slash
         throw ParserException(
             "Looks like a number, but has more than one fraction bar.", s,
             s.find('/', s.find('/') + 1));
-      } else  // dot and slash
-      {
+      } else {  // dot and slash
         throw ParserException(
             "Looks like a number, but has a decimal point in a fraction.", s,
             s.find_first_of("."));
