@@ -20,8 +20,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment**
- - OS:
- - OS Version:
+ - OS (and version):
  - StackLang Version:
  - StackLang Standard Library Version (if different):
  - Compiler (and version) used to build:
