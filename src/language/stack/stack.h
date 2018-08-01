@@ -48,6 +48,7 @@ class StackElement {
     Exact,
     Inexact,
     Quoted,
+    Unquoted,
   };
 
   // Produces a StackElement (of some type) from a terminal input string

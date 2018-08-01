@@ -366,7 +366,8 @@ TypeElement* TypeElement::parse(const string& s) {
         DataType::Command,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
                                     s.length() - s.find_first_of('(') - 2)));
-    if (elm->specialization->data != DataType::Quoted) {
+    if (elm->specialization->data != DataType::Quoted &&
+        elm->specialization->data != DataType::Unquoted) {
       delete elm;
       throw ParserException("Wrong specialization on a Command type.", s,
                             s.find('(') + 1);

@@ -68,18 +68,17 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
 }
 
 bool checkType(const StackElement* elm, const TypeElement type) {
-  if (type.getData() == StackElement::DataType::Any &&
-      type.getSpecialization() == nullptr) {  // any matches everything not null
-    return elm != nullptr;
+  if (elm == nullptr) {  // nullptr not matched ever.
+    return false;
+  } else if (type.getData() == StackElement::DataType::Any &&
+             type.getSpecialization() ==
+                 nullptr) {  // any matches everything not null
+    return true;
   } else if (type.getSpecialization() == nullptr ||
              type.getSpecialization()->getData() ==
                  StackElement::DataType::Any) {  // has no specialization or is
                                                  // an Any specialized substack.
-    return elm->getType() == type.getData() &&
-           (elm->getType() != StackElement::DataType::Command ||
-            !static_cast<const CommandElement*>(elm)
-                 ->isQuoted());  // type matches plainly and any commands are
-                                 // unquoted
+    return elm->getType() == type.getData();     // type matches plainly
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Number) {  // is a specialized number
@@ -90,8 +89,10 @@ bool checkType(const StackElement* elm, const TypeElement type) {
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Command) {  // is a specialized command
-                                                     // - has to be quoted.
-    return static_cast<const CommandElement*>(elm)->isQuoted();
+    return type.getSpecialization()->getData() ==
+           (static_cast<const CommandElement*>(elm)->isQuoted()
+                ? StackElement::DataType::Quoted
+                : StackElement::DataType::Unquoted);
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Substack) {  // is a specialized
@@ -156,7 +157,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
                   return entry.first == command->getName();
                 });  // find from non-primitives
 
-    if (defResult != defines.end()) {
+    if (defResult != defines.end()) {  // It's defined!
       const auto& types = defResult->second.signature;
       const auto& commands = defResult->second.body;
 
@@ -164,12 +165,16 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       checkContext(context.front(), defResult->second.context,
                    command->getName());
 
-      context.push_back(command);
+      context.push_back(command);  // now executing function
       for (auto c : commands) {
         s.push(c->clone());
         execute(s, defines, context);
       }
-    } else {
+      context.pop_back();  // done with function
+      return execute(
+          s, defines,
+          context);  // clear off any commands produced but not executed
+    } else {         // It's a primitive (maybe?)
       const auto& primResult =
           find_if(PRIMS.begin(), PRIMS.end(),
                   [&command](const pair<string, PrimitiveFunction>& entry) {
@@ -182,6 +187,9 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
         checkTypes(s, types);
 
         primResult->second.second(s, defines);
+        return execute(
+            s, defines,
+            context);  // clear off any commands produced but not executed
       } else {
         throw SyntaxError("Given command is not recognized.",
                           command->getName(), 0);

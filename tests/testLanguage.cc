@@ -51,10 +51,15 @@ TEST_CASE("check number types", "[language][checkType]") {
 TEST_CASE("check command variants", "[language][checkType]") {
   CommandElement* raw = new CommandElement("raw-command");
   CommandElement* quoted = CommandElement::parse("`quoted-command");
-  TypeElement rawT = TypeElement(StackElement::DataType::Command);
+  TypeElement anyT = TypeElement(StackElement::DataType::Command);
   TypeElement quotedT =
       TypeElement(StackElement::DataType::Command,
                   new TypeElement(StackElement::DataType::Quoted));
+  TypeElement rawT =
+      TypeElement(StackElement::DataType::Command,
+                  new TypeElement(StackElement::DataType::Unquoted));
+  REQUIRE(checkType(raw, anyT));
+  REQUIRE(checkType(quoted, anyT));
   REQUIRE(checkType(raw, rawT));
   REQUIRE(checkType(quoted, quotedT));
   REQUIRE_FALSE(checkType(raw, quotedT));
