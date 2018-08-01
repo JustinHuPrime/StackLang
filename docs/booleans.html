@@ -45,21 +45,30 @@ boolean = true-symbol | false-symbol ;</pre>
                 <h3 id="type">Type Predicates</h3>
                 <p>
                     <code>boolean? : Any -> Boolean</code>
-                    <br/> Produces true if input is a boolean, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if input is a boolean,
+                    <code>false</code> otherwise.
                 </p>
                 <p>
                     <code>false? : Any -> Boolean</code>
-                    <br/> Produces true if input is false, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if input is
+                    <code>false</code>,
+                    <code>false</code> otherwise.
                 </p>
                 <p>
                     <code>true? : Any -> Boolean</code>
-                    <br/> Produces true if input is true, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if input is
+                    <code>true</code>,
+                    <code>false</code> otherwise.
                 </p>
                 <h3 id="conversion">Type Conversions</h3>
                 <p>
                     <code>boolean-to-string : Boolean -> String</code>
                     <br/> Produces the string
-                    <code>"true"</code> if input is true,
+                    <code>"true"</code> if input is
+                    <code>true</code>,
                     <code>"false"</code> otherwise.
                 </p>
                 <p>
@@ -72,31 +81,51 @@ boolean = true-symbol | false-symbol ;</pre>
                 <h3 id="logical">Logical Operators</h3>
                 <p>
                     <code>not : Boolean -> Boolean</code>
-                    <br/> Produces false if input is true, and true if input is false.
+                    <br/> Produces
+                    <code>false</code> if input is
+                    <code>true</code>, and
+                    <code>true</code> if input is
+                    <code>false</code>.
                 </p>
                 <p>
                     <code>or : Boolean Boolean -> Boolean</code>
-                    <br/> Produces true if at least one input is true, false otherwise. This will not short-circuit.
+                    <br/> Produces
+                    <code>true</code> if at least one input is
+                    <code>true</code>,
+                    <code>false</code> otherwise. This will not short-circuit.
                 </p>
                 <p>
                     <code>and : Boolean Boolean -> Boolean</code>
-                    <br/> Produces false if at least one input is false, true otherwise. This will not short-circuit.
+                    <br/> Produces
+                    <code>false</code> if at least one input is
+                    <code>false</code>,
+                    <code>true</code> otherwise. This will not short-circuit.
                 </p>
                 <p>
                     <code>nor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces false if at least one input is true, true otherwise.
+                    <br/> Produces
+                    <code>false</code> if at least one input is
+                    <code>true</code>,
+                    <code>true</code> otherwise.
                 </p>
                 <p>
                     <code>xor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces true if the two inputs are not the same, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if the two inputs are not the same,
+                    <code>false</code> otherwise.
                 </p>
                 <p>
                     <code>nxor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces true if the two inputs are the same, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if the two inputs are the same,
+                    <code>false</code> otherwise.
                 </p>
                 <p>
                     <code>nand : Boolean Boolean -> Boolean</code>
-                    <br/> Produces true if at least one input is false, false otherwise.
+                    <br/> Produces
+                    <code>true</code> if at least one input is
+                    <code>false</code>,
+                    <code>false</code> otherwise.
                 </p>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
