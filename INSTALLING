@@ -24,7 +24,7 @@ and their dependencies for your particular system:
 
 You will also need the following tools:
 
-* A C++17 capable compiler (g++ is preferred)
+* A C++17 capable compiler (clang++ or g++)
 * gnu-make
 
 Then, edit the included makefile to specify the appropriate shell commands and

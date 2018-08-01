@@ -36,11 +36,11 @@ class LineEditor {
  public:
   // Create blank lineEditor
   LineEditor() noexcept;
-  LineEditor(const LineEditor&) noexcept = default;
-  LineEditor(LineEditor&&) noexcept = default;
+  LineEditor(const LineEditor&) = default;
+  LineEditor(LineEditor&&) = default;
 
-  LineEditor& operator=(const LineEditor&) noexcept = default;
-  LineEditor& operator=(LineEditor&&) noexcept = default;
+  LineEditor& operator=(const LineEditor&) = default;
+  LineEditor& operator=(LineEditor&&) = default;
 
   // Move the cursor
   void right() noexcept;

@@ -53,14 +53,14 @@ class StackElement {
   // Produces a StackElement (of some type) from a terminal input string
   static StackElement* parse(const string&);
 
-  StackElement(const StackElement&) noexcept = default;
-  StackElement(StackElement&&) noexcept = default;
+  StackElement(const StackElement&) = default;
+  StackElement(StackElement&&) = default;
   virtual StackElement* clone() const noexcept = 0;
 
-  StackElement& operator=(const StackElement&) noexcept = default;
-  StackElement& operator=(StackElement&&) noexcept = default;
+  StackElement& operator=(const StackElement&) = default;
+  StackElement& operator=(StackElement&&) = default;
 
-  virtual ~StackElement() noexcept = default;
+  virtual ~StackElement() = default;
 
   // Produces a nicely formatted string of the string (for print to console)
   explicit virtual operator string() const noexcept = 0;
@@ -147,9 +147,9 @@ class Stack::StackIterator {
   typedef std::input_iterator_tag iterator_category;
 
   StackIterator(Stack::Node*) noexcept;
-  StackIterator(const StackIterator&) noexcept = default;
+  StackIterator(const StackIterator&) = default;
 
-  StackIterator& operator=(const StackIterator&) noexcept = default;
+  StackIterator& operator=(const StackIterator&) = default;
 
   friend bool operator==(const Stack::StackIterator&,
                          const Stack::StackIterator&) noexcept;

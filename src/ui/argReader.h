@@ -39,10 +39,10 @@ using std::vector;
 class ArgReader {
  public:
   ArgReader() noexcept;
-  ArgReader(const ArgReader&) noexcept = default;
-  ArgReader& operator=(const ArgReader&) noexcept = default;
-  ArgReader(ArgReader&&) noexcept = default;
-  ArgReader& operator=(ArgReader&&) noexcept = default;
+  ArgReader(const ArgReader&) = default;
+  ArgReader& operator=(const ArgReader&) = default;
+  ArgReader(ArgReader&&) = default;
+  ArgReader& operator=(ArgReader&&) = default;
   // Reads in to the object from argv. If restrictChar is true, then the reader
   // will only consider arguments with a dash and a char to be option flags
   void read(int, char* []);

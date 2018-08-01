@@ -55,8 +55,10 @@ TDEPDIR := tests/dependencies
 TDEPS := $(patsubst $(TSRCDIR)/%.cc,$(TDEPDIR)/%.dep,$(TSRCS))
 
 
+# gcc specific warnings - prefaced with -Wno-unknown-warning-option for clang++
+GPPWARNINGS := -Wno-unknown-warning-option -Wlogical-op -Wuseless-cast -Wnoexcept -Wstrict-null-sentinel
 #standard warning request list
-WARNINGS := -pedantic -pedantic-errors -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Wzero-as-null-pointer-constant -Wuseless-cast -Wno-unused
+WARNINGS := -pedantic -pedantic-errors -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-overflow=5 -Wswitch-default -Wundef -Wzero-as-null-pointer-constant -Wno-unused $(GPPWARNINGS)
 #disabled warnings when compiling tetss
 TNOWARN := -Wno-write-strings
 #always-included compiler options
