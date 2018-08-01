@@ -4,7 +4,7 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
+**Description**
 A clear and concise description of what the bug is.
 
 **To Reproduce**
@@ -19,10 +19,12 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Version [e.g. 22]
- - Standard Library Version [e.g. 12]
+**Environment**
+ - OS:
+ - OS Version:
+ - StackLang Version:
+ - StackLang Standard Library Version (if different):
+ - Compiler (and version) used to build:
 
 **Additional context**
 Add any other context about the problem here.
