@@ -1,5 +1,6 @@
-*.[oa]
 stacklang
 stacklangTest
 bin/
 dependencies/
+tests/bin/
+tests/dependencies/
