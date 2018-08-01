@@ -378,56 +378,6 @@ number = exact-number | inexact-number ;</pre>
                     <br/> Produces the cotangent of the number. Number is expected to be in radians.
                 </p>
                 <p>
-                    <code>hyperbolic-sine : Number -> Number</code>
-                    <br/> Produces the hyperbolic sine of the number.
-                    <!--Limits on these.-->
-                </p>
-                <p>
-                    <code>hyperbolic-cosine : Number -> Number</code>
-                    <br/> Produces the hyperbolic cosine of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-tangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic tangent of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-cosecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic cosecant of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-secant : Number -> Number</code>
-                    <br/> Produces the hyperbolic secant of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-cotangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic cotangent of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-arcsine : Number -> Number</code>
-                    <br/> Produces the hyperbolic arcsine of the number.
-                    <!--Limits on these.-->
-                </p>
-                <p>
-                    <code>hyperbolic-arccosine : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccosine of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-arctangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic arctangent of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-arccosecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccosecant of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-arcsecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic arcsecant of the number.
-                </p>
-                <p>
-                    <code>hyperbolic-arccotangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccotangent of the number.
-                </p>
-                <p>
                     <code>arccosecant : Number -> Number</code>
                     <br/> Produces the arccosecant of the number. Number is expected to be less than or equal to -1 or greater
                     than or equal to 1. Output is between -&pi;/2 and 0 for inputs less than or equal to -1, and between
@@ -442,6 +392,57 @@ number = exact-number | inexact-number ;</pre>
                 <p>
                     <code>arccotangent : Number -> Number</code>
                     <br/> Produces the arccotangent of the number. Output is between 0 and &pi;
+                </p>
+                <p>
+                    <code>hyperbolic-sine : Number -> Number</code>
+                    <br/> Produces the hyperbolic sine of the number. Domain and range are all real numbers.
+                </p>
+                <p>
+                    <code>hyperbolic-cosine : Number -> Number</code>
+                    <br/> Produces the hyperbolic cosine of the number. Domain is all real numbers, and range is from 1 to infinity.
+                </p>
+                <p>
+                    <code>hyperbolic-tangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic tangent of the number. Domain is all real numbers, and range is from negative
+                    one to positive one, not inclusive.
+                </p>
+                <p>
+                    <code>hyperbolic-cosecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic cosecant of the number. Domain and range are all real numbers except zero.
+                </p>
+                <p>
+                    <code>hyperbolic-secant : Number -> Number</code>
+                    <br/> Produces the hyperbolic secant of the number. Domain is all real numbers, and range is between zero
+                    and one.
+                </p>
+                <p>
+                    <code>hyperbolic-cotangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic cotangent of the number. Domain is all real numbers except zero, and range is
+                    all real numbers except those within one of zero.
+                </p>
+                <p>
+                    <code>hyperbolic-arcsine : Number -> Number</code>
+                    <br/> Produces the hyperbolic arcsine of the number. Output has the same sign as the input.
+                </p>
+                <p>
+                    <code>hyperbolic-arccosine : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccosine of the number. Output is always positive.
+                </p>
+                <p>
+                    <code>hyperbolic-arctangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic arctangent of the number. Output has the same sign as the input.
+                </p>
+                <p>
+                    <code>hyperbolic-arccosecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccosecant of the number. Output has the same sign as the input.
+                </p>
+                <p>
+                    <code>hyperbolic-arcsecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic arcsecant of the number. Output is always positive.
+                </p>
+                <p>
+                    <code>hyperbolic-arccotangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccotangent of the number. Output has the same sign as the input.
                 </p>
                 <h3 id="utilities">Other Utilities</h3>
                 <p>
