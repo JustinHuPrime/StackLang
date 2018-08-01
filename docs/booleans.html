@@ -73,7 +73,8 @@ boolean = true-symbol | false-symbol ;</pre>
                 </p>
                 <p>
                     <code>string-to-boolean : Boolean -> String</code>
-                    <br/> Produces a boolean as if the string were read in from the
+                    <br/> Produces a boolean as if the string were read in from the interpreter. Fails with a
+                    <code>RuntimeError</code> if string cannot be parsed.
                 </p>
                 <p>
                     <code>string-to-boolean : String -> Boolean</code>
