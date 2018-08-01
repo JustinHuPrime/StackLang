@@ -36,7 +36,7 @@ using std::string;
 class LanguageException {
  public:
   // Creates an error with a message, but no context
-  explicit LanguageException(const string&);
+  explicit LanguageException(const string&) noexcept;
   // Creates an error with a message and context (plus exact location of error)
   LanguageException(const string&, const string&, unsigned);
   LanguageException(const LanguageException&) = default;
@@ -44,11 +44,11 @@ class LanguageException {
   LanguageException& operator=(const LanguageException&) = default;
 
   // Get error details
-  virtual const string getKind() const = 0;
-  const string getMessage() const;
-  const string getContext() const;
-  unsigned getLocation() const;
-  bool hasContext() const;
+  virtual const string getKind() const noexcept = 0;
+  const string getMessage() const noexcept;
+  const string getContext() const noexcept;
+  unsigned getLocation() const noexcept;
+  bool hasContext() const noexcept;
 
  protected:
   string message, context;
@@ -56,56 +56,66 @@ class LanguageException {
   bool errorHasContext;
 };
 
+class RuntimeError : public LanguageException {
+ public:
+  explicit RuntimeError(const string&) noexcept;
+  RuntimeError(const RuntimeError&) = default;
+
+  RuntimeError& operator=(const RuntimeError&) = default;
+
+  const string getKind() const noexcept override;
+};
+
 class StackOverflowError : public LanguageException {
  public:
-  explicit StackOverflowError(unsigned long);
+  explicit StackOverflowError(unsigned long) noexcept;
   StackOverflowError(const StackOverflowError&) = default;
 
   StackOverflowError& operator=(const StackOverflowError&) = default;
 
-  const string getKind() const override;
+  const string getKind() const noexcept override;
 };
 
 class StackUnderflowError : public LanguageException {
  public:
-  StackUnderflowError();
+  StackUnderflowError() noexcept;
   StackUnderflowError(const StackUnderflowError&) = default;
 
   StackUnderflowError& operator=(const StackUnderflowError&) = default;
 
-  const string getKind() const override;
+  const string getKind() const noexcept override;
 };
 
 class StopError : public LanguageException {
  public:
-  StopError();
+  StopError() noexcept;
   StopError(const StopError&) = default;
 
   StopError& operator=(const StopError&) = default;
 
-  const string getKind() const override;
+  const string getKind() const noexcept override;
 };
 
 class SyntaxError : public LanguageException {
  public:
-  SyntaxError(const string& msg);
+  SyntaxError(const string& msg) noexcept;
   SyntaxError(const string& msg, const string& ctx, size_t pos);
   SyntaxError(const SyntaxError&) = default;
 
   SyntaxError& operator=(const SyntaxError&) = default;
 
-  const string getKind() const override;
+  const string getKind() const noexcept override;
 };
 
 class TypeError : public LanguageException {
  public:
-  TypeError(const StackElement&, const StackElement&);
-  TypeError(const StackElement&);
+  TypeError(const StackElement&, const StackElement&) noexcept;
+  TypeError(const StackElement&) noexcept;
   TypeError(const TypeError&) = default;
 
   TypeError& operator=(const TypeError&) = default;
 
-  const string getKind() const override;
+  const string getKind() const noexcept override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

@@ -25,55 +25,64 @@ namespace {
 using std::to_string;
 }
 
-LanguageException::LanguageException(const string& msg)
+LanguageException::LanguageException(const string& msg) noexcept
     : message(msg), errorHasContext(false) {}
 
 LanguageException::LanguageException(const string& msg, const string& ctx,
-                                     unsigned loc)
+                                     unsigned loc) noexcept
     : message(msg), context(ctx), location(loc), errorHasContext(true) {}
 
-const string LanguageException::getMessage() const { return message; }
+const string LanguageException::getMessage() const noexcept { return message; }
 
-const string LanguageException::getContext() const { return context; }
+const string LanguageException::getContext() const noexcept { return context; }
 
-unsigned LanguageException::getLocation() const { return location; }
+unsigned LanguageException::getLocation() const noexcept { return location; }
 
-bool LanguageException::hasContext() const { return errorHasContext; }
+bool LanguageException::hasContext() const noexcept { return errorHasContext; }
 
-StackOverflowError::StackOverflowError(unsigned long limit)
+RuntimeError::RuntimeError(const string& msg) noexcept
+    : LanguageException(msg) {}
+
+const string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
+
+StackOverflowError::StackOverflowError(unsigned long limit) noexcept
     : LanguageException("Stack has exceeded configured limit of " +
                         to_string(limit) + ".") {}
 
-const string StackOverflowError::getKind() const { return "Stack overflowed:"; }
+const string StackOverflowError::getKind() const noexcept {
+  return "Stack overflowed:";
+}
 
-StackUnderflowError::StackUnderflowError()
+StackUnderflowError::StackUnderflowError() noexcept
     : LanguageException(
           "Stack is empty, but attempted to access element from stack.") {}
 
-const string StackUnderflowError::getKind() const {
+const string StackUnderflowError::getKind() const noexcept {
   return "Stack underflowed:";
 }
 
-StopError::StopError()
+StopError::StopError() noexcept
     : LanguageException("Ctrl-c (SIGINTR) sent, interpreter stopping.") {}
 
-const string StopError::getKind() const { return "Manual interrupt:"; }
+const string StopError::getKind() const noexcept { return "Manual interrupt:"; }
 
-SyntaxError::SyntaxError(const string& msg) : LanguageException(msg) {}
+SyntaxError::SyntaxError(const string& msg) noexcept : LanguageException(msg) {}
 
-SyntaxError::SyntaxError(const string& msg, const string& ctx, size_t pos)
+SyntaxError::SyntaxError(const string& msg, const string& ctx,
+                         size_t pos) noexcept
     : LanguageException(msg, ctx, pos) {}
 
 const string SyntaxError::getKind() const { return "Syntax error:"; }
 
-TypeError::TypeError(const StackElement& expected, const StackElement& given)
+TypeError::TypeError(const StackElement& expected,
+                     const StackElement& given) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
                         "\nGiven " + static_cast<string>(given)) {}
 
-TypeError::TypeError(const StackElement& expected)
+TypeError::TypeError(const StackElement& expected) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
                         " but reached the bottom of the stack instead.") {}
 
-const string TypeError::getKind() const { return "Type Mismatch:"; }
+const string TypeError::getKind() const noexcept { return "Type Mismatch:"; }
 }  // namespace exceptions
 }  // namespace stacklang
