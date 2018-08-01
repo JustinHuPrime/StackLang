@@ -24,11 +24,12 @@ and their dependencies for your particular system:
 
 You will also need the following tools:
 
-* A C++17 capable compiler
+* A C++17 capable compiler (g++ is preferred)
 * gnu-make
 
-Then, edit the included makefile to specify the appropriate shell commands.
+Then, edit the included makefile to specify the appropriate shell commands and
+library links for your particular system.
 
-Finally, run `make`, or `make release`. This will compile the interpreter, run
-the included test suite, and should produce both the `stacklang` executable,
-and the `stacklangTest` executable.
+Finally, run `make clean`, then `make debug` or `make release`. This will
+compile the interpreter, run the included test suite, and should produce both
+the `stacklang` executable, and the `stacklangTest` executable.

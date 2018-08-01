@@ -67,11 +67,14 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   return *prims;
 }
 
-bool checkType(const StackElement* elm, const TypeElement type) noexcept {
-  if (type.getSpecialization() == nullptr ||
-      type.getSpecialization()->getData() ==
-          StackElement::DataType::Any) {  // has no specialization or is an Any
-                                          // specialized substack.
+bool checkType(const StackElement* elm, const TypeElement type) {
+  if (type.getData() == StackElement::DataType::Any &&
+      type.getSpecialization() == nullptr) {  // any matches everything not null
+    return elm != nullptr;
+  } else if (type.getSpecialization() == nullptr ||
+             type.getSpecialization()->getData() ==
+                 StackElement::DataType::Any) {  // has no specialization or is
+                                                 // an Any specialized substack.
     return elm->getType() == type.getData() &&
            (elm->getType() != StackElement::DataType::Command ||
             !static_cast<const CommandElement*>(elm)
@@ -87,7 +90,7 @@ bool checkType(const StackElement* elm, const TypeElement type) noexcept {
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Command) {  // is a specialized command
-    // - has to be quoted.
+                                                     // - has to be quoted.
     return static_cast<const CommandElement*>(elm)->isQuoted();
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
@@ -99,8 +102,9 @@ bool checkType(const StackElement* elm, const TypeElement type) noexcept {
     return all_of(s.begin(), s.end(), [&spec](const StackElement* e) {
       return checkType(e, *spec);
     });
-  } else {         // is a specialized non-substack, non-number
-    return false;  // can't happen!
+  } else {  // is a specialized non-substack, non-number
+    throw new SyntaxError("Impossible type detected.",
+                          static_cast<string>(type), 0);
   }
 }
 
@@ -123,13 +127,13 @@ void checkContext(const CommandElement* actual, const CommandElement* required,
                   const string& name) {
   if (required != nullptr) {
     if (actual == nullptr) {
-      throw new SyntaxError("Attempted to use `" + name +
-                            "` at top level. Expected to be within `" +
-                            actual->getName() + "`.");
+      throw SyntaxError("Attempted to use `" + name +
+                        "` at top level. Expected to be within `" +
+                        required->getName() + "`.");
     } else if (actual->getName() != required->getName()) {
-      throw new SyntaxError("Attempted to use `" + name + "` within `" +
-                            actual->getName() + "`. Expected to be within `" +
-                            actual->getName() + "`.");
+      throw SyntaxError("Attempted to use `" + name + "` within `" +
+                        actual->getName() + "`. Expected to be within `" +
+                        required->getName() + "`.");
     }
   }
 }

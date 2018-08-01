@@ -79,8 +79,11 @@ TEST_CASE("stack reverse", "[Stack][reverse]") {
   Stack s{elm1, elm2, elm3};
   s.reverse();
   REQUIRE(s.pop() == elm1);
+  delete elm1;
   REQUIRE(s.pop() == elm2);
+  delete elm2;
   REQUIRE(s.pop() == elm3);
+  delete elm3;
   REQUIRE(s.isEmpty());
 }
 
@@ -201,6 +204,7 @@ TEST_CASE("stack push overflow error", "[Stack][push]") {
   REQUIRE_NOTHROW(s.push(elm1));
   REQUIRE_NOTHROW(s.push(elm2));
   REQUIRE_THROWS_AS(s.push(elm3), StackOverflowError);
+  delete elm3;
 }
 
 TEST_CASE("stack constructor with size limit sanity", "[Stack][constructor]") {

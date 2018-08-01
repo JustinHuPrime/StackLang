@@ -70,7 +70,7 @@ void ArgReader::read(int argc, char* argv[]) {
 
         if (vIter->size() != 2) {  // is a combined flag or something.
           throw ArgumentError("Expected an single character after the `-`.",
-                              *vIter, min(vIter->size(), 2UL));
+                              *vIter, min(vIter->size(), size_t{2}));
         } else if (*vIter == "--") {  // ignore end of long-opts.
           continue;
         }

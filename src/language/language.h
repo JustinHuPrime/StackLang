@@ -50,7 +50,7 @@ typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
 typedef pair<Stack, Prim> PrimitiveFunction;
 
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;
-bool checkType(const StackElement* elm, const TypeElement type) noexcept;
+bool checkType(const StackElement* elm, const TypeElement type);
 void checkTypes(const Stack& s, const Stack& types);
 void checkContext(const CommandElement* actual, const CommandElement* required,
                   const string& name);

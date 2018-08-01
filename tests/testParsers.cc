@@ -42,6 +42,7 @@ TEST_CASE("initial number parses as number", "[parse][StackElement][number]") {
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("22/7"));
+  delete num;
 }
 
 TEST_CASE("initial sign parses as number", "[parse][StackElement][number]") {
@@ -49,6 +50,7 @@ TEST_CASE("initial sign parses as number", "[parse][StackElement][number]") {
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("-22/7"));
+  delete num;
 }
 
 TEST_CASE("initial inexact sign parses as number",
@@ -57,6 +59,7 @@ TEST_CASE("initial inexact sign parses as number",
   NumberElement* num = dynamic_cast<NumberElement*>(elm);
   REQUIRE(num != nullptr);
   REQUIRE(num->getData() == mpq_class("22/7"));
+  delete num;
 }
 
 TEST_CASE("initial quote parses as string", "[parse][StackElement][string]") {
@@ -64,6 +67,7 @@ TEST_CASE("initial quote parses as string", "[parse][StackElement][string]") {
   StringElement* str = dynamic_cast<StringElement*>(elm);
   REQUIRE(str != nullptr);
   REQUIRE(str->getData() == "string");
+  delete str;
 }
 
 TEST_CASE("substack delimiters recognized", "[parse][StackElement][substack]") {
@@ -71,6 +75,7 @@ TEST_CASE("substack delimiters recognized", "[parse][StackElement][substack]") {
   SubstackElement* s = dynamic_cast<SubstackElement*>(elm);
   REQUIRE(s != nullptr);
   REQUIRE(s->getType() == StackElement::DataType::Substack);
+  delete s;
 }
 
 TEST_CASE("boolean true parses correctly", "[parse][StackElement][boolean]") {
@@ -78,6 +83,7 @@ TEST_CASE("boolean true parses correctly", "[parse][StackElement][boolean]") {
   BooleanElement* b = dynamic_cast<BooleanElement*>(elm);
   REQUIRE(b != nullptr);
   REQUIRE(b->getData());
+  delete b;
 }
 
 TEST_CASE("boolean false parses correctly", "[parse][StackElement][boolean]") {
@@ -85,6 +91,7 @@ TEST_CASE("boolean false parses correctly", "[parse][StackElement][boolean]") {
   BooleanElement* b = dynamic_cast<BooleanElement*>(elm);
   REQUIRE(b != nullptr);
   REQUIRE_FALSE(b->getData());
+  delete b;
 }
 
 TEST_CASE("parens parse to type", "[parse][StackElement][type]") {
@@ -92,6 +99,7 @@ TEST_CASE("parens parse to type", "[parse][StackElement][type]") {
   TypeElement* t = dynamic_cast<TypeElement*>(elm);
   REQUIRE(t != nullptr);
   REQUIRE(t->getData() == StackElement::DataType::Substack);
+  delete t;
 }
 
 TEST_CASE("primitve type parses to type", "[parse][StackElement][type]") {
@@ -99,6 +107,7 @@ TEST_CASE("primitve type parses to type", "[parse][StackElement][type]") {
   TypeElement* t = dynamic_cast<TypeElement*>(elm);
   REQUIRE(t != nullptr);
   REQUIRE(t->getData() == StackElement::DataType::Number);
+  delete t;
 }
 
 TEST_CASE("word parses to command", "[parse][StackElement][command]") {
@@ -106,6 +115,7 @@ TEST_CASE("word parses to command", "[parse][StackElement][command]") {
   CommandElement* cmd = dynamic_cast<CommandElement*>(elm);
   REQUIRE(cmd != nullptr);
   REQUIRE(cmd->getName() == "cmd1*");
+  delete cmd;
 }
 
 TEST_CASE("command quote recognized", "[parse][StackElement][command]") {
@@ -113,18 +123,21 @@ TEST_CASE("command quote recognized", "[parse][StackElement][command]") {
   CommandElement* cmd = dynamic_cast<CommandElement*>(elm);
   REQUIRE(cmd != nullptr);
   REQUIRE(cmd->getName() == "Number");
+  delete cmd;
 }
 
 TEST_CASE("unquoted command properly parsed", "[parse][CommandElement]") {
   CommandElement* cmd = CommandElement::parse("foldr");
   REQUIRE(cmd->getName() == "foldr");
   REQUIRE_FALSE(cmd->isQuoted());
+  delete cmd;
 }
 
 TEST_CASE("quoted command properly parsed", "[parse][CommandElement]") {
   CommandElement* cmd = CommandElement::parse("`foldr");
   REQUIRE(cmd->getName() == "foldr");
   REQUIRE(cmd->isQuoted());
+  delete cmd;
 }
 
 TEST_CASE("quote in middle of command", "[parse][CommandElement]") {
@@ -160,6 +173,7 @@ TEST_CASE("number with symbol in the middle", "[parse][NumberElement]") {
 TEST_CASE("number with quote chars between signs", "[parse][NumberElement]") {
   NumberElement* num = NumberElement::parse("~'+'1/2'");
   REQUIRE(num->getData() == mpq_class("1/2"));
+  delete num;
 }
 
 TEST_CASE("number with blank denominator", "[parse][NumberElement]") {
@@ -174,24 +188,28 @@ TEST_CASE("exact fraction with sign", "[parse][NumberElement]") {
   NumberElement* num = NumberElement::parse("+'2'/'4'");
   REQUIRE(num->getData() == mpq_class("1/2"));
   REQUIRE(num->isExact());
+  delete num;
 }
 
 TEST_CASE("inexact fraction with sign", "[parse][NumberElement]") {
   NumberElement* num = NumberElement::parse("~'-'1'/'2'");
   REQUIRE(num->getData() == mpq_class("-1/2"));
   REQUIRE_FALSE(num->isExact());
+  delete num;
 }
 
 TEST_CASE("exact decimal with sign", "[parse][NumberElement]") {
   NumberElement* num = NumberElement::parse("-2.5");
   REQUIRE(num->getData() == mpq_class("-5/2"));
   REQUIRE(num->isExact());
+  delete num;
 }
 
 TEST_CASE("inexact decimal with sign", "[parse][NumberElement]") {
   NumberElement* num = NumberElement::parse("~+2.5");
   REQUIRE(num->getData() == mpq_class("5/2"));
   REQUIRE_FALSE(num->isExact());
+  delete num;
 }
 
 TEST_CASE("string with missing closing quote", "[parse][StringElement]") {
@@ -205,6 +223,7 @@ TEST_CASE("string with bad escape", "[parse][StringElement]") {
 TEST_CASE("valid string", "[parse][StringElement]") {
   StringElement* str = StringElement::parse("\"good\\nstring\"");
   REQUIRE(str->getData() == "good\nstring");
+  delete str;
 }
 
 TEST_CASE("substack with no closing delimiter", "[parse][SubstackElement]") {
@@ -226,18 +245,21 @@ TEST_CASE("regular substack parse", "[parse][SubstackElement]") {
   const StringElement* str = dynamic_cast<const StringElement*>(*iter);
   REQUIRE(str != nullptr);
   REQUIRE(str->getData() == ">>\"string\"<<");
+  delete s;
 }
 
 TEST_CASE("type base case good", "[parse][TypeElement]") {
   TypeElement* t = TypeElement::parse("Number");
   REQUIRE(t->getData() == StackElement::DataType::Number);
   REQUIRE(t->getSpecialization() == nullptr);
+  delete t;
 }
 
 TEST_CASE("type base case good specialization", "[parse][TypeElement]") {
   TypeElement* t = TypeElement::parse("Quoted");
   REQUIRE(t->getData() == StackElement::DataType::Quoted);
   REQUIRE(t->getSpecialization() == nullptr);
+  delete t;
 }
 
 TEST_CASE("type base case bad", "[parse][TypeElement]") {
@@ -249,6 +271,7 @@ TEST_CASE("substack type specialized good", "[parse][TypeElement]") {
   REQUIRE(t->getData() == StackElement::DataType::Substack);
   REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Any);
   REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
+  delete t;
 }
 
 TEST_CASE("substack type specialized bad", "[parse][TypeElement]") {
@@ -260,6 +283,7 @@ TEST_CASE("number type specialized good", "[parse][TypeElement]") {
   REQUIRE(t->getData() == StackElement::DataType::Number);
   REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Inexact);
   REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
+  delete t;
 }
 
 TEST_CASE("number type specialized bad", "[parse][TypeElement]") {
@@ -271,6 +295,7 @@ TEST_CASE("command type specialized good", "[parse][TypeElement]") {
   REQUIRE(t->getData() == StackElement::DataType::Command);
   REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Quoted);
   REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
+  delete t;
 }
 
 TEST_CASE("command type specialized bad", "[parse][TypeElement]") {
