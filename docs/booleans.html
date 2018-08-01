@@ -75,14 +75,66 @@
             </div>
             <div class="col-lg-6">
                 <h1>Booleans</h1>
-                <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                <p>StackLang booleans are very conventional - there are literal
+                    <code>true</code> and
+                    <code>false</code> values formed by entering those symbols. These symbols are not commands, unlike the number constants.</p>
+                <p>A (possibly redundant) EBNF definition of booleans is given below.
+                    <pre id="ebnf">
+true-symbol = "true" ;
+false-symbol = "false" ;
+boolean = true-symbol | false-symbol ;</pre>
+                </p>
+                <h2 id="commands">Boolean-related Commands</h2>
+                <h3 id="type">Type Predicates</h3>
+                <p>
+                    <code>boolean? : Any -> Boolean</code>
+                    <br/> Produces true if input is a boolean, false otherwise.
+                </p>
+                <p>
+                    <code>false? : Any -> Boolean</code>
+                    <br/> Produces true if input is false, false otherwise.
+                </p>
+                <p>
+                    <code>true? : Any -> Boolean</code>
+                    <br/> Produces true if input is true, false otherwise.
+                </p>
+                <h3 id="logical">Logical Operators</h3>
+                <p>
+                    <code>not : Boolean -> Boolean</code>
+                    <br/> Produces false if input is true, and true if input is false.
+                </p>
+                <p>
+                    <code>or : Boolean Boolean -> Boolean</code>
+                    <br/> Produces true if at least one input is true, false otherwise. This will not short-circuit.
+                </p>
+                <p>
+                    <code>and : Boolean Boolean -> Boolean</code>
+                    <br/> Produces false if at least one input is false, true otherwise. This will not short-circuit.
+                </p>
+                <p>
+                    <code>nor : Boolean Boolean -> Boolean</code>
+                    <br/> Produces false if at least one input is true, true otherwise.
+                </p>
+                <p>
+                    <code>xor : Boolean Boolean -> Boolean</code>
+                    <br/> Produces true if the two inputs are not the same, false otherwise.
+                </p>
+                <p>
+                    <code>nxor : Boolean Boolean -> Boolean</code>
+                    <br/> Produces true if the two inputs are the same, false otherwise.
+                </p>
+                <p>
+                    <code>nand : Boolean Boolean -> Boolean</code>
+                    <br/> Produces true if at least one input is false, false otherwise.
+                </p>
+                <hr/>
+                <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
                 </a>
-                <br />
-                <span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title"
-                    rel="dct:type">StackLang Documentation</span> by
+                <br/>
+                <span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">StackLang Documentation</span> by
                 <a xmlns:cc="https://creativecommons.org/ns#" href="mailto:justin.hu@alumni.ubc.ca" property="cc:attributionName" rel="cc:attributionURL">Justin Hu</a> is licensed under a
-                <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+                <a rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
             </div>
         </div>
     </div>

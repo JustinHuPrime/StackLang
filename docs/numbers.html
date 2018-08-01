@@ -93,8 +93,8 @@ digit = "0" | nonzero-digit ;
 
 separator-symbol = "'" ;
 
-processed-nonzero-digit = nonzero-digit, {separator-symbol} ;
-processed-digit = digit-symbol, {separator-symbol} ;
+processed-nonzero-digit = {separator-symbol}, nonzero-digit, {separator-symbol} ;
+processed-digit = {separator-symbol}, digit-symbol, {separator-symbol} ;
 
 nonzero-digit-string = {processed-digit}, processed-nonzero-digit, {processed-digit} ;
 digit-string = {processed-digit} ;
@@ -107,16 +107,15 @@ fraction-bar-symbol = "/" ;
 exact-decimal = [sign-symbol], digit-string, [decimal point, digit-string] ;
 exact-fraction = [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
 
-inexact-decimal = inexact-symbol, [sign-symbol], digit-string, [decimal point, digit-string] ;
-inexact-fraction = inexact-symbol, [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
+inexact-decimal = inexact-symbol, {separator-symbol}, [sign-symbol], digit-string, [decimal point, digit-string] ;
+inexact-fraction = inexact-symbol, {separator-symbol}, [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
 
 exact-number = exact-decimal | exact-fraction ;
 inexact-number = inexact-decimal | inexact-fraction ;
 
-number = exact-number | inexact-number ;
-                </pre>
+number = exact-number | inexact-number ;</pre>
                 </p>
-                <h2 id="primitives">Number-related Primtive Commands</h2>
+                <h2 id="commands">Number-related Commands</h2>
                 <h3 id="constants">Constants</h3>
                 <p>
                     <code>euler : -> Number</code>
@@ -170,7 +169,8 @@ number = exact-number | inexact-number ;
                 </p>
                 <p>
                     <code>number-to-string : Number -> String</code>
-                    <br/> Produces the number as a fraction (exact number), or as a decimal with inexact symbol (inexact number).
+                    <br/> Produces the number as a fraction (exact number), or as a decimal with inexact symbol, but without the
+                    <code>...</code> (inexact number).
                 </p>
                 <p>
                     <code>string-to-number : String -> Number</code>
@@ -250,11 +250,15 @@ number = exact-number | inexact-number ;
                     <br/> Produces the absolute value of the number.
                 </p>
                 <p>
+                    <code>sign : Number -> Number</code>
+                    <br/> If input is positive, produces 1, else if input is negative, produces -1, else zero.
+                </p>
+                <p>
                     <code>max : Number Number -> Number</code>
                     <br/> Produces the larger of the two numbers.
                 </p>
                 <p>
-                    <code>min : Number -> Number</code>
+                    <code>min : Number Number -> Number</code>
                     <br/> Produces the smaller of the two numbers.
                 </p>
                 <p>
@@ -287,6 +291,18 @@ number = exact-number | inexact-number ;
                     <code>log : Number Number -> Number</code>
                     <br/> Produces the second number's logarithm, using the first number as the base. Result is inexact unless
                     both numbers are exact, and second number is a perfect power of the base.
+                </p>
+                <p>
+                    <code>log-e : Number -> Number</code>
+                    <br/> Produces the number's natural logarithm.
+                </p>
+                <p>
+                    <code>log-10 : Number -> Number</code>
+                    <br/> Produces the number's base-10 logarithm.
+                </p>
+                <p>
+                    <code>log-2 : Number -> Number</code>
+                    <br/> Produces the number's base-2 logarithm.
                 </p>
                 <h3 id="comparison">Comparison</h3>
                 <p>
@@ -345,6 +361,11 @@ number = exact-number | inexact-number ;
                     input is exact zero.
                 </p>
                 <p>
+                    <code>arctangent2 : Number Number -> Number</code>
+                    <br/> Produces the arctangent of the second number divided by the first number. Output is between &pi; (inclusive)
+                    and -&pi; (exclusive). Handles any asymptotes in that range.
+                </p>
+                <p>
                     <code>cosecant : Number -> Number</code>
                     <br/> Produces the cosecant of the number. Number is expected to be in radians.
                 </p>
@@ -355,6 +376,56 @@ number = exact-number | inexact-number ;
                 <p>
                     <code>cotangent : Number -> Number</code>
                     <br/> Produces the cotangent of the number. Number is expected to be in radians.
+                </p>
+                <p>
+                    <code>hyperbolic-sine : Number -> Number</code>
+                    <br/> Produces the hyperbolic sine of the number.
+                    <!--Limits on these.-->
+                </p>
+                <p>
+                    <code>hyperbolic-cosine : Number -> Number</code>
+                    <br/> Produces the hyperbolic cosine of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-tangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic tangent of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-cosecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic cosecant of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-secant : Number -> Number</code>
+                    <br/> Produces the hyperbolic secant of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-cotangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic cotangent of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-arcsine : Number -> Number</code>
+                    <br/> Produces the hyperbolic arcsine of the number.
+                    <!--Limits on these.-->
+                </p>
+                <p>
+                    <code>hyperbolic-arccosine : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccosine of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-arctangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic arctangent of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-arccosecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccosecant of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-arcsecant : Number -> Number</code>
+                    <br/> Produces the hyperbolic arcsecant of the number.
+                </p>
+                <p>
+                    <code>hyperbolic-arccotangent : Number -> Number</code>
+                    <br/> Produces the hyperbolic arccotangent of the number.
                 </p>
                 <p>
                     <code>arccosecant : Number -> Number</code>
@@ -372,14 +443,27 @@ number = exact-number | inexact-number ;
                     <code>arccotangent : Number -> Number</code>
                     <br/> Produces the arccotangent of the number. Output is between 0 and &pi;
                 </p>
-                <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                <h3 id="utilities">Other Utilities</h3>
+                <p>
+                    <code>random : -> Number</code>
+                    <br/> Produces a random number. Not guarenteed to be cryptographically secure.
+                </p>
+                <p>
+                    <code>degrees-to-radians : Number -> Number</code>
+                    <br/> Input is interpreted as degrees, and is converted into radians. Output has the same sign as the input.
+                </p>
+                <p>
+                    <code>radians-to-degrees : Number -> Number</code>
+                    <br/> Input is interpreted as radians, and is converted into degrees. Output has the same sign as the input.
+                </p>
+                <hr/>
+                <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
                 </a>
-                <br />
-                <span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title"
-                    rel="dct:type">StackLang Documentation</span> by
+                <br/>
+                <span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">StackLang Documentation</span> by
                 <a xmlns:cc="https://creativecommons.org/ns#" href="mailto:justin.hu@alumni.ubc.ca" property="cc:attributionName" rel="cc:attributionURL">Justin Hu</a> is licensed under a
-                <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+                <a rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
             </div>
         </div>
     </div>
