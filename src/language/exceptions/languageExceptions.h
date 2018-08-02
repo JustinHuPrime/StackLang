@@ -21,6 +21,7 @@
 #ifndef STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
 #define STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
 
+#include <list>
 #include <string>
 
 #include "language/stack/stackElements.h"
@@ -28,7 +29,9 @@
 namespace stacklang {
 namespace exceptions {
 namespace {
+using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::TypeElement;
+using std::list;
 using std::string;
 }  // namespace
 
@@ -36,86 +39,96 @@ using std::string;
 class LanguageException {
  public:
   // Creates an error with a message, but no context
-  explicit LanguageException(const string&) noexcept;
+  explicit LanguageException(
+      const string&, list<CommandElement*> = list<CommandElement*>{}) noexcept;
   // Creates an error with a message and context (plus exact location of error)
-  LanguageException(const string&, const string&, unsigned);
+  LanguageException(const string&, const string&, unsigned,
+                    list<CommandElement*> = list<CommandElement*>{}) noexcept;
   LanguageException(const LanguageException&) = default;
 
   LanguageException& operator=(const LanguageException&) = default;
 
   // Get error details
-  virtual const string getKind() const noexcept = 0;
-  const string getMessage() const noexcept;
-  const string getContext() const noexcept;
+  virtual string getKind() const noexcept = 0;
+  const string& getMessage() const noexcept;
+  const string& getContext() const noexcept;
   unsigned getLocation() const noexcept;
   bool hasContext() const noexcept;
+  const list<CommandElement*>& getTrace() const noexcept;
 
  protected:
   string message, context;
   unsigned location;
   bool errorHasContext;
+  list<CommandElement*> stacktrace;
 };
 
 class RuntimeError : public LanguageException {
  public:
-  explicit RuntimeError(const string&) noexcept;
+  explicit RuntimeError(
+      const string&, list<CommandElement*> = list<CommandElement*>{}) noexcept;
   RuntimeError(const RuntimeError&) = default;
 
   RuntimeError& operator=(const RuntimeError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 
 class StackOverflowError : public LanguageException {
  public:
-  explicit StackOverflowError(unsigned long) noexcept;
+  explicit StackOverflowError(
+      unsigned long, list<CommandElement*> = list<CommandElement*>{}) noexcept;
   StackOverflowError(const StackOverflowError&) = default;
 
   StackOverflowError& operator=(const StackOverflowError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 
 class StackUnderflowError : public LanguageException {
  public:
-  StackUnderflowError() noexcept;
+  StackUnderflowError(list<CommandElement*> = list<CommandElement*>{}) noexcept;
   StackUnderflowError(const StackUnderflowError&) = default;
 
   StackUnderflowError& operator=(const StackUnderflowError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 
 class StopError : public LanguageException {
  public:
-  StopError() noexcept;
+  StopError(list<CommandElement*> = list<CommandElement*>{}) noexcept;
   StopError(const StopError&) = default;
 
   StopError& operator=(const StopError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 
 class SyntaxError : public LanguageException {
  public:
-  SyntaxError(const string& msg) noexcept;
-  SyntaxError(const string& msg, const string& ctx, size_t pos);
+  SyntaxError(const string& msg,
+              list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  SyntaxError(const string& msg, const string& ctx, size_t pos,
+              list<CommandElement*> = list<CommandElement*>{}) noexcept;
   SyntaxError(const SyntaxError&) = default;
 
   SyntaxError& operator=(const SyntaxError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 
 class TypeError : public LanguageException {
  public:
-  TypeError(const StackElement&, const StackElement&) noexcept;
-  TypeError(const StackElement&) noexcept;
+  TypeError(const StackElement&, const StackElement&,
+            list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  TypeError(const StackElement&,
+            list<CommandElement*> = list<CommandElement*>{}) noexcept;
   TypeError(const TypeError&) = default;
 
   TypeError& operator=(const TypeError&) = default;
 
-  const string getKind() const noexcept override;
+  string getKind() const noexcept override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

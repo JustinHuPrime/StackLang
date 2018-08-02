@@ -67,7 +67,8 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   return *prims;
 }
 
-bool checkType(const StackElement* elm, const TypeElement type) {
+bool checkType(const StackElement* elm, const TypeElement type,
+               const list<CommandElement*>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
     return false;
   } else if (type.getData() == StackElement::DataType::Any &&
@@ -100,41 +101,45 @@ bool checkType(const StackElement* elm, const TypeElement type) {
     const Stack& s = static_cast<const SubstackElement*>(elm)->getData();
     const TypeElement* spec = type.getSpecialization();
 
-    return all_of(s.begin(), s.end(), [&spec](const StackElement* e) {
-      return checkType(e, *spec);
+    return all_of(s.begin(), s.end(), [&spec, &context](const StackElement* e) {
+      return checkType(e, *spec, context);
     });
   } else {  // is a specialized non-substack, non-number
     throw new SyntaxError("Impossible type detected.",
-                          static_cast<string>(type), 0);
+                          static_cast<string>(type), 0, context);
   }
 }
 
-void checkTypes(const Stack& s, const Stack& types) {
+void checkTypes(const Stack& s, const Stack& types,
+                const list<CommandElement*>& context) {
   auto typeIter = types.begin();
   auto stackIter = s.begin();
 
   for (; typeIter != types.end() && stackIter != s.end();
        typeIter++, stackIter++) {
-    if (!checkType(*stackIter, *static_cast<const TypeElement*>(*typeIter))) {
-      throw TypeError(**stackIter, **typeIter);
+    if (!checkType(*stackIter, *static_cast<const TypeElement*>(*typeIter),
+                   context)) {
+      throw TypeError(**stackIter, **typeIter, context);
     }
   }
   if (typeIter != types.end()) {
-    throw TypeError(**typeIter);
+    throw TypeError(**typeIter, context);
   }
 }
 
 void checkContext(const CommandElement* actual, const CommandElement* required,
-                  const string& name) {
+                  const string& name, const list<CommandElement*>& context) {
   if (required != nullptr) {
     if (actual == nullptr) {
       throw SyntaxError("Attempted to use `" + name +
-                        "` at top level. Expected to be within `" +
-                        required->getName() + "`.");
+                            "` at top level. Expected to be within `" +
+                            required->getName() + "`.",
+                        context);
     } else if (actual->getName() != required->getName()) {
       throw SyntaxError("Attempted to use `" + name + "` within `" +
-                        actual->getName() + "`. Expected to be within `" +
-                        required->getName() + "`.");
+                            actual->getName() + "`. Expected to be within `" +
+                            required->getName() + "`.",
+                        context);
     }
   }
 }
@@ -161,9 +166,9 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       const auto& types = defResult->second.signature;
       const auto& commands = defResult->second.body;
 
-      checkTypes(s, types);
+      checkTypes(s, types, context);
       checkContext(context.front(), defResult->second.context,
-                   command->getName());
+                   command->getName(), context);
 
       context.push_back(command);  // now executing function
       for (auto c : commands) {
@@ -184,7 +189,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
 
-        checkTypes(s, types);
+        checkTypes(s, types, context);
 
         primResult->second.second(s, defines);
         return execute(
@@ -192,7 +197,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
             context);  // clear off any commands produced but not executed
       } else {
         throw SyntaxError("Given command is not recognized.",
-                          command->getName(), 0);
+                          command->getName(), 0, context);
       }
     }
 

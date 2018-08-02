@@ -25,64 +25,80 @@ namespace {
 using std::to_string;
 }
 
-LanguageException::LanguageException(const string& msg) noexcept
-    : message(msg), errorHasContext(false) {}
+LanguageException::LanguageException(const string& msg,
+                                     list<CommandElement*> trace) noexcept
+    : message(msg), errorHasContext(false), stacktrace(trace) {}
 
 LanguageException::LanguageException(const string& msg, const string& ctx,
-                                     unsigned loc) noexcept
-    : message(msg), context(ctx), location(loc), errorHasContext(true) {}
+                                     unsigned loc,
+                                     list<CommandElement*> trace) noexcept
+    : message(msg),
+      context(ctx),
+      location(loc),
+      errorHasContext(true),
+      stacktrace(trace) {}
 
-const string LanguageException::getMessage() const noexcept { return message; }
-
-const string LanguageException::getContext() const noexcept { return context; }
-
+const string& LanguageException::getMessage() const noexcept { return message; }
+const string& LanguageException::getContext() const noexcept { return context; }
 unsigned LanguageException::getLocation() const noexcept { return location; }
-
 bool LanguageException::hasContext() const noexcept { return errorHasContext; }
+const list<CommandElement*>& LanguageException::getTrace() const noexcept {
+  return stacktrace;
+}
 
-RuntimeError::RuntimeError(const string& msg) noexcept
-    : LanguageException(msg) {}
+RuntimeError::RuntimeError(const string& msg,
+                           list<CommandElement*> trace) noexcept
+    : LanguageException(msg, trace) {}
 
-const string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
+string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
 
-StackOverflowError::StackOverflowError(unsigned long limit) noexcept
-    : LanguageException("Stack has exceeded configured limit of " +
-                        to_string(limit) + ".") {}
+StackOverflowError::StackOverflowError(unsigned long limit,
+                                       list<CommandElement*> trace) noexcept
+    : LanguageException(
+          "Stack has exceeded configured limit of " + to_string(limit) + ".",
+          trace) {}
 
-const string StackOverflowError::getKind() const noexcept {
+string StackOverflowError::getKind() const noexcept {
   return "Stack overflowed:";
 }
 
-StackUnderflowError::StackUnderflowError() noexcept
+StackUnderflowError::StackUnderflowError(list<CommandElement*> trace) noexcept
     : LanguageException(
-          "Stack is empty, but attempted to access element from stack.") {}
+          "Stack is empty, but attempted to access element from stack.",
+          trace) {}
 
-const string StackUnderflowError::getKind() const noexcept {
+string StackUnderflowError::getKind() const noexcept {
   return "Stack underflowed:";
 }
 
-StopError::StopError() noexcept
-    : LanguageException("Ctrl-c (SIGINTR) sent, interpreter stopping.") {}
+StopError::StopError(list<CommandElement*> trace) noexcept
+    : LanguageException("Ctrl-c (SIGINTR) sent, interpreter stopping.", trace) {
+}
 
-const string StopError::getKind() const noexcept { return "Manual interrupt:"; }
+string StopError::getKind() const noexcept { return "Manual interrupt:"; }
 
-SyntaxError::SyntaxError(const string& msg) noexcept : LanguageException(msg) {}
+SyntaxError::SyntaxError(const string& msg,
+                         list<CommandElement*> trace) noexcept
+    : LanguageException(msg, trace) {}
 
-SyntaxError::SyntaxError(const string& msg, const string& ctx,
-                         size_t pos) noexcept
-    : LanguageException(msg, ctx, pos) {}
+SyntaxError::SyntaxError(const string& msg, const string& ctx, size_t pos,
+                         list<CommandElement*> trace) noexcept
+    : LanguageException(msg, ctx, pos, trace) {}
 
-const string SyntaxError::getKind() const { return "Syntax error:"; }
+string SyntaxError::getKind() const noexcept { return "Syntax error:"; }
+
+TypeError::TypeError(const StackElement& expected, const StackElement& given,
+                     list<CommandElement*> trace) noexcept
+    : LanguageException("Expected " + static_cast<string>(expected) +
+                            "\nGiven " + static_cast<string>(given),
+                        trace) {}
 
 TypeError::TypeError(const StackElement& expected,
-                     const StackElement& given) noexcept
+                     list<CommandElement*> trace) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
-                        "\nGiven " + static_cast<string>(given)) {}
+                            " but reached the bottom of the stack instead.",
+                        trace) {}
 
-TypeError::TypeError(const StackElement& expected) noexcept
-    : LanguageException("Expected " + static_cast<string>(expected) +
-                        " but reached the bottom of the stack instead.") {}
-
-const string TypeError::getKind() const noexcept { return "Type Mismatch:"; }
+string TypeError::getKind() const noexcept { return "Type Mismatch:"; }
 }  // namespace exceptions
 }  // namespace stacklang

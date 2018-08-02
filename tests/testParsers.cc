@@ -222,7 +222,9 @@ TEST_CASE("string with bad escape", "[parse][StringElement]") {
 
 TEST_CASE("valid string", "[parse][StringElement]") {
   StringElement* str = StringElement::parse("\"good\\nstring\"");
+  StringElement* blank = StringElement::parse("\"\"");
   REQUIRE(str->getData() == "good\nstring");
+  REQUIRE(blank->getData() == "");
   delete str;
 }
 

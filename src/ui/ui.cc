@@ -25,11 +25,13 @@
 #include <ncurses.h>
 
 #include "language/language.h"
+#include "language/stack/stackElements.h"
 #include "util/stringUtils.h"
 
 namespace terminalui {
 namespace {
 using stacklang::stopFlag;
+using stacklang::stackelements::CommandElement;
 using std::cerr;
 using std::endl;
 using util::spaces;
@@ -166,11 +168,20 @@ void displayInfo() noexcept {
 }
 
 void printError(const LanguageException& e) noexcept {
-  cerr << e.getKind() << endl;
-  cerr << e.getMessage() << endl;
+  cerr << e.getKind() << '\n';
+  cerr << e.getMessage() << '\n';
   if (e.hasContext()) {
-    cerr << e.getContext() << endl;
-    cerr << spaces(e.getLocation()) << "^" << endl;
+    cerr << e.getContext() << '\n';
+    cerr << spaces(e.getLocation()) << "^" << '\n';
   }
+  const list<CommandElement*>& stacktrace = e.getTrace();
+  if (!stacktrace.empty()) {
+    cerr << '\n';
+    for (const CommandElement* ctx : stacktrace) {
+      cerr << "In " << (ctx == nullptr ? "global context" : ctx->getName())
+           << '\n';
+    }
+  }
+  cerr.flush();
 }
 }  // namespace terminalui

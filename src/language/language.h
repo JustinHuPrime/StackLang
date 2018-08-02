@@ -50,10 +50,12 @@ typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
 typedef pair<Stack, Prim> PrimitiveFunction;
 
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;
-bool checkType(const StackElement* elm, const TypeElement type);
-void checkTypes(const Stack& s, const Stack& types);
+bool checkType(const StackElement* elm, const TypeElement type,
+               const list<CommandElement*>& context);
+void checkTypes(const Stack& s, const Stack& types,
+                const list<CommandElement*>& context);
 void checkContext(const CommandElement* actual, const CommandElement* required,
-                  const string& name);
+                  const string& name, const list<CommandElement*>& context);
 void execute(Stack&, map<string, DefinedFunction>&,
              list<CommandElement*> = list<CommandElement*>{
                  nullptr});  // Executes the stack until it

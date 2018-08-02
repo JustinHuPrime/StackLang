@@ -21,7 +21,7 @@
     </script>
 
     <title>
-        Special Commands - Stacklang Documentation
+        Special Commands - StackLang Documentation
     </title>
 </head>
 
@@ -32,6 +32,39 @@
             </div>
             <div class="col-lg-6">
                 <h1>Special Primitive Functions</h1>
+                <p>These functions have special side effects outside of the usual evaluation model.</p>
+                <p>
+                    <code>define : Substack(Type) Substack(Any) Command(Quoted) -></code>
+                    <br/> Defines a function in the global context.
+                </p>
+                <p>
+                    <code>define* : Substack(Type) Substack(Any) Command(Quoted) Command(Quoted) -></code>
+                    <br/> Defines the second command in the context of the first command (a local function).
+                </p>
+                <p>
+                    <code>include : String -></code>
+                    <br/> Looks for:
+                    <ol>
+                        <li>the named file within a 'libs' folder within the directory that the stacklang executable is in,</li>
+                        <li>the named file within 'libs', but adding a .stl extension,</li>
+                        <li>the named file from the current directory,</li>
+                        <li>the named file from the current directory, but adding a .stl extension</li>
+                    </ol>
+                    Reads the file line by line (but with the preprocessor to handle long substacks), and pushes each element onto the stack,
+                    evaluating as it goes.
+                </p>
+                <p>
+                    <code>drop : Any -></code>
+                    <br/> Removes one element from the stack.
+                </p>
+                <p>
+                    <code>rotate : Number(Exact) -></code>
+                    <br/> Takes the n'th element of the stack and moves it to the active end.
+                </p>
+                <p>
+                    <code>rotate* : Number(Exact) Number(Exact) -></code>
+                    <br/> Takes the (second number)'th element of the stack and moves it to the active end (first number) times.
+                </p>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />

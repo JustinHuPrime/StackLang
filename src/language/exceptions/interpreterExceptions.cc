@@ -25,20 +25,21 @@ namespace {
 using std::to_string;
 }
 
-ArgumentError::ArgumentError(const string& msg) : LanguageException(msg) {}
+ArgumentError::ArgumentError(const string& msg) noexcept
+    : LanguageException(msg) {}
 
 ArgumentError::ArgumentError(const string& msg, const string& actual,
-                             size_t posDif)
+                             size_t posDif) noexcept
     : LanguageException(msg, actual, posDif) {}
 
-const string ArgumentError::getKind() const {
+string ArgumentError::getKind() const noexcept {
   return "Command line arguments invalid:";
 }
 
 ParserException::ParserException(const string& msg, const string& ctx,
-                                 unsigned loc)
+                                 unsigned loc) noexcept
     : LanguageException(msg, ctx, loc) {}
 
-const string ParserException::getKind() const { return "Could not parse:"; }
+string ParserException::getKind() const noexcept { return "Could not parse:"; }
 }  // namespace exceptions
 }  // namespace stacklang

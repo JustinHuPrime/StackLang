@@ -26,23 +26,24 @@ namespace stacklang {
 namespace exceptions {
 class ArgumentError : public LanguageException {
  public:
-  ArgumentError(const string& msg);
-  ArgumentError(const string& msg, const string& actual, size_t posDif);
+  ArgumentError(const string& msg) noexcept;
+  ArgumentError(const string& msg, const string& actual,
+                size_t posDif) noexcept;
   ArgumentError(const ArgumentError&) = default;
 
   ArgumentError& operator=(const ArgumentError&) = default;
 
-  const string getKind() const override;
+  string getKind() const noexcept override;
 };
 
 class ParserException : public LanguageException {
  public:
-  ParserException(const string&, const string&, unsigned);
+  ParserException(const string&, const string&, unsigned) noexcept;
   ParserException(const ParserException&) = default;
 
   ParserException& operator=(const ParserException&) = default;
 
-  const string getKind() const override;
+  string getKind() const noexcept override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

@@ -21,7 +21,7 @@
     </script>
 
     <title>
-        Strings - Stacklang Documentation
+        Strings - StackLang Documentation
     </title>
 </head>
 
@@ -32,6 +32,22 @@
             </div>
             <div class="col-lg-6">
                 <h1>Strings</h1>
+                <p>A string in StackLang represents a sequence of text characters. What character set is supported is, however,
+                    implementation specific. Currently, only ASCII characters are guarenteed to be supported. A string is
+                    formed by entering an escaped string between a set of double quotes. This is then parsed into an unescaped
+                    string, but is still displayed as an escaped string.</p>
+                <p>An EBNF definition of a valid input string is given below.
+                    <pre id="ebnf">
+quote-symbol = '"' ;
+backslash-symbol = "\" ;
+newline-character-symbol = "n" ;
+character-not-special = ? Any ASCII character except for one of: \" ? ;
+
+escape-sequence = backslash-symbol, (quote-symbol | backslash-symbol | newline-character-symbol) ;
+character-sequence = character-not-special | escape-sequence
+
+string = quote-symbol, {character-sequence}, quote-symbol</pre>
+                </p>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
