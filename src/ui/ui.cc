@@ -25,7 +25,6 @@
 #include <ncurses.h>
 
 #include "language/language.h"
-#include "language/stack/stackElements.h"
 #include "util/stringUtils.h"
 
 namespace terminalui {
@@ -121,35 +120,104 @@ void drawPrompt(const LineEditor& s) noexcept {
 }
 
 void drawError(const LanguageException& e) noexcept {
-  int centerY = getmaxy(stdscr) / 2;
+  unsigned maxY = static_cast<unsigned>(getmaxy(stdscr));
+  unsigned centerY = maxY / 2;
 
   curs_set(CURSOR_INVISIBLE);
   clear();
 
-  if (e.hasContext()) {
-    move(centerY - 2, 0);
-    addstring(e.getKind());
+  if (e.getTrace().empty()) {  // no trace
+    if (e.hasContext()) {
+      move(centerY - 2, 0);
+      addstring(e.getKind());
 
-    move(centerY - 1, 0);
-    addstring(e.getMessage());
+      move(centerY - 1, 0);
+      addstring(e.getMessage());
 
-    move(centerY + 0, 0);
-    addstring(e.getContext());
+      move(centerY + 0, 0);
+      addstring(e.getContext());
 
-    move(centerY + 1, 0);
-    addstring(spaces(e.getLocation()) + '^');
+      move(centerY + 1, 0);
+      addstring(spaces(e.getLocation()) + '^');
 
-    move(centerY + 3, 0);
-    addstring("Press any key to continue...");
+      move(centerY + 3, 0);
+      addstring("Press any key to continue...");
+    } else {
+      move(centerY - 1, 0);
+      addstring(e.getKind());
+
+      move(centerY + 0, 0);
+      addstring(e.getMessage());
+
+      move(centerY + 2, 0);
+      addstring("Press any key to continue...");
+    }
   } else {
-    move(centerY - 1, 0);
-    addstring(e.getKind());
+    if (e.hasContext()) {
+      move(0, 0);
+      addstring(e.getKind());
 
-    move(centerY + 0, 0);
-    addstring(e.getMessage());
+      move(1, 0);
+      addstring(e.getMessage());
 
-    move(centerY + 2, 0);
-    addstring("Press any key to continue...");
+      move(2, 0);
+      addstring(e.getContext());
+
+      move(3, 0);
+      addstring(spaces(e.getLocation()) + '^');
+
+      drawTrace(5, maxY - 3, e.getTrace());
+
+      move(maxY - 1, 0);
+      addstring("Press any key to continue...");
+    } else {
+      move(0, 0);
+      addstring(e.getKind());
+
+      move(1, 1);
+      addstring(e.getMessage());
+
+      drawTrace(3, maxY - 3, e.getTrace());
+
+      move(maxY - 1, 0);
+      addstring("Press any key to continue...");
+    }
+  }
+}
+
+void drawTrace(unsigned top, unsigned bottom,
+               const list<CommandElement*>& trace) {
+  if (bottom > top && trace.size() <= static_cast<size_t>(bottom - top)) {
+    for (const CommandElement* elm : trace) {
+      move(top++, 0);
+      addstring("From " + (elm == nullptr ? "global context" : elm->getName()));
+    }
+  } else if (bottom > top) {
+    unsigned dist = bottom - top + 1;
+    unsigned topPart = dist / 2;
+    unsigned bottomPart = dist / 2;
+    if (dist == topPart + bottomPart) bottomPart--;
+    auto iter = trace.begin();
+    for (unsigned i = top; i < topPart + top; i++) {
+      move(i, 0);
+      addstring("From " +
+                (*iter == nullptr
+                     ? "global context"
+                     : (**iter).getName()));  // shouldn't need this check.
+      ++iter;
+    }
+
+    iter = trace.end();
+    --iter;
+    for (unsigned i = 3; i < bottomPart + 3; i++) {
+      move(i, 0);
+      addstring("From " +
+                (*iter == nullptr ? "global context" : (**iter).getName()));
+      --iter;
+    }
+
+    move(topPart, 0);
+    addstring("...");
   }
 }
 

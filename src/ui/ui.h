@@ -21,6 +21,7 @@
 #ifndef STACKLANG_UI_UI_H_
 #define STACKLANG_UI_UI_H_
 
+#include <list>
 #include <string>
 
 #include "language/exceptions/languageExceptions.h"
@@ -33,6 +34,8 @@ namespace {
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::exceptions::LanguageException;
+using stacklang::stackelements::CommandElement;
+using std::list;
 using std::string;
 using terminalui::LineEditor;
 }  // namespace
@@ -44,6 +47,7 @@ void uninit() noexcept;
 void drawStack(const Stack&) noexcept;
 void drawPrompt(const LineEditor&) noexcept;
 void drawError(const LanguageException&) noexcept;
+void drawTrace(unsigned, unsigned, const list<CommandElement*>&);
 
 // adds an std::string at the current cursor position
 void addstring(const string& s) noexcept;
