@@ -9,3 +9,7 @@ div#sidebar a:visited {
 pre#ebnf {
     overflow: visible;
 }
+
+a#license {
+    text-decoration: none;
+}
