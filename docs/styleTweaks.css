@@ -5,3 +5,7 @@ div#sidebar a:link {
 div#sidebar a:visited {
     color: #111;
 }
+
+pre#ebnf {
+    overflow: visible;
+}

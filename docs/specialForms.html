@@ -12,7 +12,7 @@
         crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/linkStyle.css">
+    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
 
     <script> 
         $(function () {
@@ -39,19 +39,25 @@
                 </p>
                 <p>
                     <code>define* : Substack(Type) Substack(Any) Command(Quoted) Command(Quoted) -></code>
-                    <br/> Defines the second command in the context of the first command (a local function).
+                    <br/> Defines the second command in the context of the first command (a "local" function). Names, however,
+                    are always global, so the name must still be unique.
                 </p>
                 <p>
-                    <code>include : String -></code>
-                    <br/> Looks for:
-                    <ol>
-                        <li>the named file within a 'libs' folder within the directory that the stacklang executable is in,</li>
-                        <li>the named file within 'libs', but adding a .stl extension,</li>
-                        <li>the named file from the current directory,</li>
-                        <li>the named file from the current directory, but adding a .stl extension</li>
-                    </ol>
-                    Reads the file line by line (but with the preprocessor to handle long substacks), and pushes each element onto the stack,
-                    evaluating as it goes.
+                    <code>undefine : Command(Quoted) -></code>
+                    <br/> Undefines the command. May not undefine primitive commands, but anything defined using
+                    <code>define</code> or
+                    <code>define*</code> can be undefined.
+                </p>
+                <code>include : String -></code>
+                <br/> Looks for:
+                <ol>
+                    <li>the named file within a 'libs' folder within the directory that the stacklang executable is in,</li>
+                    <li>the named file within 'libs', but adding a .stl extension,</li>
+                    <li>the named file from the current directory,</li>
+                    <li>the named file from the current directory, but adding a .stl extension</li>
+                </ol>
+                then reads the file line by line, feeding it through the preprocessor first, and pushes each element onto the stack, evaluating
+                as it goes.
                 </p>
                 <p>
                     <code>drop : Any -></code>

@@ -29,21 +29,9 @@ The core of StackLang is the stack. The stack is where any and all data your pro
 
 Stack elements can be:
 
-* Booleans: enter either `true` or `false` on the command line. Displayed as `true` or `false`
-
-* Commands: enter a valid command name. Permitted characters: any alphanumeric character, `-`, `?`, and `*`. Note that the command doesn't have to exist. Displayed as `<commandName>`.
-
-* Numbers:
-
-* Strings: enter an escaped string enclosed in unescaped double quotes. Recognized escape sequences are `\"`, `\n`, and `\\`. Displayed as an escaped string enclosed in double quotes.
-
 * Substacks: enter `<<`, followed by a series of comma separated stack elements (whitespace after a comma is stripped when parsing), followed by `>>`. Do not include a comma before the ending delimiter. Displayed as `<<element, element, element>>`. When read from a file, the filereader will automatically build substacks: any newlines between a `<<` and the matching `>>` are converted into a comma.
 
 * Types: enter a valid type name. Valid type names are: `Boolean`, `Command`, `Number`, `String`, `Substack`, `Type`, and `Any`.
-
-### The Parser
-
-The parser reads raw input from the command line and turns that input into a string. Any errors with the given input result in a ParserError. The parser error will display an error message, the line of input that caused the error, and specify the character that caused the error.
 
 ### File Inclusion
 

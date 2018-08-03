@@ -12,7 +12,7 @@
         crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/linkStyle.css">
+    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
 
     <script> 
         $(function () {
@@ -32,6 +32,46 @@
             </div>
             <div class="col-lg-6">
                 <h1>Substacks</h1>
+                <h3 id="listops">Abstract List Operations</h3>
+                <p>
+                    <code>map : Command(Quoted) Substack(Any) -> Substack(Any)</code>
+                    <br/> Applies the command (
+                    <code>Any -> Any</code>) to each element in the given substack, forming a new substack with the results. Resulting substack
+                    is as large as the input.
+                </p>
+                <p>
+                    <code>filter : Command(Quoted) Substack(Any) -> Substack(Any)</code>
+                    <br/> Applies the command (
+                    <code>Any -> Boolean</code>) to each element in the given substack. If the command produces true, then the element that cause the
+                    command to produce true is kept. Otherwise, the element is discarded. Resulting substack is the same
+                    size or smaller than the input.
+                </p>
+                <p>
+                    <code>foldr : Command(Quoted) Any Substack(Any) -> Any</code>
+                    <br/> Applies the command (
+                    <code>Any Any -> Any</code>) to the accumulator (initial value is the
+                    <code>Any</code> element) and each element from the substack (furthest from active end first), with the result of this
+                    application becoming the new accumulator. This does not use tail recursion.
+                </p>
+                <p>
+                    <code>foldl : Command(Quoted) Any Substack(Any) -> Any</code>
+                    <br/> Applies the command (
+                    <code>Any Any -> Any</code>) to the accumulator (initial value is the
+                    <code>Any</code> element) and each element from the substack (active end first), with the result of this application
+                    becoming the new accumulator. This does use tail recursion.
+                </p>
+                <p>
+                    <code>ormap : Command(Quoted) Substack(Any) -> Boolean</code>
+                    <br/> Applies the command (
+                    <code>Any -> Boolean</code>) to each element in the given substack, combining the results together with
+                    <code>or</code>.
+                </p>
+                <p>
+                    <code>andmap : Command(Quoted) Substack(Any) -> Boolean</code>
+                    <br/> Applies the command (
+                    <code>Any -> Boolean</code>) to each element in the given substack, combining the results together with
+                    <code>and</code>.
+                </p>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />

@@ -12,7 +12,7 @@
         crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/linkStyle.css">
+    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
 
     <script> 
         $(function () {
@@ -47,6 +47,12 @@ escape-sequence = backslash-symbol, (quote-symbol | backslash-symbol | newline-c
 character-sequence = character-not-special | escape-sequence
 
 string = quote-symbol, {character-sequence}, quote-symbol</pre>
+                </p>
+                <h2 id="commands">String-related Commands</h2>
+                <h3 id="type">Type Predicates</h3>
+                <p>
+                    <code>string? : Any -> Boolean</code>
+                    <br/> Produces true if elemnt is a string.
                 </p>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">

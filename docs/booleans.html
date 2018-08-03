@@ -12,7 +12,7 @@
         crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/linkStyle.css">
+    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
 
     <script> 
         $(function () {
@@ -80,6 +80,12 @@ boolean = true-symbol | false-symbol ;</pre>
                     <code>string-to-boolean : String -> Boolean</code>
                 </p>
                 <h3 id="logical">Logical Operators</h3>
+                <p>
+                    <code>if : Boolean Any Any -> Any</code>
+                    <br/> If boolean is true, produces the third (furthest away from the active end) element. Else, produces the
+                    second element. Arguments to if must, as an effect of the evaluation rules, be evaluated before the evaluation
+                    of the if.
+                </p>
                 <p>
                     <code>not : Boolean -> Boolean</code>
                     <br/> Produces

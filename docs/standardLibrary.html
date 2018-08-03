@@ -12,7 +12,7 @@
         crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/linkStyle.css">
+    <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
 
     <script> 
         $(function () {
@@ -32,6 +32,16 @@
             </div>
             <div class="col-lg-6">
                 <h1>The Standard Library</h1>
+                <p>
+                    The StackLang standard library is composed of two parts - the extended command set for primitive types (see individual primitive
+                    type pages for more information), and the set of utility commands. By default both parts are automatically
+                    included, but running the interpreter with the
+                    <code>-b</code> option will turn off this automatic inclusion. Both parts are written in StackLang, and can be found
+                    in
+                    <code>libs/std.sta</code>, as well as files included from that file. (The official implementation splits off many of the extended
+                    command set into separate files.)
+                </p>
+                <h2 id="utilities">Utility Commands</h2>
                 <hr/>
                 <a id="license" rel="licence" href="https://creativecommons.org/licenses/by-sa/4.0/">
                     <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
