@@ -1,0 +1,13 @@
+https://justinhuprime.github.io/StackLang/booleans.html
+https://justinhuprime.github.io/StackLang/commands.html
+https://justinhuprime.github.io/StackLang/index.html
+https://justinhuprime.github.io/StackLang/interpreter.html
+https://justinhuprime.github.io/StackLang/language.html
+https://justinhuprime.github.io/StackLang/numbers.html
+https://justinhuprime.github.io/StackLang/specialForms.html
+https://justinhuprime.github.io/StackLang/standardLibrary.html
+https://justinhuprime.github.io/StackLang/strings.html
+https://justinhuprime.github.io/StackLang/style.html
+https://justinhuprime.github.io/StackLang/substacks.html
+https://justinhuprime.github.io/StackLang/typeElements.html
+https://justinhuprime.github.io/StackLang/types.html
