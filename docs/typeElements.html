@@ -27,6 +27,44 @@
             </div>
             <div class="col-lg-6">
                 <h1 id="top">Types</h1>
+                <p>
+                    A StackLang type is an element that represents the type of some other element. See the
+                    <a href="https://justinhuprime.github.io/StackLang/types.html">types</a> page for more details. An EBNF definition for a type is given below.
+                    <pre id="ebnf">
+base-type = "Boolean" | "Command" | "Number" | "String" | "Substack" | "Type" | "Any" ;
+number-specialization = "Exact" | "Inexact" ;
+command-specialization = "Quoted" | "Unquoted" ;
+
+type = base-type | ("Number", "(", number-specialization, ")") | ("Command", "(", command-specialization, ")") | ("Substack", "(", type, ")") ;</pre>
+                </p>
+                <h2 id="commands">Type-related Commands</h2>
+                <h3 id="type">Type Predicates</h3>
+                <p>
+                    <code>type? : Any -> Boolean</code>
+                    <br/> Produces true if element is a type.
+                </p>
+                <p>
+                    <code>specialized? : Any -> Boolean</code>
+                    <br/> Produces true if element is a specialized type.
+                </p>
+                <p>
+                    <code>base? : Any -> Boolean</code>
+                    <br/> Produces true if element is a base (unspecialized) type.
+                </p>
+                <h3 id="operations">Type Operations</h3>
+                <p>
+                    <code>specialization : Type -> Type</code>
+                    <br/> Gets the specialization of the given type. Fails with a
+                    <code>RuntimError</code> if type is unspecialized.
+                </p>
+                <p>
+                    <code>base : Type -> Type</code>
+                    <br/> Gets the base type of the given type. If type is unspecialized, produces the type itself.
+                </p>
+                <p>
+                    <code>check-type : Any Type -> Boolean</code>
+                    <br/> Produces true if element is of the given type.
+                </p>
                 <hr/>
                 <div id="footer"></div>
             </div>
