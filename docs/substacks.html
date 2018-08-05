@@ -71,7 +71,7 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <br/> Produces true if element is a non-empty substack.
                 </p>
                 <p>
-                    <code>type-check : Type Substack -> Boolean</code>
+                    <code>contains-type? : Type Substack -> Boolean</code>
                     <br/> Produces true if substack only contains elements of type Type.
                 </p>
                 <h3 id="operations">Substack Operations</h3>
@@ -92,6 +92,14 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <br/> Produces the
                     <code>top</code> and the
                     <code>pop</code> of the substack.
+                </p>
+                <p>
+                    <code>second : Substack -> Any</code>
+                    <br/> Produces the second element of the substack.
+                </p>
+                <p>
+                    <code>last : Substack -> Any</code>
+                    <br/> Produces the last element of the substack.
                 </p>
                 <p>
                     <code>make-substack : Any Any -> Substack</code>
@@ -120,6 +128,11 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <code>reverse : Substack -> Substack</code>
                     <br/> Reverses the substack.
                 </p>
+                <p>
+                    <code>insert : Substack Number(Exact) Substack -> Substack</code>
+                    <br/> Inserts the first substack into the second, such that the first substack's first element is the n'th
+                    element of the new substack.
+                </p>
                 <h3 id="abstract">Abstract Commands</h3>
                 <p>
                     <code>map : Command(Quoted) Substack -> Substack</code>
@@ -133,6 +146,16 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <code>Any -> Boolean</code>) to each element in the given substack. If the command produces true, then the element that cause the
                     command to produce true is kept. Otherwise, the element is discarded. Resulting substack is the same
                     size or smaller than the input.
+                </p>
+                <p>
+                    <code>remove : Any Command(Quoted) Substack -> Substack</code>
+                    <br/> Removes any element for which applying the command (
+                    <code>Any Any -> Boolean</code>) to the first parameter and the element from the list would produce true.
+                </p>
+                <p>
+                    <code>remove* : Substack Command(Quoted) Substack -> Substack</code>
+                    <br/> For each element of the first substakc, applies
+                    <code>remove</code> on the second substack using the command and the element.
                 </p>
                 <p>
                     <code>foldr : Command(Quoted) Any Substack -> Any</code>
@@ -169,6 +192,33 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <br/> Builds a substack by applying the command (
                     <code>Number -> Any</code>) to each number in the sequence from 0 to n (generated using
                     <code>sequence</code>), and forming a substack from the results.
+                </p>
+                <p>
+                    <code>sort : Command(Quoted) Substack -> Substack</code>
+                    <br/> Sorts the substack into stable ascending order according to the given command (
+                    <code>Any Any -> Boolean</code>), which produces true if the second element is larger than or equal to the first.
+                </p>
+                <p>
+                    <code>member? : Any Command(Quoted) Substack -> Boolean</code>
+                    <br/> Produces true if the application of the command (
+                    <code>Any Any -> Boolean</code>) produces true at least once when applied to the first parameter and any element from the substack.
+                </p>
+                <p>
+                    <code>index-of : Any Command(Quoted) Substack -> Number(Exact)</code>
+                    <br/> Produces the index for which the application of the command (
+                    <code>Any Any -> Boolean</code>) produces true when applied to the first parameter and any element from the substack. If none exists,
+                    produces an index equal to the length of the substack.
+                </p>
+                <p>
+                    <code>indices-of : Any Command(Quoted) Substack -> Substack(Number(Exact))</code>
+                    <br/> Produces a substack of indices for which the application of the command (
+                    <code>Any Any -> Boolean</code>) produces true when applied to the first parameter and any element from the substack. If none exists,
+                    produces an empty substack.
+                </p>
+                <p>
+                    <code>remove-duplicates : Command(Quoted) Substack -> Substack</code>
+                    <br/> Removes any elements that are considered equal. The command (
+                    <code>Any Any -> Boolean</code>) given should produce true when the two inputs are equal.
                 </p>
                 <hr/>
                 <div id="footer"></div>
