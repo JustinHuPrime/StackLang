@@ -55,6 +55,134 @@ string = quote-symbol, {character-sequence}, quote-symbol</pre>
                     <code>string? : Any -> Boolean</code>
                     <br/> Produces true if elemnt is a string.
                 </p>
+                <p>
+                    <code>empty-string? : Any -> Boolean</code>
+                    <br/> Produces true if elemnt is an empty string - any string with length zero.
+                </p>
+                <p>
+                    <code>non-empty-string? : Any -> Boolean</code>
+                    <br/> Produces true if elemnt is an non-empty string - any string with length more than zero.
+                </p>
+                <h3 id="operations">String Operations</h3>
+                <p>
+                    <code>string-length : String -> Number(Exact)</code>
+                    <br/> Produces the length of the string.
+                </p>
+                <p>
+                    <code>string-ref : Number(Exact) String -> String</code>
+                    <br/> Produces the n'th character as a one character long string. Fails with a
+                    <code>RuntimeError</code> if the number is not valid.
+                </p>
+                <p>
+                    <code>string-insert : String Number(Exact) String</code>
+                    <br/> Inserts the first string into the second, such that the first character of the first string is a position
+                    n in the second string.
+                </p>
+                <p>
+                    <code>substring : Number(Exact) Number(Exact) String -> String</code>
+                    <br/> Produces a substring. The first number is the starting index, and the second number is the number of
+                    character to take from that character. Fails with a
+                    <code>RuntimeError</code> if any of the numbers are invalid for this string.
+                </p>
+                <p>
+                    <code>string-append : String String -> String</code>
+                    <br/> Appends the first string to the end of the second string.
+                </p>
+                <p>
+                    <code>toupper : String -> String</code>
+                    <br/> Converts the string to all uppercase characters.
+                </p>
+                <p>
+                    <code>tolower : String -> String</code>
+                    <br/> Converts the string to all lowercase characters.
+                </p>
+                <p>
+                    <code>join : String Substack(String) -> String</code>
+                    <br/> Appends all of the strings from the substack in order (active end first), inserting the first string
+                    in between every one of them.
+                </p>
+                <p>
+                    <code>split : String String -> Substack(String)</code>
+                    <br/> Takes the second string, and splits it into a separate string whenever the first string is encountered.
+                    Inverse of
+                    <code>string-join</code>. If the first string is an empty string, splits the second string on every character.
+                </p>
+                <p>
+                    <code>replace : String String String -> String</code>
+                    <br/> Takes the third string, and replaces all occurrences of the first string with the second string.
+                </p>
+                <p>
+                    <code>trim : String -> String</code>
+                    <br/> Removes all whitespace (spaces, newlines, tabs) from the front and the end of the string.
+                </p>
+                <p>
+                    <code>build-string : Number(Exact) String -> String</code>
+                    <br/> Creates a string by
+                    <code>string-append</code>-ing together n copies of the given string.
+                </p>
+                <h3 id="comparisons">Comparisons</h3>
+                <p>
+                    <code>string-equal? : String String -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the two strings have the same characters in the same order.
+                </p>
+                <p>
+                    <code>string-alphabetic? : String String -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the first string is alphabetically later than the second string.
+                </p>
+                <p>
+                    <code>string-alphabetic-equal? : String String -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the first string is alphabetically later than or equal to the second string.
+                </p>
+                <p>
+                    <code>string-reverse-alphabetic? : String String -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the first string is alphabetically sooner than the second string.
+                </p>
+                <p>
+                    <code>string-reverse-alphabetic-equal? : String String -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the first string is alphabetically sooner than or equal to the second string.
+                </p>
+                <p>
+                    <code>string-equal-ci? : String String -> Boolean</code>
+                    <br/> Like
+                    <code>string-equal?</code>, but ignores case.
+                </p>
+                <p>
+                    <code>string-alphabetic-ci? : String String -> Boolean</code>
+                    <br/> Like
+                    <code>string-alphabetic?</code>, but ignores case.
+                </p>
+                <p>
+                    <code>string-alphabetic-equal-ci? : String String -> Boolean</code>
+                    <br/> Like
+                    <code>string-alphabetic-equal?</code>, but ignores case.
+                </p>
+                <p>
+                    <code>string-reverse-alphabetic-ci? : String String -> Boolean</code>
+                    <br/> Like
+                    <code>string-reverse-alphabetic?</code>, but ignores case.
+                </p>
+                <p>
+                    <code>string-reverse-alphabetic-equal-ci? : String String -> Boolean</code>
+                    <br/> Like
+                    <code>string-reverse-alphabetic-equal?</code>, but ignores case.
+                </p>
+                <p>
+                    <code>string-contains? : String String -> Boolean</code>
+                    <br/> Produces true if the second string contains the first string.
+                </p>
+                <p>
+                    <code>string-prefix? : String String -> Boolean</code>
+                    <br/> Produces true if the second string starts with the first string.
+                </p>
+                <p>
+                    <code>string-suffix? : String String -> Boolean</code>
+                    <br/> Produces true if the second string ends with the first string.
+                </p>
                 <hr/>
                 <div id="footer"></div>
             </div>
