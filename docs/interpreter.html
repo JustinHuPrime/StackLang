@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css" />
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Interpreter - StackLang Documentation
@@ -33,17 +27,21 @@
             </div>
             <div class="col-lg-6">
                 <h1 id="top">The Interpreter</h1>
-                <p>The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke
-                    the interpreter from becomes one of the two roots of the interpreter's search path. The other root is
-                    the "libs" folder within the folder where the executable is located.</p>
+                <p>
+                    The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke the interpreter
+                    from becomes one of the two roots of the interpreter's search path. The other root is the "libs" folder
+                    within the folder where the executable is located.
+                </p>
                 <h2 id="options">Command Line Options</h2>
                 <ul>
                     <li>
                         <code>-?</code>,
-                        <code>-h</code>: prints a summary of the command line options, then exits immediately.</li>
+                        <code>-h</code>: prints a summary of the command line options, then exits immediately.
+                    </li>
                     <li>
                         <code>-d N</code>: activates debugging of the interpreter in mode N - this is not guarenteed to have an effect. The
-                        default mode of 0 is guarenteed to have no effect.</li>
+                        default mode of 0 is guarenteed to have no effect.
+                    </li>
                     <li>
                         <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at startup. Filepaths may be enclosed
                         in quotes. Any unquoted string that starts with
@@ -55,23 +53,28 @@
                         <code>.sta</code> extension. For absolute paths, the
                         <code>include</code> command will look for the file along the path, then for the file, but adding a
                         <code>.sta</code> extension. Note that
-                        <code>-I std</code> is implied.</li>
+                        <code>-I std</code> is usually implied.
+                    </li>
                     <li>
-                        <code>-b</code>: prevents automatic inclusion of standard library.
+                        <code>-b</code>: prevents automatic inclusion of standard library. Note that this will also prevent inclusion of
+                        any extended primtive commands. It is implementation specific which commands are considered extended
+                        primitives. See the
+                        <a href="https://justinhuprime.github.io/StackLang/interpreter.html#primlist">list</a> for details on the primtivive commands in this implementation. Special forms should always
+                        be avalible.
                     </li>
                     <li>
                         <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put more than
                         N elements onto the stack. Default is limited by the size of a long int on the local system (although
-                        the system will likely run out of memory before it reaches that many stack elements).</li>
+                        the system will likely run out of memory before it reaches that many stack elements).
+                    </li>
                     <li>
                         <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
-                        <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.</li>
-                    <li>
-                        <code></code>
+                        <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.
                     </li>
                 </ul>
                 <h2 id="keyboard">Keyboard Controls</h2>
-                <p>The interpreter recognizes three control keys:
+                <p>
+                    The interpreter recognizes three control keys:
                     <ul>
                         <li>
                             <kbd>Ctrl-d</kbd>: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently
@@ -85,9 +88,24 @@
                         <li>
                             <kbd>Ctrl-\</kbd>: this forcefully and immediately stops the interpreter. This key is terminal dependent,
                             as it is really a raised
-                            <code>SIGQUIT</code>.</li>
+                            <code>SIGQUIT</code>.
+                        </li>
                     </ul>
                 </p>
+                <h2 id="details">Implementation Details</h2>
+                <h3 id="strings">Strings</h3>
+                <p>
+                    This version of StackLang supports only ASCII characters. Attempting to enter a non-ASCII character will result in undefined
+                    behaviour. It is likely that the character will be treated as a sequence of ASCII characters.
+                </p>
+                <h3 id="primlist">Primitives</h3>
+                <h4 id="booleanprims">Booleans</h4>
+                <h4 id="commandprims">Commandss</h4>
+                <h4 id="numberprims">Numbers</h4>
+                <h4 id="stringprims">Strings</h4>
+                <h4 id="substackprims">Substacks</h4>
+                <h4 id="typeprims">Types</h4>
+                <h4 id="specialprims">Special Forms</h4>
                 <hr/>
                 <div id="footer"></div>
             </div>

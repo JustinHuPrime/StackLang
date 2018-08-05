@@ -17,6 +17,19 @@
 
 ; StackLang standard library, version ALPHA 6
 
+"boolean" ; include the extended primitives
+include
+"command"
+include
+"number"
+include
+"string"
+include
+"substack"
+include
+"type"
+include
+
 << Any, Command, Substack(Any) >> ; -> Any
 <<
 duplicate
@@ -37,8 +50,8 @@ define
 drop
 2, rotate
 >>
-`foldr-bc
 `foldr
+`foldr-bc
 define*
 
 << Any, Command, Substack(Any) >> ; -> Any
@@ -54,8 +67,8 @@ foldr
 3, rotate
 eval
 >>
-`foldr-rc
 `foldr
+`foldr-rc
 define*
 
 ;<< Number Number Number >> ; -> Number

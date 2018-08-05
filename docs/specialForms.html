@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Special Commands - StackLang Documentation
@@ -32,14 +26,16 @@
             <div class="col-lg-2 bg-secondary h-100" id="sidebar">
             </div>
             <div class="col-lg-6">
-                <h1>Special Primitive Functions</h1>
-                <p>These functions have special side effects outside of the usual evaluation model.</p>
+                <h1 id="top">Special Primitive Functions</h1>
                 <p>
-                    <code>define : Substack(Type) Substack(Any) Command(Quoted) -></code>
+                    These functions have special side effects outside of the usual evaluation model.
+                </p>
+                <p>
+                    <code>define : Substack(Type) Substack Command(Quoted) -></code>
                     <br/> Defines a function in the global context.
                 </p>
                 <p>
-                    <code>define* : Substack(Type) Substack(Any) Command(Quoted) Command(Quoted) -></code>
+                    <code>define* : Substack(Type) Substack Command(Quoted) Command(Quoted) -></code>
                     <br/> Defines the second command in the context of the first command (a "local" function). Names, however,
                     are always global, so the name must still be unique.
                 </p>
@@ -79,6 +75,22 @@
                 <p>
                     <code>duplicate : Any -> Any Any</code>
                     <br/> Duplciates the given element.
+                </p>
+                <p>
+                    <code>error : String -></code>
+                    <br/> Raises a
+                    <code>RuntimeError</code> with the specified message.
+                </p>
+                <p>
+                    <code>error* : Number(Exact) String String -></code>
+                    <br/> Raises a
+                    <code>RuntimeError</code> with the specified context (first string and number) and message (second string). Will cause a
+                    <code>RuntimeError</code> itself if the number is not valid.
+                </p>
+                <p>
+                    <code>null : -></code>
+                    <br/> This command does nothing, but does cause the evaluator to evaluate any unquoted commands after it.
+                    Useful for recovering from an error.
                 </p>
                 <hr/>
                 <div id="footer"></div>

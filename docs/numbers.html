@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Types - StackLang Documentation
@@ -33,7 +27,8 @@
             </div>
             <div class="col-lg-6">
                 <h1 id="top">Numbers</h1>
-                <p>Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
+                <p>
+                    Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
                     <code>mpq_class</code>). There are, however, two flavours of numbers - exact numbers or inexact numbers. Exact numbers are
                     displayed as fractions, and represent "exactly" the value they have, while inexact numbers are displayed
                     as decimals, and represent "approximately" some value. Commands that take multiple numbers will produce
@@ -43,10 +38,14 @@
                     <br/> To enter an exact number, optionally enter a sign,
                     <kbd>+</kbd> or
                     <kbd>-</kbd>, then either a decimal number or a fraction of two whole numbers. Any number of
-                    <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.</p>
-                <p>The two number constants are commands. That is, they must be evaluated before they turn into a number. Thus,
-                    for the most part, they can be used as normal numbers, but they can be quoted.</p>
-                <p>An EBNF definition of a Number is given below.
+                    <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.
+                </p>
+                <p>
+                    The two number constants are commands. That is, they must be evaluated before they turn into a number. Thus, for the most
+                    part, they can be used as normal numbers, but they can be quoted.
+                </p>
+                <p>
+                    An EBNF definition of a Number is given below.
                     <pre id="ebnf">
 nonzero-digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 digit = "0" | nonzero-digit ;

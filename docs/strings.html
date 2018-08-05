@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Strings - StackLang Documentation
@@ -32,158 +26,161 @@
             <div class="col-lg-2 bg-secondary h-100" id="sidebar">
             </div>
             <div class="col-lg-6">
-                <h1>Strings</h1>
-                <p>A string in StackLang represents a sequence of text characters. What character set is supported is, however,
-                    implementation specific. Currently, only ASCII characters are guarenteed to be supported. A string is
-                    formed by entering an escaped string between a set of double quotes. This is then parsed into an unescaped
-                    string, but is still displayed as an escaped string.</p>
-                <p>An EBNF definition of a valid input string is given below.
+                <h1 id="top">Strings</h1>
+                <p>
+                    A string in StackLang represents a sequence of text characters. What character set is supported is, however, implementation
+                    specific. Currently, only ASCII characters are guarenteed to be supported. A string is formed by entering
+                    an escaped string between a set of double quotes. This is then parsed into an unescaped string, but is
+                    still displayed as an escaped string.
+                </p>
+                <p>
+                    An EBNF definition of a valid input string is given below.
                     <pre id="ebnf">
-quote-symbol = '"' ;
-backslash-symbol = "\" ;
-newline-character-symbol = "n" ;
-character-not-special = ? Any ASCII character except for one of: \" ? ;
-
-escape-sequence = backslash-symbol, (quote-symbol | backslash-symbol | newline-character-symbol) ;
-character-sequence = character-not-special | escape-sequence
-
-string = quote-symbol, {character-sequence}, quote-symbol</pre>
+                                    quote-symbol = '"' ;
+                                    backslash-symbol = "\" ;
+                                    newline-character-symbol = "n" ;
+                                    character-not-special = ? Any ASCII character except for one of: \" ? ;
+                                    
+                                    escape-sequence = backslash-symbol, (quote-symbol | backslash-symbol | newline-character-symbol) ;
+                                    character-sequence = character-not-special | escape-sequence
+                                    
+string = quote-symbol, {character - sequence}, quote-symbol</pre>
                 </p>
                 <h2 id="commands">String-related Commands</h2>
                 <h3 id="type">Type Predicates</h3>
                 <p>
                     <code>string? : Any -> Boolean</code>
-                    <br/> Produces true if elemnt is a string.
+                    <br /> Produces true if elemnt is a string.
                 </p>
                 <p>
                     <code>empty-string? : Any -> Boolean</code>
-                    <br/> Produces true if elemnt is an empty string - any string with length zero.
+                    <br /> Produces true if elemnt is an empty string - any string with length zero.
                 </p>
                 <p>
                     <code>non-empty-string? : Any -> Boolean</code>
-                    <br/> Produces true if elemnt is an non-empty string - any string with length more than zero.
+                    <br /> Produces true if elemnt is an non-empty string - any string with length more than zero.
                 </p>
                 <h3 id="operations">String Operations</h3>
                 <p>
                     <code>string-length : String -> Number(Exact)</code>
-                    <br/> Produces the length of the string.
+                    <br /> Produces the length of the string.
                 </p>
                 <p>
                     <code>string-ref : Number(Exact) String -> String</code>
-                    <br/> Produces the n'th character as a one character long string. Fails with a
+                    <br /> Produces the n'th character as a one character long string. Fails with a
                     <code>RuntimeError</code> if the number is not valid.
                 </p>
                 <p>
                     <code>string-insert : String Number(Exact) String</code>
-                    <br/> Inserts the first string into the second, such that the first character of the first string is a position
+                    <br /> Inserts the first string into the second, such that the first character of the first string is a position
                     n in the second string.
                 </p>
                 <p>
                     <code>substring : Number(Exact) Number(Exact) String -> String</code>
-                    <br/> Produces a substring. The first number is the starting index, and the second number is the number of
+                    <br /> Produces a substring. The first number is the starting index, and the second number is the number of
                     character to take from that character. Fails with a
                     <code>RuntimeError</code> if any of the numbers are invalid for this string.
                 </p>
                 <p>
                     <code>string-append : String String -> String</code>
-                    <br/> Appends the first string to the end of the second string.
+                    <br /> Appends the first string to the end of the second string.
                 </p>
                 <p>
                     <code>toupper : String -> String</code>
-                    <br/> Converts the string to all uppercase characters.
+                    <br /> Converts the string to all uppercase characters.
                 </p>
                 <p>
                     <code>tolower : String -> String</code>
-                    <br/> Converts the string to all lowercase characters.
+                    <br /> Converts the string to all lowercase characters.
                 </p>
                 <p>
                     <code>join : String Substack(String) -> String</code>
-                    <br/> Appends all of the strings from the substack in order (active end first), inserting the first string
+                    <br /> Appends all of the strings from the substack in order (active end first), inserting the first string
                     in between every one of them.
                 </p>
                 <p>
                     <code>split : String String -> Substack(String)</code>
-                    <br/> Takes the second string, and splits it into a separate string whenever the first string is encountered.
+                    <br /> Takes the second string, and splits it into a separate string whenever the first string is encountered.
                     Inverse of
                     <code>string-join</code>. If the first string is an empty string, splits the second string on every character.
                 </p>
                 <p>
                     <code>replace : String String String -> String</code>
-                    <br/> Takes the third string, and replaces all occurrences of the first string with the second string.
+                    <br /> Takes the third string, and replaces all occurrences of the first string with the second string.
                 </p>
                 <p>
                     <code>trim : String -> String</code>
-                    <br/> Removes all whitespace (spaces, newlines, tabs) from the front and the end of the string.
+                    <br /> Removes all whitespace (spaces, newlines, tabs) from the front and the end of the string.
                 </p>
                 <p>
                     <code>build-string : Number(Exact) String -> String</code>
-                    <br/> Creates a string by
+                    <br /> Creates a string by
                     <code>string-append</code>-ing together n copies of the given string.
                 </p>
                 <h3 id="comparisons">Comparisons</h3>
                 <p>
                     <code>string-equal? : String String -> Boolean</code>
-                    <br/> Produces
+                    <br /> Produces
                     <code>true</code> if the two strings have the same characters in the same order.
                 </p>
                 <p>
                     <code>string-alphabetic? : String String -> Boolean</code>
-                    <br/> Produces
+                    <br /> Produces
                     <code>true</code> if the first string is alphabetically later than the second string.
                 </p>
                 <p>
                     <code>string-alphabetic-equal? : String String -> Boolean</code>
-                    <br/> Produces
+                    <br /> Produces
                     <code>true</code> if the first string is alphabetically later than or equal to the second string.
                 </p>
                 <p>
                     <code>string-reverse-alphabetic? : String String -> Boolean</code>
-                    <br/> Produces
+                    <br /> Produces
                     <code>true</code> if the first string is alphabetically sooner than the second string.
                 </p>
                 <p>
                     <code>string-reverse-alphabetic-equal? : String String -> Boolean</code>
-                    <br/> Produces
+                    <br /> Produces
                     <code>true</code> if the first string is alphabetically sooner than or equal to the second string.
                 </p>
                 <p>
                     <code>string-equal-ci? : String String -> Boolean</code>
-                    <br/> Like
+                    <br /> Like
                     <code>string-equal?</code>, but ignores case.
                 </p>
                 <p>
                     <code>string-alphabetic-ci? : String String -> Boolean</code>
-                    <br/> Like
+                    <br /> Like
                     <code>string-alphabetic?</code>, but ignores case.
                 </p>
                 <p>
                     <code>string-alphabetic-equal-ci? : String String -> Boolean</code>
-                    <br/> Like
+                    <br /> Like
                     <code>string-alphabetic-equal?</code>, but ignores case.
                 </p>
                 <p>
                     <code>string-reverse-alphabetic-ci? : String String -> Boolean</code>
-                    <br/> Like
+                    <br /> Like
                     <code>string-reverse-alphabetic?</code>, but ignores case.
                 </p>
                 <p>
                     <code>string-reverse-alphabetic-equal-ci? : String String -> Boolean</code>
-                    <br/> Like
+                    <br /> Like
                     <code>string-reverse-alphabetic-equal?</code>, but ignores case.
                 </p>
                 <p>
                     <code>string-contains? : String String -> Boolean</code>
-                    <br/> Produces true if the second string contains the first string.
+                    <br /> Produces true if the second string contains the first string.
                 </p>
                 <p>
                     <code>string-prefix? : String String -> Boolean</code>
-                    <br/> Produces true if the second string starts with the first string.
+                    <br /> Produces true if the second string starts with the first string.
                 </p>
                 <p>
                     <code>string-suffix? : String String -> Boolean</code>
-                    <br/> Produces true if the second string ends with the first string.
+                    <br /> Produces true if the second string ends with the first string.
                 </p>
-                <hr/>
+                <hr />
                 <div id="footer"></div>
             </div>
         </div>

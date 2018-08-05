@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Substacks - StackLang Documentation
@@ -32,47 +26,149 @@
             <div class="col-lg-2 bg-secondary h-100" id="sidebar">
             </div>
             <div class="col-lg-6">
-                <h1>Substacks</h1>
-                <h2 id="commands">Substack-related Commands</h2>
-                <h3 id="listops">Abstract List Operations</h3>
+                <h1 id="top">Substacks</h1>
                 <p>
-                    <code>map : Command(Quoted) Substack(Any) -> Substack(Any)</code>
+                    StackLang substacks are essentially lists that can be operated on from one end. These substacks act like a smaller version
+                    of the main stack. It is possible to have an unquoted command in a substack, however, it will not be
+                    evaluated. Substack elements don't count towards the size limit on the main stack.
+                </p>
+                <p>
+                    Substacks are printed and parsed using the delimiters
+                    <code>&lt;&lt;</code> and
+                    <code>&gt;&gt;</code>. Elements between these delimiters are parsed as individual elements of the substack. An EBNF definition
+                    of a valid substack parse is given below.
+                    <pre id="ebnf">
+left-delimiter-symbol = "&lt;&lt;" ;
+right-delimiter-symbol = "&gt;&gt;" ;
+separator-symbol = "," ;
+space-symbol = " " ;
+
+stackelement = ? Any valid stack element, including another substack ? ;
+left-delimiter = left-delimiter-symbol, {space-symbol} ;
+right-delimiter = {space-symbol}, right-delimiter-symbol ;
+separator = {space-symbol}, separator-symbol, {space-symbol} ;
+
+substack = left-delimiter, {stackelement, separator}, [stackelement], right-delimiter ;</pre>
+                </p>
+                <h2 id="commands">Substack-related Commands</h2>
+                <h3 id="constants">Constants</h3>
+                <p>
+                    <code>empty : -> Substack</code>
+                    <br/> Produces the empty substack. Equivalent to
+                    <code>&lt;&lt;&gt;&gt;</code>.
+                </p>
+                <h3 id="type">Type Predicates</h3>
+                <p>
+                    <code>substack? : Any -> Boolean</code>
+                    <br/> Produces true if element is a substack.
+                </p>
+                <p>
+                    <code>empty? : Any -> Boolean</code>
+                    <br/> Produces true if element is an empty substack.
+                </p>
+                <p>
+                    <code>non-empty? : Any -> Boolean</code>
+                    <br/> Produces true if element is a non-empty substack.
+                </p>
+                <p>
+                    <code>type-check : Type Substack -> Boolean</code>
+                    <br/> Produces true if substack only contains elements of type Type.
+                </p>
+                <h3 id="operations">Substack Operations</h3>
+                <p>
+                    <code>push : Any Substack -> Substack</code>
+                    <br/> Adds element on to substack at the active (printed left) end.
+                </p>
+                <p>
+                    <code>top : Substack -> Any</code>
+                    <br/> Produces the element closest to the active end (printed left) from the substack.
+                </p>
+                <p>
+                    <code>pop : Substack -> Substack</code>
+                    <br/> Removes the active end element from the substack.
+                </p>
+                <p>
+                    <code>pop* : Substack -> Any Substack</code>
+                    <br/> Produces the
+                    <code>top</code> and the
+                    <code>pop</code> of the substack.
+                </p>
+                <p>
+                    <code>make-substack : Any Any -> Substack</code>
+                    <br/> Produces a substack from two elements.
+                </p>
+                <p>
+                    <code>length : Substack -> Number(Exact)</code>
+                    <br/> Produces the number of elements in the substack.
+                </p>
+                <p>
+                    <code>substack-ref : Number(Exact) Substack -> Any</code>
+                    <br/> Produces the n'th element of the substack. Fails with a
+                    <code>RuntimeError</code> if the given number is invalid for this substack.
+                </p>
+                <p>
+                    <code>sub-substack: Number(Exact) Number(Exact) Substack -> Substack</code>
+                    <br/> Produces a portion of the given substack, using the first number as the index to start from, and the
+                    second number as the length. Invalid numbers will cause a
+                    <code>RuntimeError</code>.
+                </p>
+                <p>
+                    <code>append : Substack Substack -> Substack</code>
+                    <br/> Combines two substacks into one, with the second substack's elements coming first in the produces substack.
+                </p>
+                <p>
+                    <code>reverse : Substack -> Substack</code>
+                    <br/> Reverses the substack.
+                </p>
+                <h3 id="abstract">Abstract Commands</h3>
+                <p>
+                    <code>map : Command(Quoted) Substack -> Substack</code>
                     <br/> Applies the command (
                     <code>Any -> Any</code>) to each element in the given substack, forming a new substack with the results. Resulting substack
                     is as large as the input.
                 </p>
                 <p>
-                    <code>filter : Command(Quoted) Substack(Any) -> Substack(Any)</code>
+                    <code>filter : Command(Quoted) Substack -> Substack</code>
                     <br/> Applies the command (
                     <code>Any -> Boolean</code>) to each element in the given substack. If the command produces true, then the element that cause the
                     command to produce true is kept. Otherwise, the element is discarded. Resulting substack is the same
                     size or smaller than the input.
                 </p>
                 <p>
-                    <code>foldr : Command(Quoted) Any Substack(Any) -> Any</code>
+                    <code>foldr : Command(Quoted) Any Substack -> Any</code>
                     <br/> Applies the command (
                     <code>Any Any -> Any</code>) to the accumulator (initial value is the
                     <code>Any</code> element) and each element from the substack (furthest from active end first), with the result of this
                     application becoming the new accumulator. This does not use tail recursion.
                 </p>
                 <p>
-                    <code>foldl : Command(Quoted) Any Substack(Any) -> Any</code>
+                    <code>foldl : Command(Quoted) Any Substack -> Any</code>
                     <br/> Applies the command (
                     <code>Any Any -> Any</code>) to the accumulator (initial value is the
                     <code>Any</code> element) and each element from the substack (active end first), with the result of this application
                     becoming the new accumulator. This does use tail recursion.
                 </p>
                 <p>
-                    <code>ormap : Command(Quoted) Substack(Any) -> Boolean</code>
+                    <code>ormap : Command(Quoted) Substack -> Boolean</code>
                     <br/> Applies the command (
                     <code>Any -> Boolean</code>) to each element in the given substack, combining the results together with
                     <code>or</code>.
                 </p>
                 <p>
-                    <code>andmap : Command(Quoted) Substack(Any) -> Boolean</code>
+                    <code>andmap : Command(Quoted) Substack -> Boolean</code>
                     <br/> Applies the command (
                     <code>Any -> Boolean</code>) to each element in the given substack, combining the results together with
                     <code>and</code>.
+                </p>
+                <p>
+                    <code>sequence : Number(Exact) -> Substack(Number(Exact))</code>
+                    <br/> Produces a sequence of numbers from zero to n, inclusive. Number must be an integer.
+                </p>
+                <p>
+                    <code>build-substack : Command(Quoted) Number(Exact) -> Substack</code>
+                    <br/> Builds a substack by applying the command (
+                    <code>Number -> Any</code>) to each number in the sequence from 0 to n (generated using
+                    <code>sequence</code>), and forming a substack from the results.
                 </p>
                 <hr/>
                 <div id="footer"></div>

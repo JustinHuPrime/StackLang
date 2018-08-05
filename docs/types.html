@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Types - StackLang Documentation
@@ -39,7 +33,8 @@
                         <li>
                             <a href="https://justinhuprime.github.io/StackLang/booleans.html">Booleans</a>: Booleans are either
                             <code>true</code> or
-                            <code>false</code>.</li>
+                            <code>false</code>.
+                        </li>
                         <li>
                             <a href="https://justinhuprime.github.io/StackLang/commands.html">Commands</a>: Commands are either the name of a primitive function or the named of a defined
                             function.
@@ -68,8 +63,8 @@
                     <code>TypeError</code> is thrown.
                 </p>
                 <h2 id="specialization">Type Specialziation</h2>
-                <p>A type specialziation is when there is additional information after the type in parenthesis. For example,
-                    a
+                <p>
+                    A type specialziation is when there is additional information after the type in parenthesis. For example, a
                     <code>Command(Quoted)</code> is a quoted command. Substacks, commands, and numbers may have specialized types. (This means that their
                     type has additional information, and that the element itself has some different forms possible). Substacks
                     may be specialized to indicate what type they can hold. In between the parenthesis should be another
@@ -80,20 +75,26 @@
                     types are:
                     <ul>
                         <li>
-                            <code>Number</code>: An unspecialized number - may be either exact or inexact.</li>
+                            <code>Number</code>: An unspecialized number - may be either exact or inexact.
+                        </li>
                         <li>
-                            <code>Number(Exact)</code>: An exact number.</li>
+                            <code>Number(Exact)</code>: An exact number.
+                        </li>
                         <li>
-                            <code>Number(Inexact)</code>: An inexact number.</li>
+                            <code>Number(Inexact)</code>: An inexact number.
+                        </li>
                     </ul>
                     Commannds are specialized when quoted. The two allowed command types are:
                     <ul>
                         <li>
-                            <code>Command</code>: An unspecialized command, either quoted or not.</li>
+                            <code>Command</code>: An unspecialized command, either quoted or not.
+                        </li>
                         <li>
-                            <code>Command(Quoted)</code>: A specialized, quoted command.</li>
+                            <code>Command(Quoted)</code>: A specialized, quoted command.
+                        </li>
                         <li>
-                            <code>Command(Unquoted)</code>: A specialized, quoted command.</li>
+                            <code>Command(Unquoted)</code>: A specialized, quoted command.
+                        </li>
                     </ul>
                 </p>
                 <hr/>

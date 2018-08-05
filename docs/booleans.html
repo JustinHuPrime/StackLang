@@ -13,13 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styleTweaks.css">
-
-    <script> 
-        $(function () {
-            $("#sidebar").load("https://justinhuprime.github.io/StackLang/sidebar.html");
-            $("#footer").load("https://justinhuprime.github.io/StackLang/footer.html");
-        });
-    </script>
+    <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
 
     <title>
         Booleans - StackLang Documentation
@@ -32,11 +26,14 @@
             <div class="col-lg-2 bg-secondary h-100" id="sidebar">
             </div>
             <div class="col-lg-6">
-                <h1>Booleans</h1>
-                <p>StackLang booleans are very conventional - there are literal
+                <h1 id="top">Booleans</h1>
+                <p>
+                    StackLang booleans are very conventional - there are literal
                     <code>true</code> and
-                    <code>false</code> values formed by entering those symbols. These symbols are not commands, unlike the number constants.</p>
-                <p>A (possibly redundant) EBNF definition of booleans is given below.
+                    <code>false</code> values formed by entering those symbols. These symbols are not commands, unlike the number constants.
+                </p>
+                <p>
+                    A (possibly redundant) EBNF definition of booleans is given below.
                     <pre id="ebnf">
 true-symbol = "true" ;
 false-symbol = "false" ;
