@@ -54,7 +54,8 @@
                     <li>the named file from the current directory, but adding a .stl extension</li>
                 </ol>
                 then reads the file line by line, feeding it through the preprocessor first, and pushes each element onto the stack, evaluating
-                as it goes.
+                as it goes. If the file does not exist, it fails with a
+                <code>RuntimeError</code>.
                 </p>
                 <p>
                     <code>drop : Any -></code>

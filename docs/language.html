@@ -28,11 +28,53 @@
             <div class="col-lg-6">
                 <h1 id="top">The Language</h1>
                 <h2 id="stack">The Stack</h2>
+                <p>
+                    The core of StackLang is the stack. The stack is where any and all data your program will operate on will be stored. The
+                    prompt will add elements to the stack. After an element has been added to the stack, it is evaluated
+                    (see below).
+                </p>
+                <h2 id="defines">Definitions</h2>
+                <p>
+                    The only state that StackLang recognizes (under standard conditions, and excluding
+                    <code>include</code>) is defined functions. A defined function has four parts - a signature, its body, a context (is set
+                    to the global context when defined using
+                    <code>define</code>), and a name.
+                </p>
                 <h2 id="evaluation">Evaluation Rules</h2>
+                <p>
+                    If the top element of the stack is not an unquoted command, evaluation stops and waits for further input. If the top item
+                    is a primitive command (`plus`, `divide`, `swap`, other built-ins), then the types of the arguments are
+                    checked (and a
+                    <code>TypeError</code> raised if the arguments are invalid), then the command and the arguments to the command are popped off
+                    of the stack, and the command executed by the interpreter. If the top item is a defined command (a user
+                    defined command or a command defined by an included file), then the interpreter looks up the command
+                    body to go with the command name. Then, the interpreter checks that the command has the correct context
+                    (from what command was this command invoke), and checks the types. A
+                    <code>SyntaxError</code> or a
+                    <code>TypeError</code>, respectively, will be raised if those checks fail. Next, the interpreter takes the body of the definition,
+                    and places each element from that body onto the stack, evaluating after every placement. If the command
+                    entered does not exist, then a
+                    <code>SyntaxError</code> is raised.
+                </p>
                 <h3 id="errors">Errors</h3>
                 <p>
                     StackLang, unfortunately, does not currently support error handling. Any errors are fatal, and will result with the stack
                     left in an unpredictable state.
+                </p>
+                <h3 id="preprocessor">The Preprocessor</h3>
+                <p>
+                    Files included using the
+                    <code>include</code> command are first preprocessed. The file to be read is read line by line. Anything after a
+                    <code>;</code> outside of a string is discarded. If the current line does not contain a
+                    <code>&lt;&lt;</code> as it's only text has its whitespace trimmed and is then passed to the parser as if it were type in
+                    on the stack. If the line is a start of substack marker on its own, then the start of substack marker
+                    is added to the buffer, and the preprocessor looks at the next line. If that next line is a close of
+                    substack marker, then the substack marker is appended to the current buffer, and the buffer is passed
+                    to the interpreter. If the next line is not a close of substack marker, and if the buffer is currently
+                    just a start of substack marker, then the next line is appended onto the current line. If the buffer
+                    is not just an opening substack marker, then the next element is appended with a comma. If the preprocessor
+                    encounters a start of substack marker on one line within the substack, then the preprocessor is recursively
+                    invoked to read that substack.
                 </p>
                 <hr/>
                 <div id="footer"></div>

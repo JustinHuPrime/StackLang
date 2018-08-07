@@ -58,6 +58,10 @@ command = quoted-command | unquoted-command ;</pre>
                     <code>quoted? : Any -> Boolean</code>
                     <br/> Produces true if input is a quoted command.
                 </p>
+                <p>
+                    <code>local? : Any -> Boolean</code>
+                    <br/> Produces true if input has a context.
+                </p>
                 <h3 id="conversion">Type Conversion</h3>
                 <p>
                     <code>unquote : Command(Quoted) -> Command(Unqoted)</code>
@@ -87,6 +91,11 @@ command = quoted-command | unquoted-command ;</pre>
                 <p>
                     <code>body : Command(Quoted) -> Substack</code>
                     <br/> Produces the body of this command.
+                </p>
+                <p>
+                    <code>context : Command(Quoted) -> Command(Quoted)</code>
+                    <br/> Produces the context of this command. Fails with a
+                    <code>RuntimeError</code> if none exists.
                 </p>
                 <p>
                     <code>signature : Command(Quoted) -> Substack(Types)</code>
