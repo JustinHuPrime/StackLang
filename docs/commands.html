@@ -3,6 +3,10 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="description" content="Documentation for the StackLang programming language. StackLang is a stack-based language inspired by HP's RPL and the Racket xSL teaching languages."
+    />
+    <meta name="keywords" content="StackLang,commands,documentation,programming language,stack" />
+    <meta name="author" content="Justin Hu" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -30,7 +34,7 @@
                 <p>
                     A command in StackLang is stored as a string. Commands can be either quoted or unquoted. Unquoted commands on the stack are
                     automatically evaluated, while quoted commands on the stack are treated as data. It is not possible to
-                    have an unquoted command at top level in the stack without it being evaluated.
+                    have an unquoted command at top level in the stack without it being evaluated, outside of error cases.
                 </p>
                 <p>
                     An EBNF definition of commands is given below.
