@@ -36,9 +36,9 @@ duplicate
 empty?
 `foldr/bc
 `foldr/rc
-3 rotate
+3, rotate
 if
-eval
+unquote
 2, rotate
 drop
 >>
@@ -56,7 +56,7 @@ define*
 
 << Any, Command, Substack(Any) >> ; -> Any
 <<
-pop
+pop*
 3, rotate
 duplicate
 5, rotate
@@ -65,7 +65,7 @@ duplicate
 foldr
 3, rotate
 3, rotate
-eval
+unquote
 >>
 `foldr
 `foldr-rc

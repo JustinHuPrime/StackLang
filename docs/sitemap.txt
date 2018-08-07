@@ -4,10 +4,10 @@ https://justinhuprime.github.io/StackLang/index.html
 https://justinhuprime.github.io/StackLang/interpreter.html
 https://justinhuprime.github.io/StackLang/language.html
 https://justinhuprime.github.io/StackLang/numbers.html
-https://justinhuprime.github.io/StackLang/specialForms.html
-https://justinhuprime.github.io/StackLang/standardLibrary.html
+https://justinhuprime.github.io/StackLang/specialforms.html
+https://justinhuprime.github.io/StackLang/standardlibrary.html
 https://justinhuprime.github.io/StackLang/strings.html
 https://justinhuprime.github.io/StackLang/style.html
 https://justinhuprime.github.io/StackLang/substacks.html
-https://justinhuprime.github.io/StackLang/typeElements.html
+https://justinhuprime.github.io/StackLang/typeelements.html
 https://justinhuprime.github.io/StackLang/types.html
