@@ -30,7 +30,7 @@ bool ends_with(const string& s, const string& s1) noexcept {
 }
 
 string escape(string s) noexcept {
-  for (unsigned i = 0; i < s.length(); i++) {
+  for (size_t i = 0; i < s.length(); i++) {
     if (s[i] == '"')  // escape quotes
     {
       s.erase(i, 1);
@@ -56,7 +56,7 @@ string unescape(string s) noexcept {
   bool prevBackslash = false;
   bool prevPrevBackslash = false;
 
-  for (unsigned i = 0; i < s.length(); i++) {
+  for (size_t i = 0; i < s.length(); i++) {
     if (s[i] == '"' && prevBackslash && !prevPrevBackslash)  // escaped quote
     {
       i--;
@@ -89,7 +89,7 @@ string unescape(string s) noexcept {
 }
 
 size_t findImproperEscape(const string& str) noexcept {
-  for (unsigned i = 0; i < str.length(); i++) {
+  for (size_t i = 0; i < str.length(); i++) {
     if ((str[i] == '\\' &&
          i + 1 >= str.length()) ||  // if the last char's a backslash
         (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' &&
@@ -106,14 +106,14 @@ size_t findImproperEscape(const string& str) noexcept {
   return string::npos;
 }
 
-string spaces(unsigned n) noexcept {
+string spaces(size_t n) noexcept {
   string acc = "";
   acc.resize(n, ' ');
   return acc;
 }
 
 string removeChar(string s, char c) noexcept {
-  for (unsigned i = 0; i < s.length(); i++) {
+  for (size_t i = 0; i < s.length(); i++) {
     if (s[i] == c) {
       s.erase(i, 1);
       i--;

@@ -89,7 +89,7 @@ TEST_CASE("stack reverse", "[Stack][reverse]") {
 
 TEST_CASE("default stack limit", "[Stack][getLimit][constructor]") {
   Stack s;
-  REQUIRE(s.getLimit() == numeric_limits<unsigned long>().max());
+  REQUIRE(s.getLimit() == numeric_limits<size_t>().max());
 }
 
 TEST_CASE("stack size", "[Stack][size]") {

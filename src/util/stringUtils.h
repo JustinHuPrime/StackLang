@@ -44,7 +44,7 @@ string unescape(string) noexcept;
 size_t findImproperEscape(const string&) noexcept;
 
 // produces 'n' spaces in a row
-string spaces(unsigned) noexcept;
+string spaces(size_t) noexcept;
 
 // removes all occurences of character c from string s
 string removeChar(string, char) noexcept;

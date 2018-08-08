@@ -30,7 +30,7 @@ LanguageException::LanguageException(const string& msg,
     : message(msg), errorHasContext(false), stacktrace(trace) {}
 
 LanguageException::LanguageException(const string& msg, const string& ctx,
-                                     unsigned loc,
+                                     size_t loc,
                                      list<CommandElement*> trace) noexcept
     : message(msg),
       context(ctx),
@@ -40,7 +40,7 @@ LanguageException::LanguageException(const string& msg, const string& ctx,
 
 const string& LanguageException::getMessage() const noexcept { return message; }
 const string& LanguageException::getContext() const noexcept { return context; }
-unsigned LanguageException::getLocation() const noexcept { return location; }
+size_t LanguageException::getLocation() const noexcept { return location; }
 bool LanguageException::hasContext() const noexcept { return errorHasContext; }
 const list<CommandElement*>& LanguageException::getTrace() const noexcept {
   return stacktrace;
@@ -52,7 +52,7 @@ RuntimeError::RuntimeError(const string& msg,
 
 string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
 
-StackOverflowError::StackOverflowError(unsigned long limit,
+StackOverflowError::StackOverflowError(size_t limit,
                                        list<CommandElement*> trace) noexcept
     : LanguageException(
           "Stack has exceeded configured limit of " + to_string(limit) + ".",

@@ -36,7 +36,7 @@ using std::unique_ptr;
 // Represents a element in the stack. Subclassed to make a specific element.
 class StackElement {
  public:
-  static const unsigned NUM_PRIM_TYPES;
+  static const int NUM_PRIM_TYPES;
   enum class DataType {
     Number,
     String,

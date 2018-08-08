@@ -42,7 +42,7 @@ class LanguageException {
   explicit LanguageException(
       const string&, list<CommandElement*> = list<CommandElement*>{}) noexcept;
   // Creates an error with a message and context (plus exact location of error)
-  LanguageException(const string&, const string&, unsigned,
+  LanguageException(const string&, const string&, size_t,
                     list<CommandElement*> = list<CommandElement*>{}) noexcept;
   LanguageException(const LanguageException&) = default;
 
@@ -52,13 +52,13 @@ class LanguageException {
   virtual string getKind() const noexcept = 0;
   const string& getMessage() const noexcept;
   const string& getContext() const noexcept;
-  unsigned getLocation() const noexcept;
+  size_t getLocation() const noexcept;
   bool hasContext() const noexcept;
   const list<CommandElement*>& getTrace() const noexcept;
 
  protected:
   string message, context;
-  unsigned location;
+  size_t location;
   bool errorHasContext;
   list<CommandElement*> stacktrace;
 };
@@ -77,7 +77,7 @@ class RuntimeError : public LanguageException {
 class StackOverflowError : public LanguageException {
  public:
   explicit StackOverflowError(
-      unsigned long, list<CommandElement*> = list<CommandElement*>{}) noexcept;
+      size_t, list<CommandElement*> = list<CommandElement*>{}) noexcept;
   StackOverflowError(const StackOverflowError&) = default;
 
   StackOverflowError& operator=(const StackOverflowError&) = default;

@@ -71,8 +71,8 @@ CommandElement* CommandElement::parse(const string& s) {
                             // quote char and a letter or a letter
     return new CommandElement(removeChar(s, QUOTE_CHAR), s[0] == QUOTE_CHAR);
   } else {
-    unsigned badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
-                                            s[0] == QUOTE_CHAR ? 1 : 0);
+    size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
+                                          s[0] == QUOTE_CHAR ? 1 : 0);
     if (s[badIndex] == ' ') {  // has a space
       throw ParserException("Input looks like a command, but has a space.", s,
                             badIndex);
@@ -279,7 +279,8 @@ SubstackElement* SubstackElement::parse(const string& s) {
       if (parseLevel < 0) {
         throw ParserException(
             "Missing at least one matching opening substack delimiter.", s,
-            iter - s.begin() - 1);
+            iter - s.begin() -
+                1);  // iter is always at least 2 greater than s.begin().
       }
     }
 
@@ -343,7 +344,7 @@ TypeElement* TypeElement::parse(const string& s) {
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
                                     s.length() - s.find_first_of('(') - 2)));
-    if (static_cast<unsigned>(elm->specialization->data) >= NUM_PRIM_TYPES) {
+    if (static_cast<int>(elm->specialization->data) >= NUM_PRIM_TYPES) {
       delete elm;
       throw ParserException("Bad specialization on a Substack type.", s,
                             s.find('(') + 1);
@@ -440,7 +441,7 @@ const TypeElement* TypeElement::getSpecialization() const noexcept {
 }
 
 string TypeElement::to_string(StackElement::DataType type) noexcept {
-  return TYPES()[static_cast<unsigned>(type)];
+  return TYPES()[static_cast<size_t>(type)];
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {

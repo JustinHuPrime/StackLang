@@ -120,8 +120,8 @@ void drawPrompt(const LineEditor& s) noexcept {
 }
 
 void drawError(const LanguageException& e) noexcept {
-  unsigned maxY = static_cast<unsigned>(getmaxy(stdscr));
-  unsigned centerY = maxY / 2;
+  int maxY = getmaxy(stdscr);
+  int centerY = maxY / 2;
 
   curs_set(CURSOR_INVISIBLE);
   clear();
@@ -185,20 +185,19 @@ void drawError(const LanguageException& e) noexcept {
   }
 }
 
-void drawTrace(unsigned top, unsigned bottom,
-               const list<CommandElement*>& trace) {
-  if (bottom > top && trace.size() <= static_cast<size_t>(bottom - top)) {
+void drawTrace(int top, int bottom, const list<CommandElement*>& trace) {
+  if (bottom > top && static_cast<long>(trace.size()) <= bottom - top) {
     for (const CommandElement* elm : trace) {
       move(top++, 0);
       addstring("From " + (elm == nullptr ? "global context" : elm->getName()));
     }
   } else if (bottom > top) {
-    unsigned dist = bottom - top + 1;
-    unsigned topPart = dist / 2;
-    unsigned bottomPart = dist / 2;
+    int dist = bottom - top + 1;
+    int topPart = dist / 2;
+    int bottomPart = dist / 2;
     if (dist == topPart + bottomPart) bottomPart--;
     auto iter = trace.begin();
-    for (unsigned i = top; i < topPart + top; i++) {
+    for (int i = top; i < topPart + top; i++) {
       move(i, 0);
       addstring("From " +
                 (*iter == nullptr
@@ -209,7 +208,7 @@ void drawTrace(unsigned top, unsigned bottom,
 
     iter = trace.end();
     --iter;
-    for (unsigned i = 3; i < bottomPart + 3; i++) {
+    for (int i = getmaxy(stdscr) - bottom; i < bottomPart + 3; i++) {
       move(i, 0);
       addstring("From " +
                 (*iter == nullptr ? "global context" : (**iter).getName()));
