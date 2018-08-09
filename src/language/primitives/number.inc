@@ -19,7 +19,7 @@
 // primitives
 
 //  {"NAME",
-//   {Stack{INPUT TYPES...},
+//   {Stack{INPUT TYPES...}, // vertically sorted, like the stack.
 //    [](Stack& s, map<string, DefinedFunction>&) {
 //      PRIMITIVE BODY...
 //    }}},

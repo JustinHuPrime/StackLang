@@ -15,11 +15,8 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-// Special included file for implementation of type-related function
-// primitives
+// Tests for primitive operations
 
-//  {"NAME",
-//   {Stack{INPUT TYPES...}, // vertically sorted, like the stack.
-//    [](Stack& s, map<string, DefinedFunction>&) {
-//      PRIMITIVE BODY...
-//    }}},
+#include "catch.hpp"
+
+namespace {}  // namespace

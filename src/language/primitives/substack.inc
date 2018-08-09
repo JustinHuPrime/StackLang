@@ -17,3 +17,9 @@
 
 // Special included file for implementation of substack-related function
 // primitives
+
+//  {"NAME",
+//   {Stack{INPUT TYPES...}, // vertically sorted, like the stack.
+//    [](Stack& s, map<string, DefinedFunction>&) {
+//      PRIMITIVE BODY...
+//    }}},

@@ -35,11 +35,11 @@
                     These functions have special side effects outside of the usual evaluation model.
                 </p>
                 <p>
-                    <code>define : Substack(Type) Substack Command(Quoted) -></code>
+                    <code>define : Command(Quoted) Substack Substack(Type) -></code>
                     <br/> Defines a function in the global context.
                 </p>
                 <p>
-                    <code>define* : Substack(Type) Substack Command(Quoted) Command(Quoted) -></code>
+                    <code>define* : Command(Quoted) Command(Quoted) Substack Substack(Type) -></code>
                     <br/> Defines the second command in the context of the first command (a "local" function). Names, however,
                     are always global, so the name must still be unique.
                 </p>
@@ -71,7 +71,7 @@
                 </p>
                 <p>
                     <code>rotate : Number(Exact) -></code>
-                    <br/> Takes the n'th element of the stack and moves it to the active end.
+                    <br/> Takes the n'th element (1 based - the command is at zero) of the stack and moves it to the active end.
                 </p>
                 <p>
                     <code>rotate* : Number(Exact) Number(Exact) -></code>
