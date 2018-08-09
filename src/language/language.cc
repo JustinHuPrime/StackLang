@@ -31,6 +31,7 @@
 namespace stacklang {
 namespace {
 using stacklang::exceptions::RuntimeError;
+using stacklang::exceptions::StackUnderflowError;
 using stacklang::exceptions::StopError;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
@@ -192,15 +193,8 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
-
         checkTypes(s, types, context);
-
-        try {
-          primResult->second.second(s, defines);
-        } catch (const RuntimeError& e) {
-          throw RuntimeError(e.getMessage(),
-                             context);  // rethrow error with context added.
-        }
+        primResult->second.second(s, defines, context);
         return execute(
             s, defines,
             context);  // clear off any commands produced but not executed

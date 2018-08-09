@@ -46,7 +46,8 @@ struct DefinedFunction {
                   const CommandElement* ctx = nullptr) noexcept;
 };
 
-typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&);
+typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&,
+                           list<CommandElement*>&);
 typedef pair<Stack, Prim> PrimitiveFunction;
 
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;

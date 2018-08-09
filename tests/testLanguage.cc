@@ -246,7 +246,8 @@ TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
   Stack stk =
       Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))};
-  Prim pf = [](Stack& s, map<string, DefinedFunction>&) { return; };
+  Prim pf = [](Stack& s, map<string, DefinedFunction>&,
+               list<CommandElement*>&) { return; };
 
   PrimitiveFunction* p = new PrimitiveFunction{stk, pf};
   delete p;
@@ -256,17 +257,18 @@ TEST_CASE("check PRIMITIVES segfault special case", "[language][PRIMTIVES]") {
   Stack stk =
       Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))};
-  Prim pf = [](Stack& s, map<string, DefinedFunction>&) { return; };
+  Prim pf = [](Stack& s, map<string, DefinedFunction>&,
+               list<CommandElement*>&) { return; };
 
   map<string, PrimitiveFunction>* manual =
       new map<string, PrimitiveFunction>{{"drop*", PrimitiveFunction{stk, pf}}};
 
   map<string, PrimitiveFunction>* prims = new map<string, PrimitiveFunction>{
       {"drop*",
-       PrimitiveFunction{
-           Stack{
-               new TypeElement(StackElement::DataType::Number,
-                               new TypeElement(StackElement::DataType::Exact))},
-           [](Stack& s, map<string, DefinedFunction>&) { return; }}},
+       PrimitiveFunction{Stack{new TypeElement(
+                             StackElement::DataType::Number,
+                             new TypeElement(StackElement::DataType::Exact))},
+                         [](Stack& s, map<string, DefinedFunction>&,
+                            list<CommandElement*>&) { return; }}},
   };
 }
