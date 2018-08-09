@@ -1,12 +1,18 @@
 #include "language/exceptions/languageExceptions.h"
 #include "language/language.h"
 
+#include <map>
+#include <string>
+
 #include "catch.hpp"
 
 namespace {
 using stacklang::checkContext;
 using stacklang::checkType;
 using stacklang::checkTypes;
+using stacklang::DefinedFunction;
+using stacklang::Prim;
+using stacklang::PrimitiveFunction;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::exceptions::SyntaxError;
@@ -16,6 +22,8 @@ using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
 using std::list;
+using std::map;
+using std::string;
 }  // namespace
 
 TEST_CASE("check single type simple pass", "[language][checkType]") {
@@ -230,4 +238,35 @@ TEST_CASE("check limiting context respected", "[language][checkContext]") {
   REQUIRE_THROWS_AS(
       checkContext(nullptr, other, "foldl-local", list<CommandElement*>{}),
       SyntaxError);
+  delete elm;
+  delete other;
+}
+
+TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
+  Stack stk =
+      Stack{new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact))};
+  Prim pf = [](Stack& s, map<string, DefinedFunction>&) { return; };
+
+  PrimitiveFunction* p = new PrimitiveFunction{stk, pf};
+  delete p;
+}
+
+TEST_CASE("check PRIMITIVES segfault special case", "[language][PRIMTIVES]") {
+  Stack stk =
+      Stack{new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact))};
+  Prim pf = [](Stack& s, map<string, DefinedFunction>&) { return; };
+
+  map<string, PrimitiveFunction>* manual =
+      new map<string, PrimitiveFunction>{{"drop*", PrimitiveFunction{stk, pf}}};
+
+  map<string, PrimitiveFunction>* prims = new map<string, PrimitiveFunction>{
+      {"drop*",
+       PrimitiveFunction{
+           Stack{
+               new TypeElement(StackElement::DataType::Number,
+                               new TypeElement(StackElement::DataType::Exact))},
+           [](Stack& s, map<string, DefinedFunction>&) { return; }}},
+  };
 }

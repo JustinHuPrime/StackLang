@@ -226,6 +226,7 @@ TEST_CASE("valid string", "[parse][StringElement]") {
   REQUIRE(str->getData() == "good\nstring");
   REQUIRE(blank->getData() == "");
   delete str;
+  delete blank;
 }
 
 TEST_CASE("substack with no closing delimiter", "[parse][SubstackElement]") {

@@ -132,8 +132,7 @@ class SubstackElement : public StackElement {
 class TypeElement : public StackElement {
  public:
   static TypeElement* parse(const string&);
-  explicit TypeElement(DataType) noexcept;
-  TypeElement(DataType, TypeElement*) noexcept;
+  TypeElement(DataType, TypeElement* = nullptr) noexcept;
   TypeElement(const TypeElement&) noexcept;
   TypeElement& operator=(const TypeElement&) noexcept;
   TypeElement(TypeElement&&) noexcept;

@@ -174,7 +174,7 @@ void drawError(const LanguageException& e) noexcept {
       move(0, 0);
       addstring(e.getKind());
 
-      move(1, 1);
+      move(1, 0);
       addstring(e.getMessage());
 
       drawTrace(3, maxY - 3, e.getTrace());

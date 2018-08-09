@@ -22,6 +22,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "language/exceptions/interpreterExceptions.h"
 #include "util/stringUtils.h"
@@ -33,6 +34,7 @@ using stacklang::exceptions::ParserException;
 using std::fixed;
 using std::setprecision;
 using std::stringstream;
+using std::swap;
 using std::to_string;
 using util::ends_with;
 using util::escape;
@@ -316,7 +318,7 @@ SubstackElement::operator string() const noexcept {
   buffer += " ";
 
   for (auto elm : data) {
-    buffer += string(*elm);
+    buffer += static_cast<string>(*elm);
     buffer += SUBSTACK_SEPARATOR;
   }
 
@@ -381,11 +383,6 @@ TypeElement* TypeElement::parse(const string& s) {
   }
 }  // namespace StackElements
 
-TypeElement::TypeElement(DataType type) noexcept
-    : StackElement(StackElement::DataType::Type),
-      data(type),
-      specialization(nullptr) {}
-
 TypeElement::TypeElement(DataType type, TypeElement* subType) noexcept
     : StackElement(StackElement::DataType::Type),
       data(type),
@@ -393,10 +390,8 @@ TypeElement::TypeElement(DataType type, TypeElement* subType) noexcept
 
 TypeElement::TypeElement(const TypeElement& other) noexcept
     : StackElement(StackElement::DataType::Type), data(other.data) {
-  if (other.specialization == nullptr)
-    specialization = nullptr;
-  else
-    specialization = other.specialization->clone();
+  specialization =
+      other.specialization == nullptr ? nullptr : other.specialization->clone();
 }
 
 TypeElement& TypeElement::operator=(const TypeElement& other) noexcept {
@@ -408,31 +403,32 @@ TypeElement& TypeElement::operator=(const TypeElement& other) noexcept {
 }
 
 TypeElement::TypeElement(TypeElement&& other) noexcept
-    : StackElement(StackElement::DataType::Type), data(other.data) {
-  TypeElement* temp = specialization;
-  specialization = other.specialization;
-  other.specialization = temp;
+    : StackElement(StackElement::DataType::Type),
+      data(other.data),
+      specialization(nullptr) {
+  swap(specialization, other.specialization);
 }
 
 TypeElement& TypeElement::operator=(TypeElement&& other) noexcept {
   data = other.data;
-  TypeElement* temp = specialization;
-  specialization = other.specialization;
-  other.specialization = temp;
+  swap(specialization, other.specialization);
   return *this;
 }
 
-TypeElement::~TypeElement() noexcept { delete specialization; }
+TypeElement::~TypeElement() noexcept {
+  if (specialization != nullptr) delete specialization;
+}
 
 TypeElement* TypeElement::clone() const noexcept {
-  return new TypeElement(data, specialization);
+  return new TypeElement(
+      data, specialization == nullptr ? nullptr : specialization->clone());
 }
 
 TypeElement::operator string() const noexcept {
   if (specialization == nullptr)
     return to_string(data);
   else
-    return to_string(data) + "(" + string(*specialization) + ")";
+    return to_string(data) + "(" + static_cast<string>(*specialization) + ")";
 }
 
 StackElement::DataType TypeElement::getData() const noexcept { return data; }

@@ -90,7 +90,7 @@ string SyntaxError::getKind() const noexcept { return "Syntax error:"; }
 TypeError::TypeError(const StackElement& expected, const StackElement& given,
                      list<CommandElement*> trace) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
-                            "\nGiven " + static_cast<string>(given),
+                            ", given " + static_cast<string>(given),
                         trace) {}
 
 TypeError::TypeError(const StackElement& expected,

@@ -31,6 +31,7 @@ using stacklang::StackElement;
 using stacklang::exceptions::StackOverflowError;
 using stacklang::exceptions::StackUnderflowError;
 using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::TypeElement;
 using std::numeric_limits;
 }  // namespace
 
@@ -47,6 +48,22 @@ TEST_CASE("stack initializer", "[Stack][constructor]") {
   delete s.pop();
   REQUIRE(s.top() == elm1);
   delete s.pop();
+  REQUIRE(s.isEmpty());
+}
+
+TEST_CASE("stack initializer with type", "[Stack][constructor][type]") {
+  StackElement* elm =
+      new TypeElement(StackElement::DataType::Command,
+                      new TypeElement(StackElement::DataType::Quoted));
+  Stack s{elm};
+  REQUIRE(s.top() == elm);
+}
+
+TEST_CASE("stack initializer with JIT type", "[Stack][constructor][type]") {
+  Stack s =
+      Stack{new TypeElement(StackElement::DataType::Command,
+                            new TypeElement(StackElement::DataType::Quoted))};
+  s.clear();
   REQUIRE(s.isEmpty());
 }
 
