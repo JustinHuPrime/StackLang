@@ -31,7 +31,24 @@
         new TypeElement(StackElement::DataType::Command,
                         new TypeElement(StackElement::DataType::Quoted))},
   [](Stack& s, map<string, DefinedFunction>& defs,
-     list<CommandElement*>& context) { return; }}},
+     list<CommandElement*>& context) {
+    CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
+    string name = nameElm->getName();
+    SubstackElement* body = dynamic_cast<SubstackElement*>(s.pop());
+    SubstackElement* sig = dynamic_cast<SubstackElement*>(s.pop());
+    auto iter = defs.find(name);
+    if (iter != defs.end()) {
+      delete body;
+      delete sig;
+      delete nameElm;
+      throw RuntimeError("Cannot redefine " + name + ".", context);
+    }
+    DefinedFunction def = DefinedFunction(sig->getData(), body->getData());
+    delete body;
+    delete sig;
+    delete nameElm;
+    defs[name] = def;
+  }}},
     {"define*",
      {Stack{new TypeElement(StackElement::DataType::Substack,
                             new TypeElement(StackElement::DataType::Type)),
@@ -46,7 +63,18 @@
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
       [](Stack& s, map<string, DefinedFunction>& defs,
-         list<CommandElement*>& context) { return; }}},
+         list<CommandElement*>& context) {
+        CommandElement* elm = dynamic_cast<CommandElement*>(s.pop());
+        string str = elm->getName();
+        delete elm;
+        auto iter = defs.find(str);
+        if (iter == defs.end()) {
+          throw RuntimeError("Command " + str + " was not previously defined.",
+                             context);
+        } else {
+          defs.erase(iter);
+        }
+      }}},
     {"include",
      {Stack{new TypeElement(StackElement::DataType::String)},
       [](Stack& s, map<string, DefinedFunction>& defs,

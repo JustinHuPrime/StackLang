@@ -53,6 +53,9 @@ DefinedFunction::DefinedFunction(const Stack& sig, const Stack& b,
                                  const CommandElement* ctx) noexcept
     : signature(sig), body(b), context(ctx) {}
 
+DefinedFunction::DefinedFunction() noexcept
+    : signature(Stack{}), body(Stack{}), context(nullptr) {}
+
 const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
   static map<string, PrimitiveFunction>* prims =
       new map<string, PrimitiveFunction>{
@@ -175,12 +178,12 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       checkContext(context.front(), defResult->second.context,
                    command->getName(), context);
 
-      context.push_back(command);  // now executing function
+      context.push_front(command);  // now executing function
       for (auto c : commands) {
         s.push(c->clone());
         execute(s, defines, context);
       }
-      context.pop_back();  // done with function
+      context.pop_front();  // done with function
       return execute(
           s, defines,
           context);  // clear off any commands produced but not executed

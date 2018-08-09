@@ -39,11 +39,12 @@ using std::pair;
 }  // namespace
 
 struct DefinedFunction {
-  const Stack& signature;
-  const Stack& body;
+  Stack signature;
+  Stack body;
   const CommandElement* context;
   DefinedFunction(const Stack& sig, const Stack& b,
                   const CommandElement* ctx = nullptr) noexcept;
+  DefinedFunction() noexcept;
 };
 
 typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&,
