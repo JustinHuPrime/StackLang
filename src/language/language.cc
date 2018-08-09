@@ -30,6 +30,7 @@
 
 namespace stacklang {
 namespace {
+using stacklang::exceptions::RuntimeError;
 using stacklang::exceptions::StopError;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
@@ -119,7 +120,7 @@ void checkTypes(const Stack& s, const Stack& types,
        typeIter++, stackIter++) {
     if (!checkType(*stackIter, *static_cast<const TypeElement*>(*typeIter),
                    context)) {
-      throw TypeError(**stackIter, **typeIter, context);
+      throw TypeError(**typeIter, **stackIter, context);
     }
   }
   if (typeIter != types.end()) {
@@ -149,6 +150,9 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
   if (stopFlag) {
     stopFlag = false;
     throw StopError();
+  }
+  if (s.isEmpty()) {
+    return;
   }
 
   const auto& PRIMS = PRIMITIVES();
@@ -191,7 +195,12 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
         checkTypes(s, types, context);
 
-        primResult->second.second(s, defines);
+        try {
+          primResult->second.second(s, defines);
+        } catch (const RuntimeError& e) {
+          throw RuntimeError(e.getMessage(),
+                             context);  // rethrow error with context added.
+        }
         return execute(
             s, defines,
             context);  // clear off any commands produced but not executed

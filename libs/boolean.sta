@@ -16,3 +16,36 @@
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
 ; StackLang extended boolean primitives
+
+<< Boolean Boolean >> ; -> Boolean
+<<
+or
+not
+>>
+`nor
+define
+
+<< Boolean Boolean >> ; -> Boolean
+<<
+xor
+not
+>>
+`nxor
+define
+
+<< Boolean Boolean >> ; -> Boolean
+<<
+and
+not
+>>
+`nand
+define
+
+<< Boolean Boolean >> ; -> Boolean
+<<
+2, rotate
+not
+or
+>>
+`implies
+define

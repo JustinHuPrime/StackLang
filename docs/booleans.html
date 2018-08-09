@@ -78,9 +78,6 @@ boolean = true-symbol | false-symbol ;</pre>
                     <br/> Produces a boolean as if the string were read in from the interpreter. Fails with a
                     <code>RuntimeError</code> if string cannot be parsed.
                 </p>
-                <p>
-                    <code>string-to-boolean : String -> Boolean</code>
-                </p>
                 <h3 id="logical">Logical Operators</h3>
                 <p>
                     <code>if : Boolean Any Any -> Any</code>
@@ -135,6 +132,11 @@ boolean = true-symbol | false-symbol ;</pre>
                     <code>true</code> if at least one input is
                     <code>false</code>,
                     <code>false</code> otherwise.
+                </p>
+                <p>
+                    <code>implies : Boolean Boolean -> Boolean</code>
+                    <br/> Produces
+                    <code>true</code> if the second implies (not the second or the first) the first.
                 </p>
                 <hr/>
                 <div id="footer"></div>
