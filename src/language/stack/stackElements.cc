@@ -182,6 +182,12 @@ NumberElement* NumberElement::parse(const string& s) {
   }
 }
 
+NumberElement::NumberElement(double num, bool isExact) noexcept
+    : StackElement(StackElement::DataType::Number), exact(isExact) {
+  data = mpq_class(num);
+  data.canonicalize();
+}
+
 NumberElement::NumberElement(string d, bool isExact) noexcept
     : StackElement(StackElement::DataType::Number), exact(isExact) {
   d = removeChar(d, '+');

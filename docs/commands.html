@@ -64,7 +64,8 @@ command = quoted-command | unquoted-command ;</pre>
                 </p>
                 <p>
                     <code>local? : Any -> Boolean</code>
-                    <br/> Produces true if input has a context.
+                    <br/> Produces true if define bound to this command has a context. Command must exist - fails with a
+                    <code>RuntimeError</code> if command does not exist.
                 </p>
                 <h3 id="conversion">Type Conversion</h3>
                 <p>
@@ -85,16 +86,21 @@ command = quoted-command | unquoted-command ;</pre>
                 <p>
                     <code>string-to-command* : String -> Command(Quoted)</code>
                     <br/> Parses a command, as if it were read in from the interpreter. Fails with a
-                    <code>RuntimeError</code> if string cannot be parsed. Resulting command is converted into quoted form automatically.
+                    <code>RuntimeError</code> if string cannot be parsed. Resulting command is coerced into quoted form automatically.
                 </p>
                 <h3 id="getters">Command Properties</h3>
+                <p>
+                    For all of these commands, the given command must exist, and these commands will fail with a
+                    <code>RuntimeError</code> if the command does not exist.
+                </p>
                 <p>
                     <code>arity : Command(Quoted) -> Number(Exact)</code>
                     <br/> Produces the arity of the given command.
                 </p>
                 <p>
                     <code>body : Command(Quoted) -> Substack</code>
-                    <br/> Produces the body of this command.
+                    <br/> Produces the body of this command. Fails with a
+                    <code>RuntimmeError</code> if given command is not defined.
                 </p>
                 <p>
                     <code>context : Command(Quoted) -> Command(Quoted)</code>

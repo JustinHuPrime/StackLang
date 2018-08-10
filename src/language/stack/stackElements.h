@@ -82,6 +82,7 @@ class NumberElement : public StackElement {
 
   static NumberElement* parse(const string&);
 
+  explicit NumberElement(double, bool isExact = true) noexcept;
   explicit NumberElement(string, bool isExact = true) noexcept;
   explicit NumberElement(const mpq_class&, bool isExact = true) noexcept;
   NumberElement* clone() const noexcept override;

@@ -31,7 +31,7 @@
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Boolean &&
-            !dynamic_cast<const BooleanElement*>(elm.get())->getData()));
+            !dynamic_cast<BooleanElement*>(elm.get())->getData()));
       }}},
     {"true?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
@@ -55,14 +55,12 @@
         try {
           result = ElementPtr(StackElement::parse(elm->getData()));
         } catch (...) {
-          string elmString = static_cast<string>(*elm);
-          throw RuntimeError(
-              "Parsing of element " + elmString + " produced an error.",
-              context);
+          throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
+                                 " produced an error.",
+                             context);
         }
         if (result->getType() != StackElement::DataType::Boolean) {
-          string elmString = static_cast<string>(*elm);
-          throw RuntimeError("Parsing of element " + elmString +
+          throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
                                  " produced a non-boolean result.",
                              context);
         }

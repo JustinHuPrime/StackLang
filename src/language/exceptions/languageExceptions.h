@@ -66,6 +66,8 @@ class LanguageException {
 class RuntimeError : public LanguageException {
  public:
   explicit RuntimeError(const string&, list<string> = list<string>{}) noexcept;
+  RuntimeError(const string&, const string&, size_t,
+               list<string> = list<string>{}) noexcept;
   RuntimeError(const RuntimeError&) = default;
 
   RuntimeError& operator=(const RuntimeError&) = default;

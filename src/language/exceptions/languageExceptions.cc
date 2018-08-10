@@ -48,6 +48,10 @@ const list<string>& LanguageException::getTrace() const noexcept {
 RuntimeError::RuntimeError(const string& msg, list<string> trace) noexcept
     : LanguageException(msg, trace) {}
 
+RuntimeError::RuntimeError(const string& msg, const string& ctx, size_t index,
+                           list<string> trace) noexcept
+    : LanguageException(msg, ctx, index, trace) {}
+
 string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
 
 StackOverflowError::StackOverflowError(size_t limit,

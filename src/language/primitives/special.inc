@@ -53,21 +53,20 @@
           throw RuntimeError("Cannot redefine " + name->getName() + ".",
                              context);
         }
-        DefinedFunction def =
-            DefinedFunction(sig->getData(), body->getData(), contextReq.get());
+        DefinedFunction def = DefinedFunction(sig->getData(), body->getData(),
+                                              contextReq.release());
         defs[name->getName()] = def;
       }}},
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
       [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
-        CommandElement* elm = dynamic_cast<CommandElement*>(s.pop());
-        string str = elm->getName();
-        delete elm;
-        auto iter = defs.find(str);
+        CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
+        auto iter = defs.find(elm->getName());
         if (iter == defs.end()) {
-          throw RuntimeError("Command " + str + " was not previously defined.",
-                             context);
+          throw RuntimeError(
+              "Command " + elm->getName() + " was not previously defined.",
+              context);
         } else {
           defs.erase(iter);
         }
@@ -86,16 +85,105 @@
      {Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))},
       [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
-        NumberElement* num = dynamic_cast<NumberElement*>(s.pop());
+        NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         mpq_class rawNum = num->getData();
         if (rawNum.get_den() != 1 || rawNum.get_num() <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*num) + " instead.",
                              context);
         }
-        mpz_class rawInt(rawNum.get_num());
-        for (; rawInt > 0; rawInt--) {
-          delete s.pop();
+        size_t i = rawNum.get_num().get_ui();
+        while (i-- > 0) delete s.pop();
+      }}},
+    {"rotate",
+     {Stack{new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact))},
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+        NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
+        mpq_class rawNum = num->getData();
+        if (rawNum.get_den() != 1 || rawNum.get_num() <= 0) {
+          throw RuntimeError("Expected a positive integer, but got " +
+                                 static_cast<string>(*num) + " instead.",
+                             context);
         }
-        delete num;
+        size_t i = rawNum.get_num().get_ui();
+        StackElement* grabbed;
+        stack<StackElement*> rest;
+        while (i-- > 1) rest.push(s.pop());
+        grabbed = s.pop();
+        while (!rest.empty()) {
+          s.push(rest.top());
+          rest.pop();
+        }
+        s.push(grabbed);
+      }}},
+    {"rotate*",
+     {Stack{new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact)),
+            new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact))},
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+        NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
+        NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
+        mpq_class rawReach = second->getData();
+        if (rawReach.get_den() != 1 || rawReach.get_num() <= 0) {
+          throw RuntimeError("Expected a positive integer, but got " +
+                                 static_cast<string>(*second) + " instead.",
+                             context);
+        }
+        mpq_class rawCount = second->getData();
+        if (rawCount.get_den() != 1 || rawCount.get_num() <= 0) {
+          throw RuntimeError("Expected a positive integer, but got " +
+                                 static_cast<string>(*first) + " instead.",
+                             context);
+        }
+        for (size_t count = rawCount.get_num().get_ui(); count > 0; count--) {
+          size_t reach = rawReach.get_num().get_ui();
+          StackElement* grabbed;
+          stack<StackElement*> rest;
+          while (reach-- > 1) rest.push(s.pop());
+          grabbed = s.pop();
+          while (!rest.empty()) {
+            s.push(rest.top());
+            rest.pop();
+          }
+          s.push(grabbed);
+        }
+      }}},
+    {"duplicate",
+     {Stack{new TypeElement(StackElement::DataType::Any)},
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+        s.push(s.top()->clone());
+      }}},
+    {"error",
+     {Stack{new TypeElement(StackElement::DataType::String)},
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+        StringPtr str(dynamic_cast<StringElement*>(s.pop()));
+        throw new RuntimeError(str->getData(), context);
+      }}},
+    {"error*",
+     {Stack{new TypeElement(StackElement::DataType::String),
+            new TypeElement(StackElement::DataType::String),
+            new TypeElement(StackElement::DataType::Number,
+                            new TypeElement(StackElement::DataType::Exact))},
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+        NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
+        StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
+        StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
+        mpq_class rawIndex = ctxIndex->getData();
+        if (rawIndex.get_den() != 1 || rawIndex.get_num() <= 0) {
+          throw RuntimeError("Expected a positive integer, but got " +
+                                 static_cast<string>(*ctxIndex) + " instead.",
+                             context);
+        }
+        throw new RuntimeError(msg->getData(), ctx->getData(),
+                               rawIndex.get_num().get_ui(), context);
+      }}},
+    {"null",
+     {Stack{},
+      [](Stack&, map<string, DefinedFunction>&, list<string>&) { return; }}},
+    {"identity",
+     {Stack{new TypeElement(StackElement::DataType::Any)},
+      [](Stack&, map<string, DefinedFunction>&, list<string>&) {
+        return;  // equivalent to popping then pushing.
       }}},

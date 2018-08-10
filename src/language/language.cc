@@ -21,6 +21,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <stack>
 
 #include <gmp.h>
 #include <gmpxx.h>
@@ -51,6 +52,7 @@ using std::all_of;
 using std::begin;
 using std::end;
 using std::find_if;
+using std::stack;
 }  // namespace
 
 bool stopFlag = false;
