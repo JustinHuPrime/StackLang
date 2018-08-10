@@ -58,7 +58,27 @@
             new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
       [](Stack& s, map<string, DefinedFunction>& defs,
-         list<CommandElement*>& context) { return; }}},
+         list<CommandElement*>& context) {
+        CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
+        string name = nameElm->getName();
+        CommandElement* contextReq = dynamic_cast<CommandElement*>(s.pop());
+        SubstackElement* body = dynamic_cast<SubstackElement*>(s.pop());
+        SubstackElement* sig = dynamic_cast<SubstackElement*>(s.pop());
+        auto iter = defs.find(name);
+        if (iter != defs.end()) {
+          delete body;
+          delete sig;
+          delete nameElm;
+          delete contextReq;
+          throw RuntimeError("Cannot redefine " + name + ".", context);
+        }
+        DefinedFunction def =
+            DefinedFunction(sig->getData(), body->getData(), contextReq);
+        delete body;
+        delete sig;
+        delete nameElm;
+        defs[name] = def;
+      }}},
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},

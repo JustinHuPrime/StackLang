@@ -153,7 +153,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
              list<CommandElement*> context) {
   if (stopFlag) {
     stopFlag = false;
-    throw StopError();
+    throw StopError(context);
   }
   if (s.isEmpty()) {
     return;
@@ -162,7 +162,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
   const auto& PRIMS = PRIMITIVES();
 
   if (s.top()->getType() == StackElement::DataType::Command &&
-      !dynamic_cast<CommandElement*>(s.top())->isQuoted()) {
+      !dynamic_cast<const CommandElement*>(s.top())->isQuoted()) {
     CommandElement* command = dynamic_cast<CommandElement*>(s.pop());
     const auto& defResult =
         find_if(defines.begin(), defines.end(),
@@ -197,7 +197,9 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
         checkTypes(s, types, context);
+        context.push_front(new CommandElement(primResult->first));
         primResult->second.second(s, defines, context);
+        context.pop_front();
         return execute(
             s, defines,
             context);  // clear off any commands produced but not executed
