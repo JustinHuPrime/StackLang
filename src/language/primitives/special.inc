@@ -28,7 +28,7 @@
     CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
     SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
     SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
-    auto iter = defs.find(name);
+    auto iter = defs.find(name->getName());
     if (iter != defs.end()) {
       throw RuntimeError("Cannot redefine " + name->getName() + ".", context);
     }
@@ -48,13 +48,13 @@
         CommandPtr contextReq(dynamic_cast<CommandElement*>(s.pop()));
         SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
         SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
-        auto iter = defs.find(name);
+        auto iter = defs.find(name->getName());
         if (iter != defs.end()) {
           throw RuntimeError("Cannot redefine " + name->getName() + ".",
                              context);
         }
         DefinedFunction def =
-            DefinedFunction(sig->getData(), body->getData(), contextReq->get());
+            DefinedFunction(sig->getData(), body->getData(), contextReq.get());
         defs[name->getName()] = def;
       }}},
     {"undefine",

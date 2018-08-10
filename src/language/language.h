@@ -47,8 +47,8 @@ struct DefinedFunction {
   DefinedFunction() noexcept;
 };
 
-typedef map<string, DefinedFunction> Defines typedef void (*const Prim)(
-    Stack&, Defines&, list<string>&);
+typedef map<string, DefinedFunction> Defines;
+typedef void (*const Prim)(Stack&, Defines&, list<string>&);
 typedef pair<Stack, Prim> PrimitiveFunction;
 typedef map<string, PrimitiveFunction> Primitives;
 

@@ -37,6 +37,7 @@
 
 namespace {
 using stacklang::DefinedFunction;
+using stacklang::Defines;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::stopFlag;
