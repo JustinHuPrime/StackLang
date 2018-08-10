@@ -36,11 +36,17 @@ using stacklang::exceptions::StopError;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
 using stacklang::stackelements::BooleanElement;
+using stacklang::stackelements::BooleanPtr;
 using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::CommandPtr;
 using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::NumberPtr;
 using stacklang::stackelements::StringElement;
+using stacklang::stackelements::StringPtr;
 using stacklang::stackelements::SubstackElement;
+using stacklang::stackelements::SubstackPtr;
 using stacklang::stackelements::TypeElement;
+using stacklang::stackelements::TypePtr;
 using std::all_of;
 using std::begin;
 using std::end;
@@ -73,7 +79,7 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
 }
 
 bool checkType(const StackElement* elm, const TypeElement type,
-               const list<CommandElement*>& context) {
+               const list<string>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
     return false;
   } else if (type.getData() == StackElement::DataType::Any &&
@@ -110,13 +116,13 @@ bool checkType(const StackElement* elm, const TypeElement type,
       return checkType(e, *spec, context);
     });
   } else {  // is a specialized non-substack, non-number
-    throw new SyntaxError("Impossible type detected.",
-                          static_cast<string>(type), 0, context);
+    throw SyntaxError("Impossible type detected.", static_cast<string>(type), 0,
+                      context);
   }
 }
 
 void checkTypes(const Stack& s, const Stack& types,
-                const list<CommandElement*>& context) {
+                const list<string>& context) {
   auto typeIter = types.begin();
   auto stackIter = s.begin();
 
@@ -132,25 +138,25 @@ void checkTypes(const Stack& s, const Stack& types,
   }
 }
 
-void checkContext(const CommandElement* actual, const CommandElement* required,
-                  const string& name, const list<CommandElement*>& context) {
+void checkContext(const string& actual, const CommandElement* required,
+                  const string& name, const list<string>& context) {
   if (required != nullptr) {
-    if (actual == nullptr) {
+    if (actual == GLOBAL_CONTEXT) {
       throw SyntaxError("Attempted to use `" + name +
                             "` at top level. Expected to be within `" +
                             required->getName() + "`.",
                         context);
-    } else if (actual->getName() != required->getName()) {
-      throw SyntaxError("Attempted to use `" + name + "` within `" +
-                            actual->getName() + "`. Expected to be within `" +
-                            required->getName() + "`.",
+    } else if (actual != required->getName()) {
+      throw SyntaxError("Attempted to use `" + name + "` within `" + actual +
+                            "`. Expected to be within `" + required->getName() +
+                            "`.",
                         context);
     }
   }
 }
 
 void execute(Stack& s, map<string, DefinedFunction>& defines,
-             list<CommandElement*> context) {
+             list<string> context) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError(context);
@@ -163,7 +169,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
 
   if (s.top()->getType() == StackElement::DataType::Command &&
       !dynamic_cast<const CommandElement*>(s.top())->isQuoted()) {
-    CommandElement* command = dynamic_cast<CommandElement*>(s.pop());
+    CommandPtr command(dynamic_cast<CommandElement*>(s.pop()));
     const auto& defResult =
         find_if(defines.begin(), defines.end(),
                 [&command](const pair<string, DefinedFunction>& entry) {
@@ -178,10 +184,10 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       checkContext(context.front(), defResult->second.context,
                    command->getName(), context);
 
-      context.push_front(command);  // now executing function
+      context.push_front(command->getName());  // now executing function
       for (auto c : commands) {
         s.push(c->clone());
-        execute(s, defines, context);
+        execute(s, defines, context);  // TODO: make this tail recursive.
       }
       context.pop_front();  // done with function
       return execute(
@@ -197,7 +203,7 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
         checkTypes(s, types, context);
-        context.push_front(new CommandElement(primResult->first));
+        context.push_front(primResult->first);
         primResult->second.second(s, defines, context);
         context.pop_front();
         return execute(
@@ -208,8 +214,6 @@ void execute(Stack& s, map<string, DefinedFunction>& defines,
                           command->getName(), 0, context);
       }
     }
-
-    delete command;
   }
 }  // namespace stacklang
 }  // namespace stacklang

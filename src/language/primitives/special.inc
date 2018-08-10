@@ -30,8 +30,7 @@
         new TypeElement(StackElement::DataType::Substack),
         new TypeElement(StackElement::DataType::Command,
                         new TypeElement(StackElement::DataType::Quoted))},
-  [](Stack& s, map<string, DefinedFunction>& defs,
-     list<CommandElement*>& context) {
+  [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
     CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
     string name = nameElm->getName();
     SubstackElement* body = dynamic_cast<SubstackElement*>(s.pop());
@@ -57,8 +56,7 @@
                             new TypeElement(StackElement::DataType::Quoted)),
             new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs,
-         list<CommandElement*>& context) {
+      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
         CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
         string name = nameElm->getName();
         CommandElement* contextReq = dynamic_cast<CommandElement*>(s.pop());
@@ -82,8 +80,7 @@
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs,
-         list<CommandElement*>& context) {
+      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
         CommandElement* elm = dynamic_cast<CommandElement*>(s.pop());
         string str = elm->getName();
         delete elm;
@@ -97,18 +94,18 @@
       }}},
     {"include",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>& defs,
-         list<CommandElement*>& context) { return; }}},
+      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+        return;
+      }}},
     {"drop",
      {Stack{},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         if (!s.isEmpty()) delete s.pop();
       }}},
     {"drop*",
      {Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))},
-      [](Stack& s, map<string, DefinedFunction>&,
-         list<CommandElement*>& context) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         NumberElement* num = dynamic_cast<NumberElement*>(s.pop());
         mpq_class rawNum = num->getData();
         if (rawNum.get_den() != 1 || rawNum.get_num() <= 0) {

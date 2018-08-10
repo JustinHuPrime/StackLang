@@ -342,40 +342,37 @@ TypeElement* TypeElement::parse(const string& s) {
     }
     return new TypeElement(static_cast<DataType>(value - begin(TYPES())));
   } else if (starts_with(s, "Substack")) {  // substack specializations
-    TypeElement* elm = new TypeElement(
+    TypePtr elm(new TypeElement(
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2)));
+                                    s.length() - s.find_first_of('(') - 2))));
     if (static_cast<int>(elm->specialization->data) >= NUM_PRIM_TYPES) {
-      delete elm;
       throw ParserException("Bad specialization on a Substack type.", s,
                             s.find('(') + 1);
     }
-    return elm;
+    return elm.release();
   } else if (starts_with(s, "Number")) {
-    TypeElement* elm = new TypeElement(
+    TypePtr elm(new TypeElement(
         DataType::Number,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2)));
+                                    s.length() - s.find_first_of('(') - 2))));
     if (elm->specialization->data != DataType::Exact &&
         elm->specialization->data != DataType::Inexact) {
-      delete elm;
       throw ParserException("Bad specialization on a Number type.", s,
                             s.find('(') + 1);
     }
-    return elm;
+    return elm.release();
   } else if (starts_with(s, "Command")) {
-    TypeElement* elm = new TypeElement(
+    TypePtr elm(new TypeElement(
         DataType::Command,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2)));
+                                    s.length() - s.find_first_of('(') - 2))));
     if (elm->specialization->data != DataType::Quoted &&
         elm->specialization->data != DataType::Unquoted) {
-      delete elm;
       throw ParserException("Wrong specialization on a Command type.", s,
                             s.find('(') + 1);
     }
-    return elm;
+    return elm.release();
   } else {
     throw ParserException(
         "Cannot have a specialzation except on a Substack, Number, or Command.",

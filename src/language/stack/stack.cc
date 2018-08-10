@@ -149,8 +149,7 @@ void Stack::push(StackElement* ptr) {
     throw StackOverflowError(limit);
   }
 
-  Node* temp = new Node(ptr, head);
-  head = temp;
+  Node* temp = head = new Node(ptr, head);
   dataSize++;
 }
 

@@ -39,11 +39,11 @@ using std::string;
 class LanguageException {
  public:
   // Creates an error with a message, but no context
-  explicit LanguageException(
-      const string&, list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  explicit LanguageException(const string&,
+                             list<string> = list<string>{}) noexcept;
   // Creates an error with a message and context (plus exact location of error)
   LanguageException(const string&, const string&, size_t,
-                    list<CommandElement*> = list<CommandElement*>{}) noexcept;
+                    list<string> = list<string>{}) noexcept;
   LanguageException(const LanguageException&) = default;
 
   LanguageException& operator=(const LanguageException&) = default;
@@ -54,19 +54,18 @@ class LanguageException {
   const string& getContext() const noexcept;
   size_t getLocation() const noexcept;
   bool hasContext() const noexcept;
-  const list<CommandElement*>& getTrace() const noexcept;
+  const list<string>& getTrace() const noexcept;
 
  protected:
   string message, context;
   size_t location;
   bool errorHasContext;
-  list<CommandElement*> stacktrace;
+  list<string> stacktrace;
 };
 
 class RuntimeError : public LanguageException {
  public:
-  explicit RuntimeError(
-      const string&, list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  explicit RuntimeError(const string&, list<string> = list<string>{}) noexcept;
   RuntimeError(const RuntimeError&) = default;
 
   RuntimeError& operator=(const RuntimeError&) = default;
@@ -76,8 +75,7 @@ class RuntimeError : public LanguageException {
 
 class StackOverflowError : public LanguageException {
  public:
-  explicit StackOverflowError(
-      size_t, list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  explicit StackOverflowError(size_t, list<string> = list<string>{}) noexcept;
   StackOverflowError(const StackOverflowError&) = default;
 
   StackOverflowError& operator=(const StackOverflowError&) = default;
@@ -87,7 +85,7 @@ class StackOverflowError : public LanguageException {
 
 class StackUnderflowError : public LanguageException {
  public:
-  StackUnderflowError(list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  StackUnderflowError(list<string> = list<string>{}) noexcept;
   StackUnderflowError(const StackUnderflowError&) = default;
 
   StackUnderflowError& operator=(const StackUnderflowError&) = default;
@@ -97,7 +95,7 @@ class StackUnderflowError : public LanguageException {
 
 class StopError : public LanguageException {
  public:
-  StopError(list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  StopError(list<string> = list<string>{}) noexcept;
   StopError(const StopError&) = default;
 
   StopError& operator=(const StopError&) = default;
@@ -107,10 +105,9 @@ class StopError : public LanguageException {
 
 class SyntaxError : public LanguageException {
  public:
-  SyntaxError(const string& msg,
-              list<CommandElement*> = list<CommandElement*>{}) noexcept;
+  SyntaxError(const string& msg, list<string> = list<string>{}) noexcept;
   SyntaxError(const string& msg, const string& ctx, size_t pos,
-              list<CommandElement*> = list<CommandElement*>{}) noexcept;
+              list<string> = list<string>{}) noexcept;
   SyntaxError(const SyntaxError&) = default;
 
   SyntaxError& operator=(const SyntaxError&) = default;
@@ -121,9 +118,8 @@ class SyntaxError : public LanguageException {
 class TypeError : public LanguageException {
  public:
   TypeError(const StackElement&, const StackElement&,
-            list<CommandElement*> = list<CommandElement*>{}) noexcept;
-  TypeError(const StackElement&,
-            list<CommandElement*> = list<CommandElement*>{}) noexcept;
+            list<string> = list<string>{}) noexcept;
+  TypeError(const StackElement&, list<string> = list<string>{}) noexcept;
   TypeError(const TypeError&) = default;
 
   TypeError& operator=(const TypeError&) = default;

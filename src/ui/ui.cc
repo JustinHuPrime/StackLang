@@ -194,11 +194,11 @@ void drawError(const LanguageException& e) noexcept {
   }
 }
 
-void drawTrace(int top, int bottom, const list<CommandElement*>& trace) {
+void drawTrace(int top, int bottom, const list<string>& trace) {
   if (bottom > top && static_cast<ptrdiff_t>(trace.size()) <= bottom - top) {
-    for (const CommandElement* elm : trace) {
+    for (const string& elm : trace) {
       move(top++, 0);
-      addstring("From " + (elm == nullptr ? "global context" : elm->getName()));
+      addstring("From " + elm);
     }
   } else if (bottom > top) {
     int dist = bottom - top + 1;
@@ -208,10 +208,7 @@ void drawTrace(int top, int bottom, const list<CommandElement*>& trace) {
     auto iter = trace.begin();
     for (int i = top; i < topPart + top; i++) {
       move(i, 0);
-      addstring("From " +
-                (*iter == nullptr
-                     ? "global context"
-                     : (**iter).getName()));  // shouldn't need this check.
+      addstring("From " + *iter);
       ++iter;
     }
 
@@ -219,8 +216,7 @@ void drawTrace(int top, int bottom, const list<CommandElement*>& trace) {
     --iter;
     for (int i = getmaxy(stdscr) - bottom; i < bottomPart + 3; i++) {
       move(i, 0);
-      addstring("From " +
-                (*iter == nullptr ? "global context" : (**iter).getName()));
+      addstring("From " + *iter);
       --iter;
     }
 
@@ -250,12 +246,11 @@ void printError(const LanguageException& e) noexcept {
     cerr << e.getContext() << '\n';
     cerr << spaces(e.getLocation()) << "^" << '\n';
   }
-  const list<CommandElement*>& stacktrace = e.getTrace();
+  const list<string>& stacktrace = e.getTrace();
   if (!stacktrace.empty()) {
     cerr << '\n';
-    for (const CommandElement* ctx : stacktrace) {
-      cerr << "In " << (ctx == nullptr ? "global context" : ctx->getName())
-           << '\n';
+    for (const string& ctx : stacktrace) {
+      cerr << "From " << ctx << '\n';
     }
   }
   cerr.flush();

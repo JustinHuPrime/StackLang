@@ -26,26 +26,22 @@
 
 {"boolean?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
-    StackElement* elm = s.pop();
-    BooleanElement* result =
-        new BooleanElement(elm->getType() == StackElement::DataType::Boolean);
-    delete elm;
-    s.push(result);
+  [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+    ElementPtr elm(s.pop());
+    s.push(
+        new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
   }}},
     {"false?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
-        StackElement* elm = s.pop();
-        BooleanElement* result = new BooleanElement(
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+        ElementPtr elm(s.pop());
+        s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Boolean &&
-            !dynamic_cast<BooleanElement*>(elm)->getData());
-        delete elm;
-        s.push(result);
+            !dynamic_cast<const BooleanElement*>(elm.get())->getData()));
       }}},
     {"true?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         StackElement* elm = s.pop();
         BooleanElement* result = new BooleanElement(
             elm->getType() == StackElement::DataType::Boolean &&
@@ -55,7 +51,7 @@
       }}},
     {"boolean-to-string",
      {Stack{new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* elm = dynamic_cast<BooleanElement*>(s.pop());
         StringElement* result = new StringElement(static_cast<string>(*elm));
         delete elm;
@@ -63,8 +59,7 @@
       }}},
     {"string-to-boolean",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>&,
-         list<CommandElement*>& context) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         StringElement* elm = dynamic_cast<StringElement*>(s.pop());
         StackElement* result;
         try {
@@ -91,7 +86,7 @@
      {Stack{new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* boolean = dynamic_cast<BooleanElement*>(s.pop());
         StackElement* falseCase = s.pop();
         StackElement* trueCase = s.pop();
@@ -106,7 +101,7 @@
       }}},
     {"not",
      {Stack{new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* a = dynamic_cast<BooleanElement*>(s.pop());
         BooleanElement* result = new BooleanElement(!a->getData());
         delete a;
@@ -115,7 +110,7 @@
     {"or",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* a = dynamic_cast<BooleanElement*>(s.pop());
         BooleanElement* b = dynamic_cast<BooleanElement*>(s.pop());
         if (a->getData()) {  // a is true
@@ -129,7 +124,7 @@
     {"and",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* a = dynamic_cast<BooleanElement*>(s.pop());
         BooleanElement* b = dynamic_cast<BooleanElement*>(s.pop());
         if (!a->getData()) {  // a is false
@@ -143,7 +138,7 @@
     {"xor",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, map<string, DefinedFunction>&, list<CommandElement*>&) {
+      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
         BooleanElement* a = dynamic_cast<BooleanElement*>(s.pop());
         BooleanElement* b = dynamic_cast<BooleanElement*>(s.pop());
         BooleanElement* result =
