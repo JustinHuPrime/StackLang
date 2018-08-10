@@ -11,6 +11,7 @@ using stacklang::checkContext;
 using stacklang::checkType;
 using stacklang::checkTypes;
 using stacklang::DefinedFunction;
+using stacklang::ElementPtr;
 using stacklang::GLOBAL_CONTEXT;
 using stacklang::Prim;
 using stacklang::PrimitiveFunction;
@@ -19,7 +20,9 @@ using stacklang::StackElement;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
 using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::CommandPtr;
 using stacklang::stackelements::NumberElement;
+using stacklang::stackelements::NumberPtr;
 using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
 using std::list;
@@ -28,39 +31,35 @@ using std::string;
 }  // namespace
 
 TEST_CASE("check single type simple pass", "[language][checkType]") {
-  NumberElement* elm = new NumberElement("22/7");
+  NumberPtr elm(NumberElement::parse("22/7"));
   TypeElement t = TypeElement(StackElement::DataType::Number);
-  REQUIRE(checkType(elm, t, list<string>{}));
-  delete elm;
+  REQUIRE(checkType(elm.get(), t, list<string>{}));
 }
 
 TEST_CASE("check single type simple fail", "[language][checkType]") {
-  CommandElement* elm = new CommandElement("foldl");
+  CommandPtr elm(CommandElement::parse("foldl"));
   TypeElement t = TypeElement(StackElement::DataType::Boolean);
-  REQUIRE_FALSE(checkType(elm, t, list<string>{}));
-  delete elm;
+  REQUIRE_FALSE(checkType(elm.get(), t, list<string>{}));
 }
 
 TEST_CASE("check number types", "[language][checkType]") {
-  NumberElement* exact = new NumberElement("22/7");
-  NumberElement* inexact = NumberElement::parse("~22/7");
+  NumberPtr exact(NumberElement::parse("22/7"));
+  NumberPtr inexact(NumberElement::parse("~22/7"));
   TypeElement exactT =
       TypeElement(StackElement::DataType::Number,
                   new TypeElement(StackElement::DataType::Exact));
   TypeElement inexactT =
       TypeElement(StackElement::DataType::Number,
                   new TypeElement(StackElement::DataType::Inexact));
-  REQUIRE(checkType(exact, exactT, list<string>{}));
-  REQUIRE(checkType(inexact, inexactT, list<string>{}));
-  REQUIRE_FALSE(checkType(exact, inexactT, list<string>{}));
-  REQUIRE_FALSE(checkType(inexact, exactT, list<string>{}));
-  delete exact;
-  delete inexact;
+  REQUIRE(checkType(exact.get(), exactT, list<string>{}));
+  REQUIRE(checkType(inexact.get(), inexactT, list<string>{}));
+  REQUIRE_FALSE(checkType(exact.get(), inexactT, list<string>{}));
+  REQUIRE_FALSE(checkType(inexact.get(), exactT, list<string>{}));
 }
 
 TEST_CASE("check command variants", "[language][checkType]") {
-  CommandElement* raw = new CommandElement("raw-command");
-  CommandElement* quoted = CommandElement::parse("`quoted-command");
+  CommandPtr raw(CommandElement::parse("raw-command"));
+  CommandPtr quoted(CommandElement::parse("`quoted-command"));
   TypeElement anyT = TypeElement(StackElement::DataType::Command);
   TypeElement quotedT =
       TypeElement(StackElement::DataType::Command,
@@ -68,21 +67,17 @@ TEST_CASE("check command variants", "[language][checkType]") {
   TypeElement rawT =
       TypeElement(StackElement::DataType::Command,
                   new TypeElement(StackElement::DataType::Unquoted));
-  REQUIRE(checkType(raw, anyT, list<string>{}));
-  REQUIRE(checkType(quoted, anyT, list<string>{}));
-  REQUIRE(checkType(raw, rawT, list<string>{}));
-  REQUIRE(checkType(quoted, quotedT, list<string>{}));
-  REQUIRE_FALSE(checkType(raw, quotedT, list<string>{}));
-  REQUIRE_FALSE(checkType(quoted, rawT, list<string>{}));
-  delete raw;
-  delete quoted;
+  REQUIRE(checkType(raw.get(), anyT, list<string>{}));
+  REQUIRE(checkType(quoted.get(), anyT, list<string>{}));
+  REQUIRE(checkType(raw.get(), rawT, list<string>{}));
+  REQUIRE(checkType(quoted.get(), quotedT, list<string>{}));
+  REQUIRE_FALSE(checkType(raw.get(), quotedT, list<string>{}));
+  REQUIRE_FALSE(checkType(quoted.get(), rawT, list<string>{}));
 }
 
 TEST_CASE("check substack variants", "[language][checkType]") {
-  StackElement* numberStack = new SubstackElement(
-      Stack{new NumberElement("12"), new NumberElement("10")});
-  StackElement* commandStack = new SubstackElement(
-      Stack{new CommandElement("add"), new CommandElement("subtract")});
+  ElementPtr numberStack(SubstackElement::parse("<<12, 10>>"));
+  ElementPtr commandStack(SubstackElement::parse("<<add, subtract>>"));
   TypeElement numberT =
       TypeElement(StackElement::DataType::Substack,
                   new TypeElement(StackElement::DataType::Number));
@@ -92,22 +87,20 @@ TEST_CASE("check substack variants", "[language][checkType]") {
   TypeElement substackT = TypeElement(StackElement::DataType::Substack);
   TypeElement anyT = TypeElement(StackElement::DataType::Substack,
                                  new TypeElement(StackElement::DataType::Any));
-  REQUIRE(checkType(numberStack, anyT, list<string>{}));
-  REQUIRE(checkType(commandStack, anyT, list<string>{}));
-  REQUIRE(checkType(numberStack, substackT, list<string>{}));
-  REQUIRE(checkType(commandStack, substackT, list<string>{}));
+  REQUIRE(checkType(numberStack.get(), anyT, list<string>{}));
+  REQUIRE(checkType(commandStack.get(), anyT, list<string>{}));
+  REQUIRE(checkType(numberStack.get(), substackT, list<string>{}));
+  REQUIRE(checkType(commandStack.get(), substackT, list<string>{}));
 
-  REQUIRE(checkType(numberStack, numberT, list<string>{}));
-  REQUIRE(checkType(commandStack, commandT, list<string>{}));
-  REQUIRE_FALSE(checkType(numberStack, commandT, list<string>{}));
-  REQUIRE_FALSE(checkType(commandStack, numberT, list<string>{}));
-  delete numberStack;
-  delete commandStack;
+  REQUIRE(checkType(numberStack.get(), numberT, list<string>{}));
+  REQUIRE(checkType(commandStack.get(), commandT, list<string>{}));
+  REQUIRE_FALSE(checkType(numberStack.get(), commandT, list<string>{}));
+  REQUIRE_FALSE(checkType(commandStack.get(), numberT, list<string>{}));
 }
 
 TEST_CASE("check empty substack always matches substack",
           "[language][checkType]") {
-  StackElement* s = new SubstackElement(Stack{});
+  ElementPtr s(SubstackElement::parse("<<>>"));
   TypeElement numberT =
       TypeElement(StackElement::DataType::Substack,
                   new TypeElement(StackElement::DataType::Number));
@@ -117,15 +110,14 @@ TEST_CASE("check empty substack always matches substack",
   TypeElement substackT = TypeElement(StackElement::DataType::Substack);
   TypeElement anyT = TypeElement(StackElement::DataType::Substack,
                                  new TypeElement(StackElement::DataType::Any));
-  REQUIRE(checkType(s, numberT, list<string>{}));
-  REQUIRE(checkType(s, commandT, list<string>{}));
-  REQUIRE(checkType(s, substackT, list<string>{}));
-  REQUIRE(checkType(s, anyT, list<string>{}));
-  delete s;
+  REQUIRE(checkType(s.get(), numberT, list<string>{}));
+  REQUIRE(checkType(s.get(), commandT, list<string>{}));
+  REQUIRE(checkType(s.get(), substackT, list<string>{}));
+  REQUIRE(checkType(s.get(), anyT, list<string>{}));
 }
 
 TEST_CASE("check mixed substack only matched by any", "[language][checkType]") {
-  StackElement* s = SubstackElement::parse("<<\"string\", 2, `map>>");
+  ElementPtr s(SubstackElement::parse("<<\"string\", 2, `map>>"));
   TypeElement anyT = TypeElement(StackElement::DataType::Substack,
                                  new TypeElement(StackElement::DataType::Any));
   TypeElement numberT =
@@ -135,24 +127,20 @@ TEST_CASE("check mixed substack only matched by any", "[language][checkType]") {
       TypeElement(StackElement::DataType::Substack,
                   new TypeElement(StackElement::DataType::Command));
   TypeElement substackT = TypeElement(StackElement::DataType::Substack);
-  REQUIRE_FALSE(checkType(s, numberT, list<string>{}));
-  REQUIRE_FALSE(checkType(s, commandT, list<string>{}));
-  REQUIRE(checkType(s, substackT, list<string>{}));
-  REQUIRE(checkType(s, anyT, list<string>{}));
-  delete s;
+  REQUIRE_FALSE(checkType(s.get(), numberT, list<string>{}));
+  REQUIRE_FALSE(checkType(s.get(), commandT, list<string>{}));
+  REQUIRE(checkType(s.get(), substackT, list<string>{}));
+  REQUIRE(checkType(s.get(), anyT, list<string>{}));
 }
 
 TEST_CASE("check any matches any element", "[language][checkType]") {
-  StackElement* number = new NumberElement("22/7");
-  StackElement* substack = SubstackElement::parse("<<\"string\", 2, `map>>");
-  StackElement* command = new CommandElement("filter");
+  ElementPtr number(NumberElement::parse("22/7"));
+  ElementPtr substack(SubstackElement::parse("<<\"string\", 2, `map>>"));
+  ElementPtr command(CommandElement::parse("filter"));
   TypeElement anyT = TypeElement(StackElement::DataType::Any);
-  REQUIRE(checkType(number, anyT, list<string>{}));
-  REQUIRE(checkType(substack, anyT, list<string>{}));
-  REQUIRE(checkType(command, anyT, list<string>{}));
-  delete number;
-  delete substack;
-  delete command;
+  REQUIRE(checkType(number.get(), anyT, list<string>{}));
+  REQUIRE(checkType(substack.get(), anyT, list<string>{}));
+  REQUIRE(checkType(command.get(), anyT, list<string>{}));
 }
 
 TEST_CASE("check list of types good", "[language][checkTypes]") {
@@ -224,16 +212,15 @@ TEST_CASE("check context all allowed", "[language][checkContext]") {
 }
 
 TEST_CASE("check limiting context respected", "[language][checkContext]") {
-  CommandElement* elm = new CommandElement("map");
-  REQUIRE_NOTHROW(checkContext("map", elm, "map-local", list<string>{}));
-  CommandElement* other = new CommandElement("foldl");
-  REQUIRE_THROWS_AS(checkContext("map", other, "foldl-local", list<string>{}),
-                    SyntaxError);
+  CommandPtr elm(CommandElement::parse("map"));
+  REQUIRE_NOTHROW(checkContext("map", elm.get(), "map-local", list<string>{}));
+  CommandPtr other(CommandElement::parse("foldl"));
   REQUIRE_THROWS_AS(
-      checkContext(GLOBAL_CONTEXT, other, "foldl-local", list<string>{}),
+      checkContext("map", other.get(), "foldl-local", list<string>{}),
       SyntaxError);
-  delete elm;
-  delete other;
+  REQUIRE_THROWS_AS(
+      checkContext(GLOBAL_CONTEXT, other.get(), "foldl-local", list<string>{}),
+      SyntaxError);
 }
 
 TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
