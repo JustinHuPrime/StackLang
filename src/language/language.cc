@@ -62,9 +62,8 @@ DefinedFunction::DefinedFunction(const Stack& sig, const Stack& b,
 DefinedFunction::DefinedFunction() noexcept
     : signature(Stack{}), body(Stack{}), context(nullptr) {}
 
-const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
-  static map<string, PrimitiveFunction>* prims =
-      new map<string, PrimitiveFunction>{
+const Primitives& PRIMITIVES() noexcept {
+  static const Primitives* const prims = new Primitives{
 // Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
@@ -74,7 +73,7 @@ const map<string, PrimitiveFunction>& PRIMITIVES() noexcept {
 #include "language/primitives/string.inc"
 #include "language/primitives/substack.inc"
 #include "language/primitives/type.inc"
-      };
+  };
   return *prims;
 }
 
@@ -155,8 +154,7 @@ void checkContext(const string& actual, const CommandElement* required,
   }
 }
 
-void execute(Stack& s, map<string, DefinedFunction>& defines,
-             list<string> context) {
+void execute(Stack& s, Defines& defines, list<string> context) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError(context);

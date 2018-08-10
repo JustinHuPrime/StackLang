@@ -18,12 +18,6 @@
 // Special included file for implementation of special primitives (define,
 // include, etc.)
 
-//  {"NAME",
-//   {Stack{INPUT TYPES...}, // vertically sorted, like the stack.
-//    [](Stack& s, map<string, DefinedFunction>&) {
-//      PRIMITIVE BODY...
-//    }}},
-
 {"define",
  {Stack{new TypeElement(StackElement::DataType::Substack,
                         new TypeElement(StackElement::DataType::Type)),
@@ -31,22 +25,15 @@
         new TypeElement(StackElement::DataType::Command,
                         new TypeElement(StackElement::DataType::Quoted))},
   [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
-    CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
-    string name = nameElm->getName();
-    SubstackElement* body = dynamic_cast<SubstackElement*>(s.pop());
-    SubstackElement* sig = dynamic_cast<SubstackElement*>(s.pop());
+    CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
+    SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
+    SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
     auto iter = defs.find(name);
     if (iter != defs.end()) {
-      delete body;
-      delete sig;
-      delete nameElm;
-      throw RuntimeError("Cannot redefine " + name + ".", context);
+      throw RuntimeError("Cannot redefine " + name->getName() + ".", context);
     }
     DefinedFunction def = DefinedFunction(sig->getData(), body->getData());
-    delete body;
-    delete sig;
-    delete nameElm;
-    defs[name] = def;
+    defs[name->getName()] = def;
   }}},
     {"define*",
      {Stack{new TypeElement(StackElement::DataType::Substack,
@@ -57,25 +44,18 @@
             new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
       [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
-        CommandElement* nameElm = dynamic_cast<CommandElement*>(s.pop());
-        string name = nameElm->getName();
-        CommandElement* contextReq = dynamic_cast<CommandElement*>(s.pop());
-        SubstackElement* body = dynamic_cast<SubstackElement*>(s.pop());
-        SubstackElement* sig = dynamic_cast<SubstackElement*>(s.pop());
+        CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
+        CommandPtr contextReq(dynamic_cast<CommandElement*>(s.pop()));
+        SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
+        SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
         auto iter = defs.find(name);
         if (iter != defs.end()) {
-          delete body;
-          delete sig;
-          delete nameElm;
-          delete contextReq;
-          throw RuntimeError("Cannot redefine " + name + ".", context);
+          throw RuntimeError("Cannot redefine " + name->getName() + ".",
+                             context);
         }
         DefinedFunction def =
-            DefinedFunction(sig->getData(), body->getData(), contextReq);
-        delete body;
-        delete sig;
-        delete nameElm;
-        defs[name] = def;
+            DefinedFunction(sig->getData(), body->getData(), contextReq->get());
+        defs[name->getName()] = def;
       }}},
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command,

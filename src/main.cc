@@ -21,7 +21,6 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <map>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -48,7 +47,6 @@ using std::cerr;
 using std::cout;
 using std::endl;
 using std::invalid_argument;
-using std::map;
 using std::numeric_limits;
 using std::stoi;
 using std::stoul;
@@ -71,7 +69,7 @@ const char KEY_CTRL_D = 4;  // FIXME: ctrl-d and EINTR collide.
 
 int main(int argc, char* argv[]) noexcept {
   Stack s;
-  map<string, DefinedFunction> defines;
+  Defines defines;
 
   LineEditor buffer;
   bool errorFlag = false;

@@ -47,11 +47,12 @@ struct DefinedFunction {
   DefinedFunction() noexcept;
 };
 
-typedef void (*const Prim)(Stack&, map<string, DefinedFunction>&,
-                           list<string>&);
+typedef map<string, DefinedFunction> Defines typedef void (*const Prim)(
+    Stack&, Defines&, list<string>&);
 typedef pair<Stack, Prim> PrimitiveFunction;
+typedef map<string, PrimitiveFunction> Primitives;
 
-const map<string, PrimitiveFunction>& PRIMITIVES() noexcept;
+const Primitives& PRIMITIVES() noexcept;
 const char* const GLOBAL_CONTEXT = "global context";
 
 bool checkType(const StackElement* elm, const TypeElement type,
@@ -60,7 +61,7 @@ void checkTypes(const Stack& s, const Stack& types,
                 const list<string>& context);
 void checkContext(const string& actual, const CommandElement* required,
                   const string& name, const list<string>& context);
-void execute(Stack&, map<string, DefinedFunction>&,
+void execute(Stack&, Defines&,
              list<string> = list<string>{
                  GLOBAL_CONTEXT});  // Executes the stack until it
                                     // encounters a data element
