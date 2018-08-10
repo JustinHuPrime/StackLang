@@ -41,6 +41,7 @@ using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::StringElement;
 using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
+using std::any_of;
 using std::find;
 using std::make_unique;
 using std::queue;
@@ -56,12 +57,13 @@ StackElement* StackElement::parse(const string& s) {
   if (s.empty()) {
     throw ParserException("Given input is empty.", s, 0);
   } else if (isdigit(s[0]) ||
-             find(NumberElement::NUMBER_SIGNS,
-                  NumberElement::NUMBER_SIGNS +
-                      strlen(NumberElement::NUMBER_SIGNS),
-                  s[0]) != NumberElement::NUMBER_SIGNS +
-                               strlen(NumberElement::NUMBER_SIGNS) ||
-             s[0] == NumberElement::INEXACT_SIGNAL)  // looks like a number.
+             ((find(NumberElement::NUMBER_SIGNS,
+                    NumberElement::NUMBER_SIGNS +
+                        strlen(NumberElement::NUMBER_SIGNS),
+                    s[0]) != NumberElement::NUMBER_SIGNS +
+                                 strlen(NumberElement::NUMBER_SIGNS) ||
+               s[0] == NumberElement::INEXACT_SIGNAL) &&
+              any_of(s.begin(), s.end(), isdigit)))  // looks like a number.
   {
     return NumberElement::parse(s);
   } else if (starts_with(
@@ -88,8 +90,9 @@ StackElement* StackElement::parse(const string& s) {
   {                                  // is a type
     return TypeElement::parse(s);
   } else if (isalpha(s[0]) ||
-             s[0] == CommandElement::QUOTE_CHAR)  // starts with a character or
-                                                  // a command-quote
+             (s[0] == CommandElement::QUOTE_CHAR &&
+              s.length() > 1))  // starts with a character or
+                                // a command-quote and at least one other thing.
   {
     return CommandElement::parse(s);
   } else  // error case

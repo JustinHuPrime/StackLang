@@ -75,7 +75,16 @@ CommandElement* CommandElement::parse(const string& s) {
   } else {
     size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
                                           s[0] == QUOTE_CHAR ? 1 : 0);
-    if (s[badIndex] == ' ') {  // has a space
+    if (badIndex == string::npos) {
+      if (!(isalpha(s[0]) || ((s[0] == QUOTE_CHAR && isalpha(s[1]))))) {
+        throw ParserException(
+            "Input does not begin with an alphabetic character.", s,
+            s[0] == QUOTE_CHAR ? 1 : 0);
+      } else {
+        throw ParserException("Input is too short.", s,
+                              s[0] == QUOTE_CHAR ? 2 : 1);
+      }
+    } else if (s[badIndex] == ' ') {  // has a space
       throw ParserException("Input looks like a command, but has a space.", s,
                             badIndex);
     } else {
