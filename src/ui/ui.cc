@@ -112,10 +112,19 @@ void drawPrompt(const LineEditor& s) noexcept {
   move(maxY - 1, 0);
   clrtoeol();
   addstring("> ");
-  addstring(string(s));
+  addstring(static_cast<string>(s));
   move(maxY - 1, 2 + s.cursorPosition());
   curs_set(CURSOR_VISIBLE);
 
+  refresh();
+}
+
+void drawWaiting() noexcept {
+  int maxY = getmaxy(stdscr);
+  curs_set(CURSOR_INVISIBLE);
+  move(maxY - 1, 0);
+  clrtoeol();
+  addstring("...");
   refresh();
 }
 

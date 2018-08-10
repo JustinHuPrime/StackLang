@@ -60,6 +60,7 @@ using terminalui::displayInfo;
 using terminalui::drawError;
 using terminalui::drawPrompt;
 using terminalui::drawStack;
+using terminalui::drawWaiting;
 using terminalui::HELPMSG;
 using terminalui::init;
 using terminalui::LineEditor;
@@ -197,6 +198,8 @@ int main(int argc, char* argv[]) noexcept {
       buffer.enter();
       try {
         s.push(StackElement::parse(bufferStr));
+        drawStack(s);
+        drawWaiting();
         stopFlag = false;
         execute(s, defines);
         drawStack(s);

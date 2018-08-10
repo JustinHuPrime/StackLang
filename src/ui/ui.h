@@ -46,6 +46,7 @@ void uninit() noexcept;
 
 void drawStack(const Stack&) noexcept;
 void drawPrompt(const LineEditor&) noexcept;
+void drawWaiting() noexcept;
 void drawError(const LanguageException&) noexcept;
 void drawTrace(int, int, const list<CommandElement*>&);
 
