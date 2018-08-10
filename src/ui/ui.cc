@@ -186,7 +186,7 @@ void drawError(const LanguageException& e) noexcept {
 }
 
 void drawTrace(int top, int bottom, const list<CommandElement*>& trace) {
-  if (bottom > top && static_cast<long>(trace.size()) <= bottom - top) {
+  if (bottom > top && static_cast<ptrdiff_t>(trace.size()) <= bottom - top) {
     for (const CommandElement* elm : trace) {
       move(top++, 0);
       addstring("From " + (elm == nullptr ? "global context" : elm->getName()));

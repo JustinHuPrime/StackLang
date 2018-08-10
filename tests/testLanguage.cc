@@ -246,8 +246,9 @@ TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
   Stack stk =
       Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))};
-  Prim pf = [](Stack& s, map<string, DefinedFunction>&,
-               list<CommandElement*>&) { return; };
+  Prim pf = [](Stack&, map<string, DefinedFunction>&, list<CommandElement*>&) {
+    return;
+  };
 
   PrimitiveFunction* p = new PrimitiveFunction{stk, pf};
   delete p;
