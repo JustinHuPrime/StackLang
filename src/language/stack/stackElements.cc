@@ -45,8 +45,8 @@ using util::trim;
 using util::unescape;
 }  // namespace
 
-const char* BooleanElement::TSTR = "true";
-const char* BooleanElement::FSTR = "false";
+const char* const BooleanElement::TSTR = "true";
+const char* const BooleanElement::FSTR = "false";
 
 BooleanElement::BooleanElement(bool b) noexcept
     : StackElement(StackElement::DataType::Boolean), data(b) {}
@@ -59,9 +59,9 @@ BooleanElement::operator string() const noexcept { return data ? TSTR : FSTR; }
 
 bool BooleanElement::getData() const noexcept { return data; }
 
-const char* CommandElement::COMMAND_LDELIM = "<";
-const char* CommandElement::COMMAND_RDELIM = ">";
-const char* CommandElement::ALLOWED_COMMAND =
+const char* const CommandElement::COMMAND_LDELIM = "<";
+const char* const CommandElement::COMMAND_RDELIM = ">";
+const char* const CommandElement::ALLOWED_COMMAND =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 const char CommandElement::QUOTE_CHAR = '`';
 
@@ -104,8 +104,8 @@ CommandElement::operator string() const noexcept {
 const string& CommandElement::getName() const noexcept { return name; }
 bool CommandElement::isQuoted() const noexcept { return quoted; }
 
-const char* NumberElement::ALLOWED_NUMBER = "~-+/1234567890.'";
-const char* NumberElement::NUMBER_SIGNS = "-+";
+const char* const NumberElement::ALLOWED_NUMBER = "~-+/1234567890.'";
+const char* const NumberElement::NUMBER_SIGNS = "-+";
 const char NumberElement::INEXACT_SIGNAL = '~';
 
 NumberElement* NumberElement::parse(const string& s) {
@@ -249,10 +249,10 @@ StringElement::operator string() const noexcept {
 
 const string& StringElement::getData() const noexcept { return data; }
 
-const char* SubstackElement::SUBSTACK_BEGIN = "<<";
-const char* SubstackElement::SUBSTACK_END = ">>";
-const char* SubstackElement::SUBSTACK_SEPARATOR = ", ";
-const char* SubstackElement::SUBSTACK_EMPTY = "<< (empty) >>";
+const char* const SubstackElement::SUBSTACK_BEGIN = "<<";
+const char* const SubstackElement::SUBSTACK_END = ">>";
+const char* const SubstackElement::SUBSTACK_SEPARATOR = ", ";
+const char* const SubstackElement::SUBSTACK_EMPTY = "<< (empty) >>";
 
 SubstackElement* SubstackElement::parse(const string& s) {
   int parseLevel = 0;
@@ -332,7 +332,7 @@ SubstackElement::operator string() const noexcept {
 
 const Stack& SubstackElement::getData() const noexcept { return data; }
 
-const char* TypeElement::PARENS = "()";
+const char* const TypeElement::PARENS = "()";
 
 TypeElement* TypeElement::parse(const string& s) {
   if (s.find('(') == string::npos) {

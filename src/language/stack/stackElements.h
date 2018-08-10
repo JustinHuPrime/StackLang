@@ -38,8 +38,8 @@ using std::vector;
 
 class BooleanElement : public StackElement {
  public:
-  static const char* TSTR;
-  static const char* FSTR;
+  static const char* const TSTR;
+  static const char* const FSTR;
 
   explicit BooleanElement(bool) noexcept;
   BooleanElement* clone() const noexcept override;
@@ -53,7 +53,7 @@ class BooleanElement : public StackElement {
 
 class CommandElement : public StackElement {
  public:
-  static const char* ALLOWED_COMMAND;
+  static const char* const ALLOWED_COMMAND;
 
   static CommandElement* parse(const string&);
 
@@ -67,8 +67,8 @@ class CommandElement : public StackElement {
   static const char QUOTE_CHAR;
 
  private:
-  static const char* COMMAND_LDELIM;
-  static const char* COMMAND_RDELIM;
+  static const char* const COMMAND_LDELIM;
+  static const char* const COMMAND_RDELIM;
 
   string name;
   bool quoted;
@@ -76,8 +76,8 @@ class CommandElement : public StackElement {
 
 class NumberElement : public StackElement {
  public:
-  static const char* ALLOWED_NUMBER;
-  static const char* NUMBER_SIGNS;
+  static const char* const ALLOWED_NUMBER;
+  static const char* const NUMBER_SIGNS;
   static const char INEXACT_SIGNAL;
 
   static NumberElement* parse(const string&);
@@ -97,14 +97,14 @@ class NumberElement : public StackElement {
 
 class StringElement : public StackElement {
  public:
+  static const char QUOTE_CHAR;
+
   static StringElement* parse(const string&);
   explicit StringElement(string) noexcept;
   StringElement* clone() const noexcept override;
 
   explicit operator string() const noexcept override;
   const string& getData() const noexcept;
-
-  static const char QUOTE_CHAR;
 
  private:
   string data;
@@ -119,12 +119,12 @@ class SubstackElement : public StackElement {
   explicit operator string() const noexcept override;
   const Stack& getData() const noexcept;
 
-  static const char* SUBSTACK_BEGIN;
-  static const char* SUBSTACK_END;
+  static const char* const SUBSTACK_BEGIN;
+  static const char* const SUBSTACK_END;
 
  private:
-  static const char* SUBSTACK_SEPARATOR;
-  static const char* SUBSTACK_EMPTY;
+  static const char* const SUBSTACK_SEPARATOR;
+  static const char* const SUBSTACK_EMPTY;
 
   Stack data;
 };
@@ -132,6 +132,7 @@ class SubstackElement : public StackElement {
 class TypeElement : public StackElement {
  public:
   static TypeElement* parse(const string&);
+
   TypeElement(DataType, TypeElement* = nullptr) noexcept;
   TypeElement(const TypeElement&) noexcept;
   TypeElement& operator=(const TypeElement&) noexcept;
@@ -148,12 +149,19 @@ class TypeElement : public StackElement {
 
   static const vector<string>& TYPES() noexcept;
 
-  static const char* PARENS;
+  static const char* const PARENS;
 
  private:
   DataType data;
   TypeElement* specialization;
 };
+
+typedef unique_ptr<BooleanElement> BooleanPtr;
+typedef unique_ptr<CommandElement> CommandPtr;
+typedef unique_ptr<NumberElement> NumberPtr;
+typedef unique_ptr<StringElement> StringPtr;
+typedef unique_ptr<SubstackElement> SubstackPtr;
+typedef unique_ptr<TypeElement> TypePtr;
 
 }  // namespace stackelements
 }  // namespace stacklang

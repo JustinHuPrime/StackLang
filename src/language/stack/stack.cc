@@ -167,7 +167,7 @@ StackElement* Stack::pop() {
   throw StackUnderflowError();
 }
 
-StackElement* Stack::top() {
+const StackElement* Stack::top() {
   if (head != nullptr) {
     return head->elm.get();
   }
@@ -229,7 +229,8 @@ Stack::Node* Stack::copy(Node* other) noexcept {
 Stack::Node::Node(StackElement* ptr, Node* nxt) noexcept
     : elm(ptr), next(nxt) {}
 
-Stack::StackIterator::StackIterator(Stack::Node* node) noexcept : curr(node) {}
+Stack::StackIterator::StackIterator(const Stack::Node* node) noexcept
+    : curr(node) {}
 
 const StackElement* Stack::StackIterator::operator*() noexcept {
   return curr->elm.get();

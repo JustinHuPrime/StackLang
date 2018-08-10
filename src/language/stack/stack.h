@@ -84,6 +84,8 @@ class StackElement {
   DataType dataType;
 };
 
+typedef unique_ptr<StackElement> ElementPtr;
+
 // A literal stack of StackElements.
 class Stack {
   struct Node;
@@ -107,7 +109,7 @@ class Stack {
   // elements should be deallocated.
   void push(StackElement*);
   StackElement* pop();
-  StackElement* top();
+  const StackElement* top();
 
   void clear() noexcept;
 
@@ -141,13 +143,13 @@ class Stack {
 class Stack::StackIterator {
  public:
   typedef size_t difference_type;
-  typedef StackElement* value_type;
-  typedef StackElement** pointer;
-  typedef StackElement*& reference;
+  typedef const StackElement* value_type;
+  typedef const StackElement** pointer;
+  typedef const StackElement*& reference;
   typedef size_t size_type;
   typedef std::input_iterator_tag iterator_category;
 
-  StackIterator(Stack::Node*) noexcept;
+  StackIterator(const Stack::Node*) noexcept;
   StackIterator(const StackIterator&) = default;
 
   StackIterator& operator=(const StackIterator&) = default;
@@ -163,7 +165,7 @@ class Stack::StackIterator {
   StackIterator operator++(int) noexcept;
 
  private:
-  Stack::Node* curr;
+  const Stack::Node* curr;
 };
 
 bool operator==(const Stack::StackIterator&,
