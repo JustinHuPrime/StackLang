@@ -77,9 +77,9 @@
         return;
       }}},
     {"drop",
-     {Stack{},
+     {Stack{new TypeElement(StackElement::DataType::Any)},
       [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
-        if (!s.isEmpty()) delete s.pop();
+        delete s.pop();
       }}},
     {"drop*",
      {Stack{new TypeElement(StackElement::DataType::Number,
@@ -95,6 +95,9 @@
         size_t i = rawNum.get_num().get_ui();
         while (i-- > 0) delete s.pop();
       }}},
+    {"clear",
+     {Stack{}, [](Stack& s, map<string, DefinedFunction>&,
+                  list<string>&) { s.clear(); }}},
     {"rotate",
      {Stack{new TypeElement(StackElement::DataType::Number,
                             new TypeElement(StackElement::DataType::Exact))},
