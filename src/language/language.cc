@@ -17,9 +17,12 @@
 
 // Implementation of the core language evaluation system.
 
+#define _USE_MATH_DEFINES
+
 #include "language/language.h"
 
 #include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <stack>
 

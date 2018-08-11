@@ -19,8 +19,8 @@
 
 "boolean" ; include the extended primitives
 include
-"command"
-include
+; "command"
+; include
 "number"
 include
 "string"
@@ -34,8 +34,8 @@ include
 <<
 duplicate
 empty?
-`foldr/bc
-`foldr/rc
+`foldr-bc
+`foldr-rc
 3, rotate
 if
 unquote
@@ -63,8 +63,7 @@ duplicate
 2, rotate
 5, rotate
 foldr
-3, rotate
-3, rotate
+3, 2, rotate*
 unquote
 >>
 `foldr

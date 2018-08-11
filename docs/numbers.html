@@ -128,7 +128,7 @@ number = exact-number | inexact-number ;</pre>
                 </p>
                 <p>
                     <code>inexact-to-exact : Number -> Number(Exact)</code>
-                    <br/> Produces the exact version of the given number.
+                    <br/> Produces the exact version (not) of the given number.
                 </p>
                 <p>
                     <code>number-to-string : Number -> String</code>
@@ -177,9 +177,8 @@ number = exact-number | inexact-number ;</pre>
                 </p>
                 <p>
                     <code>modulo : Number Number -> Number</code>
-                    <br/> If both numbers have the same sign: subtracts the first from the second until the absolute value of
-                    the first is less than the absolute value of the second. If the numbers have a different sign, adds the
-                    first to the second until the absolute value of the first is less than the absolute value of the sceond.
+                    <br/> Takes the absolute value of both numbers, and subtracts the first from the second until the second is
+                    less than the first. Then, the sign of the second is set to the sign of the first.
                 </p>
                 <p>
                     <code>quotient : Number(Exact) Number(Exact) -> Number(Exact)</code>

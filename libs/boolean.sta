@@ -30,7 +30,7 @@ define
 xor
 not
 >>
-`nxor
+`xnor
 define
 
 << Boolean Boolean >> ; -> Boolean

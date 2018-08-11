@@ -16,3 +16,195 @@
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
 ; StackLang extended number primitives
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+exact?
+`integer-other
+`integer-exact
+3, rotate
+if
+unquote
+>>
+`integer?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`integer?
+`integer-other
+define*
+
+<< Number(Exact) >> ; -> Boolean
+<<
+1, modulo
+zero?
+>>
+`integer?
+`integer-exact
+define*
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+exact?
+`zero-other
+`zero-exact
+3, rotate
+if
+unquote
+>>
+`zero?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`zero?
+`zero-other
+define*
+
+<< Number(Exact) >> ; -> Boolean
+<<
+0, equal?
+>>
+`zero?
+`zero-exact
+define*
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+number?
+`positive-other
+`positive-number
+3, rotate
+if
+unquote
+>>
+`positive?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`positive?
+`positive-other
+define*
+
+<< Number >> ; -> Boolean
+<<
+0, greater-than?
+>>
+`positive?
+`positive-number
+define*
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+duplicate
+exact?
+2, rotate
+positive?
+not
+3, rotate
+zero?
+not
+and
+and
+>>
+`negative
+define
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+integer?
+`even-other
+`even-integer
+3, rotate
+if
+unquote
+>>
+`even?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`even?
+`even-other
+define*
+
+<< Number(Exact) >> ; -> Boolean
+<<
+2, modulo
+zero?
+>>
+`even?
+`even-integer
+define*
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+integer?
+2, rotate
+even?
+not
+and
+>>
+`negative?
+define
+
+
+<< Number >> ; -> Number
+<<
+0
+2, rotate
+minus
+>>
+`negate
+define
+
+
+<< Number >> ; -> Number
+<<
+1
+2, rotate
+divide
+>>
+`inverse
+define
+
+<< Number >> ; -> Number
+<<
+1
+add
+>>
+`increment
+define
+
+<< Number >> ; -> Number
+<<
+1
+subtract
+>>
+`decrement
+define
