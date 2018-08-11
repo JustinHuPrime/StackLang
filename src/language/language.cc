@@ -52,13 +52,14 @@ using stacklang::stackelements::SubstackPtr;
 using stacklang::stackelements::TypeElement;
 using stacklang::stackelements::TypePtr;
 using std::all_of;
+using std::atomic_bool;
 using std::begin;
 using std::end;
 using std::find_if;
 using std::stack;
 }  // namespace
 
-bool stopFlag = false;
+atomic_bool stopFlag = false;
 
 DefinedFunction::DefinedFunction(const Stack& sig, const Stack& b,
                                  const CommandElement* ctx) noexcept
@@ -90,11 +91,13 @@ bool checkType(const StackElement* elm, const TypeElement type,
              type.getSpecialization() ==
                  nullptr) {  // any matches everything not null
     return true;
+  } else if (type.getData() != elm->getType()) {  // types don't match plainly
+    return false;
   } else if (type.getSpecialization() == nullptr ||
              type.getSpecialization()->getData() ==
                  StackElement::DataType::Any) {  // has no specialization or is
                                                  // an Any specialized substack.
-    return elm->getType() == type.getData();     // type matches plainly
+    return true;                                 // type matches plainly
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Number) {  // is a specialized number

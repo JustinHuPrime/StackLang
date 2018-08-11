@@ -41,6 +41,7 @@ void init() noexcept {
 
   initscr();
 
+  timeout(10);
   cbreak();
   nonl();
   noecho();
@@ -51,7 +52,7 @@ void init() noexcept {
 
   signal(SIGWINCH, [](int sigNum) {
     (void)sigNum;  // ignore sigNum
-    ungetch(EINTR);
+    ungetch(KEY_RESIZE);
   });
 
   signal(SIGINT, [](int sigNum) {

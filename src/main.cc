@@ -65,7 +65,7 @@ using terminalui::init;
 using terminalui::LineEditor;
 using terminalui::printError;
 
-const char KEY_CTRL_D = 4;  // FIXME: ctrl-d and EINTR collide.
+const char KEY_CTRL_D = 4;
 }  // namespace
 
 int main(int argc, char* argv[]) noexcept {
@@ -169,25 +169,27 @@ int main(int argc, char* argv[]) noexcept {
   while (true) {
     int key = getch();
 
-    if (key == KEY_CTRL_D) {  // overriding keypresses
+    if (key == ERR) {
+      continue;                      // do nothing on no input.
+    } else if (key == KEY_CTRL_D) {  // overriding keypresses
       break;
-    } else if (key == EINTR) {
+    } else if (key == KEY_RESIZE) {
       endwin();  // these commands resync ncurses with the terminal
       refresh();
 
       clear();
       drawStack(s);
       drawPrompt(buffer);
-    } else if (errorFlag) {  // anything on an error is ignored, but the error
-                             // is cleared
+      continue;
+    } else if (errorFlag && key != ERR) {  // anything on an error is ignored,
+                                           // but the error is cleared
       drawStack(s);
       drawPrompt(buffer);
       errorFlag = false;
       continue;
     }
 
-    if (key < numeric_limits<char>().max() && isprint(key) && key != '\n' &&
-        key != '\r' &&
+    if (isprint(key) && key != '\n' && key != '\r' &&
         key != KEY_ENTER) {  // normal characters added to buffer.
       buffer += key;
       drawPrompt(buffer);

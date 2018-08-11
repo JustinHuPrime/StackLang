@@ -63,7 +63,9 @@ const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;
 const int CURSOR_VERY_VISIBLE = 2;
 
-const char INFO[] = R"(StackLang interpreter version ALPHA 6
+// const char KEY_WIN_RESIZE = 0;
+
+const char* const INFO = R"(StackLang interpreter version ALPHA 6
 Copyright 2018 Justin Hu
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under certain conditions. For more detail see
@@ -72,7 +74,7 @@ the COPYING file that should have been included with this program.
 Use ^D to exit from prompt, ^C to stop execution, and ^\ to force quit.
 Press any key to continue...)";
 
-const char HELPMSG[] = R"(Usage: stacklang [OPTIONS]
+const char* const HELPMSG = R"(Usage: stacklang [OPTIONS]
 * `-?`, `-h`: prints this message.
 * `-W`: show warranty information.
 * `-C`: show copying information

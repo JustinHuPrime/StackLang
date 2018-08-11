@@ -20,7 +20,7 @@
 #ifndef STACKLANG_LANGUAGE_LANGUAGE_H_
 #define STACKLANG_LANGUAGE_LANGUAGE_H_
 
-#include <array>
+#include <atomic>
 #include <list>
 #include <map>
 #include <utility>
@@ -32,7 +32,7 @@ namespace stacklang {
 namespace {
 using stackelements::CommandElement;
 using stackelements::TypeElement;
-using std::array;
+using std::atomic_bool;
 using std::list;
 using std::map;
 using std::pair;
@@ -66,7 +66,7 @@ void execute(Stack&, Defines&,
                  GLOBAL_CONTEXT});  // Executes the stack until it
                                     // encounters a data element
 
-extern bool stopFlag;  // signal handlers set this to stop execution.
+extern atomic_bool stopFlag;  // signal handlers set this to stop execution.
 }  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_
