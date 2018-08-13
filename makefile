@@ -69,7 +69,7 @@ DEBUGOPTIONS := -Og -ggdb
 RELEASEOPTIONS := -O3 -Wunused
 
 #libraries and included files
-LIBS := $(shell pkg-config --libs ncurses) -lgmp -lgmpxx
+LIBS := $(shell pkg-config --libs ncurses)
 INCLUDES := -I$(SRCDIR)
 TINCLUDES := -I$(TSRCDIR)
 

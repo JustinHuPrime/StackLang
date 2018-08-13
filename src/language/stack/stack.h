@@ -45,8 +45,6 @@ class StackElement {
     Type,
     Command,
     Any,
-    Exact,
-    Inexact,
     Quoted,
     Unquoted,
   };

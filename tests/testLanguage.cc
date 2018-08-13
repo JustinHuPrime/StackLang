@@ -31,7 +31,7 @@ using std::string;
 }  // namespace
 
 TEST_CASE("check single type simple pass", "[language][checkType]") {
-  NumberPtr elm(NumberElement::parse("22/7"));
+  NumberPtr elm(NumberElement::parse("3.14"));
   TypeElement t = TypeElement(StackElement::DataType::Number);
   REQUIRE(checkType(elm.get(), t, list<string>{}));
 }
@@ -40,21 +40,6 @@ TEST_CASE("check single type simple fail", "[language][checkType]") {
   CommandPtr elm(CommandElement::parse("foldl"));
   TypeElement t = TypeElement(StackElement::DataType::Boolean);
   REQUIRE_FALSE(checkType(elm.get(), t, list<string>{}));
-}
-
-TEST_CASE("check number types", "[language][checkType]") {
-  NumberPtr exact(NumberElement::parse("22/7"));
-  NumberPtr inexact(NumberElement::parse("~22/7"));
-  TypeElement exactT =
-      TypeElement(StackElement::DataType::Number,
-                  new TypeElement(StackElement::DataType::Exact));
-  TypeElement inexactT =
-      TypeElement(StackElement::DataType::Number,
-                  new TypeElement(StackElement::DataType::Inexact));
-  REQUIRE(checkType(exact.get(), exactT, list<string>{}));
-  REQUIRE(checkType(inexact.get(), inexactT, list<string>{}));
-  REQUIRE_FALSE(checkType(exact.get(), inexactT, list<string>{}));
-  REQUIRE_FALSE(checkType(inexact.get(), exactT, list<string>{}));
 }
 
 TEST_CASE("check command variants", "[language][checkType]") {
@@ -134,7 +119,7 @@ TEST_CASE("check mixed substack only matched by any", "[language][checkType]") {
 }
 
 TEST_CASE("check any matches any element", "[language][checkType]") {
-  ElementPtr number(NumberElement::parse("22/7"));
+  ElementPtr number(NumberElement::parse("3.14"));
   ElementPtr substack(SubstackElement::parse("<<\"string\", 2, `map>>"));
   ElementPtr command(CommandElement::parse("filter"));
   TypeElement anyT = TypeElement(StackElement::DataType::Any);
@@ -224,9 +209,7 @@ TEST_CASE("check limiting context respected", "[language][checkContext]") {
 }
 
 TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
-  Stack stk =
-      Stack{new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))};
+  Stack stk = Stack{new TypeElement(StackElement::DataType::Number)};
   Prim pf = [](Stack&, map<string, DefinedFunction>&, list<string>&) {
     return;
   };
@@ -236,9 +219,7 @@ TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
 }
 
 TEST_CASE("check PRIMITIVES segfault special case", "[language][PRIMTIVES]") {
-  Stack stk =
-      Stack{new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))};
+  Stack stk = Stack{new TypeElement(StackElement::DataType::Number)};
   Prim pf = [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
     return;
   };
@@ -248,9 +229,7 @@ TEST_CASE("check PRIMITIVES segfault special case", "[language][PRIMTIVES]") {
 
   map<string, PrimitiveFunction>* prims = new map<string, PrimitiveFunction>{
       {"drop*",
-       PrimitiveFunction{Stack{new TypeElement(
-                             StackElement::DataType::Number,
-                             new TypeElement(StackElement::DataType::Exact))},
+       PrimitiveFunction{Stack{new TypeElement(StackElement::DataType::Number)},
                          [](Stack& s, map<string, DefinedFunction>&,
                             list<string>&) { return; }}},
   };

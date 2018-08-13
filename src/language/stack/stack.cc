@@ -21,6 +21,7 @@
 #include "language/stack/stack.h"
 
 #include <algorithm>
+#include <cstring>
 #include <queue>
 #include <string>
 
@@ -57,12 +58,11 @@ StackElement* StackElement::parse(const string& s) {
   if (s.empty()) {
     throw ParserException("Given input is empty.", s, 0);
   } else if (isdigit(s[0]) ||
-             ((find(NumberElement::NUMBER_SIGNS,
-                    NumberElement::NUMBER_SIGNS +
-                        strlen(NumberElement::NUMBER_SIGNS),
-                    s[0]) != NumberElement::NUMBER_SIGNS +
-                                 strlen(NumberElement::NUMBER_SIGNS) ||
-               s[0] == NumberElement::INEXACT_SIGNAL) &&
+             (find(NumberElement::NUMBER_SIGNS,
+                   NumberElement::NUMBER_SIGNS +
+                       strlen(NumberElement::NUMBER_SIGNS),
+                   s[0]) != NumberElement::NUMBER_SIGNS +
+                                strlen(NumberElement::NUMBER_SIGNS) &&
               any_of(s.begin(), s.end(), isdigit)))  // looks like a number.
   {
     return NumberElement::parse(s);

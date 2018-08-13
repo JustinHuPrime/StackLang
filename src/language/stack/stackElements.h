@@ -23,9 +23,6 @@
 #include <string>
 #include <vector>
 
-#include <gmp.h>
-#include <gmpxx.h>
-
 #include "language/stack/stack.h"
 
 namespace stacklang {
@@ -78,22 +75,20 @@ class NumberElement : public StackElement {
  public:
   static const char* const ALLOWED_NUMBER;
   static const char* const NUMBER_SIGNS;
-  static const char INEXACT_SIGNAL;
 
   static NumberElement* parse(const string&);
 
-  explicit NumberElement(double, bool isExact = true) noexcept;
-  explicit NumberElement(string, bool isExact = true) noexcept;
-  explicit NumberElement(const mpq_class&, bool isExact = true) noexcept;
+  explicit NumberElement(long double, int = 0) noexcept;
+  explicit NumberElement(string) noexcept;
   NumberElement* clone() const noexcept override;
 
   explicit operator string() const noexcept override;
-  const mpq_class& getData() const noexcept;
-  bool isExact() const noexcept;
+  long double getData() const noexcept;
+  int getDecimals() const noexcept;
 
  private:
-  mpq_class data;
-  bool exact;
+  long double data;
+  int decimals;
 };
 
 class StringElement : public StackElement {

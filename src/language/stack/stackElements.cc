@@ -19,6 +19,7 @@
 
 #include "language/stack/stackElements.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -31,8 +32,11 @@ namespace stacklang {
 namespace stackelements {
 namespace {
 using stacklang::exceptions::ParserException;
+using std::count;
 using std::fixed;
+using std::make_unique;
 using std::setprecision;
+using std::stold;
 using std::stringstream;
 using std::swap;
 using std::to_string;
@@ -113,76 +117,27 @@ CommandElement::operator string() const noexcept {
 const string& CommandElement::getName() const noexcept { return name; }
 bool CommandElement::isQuoted() const noexcept { return quoted; }
 
-const char* const NumberElement::ALLOWED_NUMBER = "~-+/1234567890.'";
+const char* const NumberElement::ALLOWED_NUMBER = "-+1234567890.'";
 const char* const NumberElement::NUMBER_SIGNS = "-+";
-const char NumberElement::INEXACT_SIGNAL = '~';
 
 NumberElement* NumberElement::parse(const string& s) {
   if (s.find_first_not_of(ALLOWED_NUMBER) ==
-      string::npos) {  // has allowed chars
-    if (count(s.begin(), s.end(), '.') + count(s.begin(), s.end(), '/') <=
-        1) {  // only one dot or decimal point
-      if (count(s.begin(), s.end(),
-                INEXACT_SIGNAL) <= 1) {  // only one inexact signal
-        if (s.find_last_of(INEXACT_SIGNAL) == 0 ||
-            s.find_last_of(INEXACT_SIGNAL) ==
-                string::npos) {  // and it's at the start, if anywhere
-          if (s.find_last_of(NUMBER_SIGNS) == 0 ||
-              (removeChar(s, '\'').find_last_of(NUMBER_SIGNS) == 1 &&
-               s.find_last_of(INEXACT_SIGNAL) == 0) ||
-              s.find_last_of(NumberElement::NUMBER_SIGNS) ==
-                  string::npos) {  // sign is first, second but has a tilde
-                                   // before it, or doesn't exist
-            if (removeChar(s, '\'').find_first_of('/') !=
-                removeChar(s, '\'').length() -
-                    1) {  // doesn't have a blank denominator
-              if (s.find_first_of('/') == string::npos ||
-                  s.substr(s.find_first_of('/') + 1).find_first_not_of("0'") !=
-                      string::npos) {  // doesn't have all zeroes in the
-                                       // denominator.
-                return new NumberElement(
-                    removeChar(removeChar(s, '\''), INEXACT_SIGNAL),
-                    s.find_first_of(INEXACT_SIGNAL) == string::npos);
-              } else {
-                throw ParserException(
-                    "Fractions may not have a zero in the denominator.", s,
-                    s.find_first_of('0', s.find_first_of('/')));
-              }
-            } else {
-              throw ParserException(
-                  "Looks like a fraction, but has an empty denominator.", s,
-                  s.find_last_of('/'));
-            }
-          } else {
-            throw ParserException(
-                "Looks like a number, but has a sign in the middle.", s,
-                s.find_last_of(NUMBER_SIGNS));
-          }
-        } else {
-          throw ParserException(
-              "Looks like a number, but has a tilde in the middle.", s,
-              s.find_last_of(INEXACT_SIGNAL));
-        }
+      string::npos) {                           // has allowed chars
+    if (count(s.begin(), s.end(), '.') <= 1) {  // only one dot or decimal point
+      if (s.find_last_of(NUMBER_SIGNS) == 0 ||
+          s.find_last_of(NumberElement::NUMBER_SIGNS) ==
+              string::npos) {  // sign is first, second but has a tilde
+                               // before it, or doesn't exist
+        return new NumberElement(removeChar(s, '\''));
       } else {
         throw ParserException(
-            "Looks like a number, but has more than one tilde.", s,
-            s.find(INEXACT_SIGNAL, s.find(INEXACT_SIGNAL) + 1));
+            "Looks like a number, but has a sign in the middle.", s,
+            s.find_last_of(NUMBER_SIGNS));
       }
     } else {
-      if (count(s.begin(), s.end(), '.') > 1) {  // more than one dot
-        throw ParserException(
-            "Looks like a number, but has more than one deminal point.", s,
-            s.find('.', s.find('.') + 1));
-      } else if (count(s.begin(), s.end(), '/') >
-                 1) {  // has more than one slash
-        throw ParserException(
-            "Looks like a number, but has more than one fraction bar.", s,
-            s.find('/', s.find('/') + 1));
-      } else {  // dot and slash
-        throw ParserException(
-            "Looks like a number, but has a decimal point in a fraction.", s,
-            s.find_first_of("."));
-      }
+      throw ParserException(
+          "Looks like a number, but has more than one deminal point.", s,
+          s.find('.', s.find('.') + 1));
     }
   } else {
     throw ParserException(
@@ -191,48 +146,34 @@ NumberElement* NumberElement::parse(const string& s) {
   }
 }
 
-NumberElement::NumberElement(double num, bool isExact) noexcept
-    : StackElement(StackElement::DataType::Number), exact(isExact) {
-  data = mpq_class(num);
-  data.canonicalize();
-}
+NumberElement::NumberElement(long double num, int decs) noexcept
+    : StackElement(StackElement::DataType::Number), data(num), decimals(decs) {}
 
-NumberElement::NumberElement(string d, bool isExact) noexcept
-    : StackElement(StackElement::DataType::Number), exact(isExact) {
-  d = removeChar(d, '+');
-  if (d.find('.') == string::npos) {
-    data = mpq_class(d, 10);
-  } else {
-    int exponent = d.length() - 1 - d.find('.');
-    data = mpq_class(d.erase(d.find('.'), 1));
-    for (int i = 0; i < exponent; i++) {
-      data /= 10;
-    }
-  }
-  data.canonicalize();
+NumberElement::NumberElement(string d) noexcept
+    : StackElement(StackElement::DataType::Number), data(stold(d)) {
+  decimals =
+      d.find('.') == string::npos ? 0 : d.substr(d.find('.') + 1).length();
 }
-
-NumberElement::NumberElement(const mpq_class& d, bool isExact) noexcept
-    : StackElement(StackElement::DataType::Number), data(d), exact(isExact) {}
 
 NumberElement* NumberElement::clone() const noexcept {
-  return new NumberElement(data.get_str(), exact);
+  return new NumberElement(data, decimals);
 }
 
 NumberElement::operator string() const noexcept {
-  if (exact) {
-    return data.get_str();
-  } else {
-    stringstream stream;
-    stream << fixed << setprecision(data.get_prec()) << data.get_d();
-    string inexactSig;
-    inexactSig += INEXACT_SIGNAL;
-    return inexactSig + stream.str() + "...";
-  }
+  stringstream stream;
+  stream << fixed << setprecision(numeric_limits<long double>::digits10 + 2)
+         << data;
+  string parsed = stream.str();
+  size_t dotPos = parsed.find('.');
+  if (dotPos != string::npos &&
+      parsed.size() - dotPos - 1 > decimals)  // decimals is always positive.
+    parsed.erase(dotPos + decimals + 1);      // always positive
+  if (parsed[parsed.length() - 1] == '.') parsed.erase(parsed.length() - 1);
+  return parsed;
 }
 
-const mpq_class& NumberElement::getData() const noexcept { return data; }
-bool NumberElement::isExact() const noexcept { return exact; }
+long double NumberElement::getData() const noexcept { return data; }
+int NumberElement::getDecimals() const noexcept { return decimals; }
 
 const char StringElement::QUOTE_CHAR = '"';
 
@@ -357,31 +298,20 @@ TypeElement* TypeElement::parse(const string& s) {
     }
     return new TypeElement(static_cast<DataType>(value - begin(TYPES())));
   } else if (starts_with(s, "Substack")) {  // substack specializations
-    TypePtr elm(new TypeElement(
+    TypePtr elm = make_unique<TypeElement>(
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2))));
+                                    s.length() - s.find_first_of('(') - 2)));
     if (static_cast<int>(elm->specialization->data) >= NUM_PRIM_TYPES) {
       throw ParserException("Bad specialization on a Substack type.", s,
                             s.find('(') + 1);
     }
     return elm.release();
-  } else if (starts_with(s, "Number")) {
-    TypePtr elm(new TypeElement(
-        DataType::Number,
-        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2))));
-    if (elm->specialization->data != DataType::Exact &&
-        elm->specialization->data != DataType::Inexact) {
-      throw ParserException("Bad specialization on a Number type.", s,
-                            s.find('(') + 1);
-    }
-    return elm.release();
   } else if (starts_with(s, "Command")) {
-    TypePtr elm(new TypeElement(
+    TypePtr elm = make_unique<TypeElement>(
         DataType::Command,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2))));
+                                    s.length() - s.find_first_of('(') - 2)));
     if (elm->specialization->data != DataType::Quoted &&
         elm->specialization->data != DataType::Unquoted) {
       throw ParserException("Wrong specialization on a Command type.", s,
@@ -454,8 +384,8 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 
 const vector<string>& TypeElement::TYPES() noexcept {
   static vector<string>* TYPES =
-      new vector<string>{"Number",  "String", "Boolean", "Substack", "Type",
-                         "Command", "Any",    "Exact",   "Inexact",  "Quoted"};
+      new vector<string>{"Number", "String",  "Boolean", "Substack",
+                         "Type",   "Command", "Any",     "Quoted"};
   return *TYPES;
 }
 }  // namespace stackelements

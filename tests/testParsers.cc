@@ -45,22 +45,15 @@ TEST_CASE("empty parse throws", "[parse][StackElement]") {
 }
 
 TEST_CASE("initial number parses as number", "[parse][StackElement][number]") {
-  NumberPtr num(dynamic_cast<NumberElement*>(StackElement::parse("22/7")));
+  NumberPtr num(dynamic_cast<NumberElement*>(StackElement::parse("3.5")));
   REQUIRE(num != nullptr);
-  REQUIRE(num->getData() == mpq_class("22/7"));
+  REQUIRE(num->getData() == 3.5);
 }
 
 TEST_CASE("initial sign parses as number", "[parse][StackElement][number]") {
-  NumberPtr num(dynamic_cast<NumberElement*>(StackElement::parse("-22/7")));
+  NumberPtr num(dynamic_cast<NumberElement*>(StackElement::parse("-3.5")));
   REQUIRE(num != nullptr);
-  REQUIRE(num->getData() == mpq_class("-22/7"));
-}
-
-TEST_CASE("initial inexact sign parses as number",
-          "[parse][StackElement][number]") {
-  NumberPtr num(dynamic_cast<NumberElement*>(StackElement::parse("~22/7")));
-  REQUIRE(num != nullptr);
-  REQUIRE(num->getData() == mpq_class("22/7"));
+  REQUIRE(num->getData() == -3.5);
 }
 
 TEST_CASE("initial quote parses as string", "[parse][StackElement][string]") {
@@ -143,53 +136,16 @@ TEST_CASE("number with disallowed chars", "[parse][NumberElement]") {
 
 TEST_CASE("number with more than one symbol", "[parse][NumberElement]") {
   REQUIRE_THROWS_AS(NumberElement::parse("1..2"), ParserException);
-  REQUIRE_THROWS_AS(NumberElement::parse("1/2/3"), ParserException);
-  REQUIRE_THROWS_AS(NumberElement::parse("1.2/5"), ParserException);
-  REQUIRE_THROWS_AS(NumberElement::parse("~~2"), ParserException);
 }
 
 TEST_CASE("number with symbol in the middle", "[parse][NumberElement]") {
-  REQUIRE_THROWS_AS(NumberElement::parse("1~2"), ParserException);
   REQUIRE_THROWS_AS(NumberElement::parse("1+2"), ParserException);
   REQUIRE_THROWS_AS(NumberElement::parse("1-2"), ParserException);
-  REQUIRE_THROWS_AS(NumberElement::parse("+~12"), ParserException);
 }
 
 TEST_CASE("number with quote chars between signs", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("~'+'1/2'"));
-  REQUIRE(num->getData() == mpq_class("1/2"));
-}
-
-TEST_CASE("number with blank denominator", "[parse][NumberElement]") {
-  REQUIRE_THROWS_AS(NumberElement::parse("12/''''"), ParserException);
-}
-
-TEST_CASE("number with zero denominator", "[parse][NumberElement]") {
-  REQUIRE_THROWS_AS(NumberElement::parse("12/'0'''"), ParserException);
-}
-
-TEST_CASE("exact fraction with sign", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("+'2'/'4'"));
-  REQUIRE(num->getData() == mpq_class("1/2"));
-  REQUIRE(num->isExact());
-}
-
-TEST_CASE("inexact fraction with sign", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("~'-'1'/'2'"));
-  REQUIRE(num->getData() == mpq_class("-1/2"));
-  REQUIRE_FALSE(num->isExact());
-}
-
-TEST_CASE("exact decimal with sign", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("-2.5"));
-  REQUIRE(num->getData() == mpq_class("-5/2"));
-  REQUIRE(num->isExact());
-}
-
-TEST_CASE("inexact decimal with sign", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("~+2.5"));
-  REQUIRE(num->getData() == mpq_class("5/2"));
-  REQUIRE_FALSE(num->isExact());
+  NumberPtr num(NumberElement::parse("+'1.5'"));
+  REQUIRE(num->getData() == 1.5);
 }
 
 TEST_CASE("string with missing closing quote", "[parse][StringElement]") {
@@ -221,7 +177,7 @@ TEST_CASE("regular substack parse", "[parse][SubstackElement]") {
   auto iter = s->getData().begin();
   const NumberElement* num = dynamic_cast<const NumberElement*>(*iter);
   REQUIRE(num != nullptr);
-  REQUIRE(num->getData() == mpq_class("1"));
+  REQUIRE(num->getData() == 1);
   ++iter;
   const StringElement* str = dynamic_cast<const StringElement*>(*iter);
   REQUIRE(str != nullptr);
@@ -255,17 +211,6 @@ TEST_CASE("substack type specialized bad", "[parse][TypeElement]") {
   REQUIRE_THROWS_AS(TypeElement::parse("Substack(Exact)"), ParserException);
 }
 
-TEST_CASE("number type specialized good", "[parse][TypeElement]") {
-  TypePtr t(TypeElement::parse("Number(Inexact)"));
-  REQUIRE(t->getData() == StackElement::DataType::Number);
-  REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Inexact);
-  REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
-}
-
-TEST_CASE("number type specialized bad", "[parse][TypeElement]") {
-  REQUIRE_THROWS_AS(TypeElement::parse("Number(Quoted)"), ParserException);
-}
-
 TEST_CASE("command type specialized good", "[parse][TypeElement]") {
   TypePtr t(TypeElement::parse("Command(Quoted)"));
   REQUIRE(t->getData() == StackElement::DataType::Command);
@@ -274,7 +219,7 @@ TEST_CASE("command type specialized good", "[parse][TypeElement]") {
 }
 
 TEST_CASE("command type specialized bad", "[parse][TypeElement]") {
-  REQUIRE_THROWS_AS(TypeElement::parse("Command(Exact)"), ParserException);
+  REQUIRE_THROWS_AS(TypeElement::parse("Command(Any)"), ParserException);
 }
 
 TEST_CASE("unspecializable type specialzied", "[parse][TypeElement]") {

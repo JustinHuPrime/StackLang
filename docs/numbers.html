@@ -32,16 +32,8 @@
             <div class="col-lg-6">
                 <h1 id="top">Numbers</h1>
                 <p>
-                    Numbers in StackLang are stored as arbitrary precision rational numbers (using GMP's
-                    <code>mpq_class</code>). There are, however, two flavours of numbers - exact numbers or inexact numbers. Exact numbers are
-                    displayed as fractions, and represent "exactly" the value they have, while inexact numbers are displayed
-                    as decimals, and represent "approximately" some value. Commands that take multiple numbers will produce
-                    an inxact number if an inexact number is given as any of the arguments. Additionally, some commands,
-                    like
-                    <code>sqrt</code> will always produce an inexact result.
-                    <br/> To enter an exact number, optionally enter a sign,
-                    <kbd>+</kbd> or
-                    <kbd>-</kbd>, then either a decimal number or a fraction of two whole numbers. Any number of
+                    Numbers in StackLang are stored as floating point numbers. Numbers will be displayed to as many decimal places as are significant.
+                    When entering a number, any number of
                     <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.
                 </p>
                 <p>
@@ -49,34 +41,18 @@
                     part, they can be used as normal numbers, but they can be quoted.
                 </p>
                 <p>
-                    An EBNF definition of a Number is given below.
+                    An EBNF definition of a number is given below.
                     <pre id="ebnf">
-nonzero-digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-digit = "0" | nonzero-digit ;
-
+nonzero-digit = ? Any ASCII arabic numeral ? ;
 separator-symbol = "'" ;
 
-processed-nonzero-digit = {separator-symbol}, nonzero-digit, {separator-symbol} ;
 processed-digit = {separator-symbol}, digit-symbol, {separator-symbol} ;
-
-nonzero-digit-string = {processed-digit}, processed-nonzero-digit, {processed-digit} ;
 digit-string = {processed-digit} ;
 
-inexact-symbol = "~" ;
 sign-symbol = "+" | "-" ;
 decimal-point-symbol = "." ;
-fraction-bar-symbol = "/" ;
 
-exact-decimal = [sign-symbol], digit-string, [decimal point, digit-string] ;
-exact-fraction = [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
-
-inexact-decimal = inexact-symbol, {separator-symbol}, [sign-symbol], digit-string, [decimal point, digit-string] ;
-inexact-fraction = inexact-symbol, {separator-symbol}, [sign-symbol], digit-string, fraction-bar-symbol, nonzero-digit-string ;
-
-exact-number = exact-decimal | exact-fraction ;
-inexact-number = inexact-decimal | inexact-fraction ;
-
-number = exact-number | inexact-number ;</pre>
+number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                 </p>
                 <h2 id="commands">Number-related Commands</h2>
                 <h3 id="constants">Constants</h3>
@@ -128,7 +104,7 @@ number = exact-number | inexact-number ;</pre>
                 </p>
                 <p>
                     <code>inexact-to-exact : Number -> Number(Exact)</code>
-                    <br/> Produces the exact version (not) of the given number.
+                    <br/> Produces the exact version (not rounded) of the given number.
                 </p>
                 <p>
                     <code>number-to-string : Number -> String</code>
@@ -176,17 +152,9 @@ number = exact-number | inexact-number ;</pre>
                     <br/> Divides the second number by the first. Will produce a syntax error when dividing by zero.
                 </p>
                 <p>
-                    <code>modulo : Number Number -> Number</code>
+                    <code>modulo : Number(Exact) Number(Exact) -> Number(Exact)</code>
                     <br/> Takes the absolute value of both numbers, and subtracts the first from the second until the second is
                     less than the first. Then, the sign of the second is set to the sign of the first.
-                </p>
-                <p>
-                    <code>quotient : Number(Exact) Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the whole-number part of the second number divided by the first number.
-                </p>
-                <p>
-                    <code>remainder : Number(Exact) Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the remainder when two numbers are divided.
                 </p>
                 <p>
                     <code>floor : Number -> Number(Exact)</code>
@@ -213,7 +181,7 @@ number = exact-number | inexact-number ;</pre>
                     <br/> Produces the absolute value of the number.
                 </p>
                 <p>
-                    <code>sign : Number -> Number</code>
+                    <code>sign : Number -> Number(Exact)</code>
                     <br/> If input is positive, produces 1, else if input is negative, produces -1, else zero.
                 </p>
                 <p>

@@ -183,7 +183,6 @@ minus
 `negate
 define
 
-
 << Number >> ; -> Number
 <<
 1
@@ -207,4 +206,25 @@ define
 subtract
 >>
 `decrement
+define
+
+
+<< Number >> ; -> Number
+<<
+180
+divide
+pi
+multiply
+>>
+`degrees-to-radians
+define
+
+<< Number >> ; -> Number
+<<
+pi
+divide
+180
+multiply
+>>
+`radians-to-degrees
 define

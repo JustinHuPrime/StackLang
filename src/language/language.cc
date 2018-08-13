@@ -26,9 +26,6 @@
 #include <iterator>
 #include <stack>
 
-#include <gmp.h>
-#include <gmpxx.h>
-
 #include "language/exceptions/languageExceptions.h"
 #include "language/stack/stack.h"
 
@@ -98,13 +95,6 @@ bool checkType(const StackElement* elm, const TypeElement type,
                  StackElement::DataType::Any) {  // has no specialization or is
                                                  // an Any specialized substack.
     return true;                                 // type matches plainly
-  } else if (elm->getType() == type.getData() &&
-             type.getData() ==
-                 StackElement::DataType::Number) {  // is a specialized number
-    return type.getSpecialization()->getData() ==
-           (static_cast<const NumberElement*>(elm)->isExact()
-                ? StackElement::DataType::Exact
-                : StackElement::DataType::Inexact);
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Command) {  // is a specialized command

@@ -82,37 +82,37 @@
         delete s.pop();
       }}},
     {"drop*",
-     {Stack{new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))},
+     {Stack{new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
-        mpq_class rawNum = num->getData();
-        if (rawNum.get_den() != 1 || rawNum.get_num() <= 0) {
+        long double remainder = num->getData();
+        long double whole;
+        remainder = modfl(remainder, &whole);
+        if (remainder != 1 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*num) + " instead.",
                              context);
         }
-        size_t i = rawNum.get_num().get_ui();
-        while (i-- > 0) delete s.pop();
+        while (whole-- > 0) delete s.pop();
       }}},
     {"clear",
      {Stack{}, [](Stack& s, map<string, DefinedFunction>&,
                   list<string>&) { s.clear(); }}},
     {"rotate",
-     {Stack{new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))},
+     {Stack{new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
-        mpq_class rawNum = num->getData();
-        if (rawNum.get_den() != 1 || rawNum.get_num() <= 0) {
+        long double remainder = num->getData();
+        long double whole;
+        remainder = modfl(remainder, &whole);
+        if (remainder != 0 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*num) + " instead.",
                              context);
         }
-        size_t i = rawNum.get_num().get_ui();
         StackElement* grabbed;
         stack<StackElement*> rest;
-        while (i-- > 1) rest.push(s.pop());
+        while (whole-- > 1) rest.push(s.pop());
         grabbed = s.pop();
         while (!rest.empty()) {
           s.push(rest.top());
@@ -121,27 +121,29 @@
         s.push(grabbed);
       }}},
     {"rotate*",
-     {Stack{new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact)),
-            new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))},
+     {Stack{new TypeElement(StackElement::DataType::Number),
+            new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
-        mpq_class rawReach = second->getData();
-        if (rawReach.get_den() != 1 || rawReach.get_num() <= 0) {
+        long double reachRemainder = first->getData();
+        long double reachWhole;
+        reachRemainder = modfl(reachRemainder, &reachWhole);
+        if (reachRemainder != 0 || reachWhole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*second) + " instead.",
                              context);
         }
-        mpq_class rawCount = second->getData();
-        if (rawCount.get_den() != 1 || rawCount.get_num() <= 0) {
+        long double countRemainder = second->getData();
+        long double countWhole;
+        countRemainder = modfl(countRemainder, &countWhole);
+        if (countRemainder != 0 || countWhole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*first) + " instead.",
                              context);
         }
-        for (size_t count = rawCount.get_num().get_ui(); count > 0; count--) {
-          size_t reach = rawReach.get_num().get_ui();
+        while (countWhole-- > 0) {
+          long double reach = reachWhole;
           StackElement* grabbed;
           stack<StackElement*> rest;
           while (reach-- > 1) rest.push(s.pop());
@@ -167,20 +169,20 @@
     {"error*",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String),
-            new TypeElement(StackElement::DataType::Number,
-                            new TypeElement(StackElement::DataType::Exact))},
+            new TypeElement(StackElement::DataType::Number)},
       [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
         NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
         StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
-        mpq_class rawIndex = ctxIndex->getData();
-        if (rawIndex.get_den() != 1 || rawIndex.get_num() <= 0) {
+        long double remainder = ctxIndex->getData();
+        long double whole;
+        remainder = modfl(remainder, &whole);
+        if (remainder != 0 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*ctxIndex) + " instead.",
                              context);
         }
-        throw new RuntimeError(msg->getData(), ctx->getData(),
-                               rawIndex.get_num().get_ui(), context);
+        throw new RuntimeError(msg->getData(), ctx->getData(), whole, context);
       }}},
     {"null",
      {Stack{},

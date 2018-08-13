@@ -19,16 +19,16 @@ The interpreter requires the following libraries. Please install these libraries
 and their dependencies for your particular system:
 
 * ncurses
-* gmpxx
 * Catch2 (included as git submodile in extern)
 
 You will also need the following tools:
 
-* A C++17 capable compiler (clang++ or g++)
+* A C++17 capable compiler (clang++ or g++ preferred)
 * gnu-make
 
 Then, edit the included makefile to specify the appropriate shell commands and
-library links for your particular system.
+library links for your particular system, as well as setting the appropriate
+warning flags for your compiler.
 
 Finally, run `make clean`, then `make debug` or `make release`. This will
 compile the interpreter, run the included test suite, and should produce both
