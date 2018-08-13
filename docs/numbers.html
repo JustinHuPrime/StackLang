@@ -70,16 +70,12 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <br/> Produces true if given element is a number.
                 </p>
                 <p>
-                    <code>exact? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an exact number.
-                </p>
-                <p>
                     <code>integer? : Any -> Boolean</code>
                     <br/> Produces true if given element is an integer number.
                 </p>
                 <p>
                     <code>zero? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an exact number equal to zero.
+                    <br/> Produces true if given element is a number equal to zero.
                 </p>
                 <p>
                     <code>positive? : Any -> Boolean</code>
@@ -91,34 +87,33 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                 </p>
                 <p>
                     <code>even? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an even, exact, integer number.
+                    <br/> Produces true if given element is an even, integer number.
                 </p>
                 <p>
                     <code>odd? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an odd, exact, integer number.
+                    <br/> Produces true if given element is an odd, integer number.
                 </p>
                 <h3 id="conversion">Type Conversion</h3>
                 <p>
-                    <code>exact-to-inexact : Number -> Number(Inexact)</code>
-                    <br/> Produces the inexact version of the given number.
-                </p>
-                <p>
-                    <code>inexact-to-exact : Number -> Number(Exact)</code>
-                    <br/> Produces the exact version (not rounded) of the given number.
-                </p>
-                <p>
                     <code>number-to-string : Number -> String</code>
-                    <br/> Produces the number as a fraction (exact number), or as a decimal with inexact symbol, but without the
-                    <code>...</code> (inexact number).
+                    <br/> Produces the number as it would be printed, but not including a positive sign.
                 </p>
                 <p>
                     <code>string-to-number : String -> Number</code>
                     <br/> Produces a number from a string as if it were read in from the interpreter.
-                    <code>number-to-string</code> is the exact inverse of
+                    <code>number-to-string</code> is the inverse of
                     <code>string-to-number</code>. Fails with a
                     <code>RuntimeError</code> if string cannot be parsed.
                 </p>
                 <h3 id="arithmetic">Arithmetic</h3>
+                <p>
+                    <code>precision : Number -> Number</code>
+                    <br/> Produces the number of decimal places this number is accurate to.
+                </p>
+                <p>
+                    <code>set-precision : Number Number -> Number</code>
+                    <br/> Sets the precision of the second number to the first number.
+                </p>
                 <p>
                     <code>negate : Number -> Number</code>
                     <br/> Produces the negative of the number.
@@ -152,28 +147,28 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <br/> Divides the second number by the first. Will produce a syntax error when dividing by zero.
                 </p>
                 <p>
-                    <code>modulo : Number(Exact) Number(Exact) -> Number(Exact)</code>
+                    <code>modulo : Number Number -> Number</code>
                     <br/> Takes the absolute value of both numbers, and subtracts the first from the second until the second is
                     less than the first. Then, the sign of the second is set to the sign of the first.
                 </p>
                 <p>
-                    <code>floor : Number -> Number(Exact)</code>
+                    <code>floor : Number -> Number</code>
                     <br/> Produces the floor of the number (closest integer, rounding down).
                 </p>
                 <p>
-                    <code>ceil : Number -> Number(Exact)</code>
+                    <code>ceil : Number -> Number</code>
                     <br/> Produces the ceiling of the number (closest integer, rounding up).
                 </p>
                 <p>
-                    <code>round : Number -> Number(Exact)</code>
+                    <code>round : Number -> Number</code>
                     <br/> Produces the closest integer, rounding to even.
                 </p>
                 <p>
-                    <code>round* : Number -> Number(Exact)</code>
+                    <code>round* : Number -> Number</code>
                     <br/> Produces the closest integer, rounding up at 0.5.
                 </p>
                 <p>
-                    <code>trunc : Number -> Number(Exact)</code>
+                    <code>trunc : Number -> Number</code>
                     <br/> Produces the number, without any decimal digits.
                 </p>
                 <p>
@@ -181,7 +176,7 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <br/> Produces the absolute value of the number.
                 </p>
                 <p>
-                    <code>sign : Number -> Number(Exact)</code>
+                    <code>sign : Number -> Number</code>
                     <br/> If input is positive, produces 1, else if input is negative, produces -1, else zero.
                 </p>
                 <p>
@@ -193,35 +188,20 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <br/> Produces the smaller of the two numbers.
                 </p>
                 <p>
-                    <code>gcd : Number(Exact) Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the greatest common divisor of two integers (always positive). If at least one of the numbers
-                    is a fraction, produces the greatest common divisor of the numerators, divided by the least common multiple
-                    of the denominators.
-                </p>
-                <p>
-                    <code>lcm : Number(Exact) Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the least common multiple of the two numbers (always positive).
-                </p>
-                <p>
-                    <code>numerator : Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the numerator of the number.
-                </p>
-                <p>
-                    <code>denominator : Number(Exact) -> Number(Exact)</code>
-                    <br/> Produces the denominator of the number.
-                </p>
-                <p>
                     <code>sqrt : Number -> Number</code>
-                    <br/> Produces the square root of the number - inexact unless the number is a square of a rational number.
+                    <br/> Produces the square root of the number.
                 </p>
                 <p>
                     <code>pow : Number Number -> Number</code>
                     <br/> Produces the second number raised to the power of the first number.
                 </p>
                 <p>
+                    <code>exponential : Number -> Number</code>
+                    <br/> Produces euler's number to the power of the input.
+                </p>
+                <p>
                     <code>log : Number Number -> Number</code>
-                    <br/> Produces the second number's logarithm, using the first number as the base. Result is inexact unless
-                    both numbers are exact, and second number is a perfect power of the base.
+                    <br/> Produces the second number's logarithm, using the first number as the base.
                 </p>
                 <p>
                     <code>log-e : Number -> Number</code>
@@ -237,11 +217,11 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                 </p>
                 <h3 id="comparison">Comparison</h3>
                 <p>
-                    <code>equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <code>equal? : Number Number -> Boolean</code>
                     <br/> Produces true if the number is equal to the other number.
                 </p>
                 <p>
-                    <code>not-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <code>not-equal? : Number Number -> Boolean</code>
                     <br/> Produces true if the numbers are not equal.
                 </p>
                 <p>
@@ -253,76 +233,44 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <br/> Produces true if the second number is greater than the first.
                 </p>
                 <p>
-                    <code>less-than-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <code>less-than-equal? : Number Number -> Boolean</code>
                     <br/> Produces true if the second number is less than or equal to the first.
                 </p>
                 <p>
-                    <code>greater-than-equal? : Number(Exact) Number(Exact) -> Boolean</code>
+                    <code>greater-than-equal? : Number Number -> Boolean</code>
                     <br/> Produces true if the second number is greater than or equal to the first.
                 </p>
                 <h3 id="trigonometry">Trigonometric Functions</h3>
                 <p>
                     <code>sine : Number -> Number</code>
-                    <br/> Produces the sine of the number. Number is expected to be in radians. Output is exact only if input
-                    is exact zero.
+                    <br/> Produces the sine of the number. Number is expected to be in radians
                 </p>
                 <p>
                     <code>cosine : Number -> Number</code>
-                    <br/> Produces the cosine of the number. Number is expected to be in radians. Output is exact only if input
-                    is exact zero.
+                    <br/> Produces the cosine of the number. Number is expected to be in radians.
                 </p>
                 <p>
                     <code>tangent : Number -> Number</code>
-                    <br/> Produces the tangent of the number. Number is expected to be in radians. Output is exact only if input
-                    is exact zero.
+                    <br/> Produces the tangent of the number. Number is expected to be in radians.
                 </p>
                 <p>
                     <code>arcsine : Number -> Number</code>
                     <br/> Produces the arcsine of the number. Number is expected to be between 1 and -1. Output is between -&pi;/2
-                    and &pi;/2. Output is exact only if input is exact zero.
+                    and &pi;/2.
                 </p>
                 <p>
                     <code>arccosine : Number -> Number</code>
                     <br/> Produces the arccosine of the number. Number is expected to be between 1 and -1. Output is between 0
-                    and &pi;. Output is exact only if input is exact zero.
+                    and &pi;.
                 </p>
                 <p>
                     <code>arctangent : Number -> Number</code>
-                    <br/> Produces the arctangent of the number. Output is between -&pi;/2 and &pi;/2. Output is exact only if
-                    input is exact zero.
+                    <br/> Produces the arctangent of the number. Output is between -&pi;/2 and &pi;/2. Numbre
                 </p>
                 <p>
                     <code>arctangent2 : Number Number -> Number</code>
                     <br/> Produces the arctangent of the second number divided by the first number. Output is between &pi; (inclusive)
                     and -&pi; (exclusive). Handles any asymptotes in that range.
-                </p>
-                <p>
-                    <code>cosecant : Number -> Number</code>
-                    <br/> Produces the cosecant of the number. Number is expected to be in radians.
-                </p>
-                <p>
-                    <code>secant : Number -> Number</code>
-                    <br/> Produces the secant of the number. Number is expected to be in radians.
-                </p>
-                <p>
-                    <code>cotangent : Number -> Number</code>
-                    <br/> Produces the cotangent of the number. Number is expected to be in radians.
-                </p>
-                <p>
-                    <code>arccosecant : Number -> Number</code>
-                    <br/> Produces the arccosecant of the number. Number is expected to be less than or equal to -1 or greater
-                    than or equal to 1. Output is between -&pi;/2 and 0 for inputs less than or equal to -1, and between
-                    0 and &pi;/2 for input greater than or equal to 1.
-                </p>
-                <p>
-                    <code>arcsecant : Number -> Number</code>
-                    <br/> Produces the arcsecant of the number. Number is expected to be less than or equal to -1 or greater than
-                    or equal to 1. Output is between &pi;/2 and &pi; for inputs less than or equal to -1, and between 0 and
-                    &pi;/2 for inputs greater than or equal to 1.
-                </p>
-                <p>
-                    <code>arccotangent : Number -> Number</code>
-                    <br/> Produces the arccotangent of the number. Output is between 0 and &pi;
                 </p>
                 <p>
                     <code>hyperbolic-sine : Number -> Number</code>
@@ -338,20 +286,6 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     one to positive one, not inclusive.
                 </p>
                 <p>
-                    <code>hyperbolic-cosecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic cosecant of the number. Domain and range are all real numbers except zero.
-                </p>
-                <p>
-                    <code>hyperbolic-secant : Number -> Number</code>
-                    <br/> Produces the hyperbolic secant of the number. Domain is all real numbers, and range is between zero
-                    and one.
-                </p>
-                <p>
-                    <code>hyperbolic-cotangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic cotangent of the number. Domain is all real numbers except zero, and range is
-                    all real numbers except those within one of zero.
-                </p>
-                <p>
                     <code>hyperbolic-arcsine : Number -> Number</code>
                     <br/> Produces the hyperbolic arcsine of the number. Output has the same sign as the input.
                 </p>
@@ -363,22 +297,13 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                     <code>hyperbolic-arctangent : Number -> Number</code>
                     <br/> Produces the hyperbolic arctangent of the number. Output has the same sign as the input.
                 </p>
-                <p>
-                    <code>hyperbolic-arccosecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccosecant of the number. Output has the same sign as the input.
-                </p>
-                <p>
-                    <code>hyperbolic-arcsecant : Number -> Number</code>
-                    <br/> Produces the hyperbolic arcsecant of the number. Output is always positive.
-                </p>
-                <p>
-                    <code>hyperbolic-arccotangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccotangent of the number. Output has the same sign as the input.
-                </p>
+                <h3 id="stats">Statistical Functions</h3>
+                <!--TODO: finish this-->
                 <h3 id="utilities">Other Utilities</h3>
                 <p>
                     <code>random : -> Number</code>
-                    <br/> Produces a random number. Not guarenteed to be cryptographically secure.
+                    <br/> Produces a random number between zero (inclusive) and one (exclusive). Not guarenteed to be cryptographically
+                    secure.
                 </p>
                 <p>
                     <code>degrees-to-radians : Number -> Number</code>

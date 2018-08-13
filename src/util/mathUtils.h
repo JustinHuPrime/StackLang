@@ -15,19 +15,13 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-// Catch2 main file - kept separate despite triviality. Only contains
-// CATCH_CONFIG_MAIN and the catch.hpp include.
+// Various math utility functions
 
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#ifndef STACKLANG_UTILS_MATHUTILS_H_
+#define STACKLANG_UTILS_MATHUTILS_H_
 
-#include <cmath>
-
-// TEST_CASE("abs vs fabs sanity check", "[sanity]") {
-//   using std::abs;
-//   long double a = 3.14;
-//   long double b = -3.14;
-//   REQUIRE(abs(a) == abs(b));
-//   REQUIRE(abs(a) == 3.14);
-//   REQUIRE(abs(b) == 3.14);
-// }
+namespace util {
+int spaceship(long double a, long double b, long double delta) noexcept;
+long double significantDelta(long double a, long double b) noexcept;
+}  // namespace util
+#endif  // STACKLANG_UTILS_MATHUTILS_H_

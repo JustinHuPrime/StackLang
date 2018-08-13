@@ -87,8 +87,8 @@
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
-        remainder = modfl(remainder, &whole);
-        if (remainder != 1 || whole <= 0) {
+        remainder = modf(remainder, &whole);
+        if (remainder != 0 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*num) + " instead.",
                              context);
@@ -104,7 +104,7 @@
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
-        remainder = modfl(remainder, &whole);
+        remainder = modf(remainder, &whole);
         if (remainder != 0 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*num) + " instead.",
@@ -128,7 +128,7 @@
         NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
         long double reachRemainder = first->getData();
         long double reachWhole;
-        reachRemainder = modfl(reachRemainder, &reachWhole);
+        reachRemainder = modf(reachRemainder, &reachWhole);
         if (reachRemainder != 0 || reachWhole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*second) + " instead.",
@@ -136,7 +136,7 @@
         }
         long double countRemainder = second->getData();
         long double countWhole;
-        countRemainder = modfl(countRemainder, &countWhole);
+        countRemainder = modf(countRemainder, &countWhole);
         if (countRemainder != 0 || countWhole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*first) + " instead.",
@@ -176,7 +176,7 @@
         StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
         long double remainder = ctxIndex->getData();
         long double whole;
-        remainder = modfl(remainder, &whole);
+        remainder = modf(remainder, &whole);
         if (remainder != 0 || whole <= 0) {
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*ctxIndex) + " instead.",

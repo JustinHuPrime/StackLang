@@ -146,34 +146,29 @@ NumberElement* NumberElement::parse(const string& s) {
   }
 }
 
-NumberElement::NumberElement(long double num, int decs) noexcept
-    : StackElement(StackElement::DataType::Number), data(num), decimals(decs) {}
+NumberElement::NumberElement(long double num, int prec) noexcept
+    : StackElement(StackElement::DataType::Number),
+      data(num),
+      precision(prec) {}
 
 NumberElement::NumberElement(string d) noexcept
     : StackElement(StackElement::DataType::Number), data(stold(d)) {
-  decimals =
+  precision =
       d.find('.') == string::npos ? 0 : d.substr(d.find('.') + 1).length();
 }
 
 NumberElement* NumberElement::clone() const noexcept {
-  return new NumberElement(data, decimals);
+  return new NumberElement(data, precision);
 }
 
 NumberElement::operator string() const noexcept {
   stringstream stream;
-  stream << fixed << setprecision(numeric_limits<long double>::digits10 + 2)
-         << data;
-  string parsed = stream.str();
-  size_t dotPos = parsed.find('.');
-  if (dotPos != string::npos &&
-      parsed.size() - dotPos - 1 > decimals)  // decimals is always positive.
-    parsed.erase(dotPos + decimals + 1);      // always positive
-  if (parsed[parsed.length() - 1] == '.') parsed.erase(parsed.length() - 1);
-  return parsed;
+  stream << fixed << setprecision(precision) << data;
+  return stream.str();
 }
 
 long double NumberElement::getData() const noexcept { return data; }
-int NumberElement::getDecimals() const noexcept { return decimals; }
+int NumberElement::getPrecision() const noexcept { return precision; }
 
 const char StringElement::QUOTE_CHAR = '"';
 

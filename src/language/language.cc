@@ -24,10 +24,12 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <random>
 #include <stack>
 
 #include "language/exceptions/languageExceptions.h"
 #include "language/stack/stack.h"
+#include "util/mathUtils.h"
 
 namespace stacklang {
 namespace {
@@ -48,12 +50,32 @@ using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::SubstackPtr;
 using stacklang::stackelements::TypeElement;
 using stacklang::stackelements::TypePtr;
+using std::abs;
+using std::acosh;
 using std::all_of;
+using std::asinh;
+using std::atanh;
 using std::atomic_bool;
 using std::begin;
+using std::copysign;
+using std::cos;
+using std::cosh;
 using std::end;
 using std::find_if;
+using std::isnan;
+using std::log;
+using std::make_unique;
+using std::max;
+using std::min;
+using std::modf;
+using std::pow;
+using std::random_device;
+using std::sin;
+using std::sinh;
 using std::stack;
+using std::tan;
+using std::tanh;
+using util::spaceship;
 }  // namespace
 
 atomic_bool stopFlag = false;

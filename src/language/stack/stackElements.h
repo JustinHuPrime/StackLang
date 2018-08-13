@@ -78,17 +78,18 @@ class NumberElement : public StackElement {
 
   static NumberElement* parse(const string&);
 
-  explicit NumberElement(long double, int = 0) noexcept;
+  explicit NumberElement(
+      long double, int = numeric_limits<long double>::max_digits10) noexcept;
   explicit NumberElement(string) noexcept;
   NumberElement* clone() const noexcept override;
 
   explicit operator string() const noexcept override;
   long double getData() const noexcept;
-  int getDecimals() const noexcept;
+  int getPrecision() const noexcept;
 
  private:
   long double data;
-  int decimals;
+  int precision;
 };
 
 class StringElement : public StackElement {

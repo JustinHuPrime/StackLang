@@ -20,7 +20,7 @@
 << Any >> ; -> Boolean
 <<
 duplicate
-exact?
+number?
 `integer-other
 `integer-exact
 3, rotate
@@ -39,7 +39,7 @@ false
 `integer-other
 define*
 
-<< Number(Exact) >> ; -> Boolean
+<< Number >> ; -> Boolean
 <<
 1, modulo
 zero?
@@ -52,7 +52,7 @@ define*
 << Any >> ; -> Boolean
 <<
 duplicate
-exact?
+number?
 `zero-other
 `zero-exact
 3, rotate
@@ -71,7 +71,7 @@ false
 `zero-other
 define*
 
-<< Number(Exact) >> ; -> Boolean
+<< Number >> ; -> Boolean
 <<
 0, equal?
 >>
@@ -115,7 +115,7 @@ define*
 <<
 duplicate
 duplicate
-exact?
+number?
 2, rotate
 positive?
 not
@@ -151,7 +151,7 @@ false
 `even-other
 define*
 
-<< Number(Exact) >> ; -> Boolean
+<< Number >> ; -> Boolean
 <<
 2, modulo
 zero?
@@ -164,13 +164,18 @@ define*
 << Any >> ; -> Boolean
 <<
 duplicate
+duplicate
 integer?
 2, rotate
 even?
 not
+3, rotate
+zero?
+not
+and
 and
 >>
-`negative?
+`integer
 define
 
 
@@ -206,6 +211,74 @@ define
 subtract
 >>
 `decrement
+define
+
+<< Number >> ; -> Number
+<<
+0.5
+pow
+>>
+`sqrt
+define
+
+
+<< Number >> ; -> Number
+<<
+euler
+2, rotate
+pow
+>>
+`exponential
+define
+
+
+<< Number >> ; -> Number
+<<
+euler
+log
+>>
+`log-e
+define
+
+<< Number >> ; -> Number
+<<
+10
+log
+>>
+`log-10
+define
+
+<< Number >> ; -> Number
+<<
+2
+log
+>>
+`log-2
+define
+
+
+<< Number Number >> ; -> Boolean
+<<
+equal?
+not
+>>
+`not-equal?
+define
+
+<< Number Number >> ; -> Boolean
+<<
+greater-than?
+not
+>>
+`less-than-equal?
+define
+
+<< Number Number >> ; -> Boolean
+<<
+less-than?
+not
+>>
+`greater-than-equal?
 define
 
 
