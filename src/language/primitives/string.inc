@@ -30,7 +30,7 @@
       [](Stack& s, Defines&, list<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
-            elm->getType() == StackElement::DataType::Command &&
+            elm->getType() == StackElement::DataType::String &&
             dynamic_cast<StringElement*>(elm.get())->getData() == ""));
       }}},
     {"string-length",

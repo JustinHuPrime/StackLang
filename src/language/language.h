@@ -55,7 +55,7 @@ typedef map<string, PrimitiveFunction> Primitives;
 const Primitives& PRIMITIVES() noexcept;
 const char* const GLOBAL_CONTEXT = "global context";
 
-bool checkType(const StackElement* elm, const TypeElement type,
+bool checkType(const StackElement* elm, const TypeElement& type,
                const list<string>& context);
 void checkTypes(const Stack& s, const Stack& types,
                 const list<string>& context);

@@ -107,7 +107,7 @@ const Primitives& PRIMITIVES() noexcept {
   return *prims;
 }
 
-bool checkType(const StackElement* elm, const TypeElement type,
+bool checkType(const StackElement* elm, const TypeElement& type,
                const list<string>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
     return false;
@@ -126,20 +126,20 @@ bool checkType(const StackElement* elm, const TypeElement type,
              type.getData() ==
                  StackElement::DataType::Command) {  // is a specialized command
     return type.getSpecialization()->getData() ==
-           (static_cast<const CommandElement*>(elm)->isQuoted()
+           (dynamic_cast<const CommandElement*>(elm)->isQuoted()
                 ? StackElement::DataType::Quoted
                 : StackElement::DataType::Unquoted);
   } else if (elm->getType() == type.getData() &&
              type.getData() ==
                  StackElement::DataType::Substack) {  // is a specialized
                                                       // substack
-    const Stack& s = static_cast<const SubstackElement*>(elm)->getData();
+    const Stack& s = dynamic_cast<const SubstackElement*>(elm)->getData();
     const TypeElement* spec = type.getSpecialization();
 
     return all_of(s.begin(), s.end(), [&spec, &context](const StackElement* e) {
       return checkType(e, *spec, context);
     });
-  } else {  // is a specialized non-substack, non-number
+  } else {  // is a specialized non-substack, non-command
     throw SyntaxError("Impossible type detected.", static_cast<string>(type), 0,
                       context);
   }
