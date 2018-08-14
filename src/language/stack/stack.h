@@ -59,7 +59,7 @@ class StackElement {
   StackElement& operator=(const StackElement&) = default;
   StackElement& operator=(StackElement&&) = default;
 
-  virtual ~StackElement() = default;
+  virtual ~StackElement() = 0;
 
   // Produces a nicely formatted string of the string (for print to console)
   explicit virtual operator string() const noexcept = 0;

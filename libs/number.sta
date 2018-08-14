@@ -22,7 +22,7 @@
 duplicate
 number?
 `integer-other
-`integer-exact
+`integer-number
 3, rotate
 if
 unquote
@@ -45,7 +45,7 @@ define*
 zero?
 >>
 `integer?
-`integer-exact
+`integer-number
 define*
 
 
@@ -54,7 +54,7 @@ define*
 duplicate
 number?
 `zero-other
-`zero-exact
+`zero-number
 3, rotate
 if
 unquote
@@ -76,7 +76,7 @@ define*
 0, equal?
 >>
 `zero?
-`zero-exact
+`zero-number
 define*
 
 
@@ -175,7 +175,7 @@ not
 and
 and
 >>
-`integer
+`odd?
 define
 
 
@@ -197,6 +197,7 @@ divide
 `inverse
 define
 
+
 << Number >> ; -> Number
 <<
 1
@@ -213,6 +214,7 @@ subtract
 `decrement
 define
 
+
 << Number >> ; -> Number
 <<
 0.5
@@ -220,7 +222,6 @@ pow
 >>
 `sqrt
 define
-
 
 << Number >> ; -> Number
 <<

@@ -20,14 +20,14 @@
 
 {"command?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+  [](Stack& s, Defines&, list<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::Command));
   }}},
     {"quoted?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+      [](Stack& s, Defines&, list<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Command &&
@@ -35,7 +35,7 @@
       }}},
     {"local?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         ElementPtr elm(s.pop());
         if (elm->getType() != StackElement::DataType::Command) {
           s.push(new BooleanElement(false));
@@ -56,20 +56,20 @@
     {"unquote",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+      [](Stack& s, Defines&, list<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(new CommandElement(elm->getName()));
       }}},
     {"command-to-string",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
+      [](Stack& s, Defines&, list<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(
             new StringElement((elm->isQuoted() ? "`" : "") + elm->getName()));
       }}},
     {"string-to-command",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
         ElementPtr result;
         try {
@@ -89,7 +89,7 @@
       }}},
     {"string-to-command*",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
         ElementPtr result;
         try {
@@ -111,7 +111,7 @@
     {"arity",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto primIter = prims->find(cmd->getName());
         if (primIter != prims->end()) {
@@ -129,7 +129,7 @@
     {"body",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
@@ -142,7 +142,7 @@
     {"context",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
@@ -160,7 +160,7 @@
     {"signature",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto primIter = prims->find(cmd->getName());
         if (primIter != prims->end()) {

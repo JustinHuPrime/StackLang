@@ -24,7 +24,7 @@
         new TypeElement(StackElement::DataType::Substack),
         new TypeElement(StackElement::DataType::Command,
                         new TypeElement(StackElement::DataType::Quoted))},
-  [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+  [](Stack& s, Defines& defs, list<string>& context) {
     CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
     SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
     SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
@@ -43,7 +43,7 @@
                             new TypeElement(StackElement::DataType::Quoted)),
             new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
         CommandPtr contextReq(dynamic_cast<CommandElement*>(s.pop()));
         SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
@@ -60,7 +60,7 @@
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command,
                             new TypeElement(StackElement::DataType::Quoted))},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         auto iter = defs.find(elm->getName());
         if (iter == defs.end()) {
@@ -73,17 +73,13 @@
       }}},
     {"include",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>& defs, list<string>& context) {
-        return;
-      }}},
+      [](Stack& s, Defines& defs, list<string>& context) { return; }}},
     {"drop",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
-        delete s.pop();
-      }}},
+      [](Stack& s, Defines&, list<string>&) { delete s.pop(); }}},
     {"drop*",
      {Stack{new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
@@ -95,12 +91,10 @@
         }
         while (whole-- > 0) delete s.pop();
       }}},
-    {"clear",
-     {Stack{}, [](Stack& s, map<string, DefinedFunction>&,
-                  list<string>&) { s.clear(); }}},
+    {"clear", {Stack{}, [](Stack& s, Defines&, list<string>&) { s.clear(); }}},
     {"rotate",
      {Stack{new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
@@ -123,7 +117,7 @@
     {"rotate*",
      {Stack{new TypeElement(StackElement::DataType::Number),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
         long double reachRemainder = first->getData();
@@ -137,11 +131,11 @@
         long double countRemainder = second->getData();
         long double countWhole;
         countRemainder = modf(countRemainder, &countWhole);
-        if (countRemainder != 0 || countWhole <= 0) {
+        if (countRemainder != 0 || countWhole <= 0)
           throw RuntimeError("Expected a positive integer, but got " +
                                  static_cast<string>(*first) + " instead.",
                              context);
-        }
+
         while (countWhole-- > 0) {
           long double reach = reachWhole;
           StackElement* grabbed;
@@ -157,12 +151,10 @@
       }}},
     {"duplicate",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
-        s.push(s.top()->clone());
-      }}},
+      [](Stack& s, Defines&, list<string>&) { s.push(s.top()->clone()); }}},
     {"error",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         throw new RuntimeError(str->getData(), context);
       }}},
@@ -170,7 +162,7 @@
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, map<string, DefinedFunction>&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>& context) {
         NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
         StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
@@ -184,11 +176,9 @@
         }
         throw new RuntimeError(msg->getData(), ctx->getData(), whole, context);
       }}},
-    {"null",
-     {Stack{},
-      [](Stack&, map<string, DefinedFunction>&, list<string>&) { return; }}},
+    {"null", {Stack{}, [](Stack&, Defines&, list<string>&) { return; }}},
     {"identity",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack&, map<string, DefinedFunction>&, list<string>&) {
+      [](Stack&, Defines&, list<string>&) {
         return;  // equivalent to popping then pushing.
       }}},

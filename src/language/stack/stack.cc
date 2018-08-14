@@ -103,6 +103,8 @@ StackElement* StackElement::parse(const string& s) {
   }
 }
 
+StackElement::~StackElement() = default;
+
 StackElement::DataType StackElement::getType() const noexcept {
   return dataType;
 }

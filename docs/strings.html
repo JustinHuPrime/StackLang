@@ -66,23 +66,23 @@ string = quote-symbol, {character - sequence}, quote-symbol</pre>
                 </p>
                 <h3 id="operations">String Operations</h3>
                 <p>
-                    <code>string-length : String -> Number(Exact)</code>
+                    <code>string-length : String -> Number</code>
                     <br /> Produces the length of the string.
                 </p>
                 <p>
-                    <code>string-ref : Number(Exact) String -> String</code>
+                    <code>string-ref : Number String -> String</code>
                     <br /> Produces the n'th character as a one character long string. Fails with a
                     <code>RuntimeError</code> if the number is not valid.
                 </p>
                 <p>
-                    <code>string-insert : String Number(Exact) String</code>
+                    <code>string-insert : String Number String</code>
                     <br /> Inserts the first string into the second, such that the first character of the first string is a position
                     n in the second string.
                 </p>
                 <p>
-                    <code>substring : Number(Exact) Number(Exact) String -> String</code>
-                    <br /> Produces a substring. The first number is the starting index, and the second number is the number of
-                    character to take from that character. Fails with a
+                    <code>substring : Number Number String -> String</code>
+                    <br /> Produces a substring. The first number is the starting index (included), and the second number is the
+                    ending index (not included). Fails with a
                     <code>RuntimeError</code> if any of the numbers are invalid for this string.
                 </p>
                 <p>
@@ -117,7 +117,7 @@ string = quote-symbol, {character - sequence}, quote-symbol</pre>
                     <br /> Removes all whitespace (spaces, newlines, tabs) from the front and the end of the string.
                 </p>
                 <p>
-                    <code>build-string : Number(Exact) String -> String</code>
+                    <code>build-string : Number String -> String</code>
                     <br /> Creates a string by
                     <code>string-append</code>-ing together n copies of the given string.
                 </p>
