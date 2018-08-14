@@ -35,6 +35,7 @@ using stacklang::exceptions::ParserException;
 using std::count;
 using std::fixed;
 using std::make_unique;
+using std::numeric_limits;
 using std::setprecision;
 using std::stold;
 using std::stringstream;
@@ -255,7 +256,9 @@ SubstackElement* SubstackElement::parse(const string& s) {
 }
 
 SubstackElement::SubstackElement(const Stack& s) noexcept
-    : StackElement(StackElement::DataType::Substack), data(s) {}
+    : StackElement(StackElement::DataType::Substack), data(s) {
+  data.setLimit(numeric_limits<size_t>::max());
+}
 
 SubstackElement* SubstackElement::clone() const noexcept {
   return new SubstackElement(data);

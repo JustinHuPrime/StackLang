@@ -16,3 +16,135 @@
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
 ; StackLang extended string primitives
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+string?
+`non-empty-string-other
+`non-empty-string-string
+3, rotate
+if
+unquote
+>>
+`non-empty-string?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`non-empty-string?
+`non-empty-string-other
+define*
+
+<< Number >> ; -> Boolean
+<<
+empty-string?
+not
+>>
+`non-empty-string?
+`non-empty-string-string
+define*
+
+
+<< String Number String >> ; -> String
+<<
+3, rotate
+duplicate
+4, rotate
+duplicate
+3, 2, rotate*
+0
+substring
+4, 3, rotate
+2, rotate
+duplicate
+string-length
+3, rotate
+subtring
+string-append
+string-append
+>>
+`string-insert
+define
+
+
+<< String String >> ; -> String
+<<
+string-equal?
+not
+>>
+`string-not-equal?
+define
+
+<< String String >> ; -> String
+<<
+string-reverse-alphabetic?
+not
+>>
+`string-alphabetic-equal?
+define
+
+<< String String >> ; -> String
+<<
+string-alphabetic?
+not
+>>
+`string-reverse-alphabetic-equal?
+define
+
+<< String String >> ; -> String
+<<
+toupper
+2, rotate
+toupper
+string-equal?
+>>
+`string-equal-ci?
+define
+
+<< String String >> ; -> String
+<<
+string-equal-ci?
+not
+>>
+`string-not-equal-ci?
+define
+
+<< String String >> ; -> String
+<<
+toupper
+2, rotate
+toupper
+string-reverse-alphabetic-equal?
+>>
+`string-alphabetic-ci?
+define
+
+<< String String >> ; -> String
+<<
+string-reverse-alphabetic-ci?
+not
+>>
+`string-alphabetic-equal-ci?
+define
+
+<< String String >> ; -> String
+<<
+toupper
+2, rotate
+toupper
+string-alphabetic-equal?
+>>
+`string-reverse-alphabetic-ci?
+define
+
+<< String String >> ; -> String
+<<
+string-alphabetic-ci?
+not
+>>
+`string-reverse-alphabetic-equal-ci?
+define

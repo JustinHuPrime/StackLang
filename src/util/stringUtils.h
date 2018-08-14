@@ -29,8 +29,8 @@ using std::string;
 }
 
 // Produce true if first string starts/ends with the second string
-bool starts_with(const string&, const string&) noexcept;
-bool ends_with(const string&, const string&) noexcept;
+bool starts_with(const string& outer, const string& prefix) noexcept;
+bool ends_with(const string& outer, const string& suffix) noexcept;
 
 // Escapes any \, ", or newline into a \\, \", or \n
 string escape(string) noexcept;

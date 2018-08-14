@@ -20,13 +20,14 @@
 #include "util/stringUtils.h"
 
 namespace util {
-bool starts_with(const string& s, const string& s1) noexcept {
-  return 0 == s.find(s1);
+bool starts_with(const string& outer, const string& prefix) noexcept {
+  return 0 == outer.find(prefix);
 }
 
-bool ends_with(const string& s, const string& s1) noexcept {
-  return s.length() >= s1.length() &&
-         s.length() - s1.length() == s.find(s1, s.length() - s1.length());
+bool ends_with(const string& outer, const string& prefix) noexcept {
+  return outer.length() >= prefix.length() &&
+         outer.length() - prefix.length() ==
+             outer.find(prefix, outer.length() - prefix.length());
 }
 
 string escape(string s) noexcept {

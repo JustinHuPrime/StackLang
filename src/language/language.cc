@@ -25,11 +25,13 @@
 #include <cmath>
 #include <iterator>
 #include <random>
+#include <sstream>
 #include <stack>
 
 #include "language/exceptions/languageExceptions.h"
 #include "language/stack/stack.h"
 #include "util/mathUtils.h"
+#include "util/stringUtils.h"
 
 namespace stacklang {
 namespace {
@@ -62,7 +64,9 @@ using std::cos;
 using std::cosh;
 using std::end;
 using std::find_if;
+using std::getline;
 using std::isnan;
+using std::istringstream;
 using std::log;
 using std::make_unique;
 using std::max;
@@ -75,7 +79,9 @@ using std::sinh;
 using std::stack;
 using std::tan;
 using std::tanh;
+using util::ends_with;
 using util::spaceship;
+using util::starts_with;
 }  // namespace
 
 atomic_bool stopFlag = false;
@@ -94,7 +100,6 @@ const Primitives& PRIMITIVES() noexcept {
 #include "language/primitives/command.inc"
 #include "language/primitives/number.inc"
 #include "language/primitives/special.inc"
-#include "language/primitives/stdlib.inc"
 #include "language/primitives/string.inc"
 #include "language/primitives/substack.inc"
 #include "language/primitives/type.inc"
