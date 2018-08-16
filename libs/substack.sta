@@ -16,3 +16,59 @@
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
 ; StackLang extended substack primitives
+
+<< >> ; -> substack
+<<
+<<>>
+>>
+`empty
+define
+
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+substack?
+`non-empty-other
+`non-empty-substack
+3, rotate
+if
+unquote
+>>
+`non-empty?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`non-empty?
+`non-empty-other
+define*
+
+<< Number >> ; -> Boolean
+<<
+empty?
+not
+>>
+`non-empty?
+`non-empty-substack
+define*
+
+
+<< Substack >> ; -> Any
+<<
+pop
+top
+>>
+`second
+define
+
+<< Substack >> ; -> Any
+<<
+reverse
+top
+>>
+`last
+define

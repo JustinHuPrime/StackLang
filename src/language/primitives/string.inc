@@ -87,12 +87,12 @@
               context);
         size_t sidx = static_cast<size_t>(startIndex);
         size_t eidx = static_cast<size_t>(endIndex);
-        if (sidx > str->getData().size())
+        if (sidx >= str->getData().size())
           throw RuntimeError("Starting index " + static_cast<string>(*start) +
                                  " is out of range for the string " +
                                  static_cast<string>(*str) + ".",
                              context);
-        if (eidx > str->getData().size())
+        if (eidx >= str->getData().size())
           throw RuntimeError("Ending index " + static_cast<string>(*end) +
                                  " is out of range for the string " +
                                  static_cast<string>(*str) + ".",

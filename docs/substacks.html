@@ -110,30 +110,30 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <br/> Produces a substack from two elements.
                 </p>
                 <p>
-                    <code>length : Substack -> Number(Exact)</code>
+                    <code>length : Substack -> Number</code>
                     <br/> Produces the number of elements in the substack.
                 </p>
                 <p>
-                    <code>substack-ref : Number(Exact) Substack -> Any</code>
+                    <code>substack-ref : Number Substack -> Any</code>
                     <br/> Produces the n'th element of the substack. Fails with a
                     <code>RuntimeError</code> if the given number is invalid for this substack.
                 </p>
                 <p>
-                    <code>sub-substack: Number(Exact) Number(Exact) Substack -> Substack</code>
-                    <br/> Produces a portion of the given substack, using the first number as the index to start from, and the
-                    second number as the length. Invalid numbers will cause a
+                    <code>sub-substack: Number Number Substack -> Substack</code>
+                    <br/> Produces a portion of the given substack, using the first number as the index to start from (included),
+                    and the second number as ending index (excluded). Invalid numbers will cause a
                     <code>RuntimeError</code>.
                 </p>
                 <p>
                     <code>append : Substack Substack -> Substack</code>
-                    <br/> Combines two substacks into one, with the second substack's elements coming first in the produces substack.
+                    <br/> Combines two substacks into one, with the second substack's elements coming first in the produced substack.
                 </p>
                 <p>
                     <code>reverse : Substack -> Substack</code>
                     <br/> Reverses the substack.
                 </p>
                 <p>
-                    <code>insert : Substack Number(Exact) Substack -> Substack</code>
+                    <code>insert : Substack Number Substack -> Substack</code>
                     <br/> Inserts the first substack into the second, such that the first substack's first element is the n'th
                     element of the new substack.
                 </p>
@@ -188,11 +188,11 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <code>and</code>.
                 </p>
                 <p>
-                    <code>sequence : Number(Exact) -> Substack(Number(Exact))</code>
+                    <code>sequence : Number -> Substack(Number)</code>
                     <br/> Produces a sequence of numbers from zero to n, inclusive. Number must be an integer.
                 </p>
                 <p>
-                    <code>build-substack : Command(Quoted) Number(Exact) -> Substack</code>
+                    <code>build-substack : Command(Quoted) Number -> Substack</code>
                     <br/> Builds a substack by applying the command (
                     <code>Number -> Any</code>) to each number in the sequence from 0 to n (generated using
                     <code>sequence</code>), and forming a substack from the results.
@@ -208,13 +208,13 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                     <code>Any Any -> Boolean</code>) produces true at least once when applied to the first parameter and any element from the substack.
                 </p>
                 <p>
-                    <code>index-of : Any Command(Quoted) Substack -> Number(Exact)</code>
+                    <code>index-of : Any Command(Quoted) Substack -> Number</code>
                     <br/> Produces the index for which the application of the command (
                     <code>Any Any -> Boolean</code>) produces true when applied to the first parameter and any element from the substack. If none exists,
                     produces an index equal to the length of the substack.
                 </p>
                 <p>
-                    <code>indices-of : Any Command(Quoted) Substack -> Substack(Number(Exact))</code>
+                    <code>indices-of : Any Command(Quoted) Substack -> Substack(Number)</code>
                     <br/> Produces a substack of indices for which the application of the command (
                     <code>Any Any -> Boolean</code>) produces true when applied to the first parameter and any element from the substack. If none exists,
                     produces an empty substack.

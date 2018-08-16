@@ -36,6 +36,7 @@
 namespace stacklang {
 namespace {
 using stacklang::exceptions::RuntimeError;
+using stacklang::exceptions::StackOverflowError;
 using stacklang::exceptions::StackUnderflowError;
 using stacklang::exceptions::StopError;
 using stacklang::exceptions::SyntaxError;
@@ -79,6 +80,7 @@ using std::sinh;
 using std::stack;
 using std::tan;
 using std::tanh;
+using std::to_string;
 using util::ends_with;
 using util::spaceship;
 using util::starts_with;
@@ -209,7 +211,16 @@ void execute(Stack& s, Defines& defines, list<string> context) {
 
       context.push_front(command->getName());  // now executing function
       for (auto c : commands) {
-        s.push(c->clone());
+        try {
+          s.push(c->clone());
+        } catch (const StackOverflowError& e) {
+          // stack error without trace must be main stack.
+          if (e.getTrace().empty())
+            throw StackOverflowError(s.getLimit(), context);
+        } catch (const StackUnderflowError& e) {
+          // this should be impossible.
+          if (e.getTrace().empty()) throw StackUnderflowError(context);
+        }
         execute(s, defines, context);  // TODO: make this tail recursive.
       }
       context.pop_front();  // done with function
@@ -227,7 +238,18 @@ void execute(Stack& s, Defines& defines, list<string> context) {
         const auto& types = primResult->second.first;
         checkTypes(s, types, context);
         context.push_front(primResult->first);
-        primResult->second.second(s, defines, context);
+        try {
+          primResult->second.second(
+              s, defines,
+              context);  // note that any errors from main stack
+                         // interaction need to have stacktrace added.
+        } catch (const StackOverflowError& e) {
+          // see above.
+          if (e.getTrace().empty())
+            throw StackOverflowError(s.getLimit(), context);
+        } catch (const StackUnderflowError& e) {
+          if (e.getTrace().empty()) throw StackUnderflowError(context);
+        }
         context.pop_front();
         return execute(
             s, defines,

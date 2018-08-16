@@ -73,7 +73,7 @@
                     </li>
                     <li>
                         <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
-                        <code>Ctrl-d</code>. This file is The active end of the stack will be the first line of the file.
+                        <code>Ctrl-d</code>. This file is The active end of the stack will be the last line of the file.
                     </li>
                 </ul>
                 <h2 id="keyboard">Keyboard Controls</h2>
@@ -105,7 +105,6 @@
                 <h3 id="primlist">Primitives</h3>
                 <h4 id="booleanprims">Booleans</h4>
                 <p>
-                    Boolean primitive commands:
                     <ul>
                         <li>
                             <code>boolean?, false?, true?</code>
@@ -123,7 +122,6 @@
                 </p>
                 <h4 id="commandprims">Commands</h4>
                 <p>
-                    Command primitive commands:
                     <ul>
                         <li>
                             <code>command?, quoted?, local?</code>
@@ -195,6 +193,19 @@
                     </ul>
                 </p>
                 <h4 id="substackprims">Substacks</h4>
+                <p>
+                    <ul>
+                        <li>
+                            <code>substack?, empty?, contains-type?</code>
+                        </li>
+                        <li>
+                            <code>push, top, pop, pop*, make-substack</code>
+                        </li>
+                        <li>
+                            <code>length, substack-ref, sub-substack, append, reverse, insert</code>
+                        </li>
+                    </ul>
+                </p>
                 <h4 id="typeprims">Types</h4>
                 <h4 id="specialprims">Special Forms</h4>
                 <p>
