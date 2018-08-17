@@ -57,21 +57,25 @@ type = base-type | ("Number", "(", number-specialization, ")") | ("Command", "("
                 </p>
                 <h3 id="operations">Type Operations</h3>
                 <p>
-                    <code>specialization : Type -> Type</code>
+                    <code>get-specialization : Type -> Type</code>
                     <br/> Gets the specialization of the given type. Fails with a
                     <code>RuntimError</code> if type is unspecialized.
+                </p>
+                <p>
+                    <code>add-specialization : Type Type -> Type</code>
+                    <br/> Adds the first type as a specialization onto the second type.
                 </p>
                 <p>
                     <code>base : Type -> Type</code>
                     <br/> Gets the base type of the given type. If type is unspecialized, produces the type itself.
                 </p>
                 <p>
-                    <code>check-type : Any Type -> Boolean</code>
+                    <code>check-type : Type Any -> Boolean</code>
                     <br/> Produces true if element is of the given type.
                 </p>
                 <p>
                     <code>typeof : Any -> Type</code>
-                    <br/> Produces the type of the element.
+                    <br/> Produces the type of the element. Does not consider specializations.
                 </p>
                 <hr/>
                 <div id="footer"></div>

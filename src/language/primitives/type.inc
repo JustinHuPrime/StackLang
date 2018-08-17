@@ -17,3 +17,72 @@
 
 // Special included file for implementation of type-related function
 // primitives
+
+{"type?",
+ {Stack{new TypeElement(StackElement::DataType::Any)},
+  [](Stack& s, Defines&, list<string>&) {
+    ElementPtr elm(s.pop());
+    s.push(new BooleanElement(elm->getType() == StackElement::DataType::Type));
+  }}},
+    {"specialized?",
+     {Stack{new TypeElement(StackElement::DataType::Any)},
+      [](Stack& s, Defines&, list<string>&) {
+        ElementPtr elm(s.pop());
+        s.push(new BooleanElement(
+            elm->getType() == StackElement::DataType::Type &&
+            dynamic_cast<TypeElement*>(elm.get())->getSpecialization() !=
+                nullptr));
+      }}},
+    {"get-specialization",
+     {Stack{new TypeElement(StackElement::DataType::Type)},
+      [](Stack& s, Defines&, list<string>&) {
+        TypePtr elm(dynamic_cast<TypeElement*>(s.pop()));
+        s.push(elm->getSpecialization()->clone());
+      }}},
+    {"add-specialization",
+     {Stack{new TypeElement(StackElement::DataType::Type),
+            new TypeElement(StackElement::DataType::Type)},
+      [](Stack& s, Defines&, list<string>& context) {
+        TypePtr added(dynamic_cast<TypeElement*>(s.pop()));
+        TypePtr base(dynamic_cast<TypeElement*>(s.pop()));
+        list<StackElement::DataType> trace;
+
+        const TypeElement* curr = base.get();
+        while (curr != nullptr) {
+          trace.push_back(curr->getBase());
+          curr = curr->getSpecialization();
+        }
+
+        if (trace.back() != StackElement::DataType::Substack)
+          throw RuntimeError(
+              "Cannot have a specialzation except on a Substack.", context);
+
+        TypeElement* result =
+            added.release();  // dangerous, but inefficient to use and release
+                              // a unique_ptr every time.
+        while (!trace.empty()) {
+          result = new TypeElement(trace.back(), result);
+          trace.pop_back();
+        }
+        s.push(result);
+      }}},
+    {"base",
+     {Stack{new TypeElement(StackElement::DataType::Type)},
+      [](Stack& s, Defines&, list<string>&) {
+        TypePtr elm(dynamic_cast<TypeElement*>(s.pop()));
+        s.push(new TypeElement(elm->getBase()));
+      }}},
+    {"check-type",
+     {Stack{new TypeElement(StackElement::DataType::Any),
+            new TypeElement(StackElement::DataType::Type)},
+      [](Stack& s, Defines&, list<string>& context) {
+        TypePtr type(dynamic_cast<TypeElement*>(s.pop()));
+        ElementPtr elm(s.pop());
+        s.push(new BooleanElement(checkType(elm.get(), *type, context)));
+      }}},
+    {"typeof",
+     {Stack{new TypeElement(StackElement::DataType::Any)},
+      [](Stack& s, Defines&, list<string>&) {
+        ElementPtr elm(s.pop());
+        s.push(new TypeElement(elm->getType()));
+      }}},

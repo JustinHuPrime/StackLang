@@ -16,3 +16,34 @@
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
 ; StackLang extended type primitives
+
+<< Any >> ; -> Boolean
+<<
+duplicate
+type?
+`base-other
+`base-type
+3, rotate
+if
+unquote
+>>
+`base?
+define
+
+<< Any >> ; -> Boolean
+<<
+drop
+false
+>>
+`base?
+`base-other
+define*
+
+<< Number >> ; -> Boolean
+<<
+specialized?
+not
+>>
+`base?
+`base-type
+define*
