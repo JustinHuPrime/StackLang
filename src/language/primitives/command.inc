@@ -54,8 +54,7 @@
         s.push(new BooleanElement(iter->second.context != nullptr));
       }}},
     {"unquote",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines&, list<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(new CommandElement(elm->getName()));
@@ -109,8 +108,7 @@
         s.push(new CommandElement(cmd->getName(), true));
       }}},
     {"arity",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto primIter = prims->find(cmd->getName());
@@ -127,8 +125,7 @@
                            context);
       }}},
     {"body",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
@@ -140,8 +137,7 @@
                            context);
       }}},
     {"context",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
@@ -158,8 +154,7 @@
                            context);
       }}},
     {"signature",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto primIter = prims->find(cmd->getName());

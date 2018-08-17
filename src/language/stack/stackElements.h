@@ -139,7 +139,7 @@ class TypeElement : public StackElement {
   ~TypeElement() noexcept;
 
   explicit operator string() const noexcept override;
-  DataType getData() const noexcept;
+  DataType getBase() const noexcept;
   const TypeElement* getSpecialization() const noexcept;
 
   static string to_string(DataType) noexcept;

@@ -296,30 +296,13 @@ TypeElement* TypeElement::parse(const string& s) {
     }
     return new TypeElement(static_cast<DataType>(value - begin(TYPES())));
   } else if (starts_with(s, "Substack")) {  // substack specializations
-    TypePtr elm = make_unique<TypeElement>(
+    return new TypeElement(
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
                                     s.length() - s.find_first_of('(') - 2)));
-    if (static_cast<int>(elm->specialization->data) >= NUM_PRIM_TYPES) {
-      throw ParserException("Bad specialization on a Substack type.", s,
-                            s.find('(') + 1);
-    }
-    return elm.release();
-  } else if (starts_with(s, "Command")) {
-    TypePtr elm = make_unique<TypeElement>(
-        DataType::Command,
-        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
-                                    s.length() - s.find_first_of('(') - 2)));
-    if (elm->specialization->data != DataType::Quoted &&
-        elm->specialization->data != DataType::Unquoted) {
-      throw ParserException("Wrong specialization on a Command type.", s,
-                            s.find('(') + 1);
-    }
-    return elm.release();
   } else {
-    throw ParserException(
-        "Cannot have a specialzation except on a Substack, Number, or Command.",
-        s, s.find('('));
+    throw ParserException("Cannot have a specialzation except on a Substack.",
+                          s, s.find('('));
   }
 }  // namespace StackElements
 
@@ -371,7 +354,7 @@ TypeElement::operator string() const noexcept {
     return to_string(data) + "(" + static_cast<string>(*specialization) + ")";
 }
 
-StackElement::DataType TypeElement::getData() const noexcept { return data; }
+StackElement::DataType TypeElement::getBase() const noexcept { return data; }
 const TypeElement* TypeElement::getSpecialization() const noexcept {
   return specialization;
 }
@@ -381,9 +364,8 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES =
-      new vector<string>{"Number", "String",  "Boolean", "Substack",
-                         "Type",   "Command", "Any",     "Quoted"};
+  static vector<string>* TYPES = new vector<string>{
+      "Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
   return *TYPES;
 }
 }  // namespace stackelements

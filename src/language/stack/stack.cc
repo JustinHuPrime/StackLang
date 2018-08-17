@@ -50,8 +50,6 @@ using util::ends_with;
 using util::starts_with;
 }  // namespace
 
-const int StackElement::NUM_PRIM_TYPES = 7;
-
 // Acts as a dispatcher for specific types, and handles parsing of trivially
 // parsed types (currently just Booleans).
 StackElement* StackElement::parse(const string& s) {

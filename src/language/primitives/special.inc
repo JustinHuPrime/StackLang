@@ -22,8 +22,7 @@
  {Stack{new TypeElement(StackElement::DataType::Substack,
                         new TypeElement(StackElement::DataType::Type)),
         new TypeElement(StackElement::DataType::Substack),
-        new TypeElement(StackElement::DataType::Command,
-                        new TypeElement(StackElement::DataType::Quoted))},
+        new TypeElement(StackElement::DataType::Command)},
   [](Stack& s, Defines& defs, list<string>& context) {
     CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
     SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
@@ -39,10 +38,8 @@
      {Stack{new TypeElement(StackElement::DataType::Substack,
                             new TypeElement(StackElement::DataType::Type)),
             new TypeElement(StackElement::DataType::Substack),
-            new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted)),
-            new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+            new TypeElement(StackElement::DataType::Command),
+            new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
         CommandPtr contextReq(dynamic_cast<CommandElement*>(s.pop()));
@@ -58,8 +55,7 @@
         defs[name->getName()] = def;
       }}},
     {"undefine",
-     {Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))},
+     {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         auto iter = defs.find(elm->getName());

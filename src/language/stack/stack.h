@@ -45,8 +45,6 @@ class StackElement {
     Type,
     Command,
     Any,
-    Quoted,
-    Unquoted,
   };
 
   // Produces a StackElement (of some type) from a terminal input string

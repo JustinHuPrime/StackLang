@@ -85,13 +85,13 @@ TEST_CASE("parens parse to type", "[parse][StackElement][type]") {
   TypePtr t(
       dynamic_cast<TypeElement*>(StackElement::parse("Substack(Number)")));
   REQUIRE(t != nullptr);
-  REQUIRE(t->getData() == StackElement::DataType::Substack);
+  REQUIRE(t->getBase() == StackElement::DataType::Substack);
 }
 
 TEST_CASE("primitve type parses to type", "[parse][StackElement][type]") {
   TypePtr t(dynamic_cast<TypeElement*>(StackElement::parse("Number")));
   REQUIRE(t != nullptr);
-  REQUIRE(t->getData() == StackElement::DataType::Number);
+  REQUIRE(t->getBase() == StackElement::DataType::Number);
 }
 
 TEST_CASE("word parses to command", "[parse][StackElement][command]") {
@@ -186,13 +186,7 @@ TEST_CASE("regular substack parse", "[parse][SubstackElement]") {
 
 TEST_CASE("type base case good", "[parse][TypeElement]") {
   TypePtr t(TypeElement::parse("Number"));
-  REQUIRE(t->getData() == StackElement::DataType::Number);
-  REQUIRE(t->getSpecialization() == nullptr);
-}
-
-TEST_CASE("type base case good specialization", "[parse][TypeElement]") {
-  TypePtr t(TypeElement::parse("Quoted"));
-  REQUIRE(t->getData() == StackElement::DataType::Quoted);
+  REQUIRE(t->getBase() == StackElement::DataType::Number);
   REQUIRE(t->getSpecialization() == nullptr);
 }
 
@@ -202,24 +196,13 @@ TEST_CASE("type base case bad", "[parse][TypeElement]") {
 
 TEST_CASE("substack type specialized good", "[parse][TypeElement]") {
   TypePtr t(TypeElement::parse("Substack(Any)"));
-  REQUIRE(t->getData() == StackElement::DataType::Substack);
-  REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Any);
+  REQUIRE(t->getBase() == StackElement::DataType::Substack);
+  REQUIRE(t->getSpecialization()->getBase() == StackElement::DataType::Any);
   REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
 }
 
 TEST_CASE("substack type specialized bad", "[parse][TypeElement]") {
   REQUIRE_THROWS_AS(TypeElement::parse("Substack(Exact)"), ParserException);
-}
-
-TEST_CASE("command type specialized good", "[parse][TypeElement]") {
-  TypePtr t(TypeElement::parse("Command(Quoted)"));
-  REQUIRE(t->getData() == StackElement::DataType::Command);
-  REQUIRE(t->getSpecialization()->getData() == StackElement::DataType::Quoted);
-  REQUIRE(t->getSpecialization()->getSpecialization() == nullptr);
-}
-
-TEST_CASE("command type specialized bad", "[parse][TypeElement]") {
-  REQUIRE_THROWS_AS(TypeElement::parse("Command(Any)"), ParserException);
 }
 
 TEST_CASE("unspecializable type specialzied", "[parse][TypeElement]") {

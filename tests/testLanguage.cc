@@ -42,24 +42,6 @@ TEST_CASE("check single type simple fail", "[language][checkType]") {
   REQUIRE_FALSE(checkType(elm.get(), t, list<string>{}));
 }
 
-TEST_CASE("check command variants", "[language][checkType]") {
-  CommandPtr raw(CommandElement::parse("raw-command"));
-  CommandPtr quoted(CommandElement::parse("`quoted-command"));
-  TypeElement anyT = TypeElement(StackElement::DataType::Command);
-  TypeElement quotedT =
-      TypeElement(StackElement::DataType::Command,
-                  new TypeElement(StackElement::DataType::Quoted));
-  TypeElement rawT =
-      TypeElement(StackElement::DataType::Command,
-                  new TypeElement(StackElement::DataType::Unquoted));
-  REQUIRE(checkType(raw.get(), anyT, list<string>{}));
-  REQUIRE(checkType(quoted.get(), anyT, list<string>{}));
-  REQUIRE(checkType(raw.get(), rawT, list<string>{}));
-  REQUIRE(checkType(quoted.get(), quotedT, list<string>{}));
-  REQUIRE_FALSE(checkType(raw.get(), quotedT, list<string>{}));
-  REQUIRE_FALSE(checkType(quoted.get(), rawT, list<string>{}));
-}
-
 TEST_CASE("check substack variants", "[language][checkType]") {
   ElementPtr numberStack(SubstackElement::parse("<<12, 10>>"));
   ElementPtr commandStack(SubstackElement::parse("<<add, subtract>>"));

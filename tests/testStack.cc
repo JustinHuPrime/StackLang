@@ -52,17 +52,13 @@ TEST_CASE("stack initializer", "[Stack][constructor]") {
 }
 
 TEST_CASE("stack initializer with type", "[Stack][constructor][type]") {
-  StackElement* elm =
-      new TypeElement(StackElement::DataType::Command,
-                      new TypeElement(StackElement::DataType::Quoted));
+  StackElement* elm = new TypeElement(StackElement::DataType::Command);
   Stack s{elm};
   REQUIRE(s.top() == elm);
 }
 
 TEST_CASE("stack initializer with JIT type", "[Stack][constructor][type]") {
-  Stack s =
-      Stack{new TypeElement(StackElement::DataType::Command,
-                            new TypeElement(StackElement::DataType::Quoted))};
+  Stack s = Stack{new TypeElement(StackElement::DataType::Command)};
   s.clear();
   REQUIRE(s.isEmpty());
 }
