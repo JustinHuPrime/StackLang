@@ -78,11 +78,16 @@
                 </ul>
                 <h2 id="keyboard">Keyboard Controls</h2>
                 <p>
-                    The interpreter recognizes three control keys:
+                    The interpreter recognizes four control keys:
                     <ul>
                         <li>
                             <kbd>Ctrl-d</kbd>: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently
                             running processes/execution.
+                        </li>
+                        <li>
+                            <kbd>Ctrl-x</kbd>: as soon as the interpreter is idle, will forcefully and directly remove an element
+                            from the stack. This does not act via the
+                            <code>drop</code> command, so can be used to recover from a stack overflow.
                         </li>
                         <li>
                             <kbd>Ctrl-c</kbd>: stops execution of any commands. This key is terminal dependent, as it is really

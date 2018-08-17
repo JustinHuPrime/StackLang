@@ -36,10 +36,8 @@
                     <a href="https://justinhuprime.github.io/StackLang/types.html">types</a> page for more details. An EBNF definition for a type is given below.
                     <pre id="ebnf">
 base-type = "Boolean" | "Command" | "Number" | "String" | "Substack" | "Type" | "Any" ;
-number-specialization = "Exact" | "Inexact" ;
-command-specialization = "Quoted" | "Unquoted" ;
 
-type = base-type | ("Number", "(", number-specialization, ")") | ("Command", "(", command-specialization, ")") | ("Substack", "(", type, ")") ;</pre>
+type = base-type | ("Substack", "(", type, ")") ;</pre>
                 </p>
                 <h2 id="commands">Type-related Commands</h2>
                 <h3 id="type">Type Predicates</h3>

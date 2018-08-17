@@ -65,7 +65,9 @@ using terminalui::init;
 using terminalui::LineEditor;
 using terminalui::printError;
 
-const char KEY_CTRL_D = 4;
+const char KEY_CTRL = 0x1f;
+const char KEY_CTRL_D = 'd' & KEY_CTRL;
+const char KEY_CTRL_X = 'x' & KEY_CTRL;
 }  // namespace
 
 int main(int argc, char* argv[]) noexcept {
@@ -173,6 +175,13 @@ int main(int argc, char* argv[]) noexcept {
       continue;                      // do nothing on no input.
     } else if (key == KEY_CTRL_D) {  // overriding keypresses
       break;
+    } else if (key == KEY_CTRL_X) {
+      if (!s.isEmpty()) {
+        delete s.pop();
+        drawStack(s);
+        drawPrompt(buffer);
+      }
+      continue;
     } else if (key == KEY_RESIZE) {
       endwin();  // these commands resync ncurses with the terminal
       refresh();
