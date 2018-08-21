@@ -32,18 +32,19 @@ bool ends_with(const string& outer, const string& prefix) noexcept {
 
 string escape(string s) noexcept {
   for (size_t i = 0; i < s.length(); i++) {
-    if (s[i] == '"')  // escape quotes
-    {
+    if (s[i] == '"') {  // escape quotes
       s.erase(i, 1);
       s.insert(i, "\\\"");
       i++;
-    } else if (s[i] == '\n')  // newlines
-    {
+    } else if (s[i] == '\n') {  // newlines
       s.erase(i, 1);
       s.insert(i, "\\n");
       i++;
-    } else if (s[i] == '\\')  // escaped backslashes
-    {
+    } else if (s[i] == '\t') {  // tabs
+      s.erase(i, 1);
+      s.insert(i, "\\t");
+      i++;
+    } else if (s[i] == '\\') {  // escaped backslashes
       s.erase(i, 1);
       s.insert(i, "\\\\");
       i++;
@@ -58,23 +59,28 @@ string unescape(string s) noexcept {
   bool prevPrevBackslash = false;
 
   for (size_t i = 0; i < s.length(); i++) {
-    if (s[i] == '"' && prevBackslash && !prevPrevBackslash)  // escaped quote
-    {
+    if (s[i] == '"' && prevBackslash && !prevPrevBackslash) {  // escaped quote
       i--;
       s.erase(i, 2);
       s.insert(i, "\"");
       prevPrevBackslash = false;
       prevBackslash = false;
-    } else if (s[i] == 'n' && prevBackslash && !prevPrevBackslash)  // escaped n
-    {
+    } else if (s[i] == 'n' && prevBackslash &&
+               !prevPrevBackslash) {  // escaped n
       i--;
       s.erase(i, 2);
       s.insert(i, "\n");
       prevPrevBackslash = false;
       prevBackslash = false;
+    } else if (s[i] == 't' && prevBackslash &&
+               !prevPrevBackslash) {  // escaped t
+      i--;
+      s.erase(i, 2);
+      s.insert(i, "\t");
+      prevPrevBackslash = false;
+      prevBackslash = false;
     } else if (s[i] == '\\' && prevBackslash &&
-               !prevPrevBackslash)  // escaped backslash
-    {
+               !prevPrevBackslash) {  // escaped backslash
       i--;
       s.erase(i, 2);
       s.insert(i, "\\");
@@ -93,8 +99,9 @@ size_t findImproperEscape(const string& str) noexcept {
   for (size_t i = 0; i < str.length(); i++) {
     if ((str[i] == '\\' &&
          i + 1 >= str.length()) ||  // if the last char's a backslash
-        (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != '"' &&
-         str[i + 1] != '\\') ||  // make sure that we only escape \, n, and "
+        (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != 't' &&
+         str[i + 1] != '"' &&
+         str[i + 1] != '\\') ||  // make sure that we only escape \, n, ", and t
         (str[i] == '"'))         // it's an unescaped quote!
     {
       return i;

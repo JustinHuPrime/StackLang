@@ -83,7 +83,6 @@ int main(int argc, char* argv[]) noexcept {
   ArgReader args;
 
   // flags parsing
-
   try {
     args.read(argc, argv);
     args.validate("?hb", "dlo", "I");
@@ -160,7 +159,6 @@ int main(int argc, char* argv[]) noexcept {
   }
 
   // TUI stuff
-
   init();
 
   displayInfo();  // splash screen
@@ -168,6 +166,7 @@ int main(int argc, char* argv[]) noexcept {
   drawStack(s);
   drawPrompt(buffer);
 
+  // Main loop
   while (true) {
     int key = getch();
 
@@ -198,8 +197,7 @@ int main(int argc, char* argv[]) noexcept {
       continue;
     }
 
-    if (isprint(key) && key != '\n' && key != '\r' &&
-        key != KEY_ENTER) {  // normal characters added to buffer.
+    if (isprint(key)) {  // normal characters added to buffer.
       buffer += key;
       drawPrompt(buffer);
     } else if ((key == '\n' || key == '\r' || key == KEY_ENTER) &&
