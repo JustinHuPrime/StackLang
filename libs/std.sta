@@ -20,8 +20,8 @@
 ; include the extended primitives
 "boolean"
 include
-; "command"
-; include
+"command"
+include
 "number"
 include
 "string"

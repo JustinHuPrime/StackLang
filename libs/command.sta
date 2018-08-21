@@ -15,60 +15,19 @@
 ; You should have received a copy of the GNU Lesser General Public License
 ; along with the StackLang standard library.  If not, see <https://www.gnu.org/licenses/>.
 
-; StackLang extended substack primitives
+; StackLang extended command primitives
 
-<< >> ; -> substack
+<<>> ; -> Command
 <<
-    <<>>
+    random
+    1000000
+    multiply
+    trunc
+    string-to-number
+    "cmd"
+    2, rotate
+    string-append
+    string-to-command*
 >>
-`empty
-define
-
-
-<< Any >> ; -> Boolean
-<<
-    duplicate
-    substack?
-    `non-empty-substack
-    `non-empty-other
-    3, rotate
-    if
-    unquote
->>
-`non-empty?
-define
-
-<< Any >> ; -> Boolean
-<<
-    drop
-    false
->>
-`non-empty?
-`non-empty-other
-define*
-
-<< Substack >> ; -> Boolean
-<<
-    empty?
-    not
->>
-`non-empty?
-`non-empty-substack
-define*
-
-
-<< Substack >> ; -> Any
-<<
-    pop
-    top
->>
-`second
-define
-
-<< Substack >> ; -> Any
-<<
-    reverse
-    top
->>
-`last
+`gensym
 define

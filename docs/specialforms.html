@@ -28,14 +28,14 @@
             <div class="col-lg-6">
                 <h1 id="top">Special Primitive Functions</h1>
                 <p> These functions have special side effects outside of the usual evaluation model. </p>
-                <p> <code>define : Command(Quoted) Substack Substack(Type) -></code> <br/> Defines a function in the global context.
+                <p> <code>define : Command Substack Substack(Type) -></code> <br/> Defines a function in the global context.
                 </p>
-                <p> <code>define* : Command(Quoted) Command(Quoted) Substack Substack(Type) -></code> <br/> Defines the second
-                    command in the context of the first command (a "local" function). Names, however, are always global,
-                    so the name must still be unique.
+                <p> <code>define* : Command Command Substack Substack(Type) -></code> <br/> Defines the second command in the
+                    context of the first command (a "local" function). Names, however, are always global, so the name must
+                    still be unique.
                 </p>
-                <p> <code>undefine : Command(Quoted) -></code> <br/> Undefines the command. May not undefine primitive commands,
-                    but anything defined using <code>define</code> or <code>define*</code> can be undefined. </p>
+                <p> <code>undefine : Command -></code> <br/> Undefines the command. May not undefine primitive commands, but
+                    anything defined using <code>define</code> or <code>define*</code> can be undefined. </p>
                 <p> <code>include : String -></code> <br/> Looks for:
                     <ol>
                         <li>the named file from the current directory or absolute path,</li>
@@ -47,20 +47,20 @@
                     </p>
                 <p> <code>drop : Any -></code> <br/> Removes one element from the stack.
                 </p>
-                <p> <code>drop* : Number(Exact) -></code> <br/> Takes n elements and removes them from the stack.
+                <p> <code>drop* : Number -></code> <br/> Takes n elements and removes them from the stack.
                 </p>
                 <p> <code>clear : -></code> <br/> Clears the stack, removing all elements from the stack.
                 </p>
-                <p> <code>rotate : Number(Exact) -></code> <br/> Takes the n'th element (1 based, starting after the parameter)
-                    of the stack and moves it to the active end.
+                <p> <code>rotate : Number -></code> <br/> Takes the n'th element (1 based, starting after the parameter) of the
+                    stack and moves it to the active end.
                 </p>
-                <p> <code>rotate* : Number(Exact) Number(Exact) -></code> <br/> Takes the (second number)'th element of the stack
-                    and moves it to the active end (first number) times.
+                <p> <code>rotate* : Number Number -></code> <br/> Takes the (second number)'th element of the stack and moves
+                    it to the active end (first number) times.
                 </p>
                 <p> <code>duplicate : Any -> Any Any</code> <br/> Duplciates the given element.
                 </p>
                 <p> <code>error : String -></code> <br/> Raises a <code>RuntimeError</code> with the specified message. </p>
-                <p> <code>error* : Number(Exact) String String -></code> <br/> Raises a <code>RuntimeError</code> with the specified
+                <p> <code>error* : Number String String -></code> <br/> Raises a <code>RuntimeError</code> with the specified
                     context (first string and number) and message (second string). Will cause a <code>RuntimeError</code>                    itself
                     if the number is not valid. </p>
                 <p> <code>null : -></code> <br/> This command does nothing, but does cause the evaluator to evaluate any unquoted

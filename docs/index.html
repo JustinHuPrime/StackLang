@@ -42,9 +42,9 @@
                 keystroke, combination of keystrokes, or raw input to the interpreter. <h3 id="terminology">Terminology</h3>
                 <p> Throughout this documentation, certain terms have special meanings. These are documented below.
                     <ul>
-                        <li> <i>function</i>: synonym for command. A command is a stack element of type Command(Unquoted) that
-                            is executed when on the top of the stack. It is preferred to use command for primitives (or both
-                            primitives and user-defined commands), and function for used-defined commands. </li>
+                        <li> <i>function</i>: synonym for command. A command is a stack element of type Command that is executed
+                            when on the top of the stack. It is preferred to use command for primitives (or both primitives
+                            and user-defined commands), and function for used-defined commands. </li>
                         <li> <i>active end</i>: the end of the stack that can be operated on. The terms "top" and "bottom" are
                             strictly forbidden, since the visual layout of the interpreter means that "top", in the technical
                             sense, actually refers to the bottom of the screen. The active end of a substack (or any horizontally-oriented
@@ -58,7 +58,7 @@
                     the signature for the command <code>add</code>. The left hand side is the side closer to the active end
                     of the stack. The side closer to the active end is also the side from which paramters are numbered. The
                     first paramter would be the number closest to the active end, and so on. Occasionally, commands will
-                    be missing either an input, and output, or have multiple outputs. Example: <br/> <code>define : Substack(Type) Substack Command(Quoted) -> </code>                    <br/>                    is
+                    be missing either an input, and output, or have multiple outputs. Example: <br/> <code>define : Substack(Type) Substack Command -> </code>                    <br/>                    is
                     the signature for <code>define</code>. Functions and commands will always pop their parameters off of
                     the stack, so <code>foo? : Any -> Any Boolean</code> will still pop one element off of the stack, before
                     pushing it back on, then pushing back on a Boolean as well. Finally, Substacks, numbers, and commands
