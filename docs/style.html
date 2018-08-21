@@ -39,36 +39,21 @@
                 <p>
                     <b>Rule:</b> Always put a comment indicating the types that a function produces.
                     <br/>
-                    <b>Rationale:</b> The type system indicates what input types are permissible, but it does not inform the
-                    readers of the ending state of the stack.
+                    <b>Rationale:</b> The type system indicates what input types are permissible, but it does not inform
+                    the readers of the ending state of the stack.
                     <br/>
                     <b>Examples:</b>
                     <br/>
                     <i>Good</i>
                     <br/>
                     <code>
-                        &lt;&lt; Number, String, Boolean &gt;&gt; ; -> String<br/>
-                        &lt;&lt;<br/>
-                        code<br/>
-                        goes<br/>
-                        here<br/>
-                        &gt;&gt;<br/>
-                        `my-cool-function<br/>
-                        define
+                        &lt;&lt; Number, String, Boolean &gt;&gt; ; -> String
                     </code>
                     <br/>
                     <i>Bad</i>
                     <br/>
                     <code>
-                         &lt;&lt;Number, String, Boolean&gt;&gt;<br/>
-                         &lt;&lt;<br/>
-                         what<br/>
-                         does<br/>
-                         this<br/>
-                         do?<br/>
-                         &gt;&gt;<br/>
-                         `my-cool-function<br/>
-                         define
+                         &lt;&lt;Number, String, Boolean&gt;&gt;
                     </code>
                 </p>
                 <p>
@@ -120,17 +105,9 @@
                     <br/>
                     <code>&lt;&lt; 1, 2, 4, 8, &gt;&gt;</code>
                     <br/>
-                    <i>Also Good</i>
-                    <br/>
-                    <code>&lt;&lt; &gt;&gt;</code>
-                    <br/>
                     <i>Bad</i>
                     <br/>
                     <code>&lt;&lt;1,2,4,8,&gt;&gt;</code>
-                    <br/>
-                    <i>Also Bad</i>
-                    <br/>
-                    <code>&lt;&lt;&gt;&gt;</code>
                 </p>
                 <p>
                     <b>Rule:</b> Avoid terminal commas in substacks
@@ -140,11 +117,13 @@
                 </p>
                 <p>
                     <b>Rule:</b> Thunks should be defined using
-                    <code>define*</code> and given an appropriate prefix, for example, the name of the function within which they are to be used.
+                    <code>define*</code> and given an appropriate prefix, for example, the name of the function within which
+                    they are to be used.
                     <br/>
-                    <b>Rationale:</b> Thunks are useful only in the function for which they have been defined, but can be attempted
-                    to be used anywhere. Additionally, since another thunk of the same name may need to be defined for another
-                    function, since StackLang does not currently support lexial scoping, the prefix prevents name collisions.
+                    <b>Rationale:</b> Thunks are useful only in the function for which they have been defined, but can be
+                    attempted to be used anywhere. Additionally, since another thunk of the same name may need to be defined
+                    for another function, since StackLang does not currently support lexial scoping, the prefix prevents
+                    name collisions.
                     <br/>
                     <b>Examples:</b>
                     <br/>
@@ -171,6 +150,12 @@
                     <b>Rule:</b> Put the global define first.
                     <br/>
                     <b>Rationale:</b> This allows readers to read the more important functions first.
+                </p>
+                <p>
+                    <b>Rule:</b> Indent the body of function definitions
+                    <br/>
+                    <b>Rationale:</b> Indentation sets apart the body from the flow of the text. Indentation is also recognized
+                    by many editors, who can fold that code.
                 </p>
                 <!--
                     <p>
