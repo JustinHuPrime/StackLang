@@ -199,33 +199,35 @@ void drawError(const LanguageException& e) noexcept {
 }
 
 void drawTrace(int top, int bottom, const list<string>& trace) {
-  if (bottom > top && static_cast<ptrdiff_t>(trace.size()) <= bottom - top) {
-    for (const string& elm : trace) {
-      move(top++, 0);
-      addstring("From " + elm);
-    }
-  } else if (bottom > top) {
-    int dist = bottom - top + 1;
-    int topPart = dist / 2;
-    int bottomPart = dist / 2;
-    if (dist == topPart + bottomPart) bottomPart--;
-    auto iter = trace.begin();
-    for (int i = top; i < topPart + top; i++) {
-      move(i, 0);
-      addstring("From " + *iter);
-      ++iter;
-    }
+  if (bottom > top) {
+    if (static_cast<ptrdiff_t>(trace.size()) <= bottom - top) {
+      for (const string& elm : trace) {
+        move(top++, 0);
+        addstring("From " + elm);
+      }
+    } else {
+      int dist = bottom - top + 1;
+      int topPart = dist / 2;
+      int bottomPart = dist / 2;
+      if (dist == topPart + bottomPart) bottomPart--;
+      auto iter = trace.begin();
+      for (int i = top; i < topPart + top; i++) {
+        move(i, 0);
+        addstring("From " + *iter);
+        ++iter;
+      }
 
-    iter = trace.end();
-    --iter;
-    for (int i = getmaxy(stdscr) - bottom; i < bottomPart + 3; i++) {
-      move(i, 0);
-      addstring("From " + *iter);
+      iter = trace.end();
       --iter;
-    }
+      for (int i = bottom; i > top + topPart; i--) {
+        move(i, 0);
+        addstring("From " + *iter);
+        --iter;
+      }
 
-    move(topPart, 0);
-    addstring("...");
+      move(top + topPart, 0);
+      addstring("...");
+    }
   }
 }
 
