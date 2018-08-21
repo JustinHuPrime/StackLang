@@ -180,7 +180,7 @@ StringElement* StringElement::parse(const string& s) {
     } else {
       throw ParserException(
           "Looks like a string, but has an invalid escape sequence", s,
-          findImproperEscape(s));
+          findImproperEscape(s.substr(1, s.length() - 2)) + 1);
     }
   } else {
     throw ParserException(

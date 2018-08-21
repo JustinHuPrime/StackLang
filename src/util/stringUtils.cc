@@ -107,11 +107,7 @@ size_t findImproperEscape(const string& str) noexcept {
   return string::npos;
 }
 
-string spaces(size_t n) noexcept {
-  string acc = "";
-  acc.resize(n, ' ');
-  return acc;
-}
+string spaces(size_t n) noexcept { return string(n, ' '); }
 
 string removeChar(string s, char c) noexcept {
   for (size_t i = 0; i < s.length(); i++) {
