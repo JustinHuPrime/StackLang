@@ -209,6 +209,7 @@ const char* const SubstackElement::SUBSTACK_EMPTY = "<< (empty) >>";
 SubstackElement* SubstackElement::parse(const string& s) {
   int parseLevel = 0;
   bool inString = false;
+  bool setLastChar = true;
   string accumulator = "";
   char lastChar = '\0';
   Stack buffer;
@@ -224,11 +225,19 @@ SubstackElement* SubstackElement::parse(const string& s) {
       accumulator = "";
     } else if (*iter == '"' && lastChar != '\\') {  // found an unescaped quote
       inString = !inString;
+    } else if (inString && *iter == '\\' &&
+               lastChar == '\\') {  // found an escaped backslash
+      lastChar = '\0';
+      setLastChar = false;
     } else if (!inString && *iter == '<' &&
                lastChar == '<') {  // start of substack
+      lastChar = '\0';
+      setLastChar = false;
       parseLevel++;
     } else if (!inString && *iter == '>' &&
                lastChar == '>') {  // end of substack
+      lastChar = '\0';
+      setLastChar = false;
       parseLevel--;
       if (parseLevel < 0) {
         throw ParserException(
@@ -238,7 +247,8 @@ SubstackElement* SubstackElement::parse(const string& s) {
       }
     }
 
-    lastChar = *iter;
+    if (setLastChar) lastChar = *iter;
+    setLastChar = true;
   }
 
   if (parseLevel != 0) {

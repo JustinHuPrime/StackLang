@@ -31,14 +31,15 @@ using stacklang::exceptions::ArgumentError;
 using std::string;
 using std::vector;
 using terminalui::ArgReader;
-char* argv[] = {"discard", "-a",    "-b",       "data",  "-c",        "more",
-                "stuff",   "-d",    "\"-words", "in",    "quotes-\"", "-e",
-                "\"part",  "one\"", "\"part",   "two\"", "three"};
+const char* argv[] = {"discard",   "-a",    "-b",     "data",     "-c",
+                      "more",      "stuff", "-d",     "\"-words", "in",
+                      "quotes-\"", "-e",    "\"part", "one\"",    "\"part",
+                      "two\"",     "three"};
 }  // namespace
 
 TEST_CASE("argReader discards bad argv", "[ArgReader][read]") {
   ArgReader ar;
-  char* badArgv[] = {"discard", "-ab", "-f"};
+  const char* badArgv[] = {"discard", "-ab", "-f"};
   REQUIRE_THROWS_AS(ar.read(3, badArgv), ArgumentError);
 }
 

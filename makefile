@@ -22,46 +22,30 @@ MKDIR := mkdir -p
 
 
 #File options
-#list of folders to include code from.
 SRCDIR := src
-#grabs source code files
 SRCS := $(shell find -O3 $(SRCDIR)/ -type f -name '*.cc')
 
-#name of directory to put .o files in
 OBJDIR := bin
-#path names of .o files - preserves folder structure of source files.
 OBJS := $(patsubst $(SRCDIR)/%.cc,$(OBJDIR)/%.o,$(SRCS))
 
-#location of dependencies
 DEPDIR := dependencies
-#dependency list
 DEPS := $(patsubst $(SRCDIR)/%.cc,$(DEPDIR)/%.dep,$(SRCS))
 
 
 #Test file options
-#where to find test sources
 TSRCDIR := tests
-#grabs test source files
 TSRCS := $(shell find -O3 $(TSRCDIR)/ -type f -name '*.cc')
 
-#where to put .o files for tests
 TOBJDIR := tests/bin
-#path names of test .o files - shouldn't have any subdirectories.
 TOBJS := $(patsubst $(TSRCDIR)/%.cc,$(TOBJDIR)/%.o,$(TSRCS))
 
-#location of dependencies
 TDEPDIR := tests/dependencies
-#dependency list
 TDEPS := $(patsubst $(TSRCDIR)/%.cc,$(TDEPDIR)/%.dep,$(TSRCS))
 
 
-# gcc specific warnings - prefaced with -Wno-unknown-warning-option for clang++
-GPPWARNINGS := -Wno-unknown-warning-option -Wlogical-op -Wuseless-cast -Wnoexcept -Wstrict-null-sentinel
-#standard warning request list
-WARNINGS := -pedantic -pedantic-errors -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-overflow=5 -Wswitch-default -Wundef -Wzero-as-null-pointer-constant -Wno-unused
-#disabled warnings when compiling tetss
-TNOWARN := -Wno-write-strings
-#always-included compiler options
+#compiler configuration
+GPPWARNINGS := -Wlogical-op -Wuseless-cast -Wnoexcept -Wstrict-null-sentinel
+WARNINGS := -pedantic -pedantic-errors -Wall -Wextra $(GPPWARNINGS) -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wmissing-declarations -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-overflow=5 -Wswitch-default -Wundef -Wzero-as-null-pointer-constant -Wno-unused
 OPTIONS := -std=c++17 $(WARNINGS)
 
 #build-specific compiler options
@@ -124,12 +108,12 @@ $(DEPS): $$(patsubst $(DEPDIR)/%.dep,$(SRCDIR)/%.cc,$$@) | $$(dir $$@)
 
 $(TEXENAME): $(TOBJS) $(OBJS)
 	@echo "Linking test..."
-	@$(CC) -o $(TEXENAME) $(OPTIONS) $(TNOWARN) $(filter-out %main.o,$(OBJS)) $(TOBJS) $(LIBS)
+	@$(CC) -o $(TEXENAME) $(OPTIONS) $(filter-out %main.o,$(OBJS)) $(TOBJS) $(LIBS)
 
 $(TOBJS): $$(patsubst $(TOBJDIR)/%.o,$(TSRCDIR)/%.cc,$$@) $$(patsubst $(TOBJDIR)/%.o,$(TDEPDIR)/%.dep,$$@) | $$(dir $$@)
 	@echo "Compiling $@..."
 	@clang-format -i $(filter-out %.dep,$^)
-	@$(CC) $(OPTIONS) $(TNOWARN) $(INCLUDES) $(TINCLUDES) -c $< -o $@
+	@$(CC) $(OPTIONS) $(INCLUDES) $(TINCLUDES) -c $< -o $@
 
 $(TDEPS): $$(patsubst $(TDEPDIR)/%.dep,$(TSRCDIR)/%.cc,$$@) | $$(dir $$@)
 	@set -e; $(RM) $@; \

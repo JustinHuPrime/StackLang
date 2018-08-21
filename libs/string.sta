@@ -21,8 +21,8 @@
 <<
     duplicate
     string?
-    `non-empty-string-other
     `non-empty-string-string
+    `non-empty-string-other
     3, rotate
     if
     unquote
@@ -39,7 +39,7 @@ define
 `non-empty-string-other
 define*
 
-<< Number >> ; -> Boolean
+<< String >> ; -> Boolean
 <<
     empty-string?
     not
@@ -49,7 +49,7 @@ define*
 define*
 
 
-<< String Number String >> ; -> String
+<< String, Number, String >> ; -> String
 <<
     3, rotate
     duplicate
@@ -71,7 +71,7 @@ define*
 define
 
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-equal?
     not
@@ -79,7 +79,7 @@ define
 `string-not-equal?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-reverse-alphabetic?
     not
@@ -87,7 +87,7 @@ define
 `string-alphabetic-equal?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-alphabetic?
     not
@@ -95,7 +95,7 @@ define
 `string-reverse-alphabetic-equal?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     toupper
     2, rotate
@@ -105,7 +105,7 @@ define
 `string-equal-ci?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-equal-ci?
     not
@@ -113,7 +113,7 @@ define
 `string-not-equal-ci?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     toupper
     2, rotate
@@ -123,7 +123,7 @@ define
 `string-alphabetic-ci?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-reverse-alphabetic-ci?
     not
@@ -131,7 +131,7 @@ define
 `string-alphabetic-equal-ci?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     toupper
     2, rotate
@@ -141,7 +141,7 @@ define
 `string-reverse-alphabetic-ci?
 define
 
-<< String String >> ; -> String
+<< String, String >> ; -> String
 <<
     string-alphabetic-ci?
     not

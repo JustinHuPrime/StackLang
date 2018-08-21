@@ -23,11 +23,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <iterator>
 #include <random>
 #include <sstream>
 #include <stack>
 
+#include "language/exceptions/interpreterExceptions.h"
 #include "language/exceptions/languageExceptions.h"
 #include "language/stack/stack.h"
 #include "util/mathUtils.h"
@@ -35,6 +37,7 @@
 
 namespace stacklang {
 namespace {
+using stacklang::exceptions::ParserException;
 using stacklang::exceptions::RuntimeError;
 using stacklang::exceptions::StackOverflowError;
 using stacklang::exceptions::StackUnderflowError;
@@ -65,7 +68,7 @@ using std::cos;
 using std::cosh;
 using std::end;
 using std::find_if;
-using std::getline;
+using std::ifstream;
 using std::isnan;
 using std::istringstream;
 using std::log;
@@ -84,6 +87,7 @@ using std::to_string;
 using util::ends_with;
 using util::spaceship;
 using util::starts_with;
+using util::trim;
 }  // namespace
 
 atomic_bool stopFlag = false;
@@ -210,9 +214,13 @@ void execute(Stack& s, Defines& defines, list<string> context) {
           // stack error without trace must be main stack.
           if (e.getTrace().empty())
             throw StackOverflowError(s.getLimit(), context);
+          else
+            throw e;
         } catch (const StackUnderflowError& e) {
-          // this should be impossible.
-          if (e.getTrace().empty()) throw StackUnderflowError(context);
+          if (e.getTrace().empty())
+            throw StackUnderflowError(context);
+          else
+            throw e;
         }
         execute(s, defines, context);  // TODO: make this tail recursive.
       }

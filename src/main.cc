@@ -86,11 +86,11 @@ int main(int argc, char* argv[]) noexcept {
 
   // flags parsing
   try {
-    args.read(argc, argv);
+    args.read(argc, const_cast<const char**>(argv));
     args.validate("?hb", "dlo", "I");
   } catch (const LanguageException& e) {
     printError(e);
-    cerr << "Encountered error parsing command line arguments. Aborting."
+    cerr << "\nEncountered error parsing command line arguments. Aborting."
          << endl;
     exit(EXIT_FAILURE);
   }

@@ -17,7 +17,8 @@
 
 ; StackLang standard library, version ALPHA 6
 
-"boolean" ; include the extended primitives
+; include the extended primitives
+"boolean"
 include
 ; "command"
 ; include
@@ -29,11 +30,3 @@ include
 include
 "type"
 include
-
-;<< Number Number Number >> ; -> Number
-;<<
-;   add
-;   add
-;>>
-;"add-three"
-;define

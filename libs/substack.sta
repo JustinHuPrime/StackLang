@@ -29,8 +29,8 @@ define
 <<
     duplicate
     substack?
-    `non-empty-other
     `non-empty-substack
+    `non-empty-other
     3, rotate
     if
     unquote
@@ -47,7 +47,7 @@ define
 `non-empty-other
 define*
 
-<< Number >> ; -> Boolean
+<< Substack >> ; -> Boolean
 <<
     empty?
     not

@@ -21,8 +21,8 @@
 <<
     duplicate
     type?
-    `base-other
     `base-type
+    `base-other
     3, rotate
     if
     unquote
@@ -39,7 +39,7 @@ define
 `base-other
 define*
 
-<< Number >> ; -> Boolean
+<< Type >> ; -> Boolean
 <<
     specialized?
     not

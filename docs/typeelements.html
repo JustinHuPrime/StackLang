@@ -18,22 +18,17 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Type Elements - StackLang Documentation
-    </title>
+    <title> Type Elements - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Types</h1>
-                <p>
-                    A StackLang type is an element that represents the type of some other element. See the
-                    <a href="https://justinhuprime.github.io/StackLang/types.html">types</a> page for more details. An EBNF definition for a type is given below.
+                <p> A StackLang type is an element that represents the type of some other element. See the <a href="https://justinhuprime.github.io/StackLang/types.html">types</a>
+                    page for more details. An EBNF definition for a type is given below.
                     <pre id="ebnf">
 base-type = "Boolean" | "Command" | "Number" | "String" | "Substack" | "Type" | "Any" ;
 
@@ -41,39 +36,24 @@ type = base-type | ("Substack", "(", type, ")") ;</pre>
                 </p>
                 <h2 id="commands">Type-related Commands</h2>
                 <h3 id="type">Type Predicates</h3>
-                <p>
-                    <code>type? : Any -> Boolean</code>
-                    <br/> Produces true if element is a type.
+                <p> <code>type? : Any -> Boolean</code> <br/> Produces true if element is a type.
                 </p>
-                <p>
-                    <code>specialized? : Any -> Boolean</code>
-                    <br/> Produces true if element is a specialized type.
+                <p> <code>specialized? : Any -> Boolean</code> <br/> Produces true if element is a specialized type.
                 </p>
-                <p>
-                    <code>base? : Any -> Boolean</code>
-                    <br/> Produces true if element is a base (unspecialized) type.
+                <p> <code>base? : Any -> Boolean</code> <br/> Produces true if element is a base (unspecialized) type.
                 </p>
                 <h3 id="operations">Type Operations</h3>
-                <p>
-                    <code>get-specialization : Type -> Type</code>
-                    <br/> Gets the specialization of the given type. Fails with a
-                    <code>RuntimError</code> if type is unspecialized.
+                <p> <code>get-specialization : Type -> Type</code> <br/> Gets the specialization of the given type. Fails with
+                    a <code>RuntimError</code> if type is unspecialized. </p>
+                <p> <code>add-specialization : Type Type -> Type</code> <br/> Adds the first type as a specialization onto the
+                    second type.
                 </p>
-                <p>
-                    <code>add-specialization : Type Type -> Type</code>
-                    <br/> Adds the first type as a specialization onto the second type.
+                <p> <code>base : Type -> Type</code> <br/> Gets the base type of the given type. If type is unspecialized, produces
+                    the type itself.
                 </p>
-                <p>
-                    <code>base : Type -> Type</code>
-                    <br/> Gets the base type of the given type. If type is unspecialized, produces the type itself.
+                <p> <code>check-type : Type Any -> Boolean</code> <br/> Produces true if element is of the given type.
                 </p>
-                <p>
-                    <code>check-type : Type Any -> Boolean</code>
-                    <br/> Produces true if element is of the given type.
-                </p>
-                <p>
-                    <code>typeof : Any -> Type</code>
-                    <br/> Produces the type of the element. Does not consider specializations.
+                <p> <code>typeof : Any -> Type</code> <br/> Produces the type of the element. Does not consider specializations.
                 </p>
                 <hr/>
                 <div id="footer"></div>

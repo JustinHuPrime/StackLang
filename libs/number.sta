@@ -21,8 +21,8 @@
 <<
     duplicate
     number?
-    `integer-other
     `integer-number
+    `integer-other
     3, rotate
     if
     unquote
@@ -53,8 +53,8 @@ define*
 <<
     duplicate
     number?
-    `zero-other
     `zero-number
+    `zero-other
     3, rotate
     if
     unquote
@@ -85,8 +85,8 @@ define*
 <<
     duplicate
     number?
-    `positive-other
     `positive-number
+    `positive-other
     3, rotate
     if
     unquote
@@ -135,8 +135,8 @@ define
 <<
     duplicate
     integer?
-    `even-other
     `even-integer
+    `even-other
     3, rotate
     if
     unquote
@@ -260,7 +260,7 @@ define
 define
 
 
-<< Number Number >> ; -> Boolean
+<< Number, Number >> ; -> Boolean
 <<
     equal?
     not
@@ -268,7 +268,7 @@ define
 `not-equal?
 define
 
-<< Number Number >> ; -> Boolean
+<< Number, Number >> ; -> Boolean
 <<
     greater-than?
     not
@@ -276,7 +276,7 @@ define
 `less-than-equal?
 define
 
-<< Number Number >> ; -> Boolean
+<< Number, Number >> ; -> Boolean
 <<
     less-than?
     not

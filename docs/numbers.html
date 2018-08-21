@@ -18,30 +18,21 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Types - StackLang Documentation
-    </title>
+    <title> Types - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Numbers</h1>
-                <p>
-                    Numbers in StackLang are stored as floating point numbers. Numbers will be displayed to as many decimal places as are significant.
-                    When entering a number, any number of
-                    <kbd>'</kbd> may be used in a number as a thousands separator, except at the beginning of the number.
-                </p>
-                <p>
-                    The two number constants are commands. That is, they must be evaluated before they turn into a number. Thus, for the most
-                    part, they can be used as normal numbers, but they can be quoted.
-                </p>
-                <p>
-                    An EBNF definition of a number is given below.
+                <p> Numbers in StackLang are stored as floating point numbers. Numbers will be displayed to as many decimal places
+                    as are significant. When entering a number, any number of <kbd>'</kbd> may be used in a number as a thousands
+                    separator, except at the beginning of the number. </p>
+                <p> The two number constants are commands. That is, they must be evaluated before they turn into a number. Thus,
+                    for the most part, they can be used as normal numbers, but they can be quoted. </p>
+                <p> An EBNF definition of a number is given below.
                     <pre id="ebnf">
 nonzero-digit = ? Any ASCII arabic numeral ? ;
 separator-symbol = "'" ;
@@ -56,262 +47,166 @@ number = [sign-symbol], digit-string, [decimal point, digit-string] ;</pre>
                 </p>
                 <h2 id="commands">Number-related Commands</h2>
                 <h3 id="constants">Constants</h3>
-                <p>
-                    <code>euler : -> Number</code>
-                    <br/> Produces Euler's number.
+                <p> <code>euler : -> Number</code> <br/> Produces Euler's number.
                 </p>
-                <p>
-                    <code>pi : -> Number</code>
-                    <br/> Produces &pi;.
+                <p> <code>pi : -> Number</code> <br/> Produces &pi;.
                 </p>
                 <h3 id="type">Type Predicates</h3>
-                <p>
-                    <code>number? : Any -> Boolean</code>
-                    <br/> Produces true if given element is a number.
+                <p> <code>number? : Any -> Boolean</code> <br/> Produces true if given element is a number.
                 </p>
-                <p>
-                    <code>integer? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an integer number.
+                <p> <code>integer? : Any -> Boolean</code> <br/> Produces true if given element is an integer number.
                 </p>
-                <p>
-                    <code>zero? : Any -> Boolean</code>
-                    <br/> Produces true if given element is a number equal to zero.
+                <p> <code>zero? : Any -> Boolean</code> <br/> Produces true if given element is a number equal to zero.
                 </p>
-                <p>
-                    <code>positive? : Any -> Boolean</code>
-                    <br/> Produces true if given element is a positive (zero not included) number.
+                <p> <code>positive? : Any -> Boolean</code> <br/> Produces true if given element is a positive (zero not included)
+                    number.
                 </p>
-                <p>
-                    <code>negative? : Any -> Boolean</code>
-                    <br/> Produces true if given element is a negative (zero not included) number.
+                <p> <code>negative? : Any -> Boolean</code> <br/> Produces true if given element is a negative (zero not included)
+                    number.
                 </p>
-                <p>
-                    <code>even? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an even, integer number.
+                <p> <code>even? : Any -> Boolean</code> <br/> Produces true if given element is an even, integer number.
                 </p>
-                <p>
-                    <code>odd? : Any -> Boolean</code>
-                    <br/> Produces true if given element is an odd, integer number.
+                <p> <code>odd? : Any -> Boolean</code> <br/> Produces true if given element is an odd, integer number.
                 </p>
                 <h3 id="conversion">Type Conversion</h3>
-                <p>
-                    <code>number-to-string : Number -> String</code>
-                    <br/> Produces the number as it would be printed, but not including a positive sign.
+                <p> <code>number-to-string : Number -> String</code> <br/> Produces the number as it would be printed, but not
+                    including a positive sign.
                 </p>
-                <p>
-                    <code>string-to-number : String -> Number</code>
-                    <br/> Produces a number from a string as if it were read in from the interpreter.
-                    <code>number-to-string</code> is the inverse of
-                    <code>string-to-number</code>. Fails with a
-                    <code>RuntimeError</code> if string cannot be parsed.
-                </p>
+                <p> <code>string-to-number : String -> Number</code> <br/> Produces a number from a string as if it were read
+                    in from the interpreter. <code>number-to-string</code> is the inverse of <code>string-to-number</code>.
+                    Fails with a <code>RuntimeError</code> if string cannot be parsed. </p>
                 <h3 id="arithmetic">Arithmetic</h3>
-                <p>
-                    <code>precision : Number -> Number</code>
-                    <br/> Produces the number of decimal places this number is accurate to.
+                <p> <code>precision : Number -> Number</code> <br/> Produces the number of decimal places this number is accurate
+                    to.
                 </p>
-                <p>
-                    <code>set-precision : Number Number -> Number</code>
-                    <br/> Sets the precision of the second number to the first number.
+                <p> <code>set-precision : Number Number -> Number</code> <br/> Sets the precision of the second number to the
+                    first number.
                 </p>
-                <p>
-                    <code>negate : Number -> Number</code>
-                    <br/> Produces the negative of the number.
+                <p> <code>negate : Number -> Number</code> <br/> Produces the negative of the number.
                 </p>
-                <p>
-                    <code>inverse : Number -> Number</code>
-                    <br/> Produces one divided by the number.
+                <p> <code>inverse : Number -> Number</code> <br/> Produces one divided by the number.
                 </p>
-                <p>
-                    <code>increment : Number -> Number</code>
-                    <br/> Produces the number plus one.
+                <p> <code>increment : Number -> Number</code> <br/> Produces the number plus one.
                 </p>
-                <p>
-                    <code>decrement : Number -> Number</code>
-                    <br/> Produces the number minus one.
+                <p> <code>decrement : Number -> Number</code> <br/> Produces the number minus one.
                 </p>
-                <p>
-                    <code>add : Number Number -> Number</code>
-                    <br/> Adds two numbers together.
+                <p> <code>add : Number Number -> Number</code> <br/> Adds two numbers together.
                 </p>
-                <p>
-                    <code>subtract : Number Number -> Number</code>
-                    <br/> Subtracts the first number from the second.
+                <p> <code>subtract : Number Number -> Number</code> <br/> Subtracts the first number from the second.
                 </p>
-                <p>
-                    <code>multiply : Number Number -> Number</code>
-                    <br/> Multiplies two numbers together.
+                <p> <code>multiply : Number Number -> Number</code> <br/> Multiplies two numbers together.
                 </p>
-                <p>
-                    <code>divide : Number Number -> Number</code>
-                    <br/> Divides the second number by the first. Will produce a syntax error when dividing by zero.
+                <p> <code>divide : Number Number -> Number</code> <br/> Divides the second number by the first. Will produce
+                    a syntax error when dividing by zero.
                 </p>
-                <p>
-                    <code>modulo : Number Number -> Number</code>
-                    <br/> Takes the absolute value of both numbers, and subtracts the first from the second until the second is
-                    less than the first. Then, the sign of the second is set to the sign of the first.
+                <p> <code>modulo : Number Number -> Number</code> <br/> Takes the absolute value of both numbers, and subtracts
+                    the first from the second until the second is less than the first. Then, the sign of the second is set
+                    to the sign of the first.
                 </p>
-                <p>
-                    <code>floor : Number -> Number</code>
-                    <br/> Produces the floor of the number (closest integer, rounding down).
+                <p> <code>floor : Number -> Number</code> <br/> Produces the floor of the number (closest integer, rounding down).
                 </p>
-                <p>
-                    <code>ceil : Number -> Number</code>
-                    <br/> Produces the ceiling of the number (closest integer, rounding up).
+                <p> <code>ceil : Number -> Number</code> <br/> Produces the ceiling of the number (closest integer, rounding
+                    up).
                 </p>
-                <p>
-                    <code>round : Number -> Number</code>
-                    <br/> Produces the closest integer, rounding to even.
+                <p> <code>round : Number -> Number</code> <br/> Produces the closest integer, rounding to even.
                 </p>
-                <p>
-                    <code>round* : Number -> Number</code>
-                    <br/> Produces the closest integer, rounding up at 0.5.
+                <p> <code>round* : Number -> Number</code> <br/> Produces the closest integer, rounding up at 0.5.
                 </p>
-                <p>
-                    <code>trunc : Number -> Number</code>
-                    <br/> Produces the number, without any decimal digits.
+                <p> <code>trunc : Number -> Number</code> <br/> Produces the number, without any decimal digits.
                 </p>
-                <p>
-                    <code>abs : Number -> Number</code>
-                    <br/> Produces the absolute value of the number.
+                <p> <code>abs : Number -> Number</code> <br/> Produces the absolute value of the number.
                 </p>
-                <p>
-                    <code>sign : Number -> Number</code>
-                    <br/> If input is positive, produces 1, else if input is negative, produces -1, else zero.
+                <p> <code>sign : Number -> Number</code> <br/> If input is positive, produces 1, else if input is negative, produces
+                    -1, else zero.
                 </p>
-                <p>
-                    <code>max : Number Number -> Number</code>
-                    <br/> Produces the larger of the two numbers.
+                <p> <code>max : Number Number -> Number</code> <br/> Produces the larger of the two numbers.
                 </p>
-                <p>
-                    <code>min : Number Number -> Number</code>
-                    <br/> Produces the smaller of the two numbers.
+                <p> <code>min : Number Number -> Number</code> <br/> Produces the smaller of the two numbers.
                 </p>
-                <p>
-                    <code>sqrt : Number -> Number</code>
-                    <br/> Produces the square root of the number.
+                <p> <code>sqrt : Number -> Number</code> <br/> Produces the square root of the number.
                 </p>
-                <p>
-                    <code>pow : Number Number -> Number</code>
-                    <br/> Produces the second number raised to the power of the first number.
+                <p> <code>pow : Number Number -> Number</code> <br/> Produces the second number raised to the power of the first
+                    number.
                 </p>
-                <p>
-                    <code>exponential : Number -> Number</code>
-                    <br/> Produces euler's number to the power of the input.
+                <p> <code>exponential : Number -> Number</code> <br/> Produces euler's number to the power of the input.
                 </p>
-                <p>
-                    <code>log : Number Number -> Number</code>
-                    <br/> Produces the second number's logarithm, using the first number as the base.
+                <p> <code>log : Number Number -> Number</code> <br/> Produces the second number's logarithm, using the first
+                    number as the base.
                 </p>
-                <p>
-                    <code>log-e : Number -> Number</code>
-                    <br/> Produces the number's natural logarithm.
+                <p> <code>log-e : Number -> Number</code> <br/> Produces the number's natural logarithm.
                 </p>
-                <p>
-                    <code>log-10 : Number -> Number</code>
-                    <br/> Produces the number's base-10 logarithm.
+                <p> <code>log-10 : Number -> Number</code> <br/> Produces the number's base-10 logarithm.
                 </p>
-                <p>
-                    <code>log-2 : Number -> Number</code>
-                    <br/> Produces the number's base-2 logarithm.
+                <p> <code>log-2 : Number -> Number</code> <br/> Produces the number's base-2 logarithm.
                 </p>
                 <h3 id="comparison">Comparison</h3>
-                <p>
-                    <code>equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the number is equal to the other number.
+                <p> <code>equal? : Number Number -> Boolean</code> <br/> Produces true if the number is equal to the other number.
                 </p>
-                <p>
-                    <code>not-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the numbers are not equal.
+                <p> <code>not-equal? : Number Number -> Boolean</code> <br/> Produces true if the numbers are not equal.
                 </p>
-                <p>
-                    <code>less-than? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is less than the first.
+                <p> <code>less-than? : Number Number -> Boolean</code> <br/> Produces true if the second number is less than
+                    the first.
                 </p>
-                <p>
-                    <code>greater-than? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is greater than the first.
+                <p> <code>greater-than? : Number Number -> Boolean</code> <br/> Produces true if the second number is greater
+                    than the first.
                 </p>
-                <p>
-                    <code>less-than-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is less than or equal to the first.
+                <p> <code>less-than-equal? : Number Number -> Boolean</code> <br/> Produces true if the second number is less
+                    than or equal to the first.
                 </p>
-                <p>
-                    <code>greater-than-equal? : Number Number -> Boolean</code>
-                    <br/> Produces true if the second number is greater than or equal to the first.
+                <p> <code>greater-than-equal? : Number Number -> Boolean</code> <br/> Produces true if the second number is greater
+                    than or equal to the first.
                 </p>
                 <h3 id="trigonometry">Trigonometric Functions</h3>
-                <p>
-                    <code>sine : Number -> Number</code>
-                    <br/> Produces the sine of the number. Number is expected to be in radians
+                <p> <code>sine : Number -> Number</code> <br/> Produces the sine of the number. Number is expected to be in radians
                 </p>
-                <p>
-                    <code>cosine : Number -> Number</code>
-                    <br/> Produces the cosine of the number. Number is expected to be in radians.
+                <p> <code>cosine : Number -> Number</code> <br/> Produces the cosine of the number. Number is expected to be
+                    in radians.
                 </p>
-                <p>
-                    <code>tangent : Number -> Number</code>
-                    <br/> Produces the tangent of the number. Number is expected to be in radians.
+                <p> <code>tangent : Number -> Number</code> <br/> Produces the tangent of the number. Number is expected to be
+                    in radians.
                 </p>
-                <p>
-                    <code>arcsine : Number -> Number</code>
-                    <br/> Produces the arcsine of the number. Number is expected to be between 1 and -1. Output is between -&pi;/2
-                    and &pi;/2.
+                <p> <code>arcsine : Number -> Number</code> <br/> Produces the arcsine of the number. Number is expected to be
+                    between 1 and -1. Output is between -&pi;/2 and &pi;/2.
                 </p>
-                <p>
-                    <code>arccosine : Number -> Number</code>
-                    <br/> Produces the arccosine of the number. Number is expected to be between 1 and -1. Output is between 0
-                    and &pi;.
+                <p> <code>arccosine : Number -> Number</code> <br/> Produces the arccosine of the number. Number is expected
+                    to be between 1 and -1. Output is between 0 and &pi;.
                 </p>
-                <p>
-                    <code>arctangent : Number -> Number</code>
-                    <br/> Produces the arctangent of the number. Output is between -&pi;/2 and &pi;/2. Numbre
+                <p> <code>arctangent : Number -> Number</code> <br/> Produces the arctangent of the number. Output is between
+                    -&pi;/2 and &pi;/2. Numbre
                 </p>
-                <p>
-                    <code>arctangent2 : Number Number -> Number</code>
-                    <br/> Produces the arctangent of the second number divided by the first number. Output is between &pi; (inclusive)
-                    and -&pi; (exclusive). Handles any asymptotes in that range.
+                <p> <code>arctangent2 : Number Number -> Number</code> <br/> Produces the arctangent of the second number divided
+                    by the first number. Output is between &pi; (inclusive) and -&pi; (exclusive). Handles any asymptotes
+                    in that range.
                 </p>
-                <p>
-                    <code>hyperbolic-sine : Number -> Number</code>
-                    <br/> Produces the hyperbolic sine of the number. Domain and range are all real numbers.
+                <p> <code>hyperbolic-sine : Number -> Number</code> <br/> Produces the hyperbolic sine of the number. Domain
+                    and range are all real numbers.
                 </p>
-                <p>
-                    <code>hyperbolic-cosine : Number -> Number</code>
-                    <br/> Produces the hyperbolic cosine of the number. Domain is all real numbers, and range is from 1 to infinity.
+                <p> <code>hyperbolic-cosine : Number -> Number</code> <br/> Produces the hyperbolic cosine of the number. Domain
+                    is all real numbers, and range is from 1 to infinity.
                 </p>
-                <p>
-                    <code>hyperbolic-tangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic tangent of the number. Domain is all real numbers, and range is from negative
-                    one to positive one, not inclusive.
+                <p> <code>hyperbolic-tangent : Number -> Number</code> <br/> Produces the hyperbolic tangent of the number. Domain
+                    is all real numbers, and range is from negative one to positive one, not inclusive.
                 </p>
-                <p>
-                    <code>hyperbolic-arcsine : Number -> Number</code>
-                    <br/> Produces the hyperbolic arcsine of the number. Output has the same sign as the input.
+                <p> <code>hyperbolic-arcsine : Number -> Number</code> <br/> Produces the hyperbolic arcsine of the number. Output
+                    has the same sign as the input.
                 </p>
-                <p>
-                    <code>hyperbolic-arccosine : Number -> Number</code>
-                    <br/> Produces the hyperbolic arccosine of the number. Output is always positive.
+                <p> <code>hyperbolic-arccosine : Number -> Number</code> <br/> Produces the hyperbolic arccosine of the number.
+                    Output is always positive.
                 </p>
-                <p>
-                    <code>hyperbolic-arctangent : Number -> Number</code>
-                    <br/> Produces the hyperbolic arctangent of the number. Output has the same sign as the input.
+                <p> <code>hyperbolic-arctangent : Number -> Number</code> <br/> Produces the hyperbolic arctangent of the number.
+                    Output has the same sign as the input.
                 </p>
                 <h3 id="stats">Statistical Functions</h3>
                 <!--TODO: finish this-->
                 <h3 id="utilities">Other Utilities</h3>
-                <p>
-                    <code>random : -> Number</code>
-                    <br/> Produces a random number between zero (inclusive) and one (exclusive). Not guarenteed to be cryptographically
-                    secure.
+                <p> <code>random : -> Number</code> <br/> Produces a random number between zero (inclusive) and one (exclusive).
+                    Not guarenteed to be cryptographically secure.
                 </p>
-                <p>
-                    <code>degrees-to-radians : Number -> Number</code>
-                    <br/> Input is interpreted as degrees, and is converted into radians. Output has the same sign as the input.
+                <p> <code>degrees-to-radians : Number -> Number</code> <br/> Input is interpreted as degrees, and is converted
+                    into radians. Output has the same sign as the input.
                 </p>
-                <p>
-                    <code>radians-to-degrees : Number -> Number</code>
-                    <br/> Input is interpreted as radians, and is converted into degrees. Output has the same sign as the input.
+                <p> <code>radians-to-degrees : Number -> Number</code> <br/> Input is interpreted as radians, and is converted
+                    into degrees. Output has the same sign as the input.
                 </p>
                 <hr/>
                 <div id="footer"></div>

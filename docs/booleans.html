@@ -18,26 +18,19 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Booleans - StackLang Documentation
-    </title>
+    <title> Booleans - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Booleans</h1>
+                <p> StackLang booleans are very conventional - there are literal <code>true</code> and <code>false</code> values
+                    formed by entering those symbols. These symbols are not commands, unlike the number constants. </p>
                 <p>
-                    StackLang booleans are very conventional - there are literal
-                    <code>true</code> and
-                    <code>false</code> values formed by entering those symbols. These symbols are not commands, unlike the number constants.
-                </p>
-                <p>
-                    A (possibly redundant) EBNF definition of booleans is given below.
+                A (possibly redundant) EBNF definition of booleans is given below.
                     <pre id="ebnf">
 true-symbol = "true" ;
 false-symbol = "false" ;
@@ -45,99 +38,38 @@ boolean = true-symbol | false-symbol ;</pre>
                 </p>
                 <h2 id="commands">Boolean-related Commands</h2>
                 <h3 id="type">Type Predicates</h3>
-                <p>
-                    <code>boolean? : Any -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if input is a boolean,
-                    <code>false</code> otherwise.
-                </p>
-                <p>
-                    <code>false? : Any -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if input is
-                    <code>false</code>,
-                    <code>false</code> otherwise.
-                </p>
-                <p>
-                    <code>true? : Any -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if input is
-                    <code>true</code>,
-                    <code>false</code> otherwise.
-                </p>
+                <p> <code>boolean? : Any -> Boolean</code> <br/> Produces <code>true</code> if input is a boolean, <code>false</code>                    otherwise.
+                    </p>
+                <p> <code>false? : Any -> Boolean</code> <br/> Produces <code>true</code> if input is <code>false</code>, <code>false</code>                    otherwise.
+                    </p>
+                <p> <code>true? : Any -> Boolean</code> <br/> Produces <code>true</code> if input is <code>true</code>, <code>false</code>                    otherwise.
+                    </p>
                 <h3 id="conversion">Type Conversions</h3>
-                <p>
-                    <code>boolean-to-string : Boolean -> String</code>
-                    <br/> Produces the string
-                    <code>"true"</code> if input is
-                    <code>true</code>,
-                    <code>"false"</code> otherwise.
-                </p>
-                <p>
-                    <code>string-to-boolean : Boolean -> String</code>
-                    <br/> Produces a boolean as if the string were read in from the interpreter. Fails with a
-                    <code>RuntimeError</code> if string cannot be parsed.
-                </p>
+                <p> <code>boolean-to-string : Boolean -> String</code> <br/> Produces the string <code>"true"</code> if input
+                    is <code>true</code>, <code>"false"</code> otherwise. </p>
+                <p> <code>string-to-boolean : Boolean -> String</code> <br/> Produces a boolean as if the string were read in
+                    from the interpreter. Fails with a <code>RuntimeError</code> if string cannot be parsed. </p>
                 <h3 id="logical">Logical Operators</h3>
-                <p>
-                    <code>if : Boolean Any Any -> Any</code>
-                    <br/> If boolean is true, produces the third (furthest away from the active end) element. Else, produces the
-                    second element. Arguments to if must, as an effect of the evaluation rules, be evaluated before the evaluation
-                    of the if.
+                <p> <code>if : Boolean Any Any -> Any</code> <br/> If boolean is true, produces the third (furthest away from
+                    the active end) element. Else, produces the second element. Arguments to if must, as an effect of the
+                    evaluation rules, be evaluated before the evaluation of the if.
                 </p>
-                <p>
-                    <code>not : Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>false</code> if input is
-                    <code>true</code>, and
-                    <code>true</code> if input is
-                    <code>false</code>.
-                </p>
-                <p>
-                    <code>or : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if at least one input is
-                    <code>true</code>,
-                    <code>false</code> otherwise. This will not short-circuit.
-                </p>
-                <p>
-                    <code>and : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>false</code> if at least one input is
-                    <code>false</code>,
-                    <code>true</code> otherwise. This will not short-circuit.
-                </p>
-                <p>
-                    <code>nor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>false</code> if at least one input is
-                    <code>true</code>,
-                    <code>true</code> otherwise.
-                </p>
-                <p>
-                    <code>xor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if the two inputs are not the same,
-                    <code>false</code> otherwise.
-                </p>
-                <p>
-                    <code>nxor : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if the two inputs are the same,
-                    <code>false</code> otherwise.
-                </p>
-                <p>
-                    <code>nand : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if at least one input is
-                    <code>false</code>,
-                    <code>false</code> otherwise.
-                </p>
-                <p>
-                    <code>implies : Boolean Boolean -> Boolean</code>
-                    <br/> Produces
-                    <code>true</code> if the second implies (not the second or the first) the first.
-                </p>
+                <p> <code>not : Boolean -> Boolean</code> <br/> Produces <code>false</code> if input is <code>true</code>, and
+                    <code>true</code> if input is <code>false</code>. </p>
+                <p> <code>or : Boolean Boolean -> Boolean</code> <br/> Produces <code>true</code> if at least one input is <code>true</code>,
+                    <code>false</code> otherwise. This will not short-circuit. </p>
+                <p> <code>and : Boolean Boolean -> Boolean</code> <br/> Produces <code>false</code> if at least one input is
+                    <code>false</code>, <code>true</code> otherwise. This will not short-circuit. </p>
+                <p> <code>nor : Boolean Boolean -> Boolean</code> <br/> Produces <code>false</code> if at least one input is
+                    <code>true</code>, <code>true</code> otherwise. </p>
+                <p> <code>xor : Boolean Boolean -> Boolean</code> <br/> Produces <code>true</code> if the two inputs are not
+                    the same, <code>false</code> otherwise. </p>
+                <p> <code>nxor : Boolean Boolean -> Boolean</code> <br/> Produces <code>true</code> if the two inputs are the
+                    same, <code>false</code> otherwise. </p>
+                <p> <code>nand : Boolean Boolean -> Boolean</code> <br/> Produces <code>true</code> if at least one input is
+                    <code>false</code>, <code>false</code> otherwise. </p>
+                <p> <code>implies : Boolean Boolean -> Boolean</code> <br/> Produces <code>true</code> if the second implies
+                    (not the second or the first) the first. </p>
                 <hr/>
                 <div id="footer"></div>
             </div>

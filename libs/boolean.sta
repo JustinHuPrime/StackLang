@@ -17,7 +17,7 @@
 
 ; StackLang extended boolean primitives
 
-<< Boolean Boolean >> ; -> Boolean
+<< Boolean, Boolean >> ; -> Boolean
 <<
     or
     not
@@ -25,7 +25,7 @@
 `nor
 define
 
-<< Boolean Boolean >> ; -> Boolean
+<< Boolean, Boolean >> ; -> Boolean
 <<
     xor
     not
@@ -33,7 +33,7 @@ define
 `xnor
 define
 
-<< Boolean Boolean >> ; -> Boolean
+<< Boolean, Boolean >> ; -> Boolean
 <<
     and
     not
@@ -41,7 +41,7 @@ define
 `nand
 define
 
-<< Boolean Boolean >> ; -> Boolean
+<< Boolean, Boolean >> ; -> Boolean
 <<
     2, rotate
     not

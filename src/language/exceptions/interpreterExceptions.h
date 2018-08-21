@@ -38,7 +38,8 @@ class ArgumentError : public LanguageException {
 
 class ParserException : public LanguageException {
  public:
-  ParserException(const string&, const string&, size_t) noexcept;
+  ParserException(const string&, const string&, size_t,
+                  list<string> = list<string>{}) noexcept;
   ParserException(const ParserException&) = default;
 
   ParserException& operator=(const ParserException&) = default;

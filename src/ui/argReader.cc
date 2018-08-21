@@ -33,7 +33,7 @@ using std::to_string;
 
 ArgReader::ArgReader() noexcept : flags(), options(), longOpts() {}
 
-void ArgReader::read(int argc, char* argv[]) {
+void ArgReader::read(int argc, const char* argv[]) {
   vector<string> args;
 
   for (int i = 1; i < argc; i++) {

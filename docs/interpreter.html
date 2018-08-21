@@ -18,222 +18,130 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css" />
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Interpreter - StackLang Documentation
-    </title>
+    <title> Interpreter - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">The Interpreter</h1>
-                <p>
-                    The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke the interpreter
-                    from becomes one of the two roots of the interpreter's search path. The other root is the "libs" folder
-                    within the folder where the executable is located.
-                </p>
+                <p> The interpreter may be invoked from a command line of your choice. However, the folder from which you invoke
+                    the interpreter from becomes one of the two roots of the interpreter's search path. The other root is
+                    the "libs" folder within the folder where the executable is located. </p>
                 <h2 id="options">Command Line Options</h2>
                 <ul>
-                    <li>
-                        <code>-?</code>,
-                        <code>-h</code>: prints a summary of the command line options, then exits immediately.
-                    </li>
-                    <li>
-                        <code>-d N</code>: activates debugging of the interpreter in mode N - this is not guarenteed to have
-                        an effect. The default mode of 0 is guarenteed to have no effect.
-                    </li>
-                    <li>
-                        <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at
-                        startup. Filepaths may be enclosed in quotes. Any unquoted string that starts with
-                        <code>-</code> will cause it to parse a new option. For relative paths, the
-                        <code>include</code> command will first look from the directory containing the interpreter for a
-                        <code>libs</code> folder, then within that folder for the named file, the named file, but adding
-                        a
-                        <code>.sta</code> extension, then search in the current working directory for the named file, then
-                        the named file, but adding a
-                        <code>.sta</code> extension. For absolute paths, the
+                    <li> <code>-?</code>, <code>-h</code>: prints a summary of the command line options, then exits immediately.
+                        </li>
+                    <li> <code>-d N</code>: activates debugging of the interpreter in mode N - this is not guarenteed to have
+                        an effect. The default mode of 0 is guarenteed to have no effect. </li>
+                    <li> <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at startup.
+                        Filepaths may be enclosed in quotes. Any unquoted string that starts with <code>-</code> will cause
+                        it to parse a new option. For filenames (anything without a <code>/</code>), the <code>include</code>                        command
+                        will first look in the current working directory for the named file, then the named file, but adding
+                        a <code>.sta</code> extension, then for a <code>libs</code> folder, then within that folder for the
+                        named file, then the named file, but adding a <code>.sta</code> extension. For absolute paths, the
                         <code>include</code> command will look for the file along the path, then for the file, but adding
-                        a
-                        <code>.sta</code> extension. Note that
-                        <code>-I std</code> is usually implied.
-                    </li>
-                    <li>
-                        <code>-b</code>: prevents automatic inclusion of standard library. Note that this will also prevent
-                        inclusion of any extended primtive commands. It is implementation specific which commands are considered
-                        extended primitives. See the
-                        <a href="https://justinhuprime.github.io/StackLang/interpreter.html#primlist">list</a> for details
-                        on the primtivive commands in this implementation. Special forms should always be avalible.
-                    </li>
-                    <li>
-                        <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting
-                        to put more than N elements onto the stack. Default is limited by the size of a long int on the local
-                        system (although the system will likely run out of memory before it reaches that many stack elements).
-                    </li>
-                    <li>
-                        <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via
-                        <code>Ctrl-d</code>. This file is The active end of the stack will be the last line of the file.
-                        This path is relative to the location you are running the interpreter from.
-                    </li>
+                        a <code>.sta</code> extension. Note that <code>-I std</code> is implied unless overridden by the
+                        <code>-b</code> option. For a path, first the target path is checked, then the target path with a
+                        <code>.sta</code> extension. </li>
+                    <li> <code>-b</code>: prevents automatic inclusion of standard library. Note that this will also prevent inclusion
+                        of any extended primtive commands. It is implementation specific which commands are considered extended
+                        primitives. See the <a href="https://justinhuprime.github.io/StackLang/interpreter.html#primlist">list</a>
+                        for details on the primtivive commands in this implementation. Special forms should always be avalible.
+                        </li>
+                    <li> <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put
+                        more than N elements onto the stack. Default is limited by the size of a long int on the local system
+                        (although the system will likely run out of memory before it reaches that many stack elements). </li>
+                    <li> <code>-o file</code>: file to print the stack to (in formatted mode) when the interpreter exits via <code>Ctrl-d</code>.
+                        This file is The active end of the stack will be the last line of the file. This path is relative
+                        to the location you are running the interpreter from. </li>
                 </ul>
                 <h2 id="keyboard">Keyboard Controls</h2>
-                <p>
-                    The interpreter recognizes four control keys:
+                <p> The interpreter recognizes four control keys:
                     <ul>
-                        <li>
-                            <kbd>Ctrl-d</kbd>: gracefully stops the interpreter as soon as it is idle. Will not interrupt
-                            currently running processes/execution.
-                        </li>
-                        <li>
-                            <kbd>Ctrl-x</kbd>: as soon as the interpreter is idle, will forcefully and directly remove an
-                            element from the stack. This does not act via the
-                            <code>drop</code> command, so can be used to recover from a stack overflow.
-                        </li>
-                        <li>
-                            <kbd>Ctrl-c</kbd>: stops execution of any commands. This key is terminal dependent, as it is
-                            really a raised
-                            <code>SIGINTR</code>.
-                        </li>
-                        <li>
-                            <kbd>Ctrl-\</kbd>: this forcefully and immediately stops the interpreter. This key is terminal
-                            dependent, as it is really a raised
-                            <code>SIGQUIT</code>.
-                        </li>
+                        <li> <kbd>Ctrl-d</kbd>: gracefully stops the interpreter as soon as it is idle. Will not interrupt currently
+                            running processes/execution. </li>
+                        <li> <kbd>Ctrl-x</kbd>: as soon as the interpreter is idle, will forcefully and directly remove an element
+                            from the stack. This does not act via the <code>drop</code> command, so can be used to recover
+                            from a stack overflow. </li>
+                        <li> <kbd>Ctrl-c</kbd>: stops execution of any commands. This key is terminal dependent, as it is really
+                            a raised <code>SIGINTR</code>. </li>
+                        <li> <kbd>Ctrl-\</kbd>: this forcefully and immediately stops the interpreter. This key is terminal dependent,
+                            as it is really a raised <code>SIGQUIT</code>. </li>
                     </ul>
                 </p>
                 <h2 id="details">Implementation Details</h2>
                 <h3 id="strings">Strings</h3>
-                <p>
-                    This version of StackLang supports only ASCII characters. Attempting to enter a non-ASCII character will result in undefined
-                    behaviour. It is likely that the character will be treated as a sequence of ASCII characters.
-                </p>
+                <p> This version of StackLang supports only ASCII characters. Attempting to enter a non-ASCII character will
+                    result in undefined behaviour. It is likely that the character will be treated as a sequence of ASCII
+                    characters. </p>
                 <h3 id="primlist">Primitives</h3>
                 <h4 id="booleanprims">Booleans</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>boolean?, false?, true?</code>
-                        </li>
-                        <li>
-                            <code>boolean-to-string, string-to-boolean</code>
-                        </li>
-                        <li>
-                            <code>if</code>
-                        </li>
-                        <li>
-                            <code>not, or, and, xor</code>
-                        </li>
+                        <li> <code>boolean?, false?, true?</code> </li>
+                        <li> <code>boolean-to-string, string-to-boolean</code> </li>
+                        <li> <code>if</code> </li>
+                        <li> <code>not, or, and, xor</code> </li>
                     </ul>
                 </p>
                 <h4 id="commandprims">Commands</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>command?, quoted?, local?</code>
-                        </li>
-                        <li>
-                            <code>unquote</code>
-                        </li>
-                        <li>
-                            <code>command-to-string, string-to-command, string-to-command*</code>
-                        </li>
-                        <li>
-                            <code>arity, body, context, signature</code>
-                        </li>
+                        <li> <code>command?, quoted?, local?</code> </li>
+                        <li> <code>unquote</code> </li>
+                        <li> <code>command-to-string, string-to-command, string-to-command*</code> </li>
+                        <li> <code>arity, body, context, signature</code> </li>
                     </ul>
                 </p>
                 <h4 id="numberprims">Numbers</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>euler, pi</code>
-                        </li>
-                        <li>
-                            <code>number?</code>
-                        </li>
-                        <li>
-                            <code>number-to-string, string-to-number</code>
-                        </li>
-                        <li>
-                            <code>precision, set-precision</code>
-                        </li>
-                        <li>
-                            <code>add, subtract, multiply, divide, modulo</code>
-                        </li>
-                        <li>
-                            <code>floor, ceil, round, round*, trunc</code>
-                        </li>
-                        <li>
-                            <code>abs, sign, max, min</code>
-                        </li>
-                        <li>
-                            <code>pow, log</code>
-                        </li>
-                        <li>
-                            <code>equal?, less-than?, greater-than?</code>
-                        </li>
-                        <li>
-                            <code>sine, cosine, tangent, arcsine, arccosine, arctangent, arctangent2, hyperbolic-sine, hyperbolic-cosine, hyperbolic-tangent, hyperbolic-arcsine, hyperbolic-arccosine, hyperbolic-arctangent</code>
-                        </li>
+                        <li> <code>euler, pi</code> </li>
+                        <li> <code>number?</code> </li>
+                        <li> <code>number-to-string, string-to-number</code> </li>
+                        <li> <code>precision, set-precision</code> </li>
+                        <li> <code>add, subtract, multiply, divide, modulo</code> </li>
+                        <li> <code>floor, ceil, round, round*, trunc</code> </li>
+                        <li> <code>abs, sign, max, min</code> </li>
+                        <li> <code>pow, log</code> </li>
+                        <li> <code>equal?, less-than?, greater-than?</code> </li>
+                        <li> <code>sine, cosine, tangent, arcsine, arccosine, arctangent, arctangent2, hyperbolic-sine, hyperbolic-cosine, hyperbolic-tangent, hyperbolic-arcsine, hyperbolic-arccosine, hyperbolic-arctangent</code>                            </li>
                     </ul>
                 </p>
                 <h4 id="stringprims">Strings</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>string?, empty-string?</code>
-                        </li>
-                        <li>
-                            <code>string-length, string-ref, substring, string-append</code>
-                        </li>
-                        <li>
-                            <code>toupper, tolower, join, split, replace, trim, build-string</code>
-                        </li>
-                        <li>
-                            <code>string-equal?, string-alphabetic?, string-reverse-alphabetic?</code>
-                        </li>
-                        <li>
-                            <code>string-contains?, string-prefix?, string-suffix?</code>
-                        </li>
+                        <li> <code>string?, empty-string?</code> </li>
+                        <li> <code>string-length, string-ref, substring, string-append</code> </li>
+                        <li> <code>toupper, tolower, join, split, replace, trim, build-string</code> </li>
+                        <li> <code>string-equal?, string-alphabetic?, string-reverse-alphabetic?</code> </li>
+                        <li> <code>string-contains?, string-prefix?, string-suffix?</code> </li>
                     </ul>
                 </p>
                 <h4 id="substackprims">Substacks</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>substack?, empty?, contains-type?</code>
-                        </li>
-                        <li>
-                            <code>push, top, pop, pop*, make-substack</code>
-                        </li>
-                        <li>
-                            <code>length, substack-ref, sub-substack, append, reverse, insert</code>
-                        </li>
+                        <li> <code>substack?, empty?, contains-type?</code> </li>
+                        <li> <code>push, top, pop, pop*, make-substack</code> </li>
+                        <li> <code>length, substack-ref, sub-substack, append, reverse, insert</code> </li>
                     </ul>
                 </p>
                 <h4 id="typeprims">Types</h4>
                 <p>
                     <ul>
-                        <li>
-                            <code>type?, specialized?</code>
-                        </li>
-                        <li>
-                            <code>get-specialization, add-specialization, base, check-type, typeof</code>
-                        </li>
+                        <li> <code>type?, specialized?</code> </li>
+                        <li> <code>get-specialization, add-specialization, base, check-type, typeof</code> </li>
                     </ul>
                 </p>
                 <h4 id="specialprims">Special Forms</h4>
-                <p>
-                    All special forms are implemented as primitives.
-                </p>
+                <p> All special forms are implemented as primitives. </p>
                 <hr/>
                 <div id="footer"></div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 

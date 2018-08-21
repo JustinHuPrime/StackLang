@@ -18,93 +18,55 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Special Commands - StackLang Documentation
-    </title>
+    <title> Special Commands - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Special Primitive Functions</h1>
-                <p>
-                    These functions have special side effects outside of the usual evaluation model.
+                <p> These functions have special side effects outside of the usual evaluation model. </p>
+                <p> <code>define : Command(Quoted) Substack Substack(Type) -></code> <br/> Defines a function in the global context.
                 </p>
-                <p>
-                    <code>define : Command(Quoted) Substack Substack(Type) -></code>
-                    <br/> Defines a function in the global context.
+                <p> <code>define* : Command(Quoted) Command(Quoted) Substack Substack(Type) -></code> <br/> Defines the second
+                    command in the context of the first command (a "local" function). Names, however, are always global,
+                    so the name must still be unique.
                 </p>
-                <p>
-                    <code>define* : Command(Quoted) Command(Quoted) Substack Substack(Type) -></code>
-                    <br/> Defines the second command in the context of the first command (a "local" function). Names, however,
-                    are always global, so the name must still be unique.
+                <p> <code>undefine : Command(Quoted) -></code> <br/> Undefines the command. May not undefine primitive commands,
+                    but anything defined using <code>define</code> or <code>define*</code> can be undefined. </p>
+                <p> <code>include : String -></code> <br/> Looks for:
+                    <ol>
+                        <li>the named file from the current directory or absolute path,</li>
+                        <li>the named file from the current directory or absolute path, but adding a <code>.stl</code> extension</li>
+                        <li>the named file within a 'libs' folder from the current directory,</li>
+                        <li>the named file within 'libs', but adding a <code>.stl</code> extension,</li>
+                    </ol> then reads the file line by line, feeding it through the preprocessor first, and pushes each element
+                    onto the stack, evaluating as it goes. If the file does not exist, it fails with a <code>RuntimeError</code>.
+                    </p>
+                <p> <code>drop : Any -></code> <br/> Removes one element from the stack.
                 </p>
-                <p>
-                    <code>undefine : Command(Quoted) -></code>
-                    <br/> Undefines the command. May not undefine primitive commands, but anything defined using
-                    <code>define</code> or
-                    <code>define*</code> can be undefined.
+                <p> <code>drop* : Number(Exact) -></code> <br/> Takes n elements and removes them from the stack.
                 </p>
-                <code>include : String -></code>
-                <br/> Looks for:
-                <ol>
-                    <li>the named file within a 'libs' folder within the directory that the stacklang executable is in,</li>
-                    <li>the named file within 'libs', but adding a .stl extension,</li>
-                    <li>the named file from the current directory,</li>
-                    <li>the named file from the current directory, but adding a .stl extension</li>
-                </ol>
-                then reads the file line by line, feeding it through the preprocessor first, and pushes each element onto the stack, evaluating
-                as it goes. If the file does not exist, it fails with a
-                <code>RuntimeError</code>.
+                <p> <code>clear : -></code> <br/> Clears the stack, removing all elements from the stack.
                 </p>
-                <p>
-                    <code>drop : Any -></code>
-                    <br/> Removes one element from the stack.
+                <p> <code>rotate : Number(Exact) -></code> <br/> Takes the n'th element (1 based, starting after the parameter)
+                    of the stack and moves it to the active end.
                 </p>
-                <p>
-                    <code>drop* : Number(Exact) -></code>
-                    <br/> Takes n elements and removes them from the stack.
+                <p> <code>rotate* : Number(Exact) Number(Exact) -></code> <br/> Takes the (second number)'th element of the stack
+                    and moves it to the active end (first number) times.
                 </p>
-                <p>
-                    <code>clear : -></code>
-                    <br/> Clears the stack, removing all elements from the stack.
+                <p> <code>duplicate : Any -> Any Any</code> <br/> Duplciates the given element.
                 </p>
-                <p>
-                    <code>rotate : Number(Exact) -></code>
-                    <br/> Takes the n'th element (1 based, starting after the parameter) of the stack and moves it to the active
-                    end.
+                <p> <code>error : String -></code> <br/> Raises a <code>RuntimeError</code> with the specified message. </p>
+                <p> <code>error* : Number(Exact) String String -></code> <br/> Raises a <code>RuntimeError</code> with the specified
+                    context (first string and number) and message (second string). Will cause a <code>RuntimeError</code>                    itself
+                    if the number is not valid. </p>
+                <p> <code>null : -></code> <br/> This command does nothing, but does cause the evaluator to evaluate any unquoted
+                    commands after it. Useful for recovering from an error.
                 </p>
-                <p>
-                    <code>rotate* : Number(Exact) Number(Exact) -></code>
-                    <br/> Takes the (second number)'th element of the stack and moves it to the active end (first number) times.
-                </p>
-                <p>
-                    <code>duplicate : Any -> Any Any</code>
-                    <br/> Duplciates the given element.
-                </p>
-                <p>
-                    <code>error : String -></code>
-                    <br/> Raises a
-                    <code>RuntimeError</code> with the specified message.
-                </p>
-                <p>
-                    <code>error* : Number(Exact) String String -></code>
-                    <br/> Raises a
-                    <code>RuntimeError</code> with the specified context (first string and number) and message (second string). Will cause a
-                    <code>RuntimeError</code> itself if the number is not valid.
-                </p>
-                <p>
-                    <code>null : -></code>
-                    <br/> This command does nothing, but does cause the evaluator to evaluate any unquoted commands after it.
-                    Useful for recovering from an error.
-                </p>
-                <p>
-                    <code>identity : Any -> Any</code>
-                    <br/> This command produces its input.
+                <p> <code>identity : Any -> Any</code> <br/> This command produces its input.
                 </p>
                 <hr/>
                 <div id="footer"></div>

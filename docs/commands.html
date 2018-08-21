@@ -18,26 +18,20 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Commands - StackLang Documentation
-    </title>
+    <title> Commands - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Commands</h1>
-                <p>
-                    A command in StackLang is stored as a string. Commands can be either quoted or unquoted. Unquoted commands on the stack are
-                    automatically evaluated, while quoted commands on the stack are treated as data. It is not possible to
-                    have an unquoted command at top level in the stack without it being evaluated, outside of error cases.
-                </p>
-                <p>
-                    An EBNF definition of commands is given below.
+                <p> A command in StackLang is stored as a string. Commands can be either quoted or unquoted. Unquoted commands
+                    on the stack are automatically evaluated, while quoted commands on the stack are treated as data. It
+                    is not possible to have an unquoted command at top level in the stack without it being evaluated, outside
+                    of error cases. </p>
+                <p> An EBNF definition of commands is given below.
                     <pre id="ebnf">
 alphabetic-character = ? Any ASCII character in the ranges (inclusive) a-z, A-Z ? ;
 numeric-character = ? Any ASCII character in the ranges (inclusive) 0-9 ? ;
@@ -53,63 +47,36 @@ command = quoted-command | unquoted-command ;</pre>
                 </p>
                 <h2 id="commands">Command-related Commands</h2>
                 <h3 id="type">Type Predicates</h3>
-                <p>
-                    <code>command? : Any -> Boolean </code>
-                    <br/> Produces true if input is a command. In practice, this is equivalent to
-                    <code>quoted?</code>.
+                <p> <code>command? : Any -> Boolean </code> <br/> Produces true if input is a command. In practice, this is equivalent
+                    to <code>quoted?</code>. </p>
+                <p> <code>quoted? : Any -> Boolean</code> <br/> Produces true if input is a quoted command.
                 </p>
-                <p>
-                    <code>quoted? : Any -> Boolean</code>
-                    <br/> Produces true if input is a quoted command.
-                </p>
-                <p>
-                    <code>local? : Any -> Boolean</code>
-                    <br/> Produces true if define bound to this command has a context. Command must exist - fails with a
-                    <code>RuntimeError</code> if command does not exist.
-                </p>
+                <p> <code>local? : Any -> Boolean</code> <br/> Produces true if define bound to this command has a context. Command
+                    must exist - fails with a <code>RuntimeError</code> if command does not exist. </p>
                 <h3 id="conversion">Type Conversion</h3>
-                <p>
-                    <code>unquote : Command(Quoted) -> Command(Unqoted)</code>
-                    <br/> Turns a quoted command into a command, which, by the evaluation rules, is immediately evaluated. No
-                    command exists that quotes a command, since unquoted commands can't exist on the stack.
+                <p> <code>unquote : Command(Quoted) -> Command(Unqoted)</code> <br/> Turns a quoted command into a command, which,
+                    by the evaluation rules, is immediately evaluated. No command exists that quotes a command, since unquoted
+                    commands can't exist on the stack.
                 </p>
-                <p>
-                    <code>command-to-string : Command(Quoted) -> String</code>
-                    <br/> Produces the string-form representation of the command. Includes the inital grave symbol,
-                    <kbd>`</kbd>.
-                </p>
-                <p>
-                    <code>string-to-command : String -> Command</code>
-                    <br/> Parses a command, as if it were read in from the interpreter. Fails with a
-                    <code>RuntimeError</code> if string cannot be parsed. If resulting command is not quoted, result is immediately evaluated.
-                </p>
-                <p>
-                    <code>string-to-command* : String -> Command(Quoted)</code>
-                    <br/> Parses a command, as if it were read in from the interpreter. Fails with a
-                    <code>RuntimeError</code> if string cannot be parsed. Resulting command is coerced into quoted form automatically.
-                </p>
+                <p> <code>command-to-string : Command(Quoted) -> String</code> <br/> Produces the string-form representation
+                    of the command. Includes the inital grave symbol, <kbd>`</kbd>. </p>
+                <p> <code>string-to-command : String -> Command</code> <br/> Parses a command, as if it were read in from the
+                    interpreter. Fails with a <code>RuntimeError</code> if string cannot be parsed. If resulting command
+                    is not quoted, result is immediately evaluated. </p>
+                <p> <code>string-to-command* : String -> Command(Quoted)</code> <br/> Parses a command, as if it were read in
+                    from the interpreter. Fails with a <code>RuntimeError</code> if string cannot be parsed. Resulting command
+                    is coerced into quoted form automatically. </p>
                 <h3 id="getters">Command Properties</h3>
-                <p>
-                    For all of these commands, the given command must exist, and these commands will fail with a
-                    <code>RuntimeError</code> if the command does not exist.
+                <p> For all of these commands, the given command must exist, and these commands will fail with a <code>RuntimeError</code>                    if
+                    the command does not exist. </p>
+                <p> <code>arity : Command(Quoted) -> Number(Exact)</code> <br/> Produces the arity of the given command.
                 </p>
-                <p>
-                    <code>arity : Command(Quoted) -> Number(Exact)</code>
-                    <br/> Produces the arity of the given command.
-                </p>
-                <p>
-                    <code>body : Command(Quoted) -> Substack</code>
-                    <br/> Produces the body of this command. Fails with a
-                    <code>RuntimmeError</code> if given command is not defined.
-                </p>
-                <p>
-                    <code>context : Command(Quoted) -> Command(Quoted)</code>
-                    <br/> Produces the context of this command. Fails with a
-                    <code>RuntimeError</code> if none exists.
-                </p>
-                <p>
-                    <code>signature : Command(Quoted) -> Substack(Types)</code>
-                    <br/> Produces the signature of this command (the list of types it expects, in order).
+                <p> <code>body : Command(Quoted) -> Substack</code> <br/> Produces the body of this command. Fails with a <code>RuntimmeError</code>                    if
+                    given command is not defined. </p>
+                <p> <code>context : Command(Quoted) -> Command(Quoted)</code> <br/> Produces the context of this command. Fails
+                    with a <code>RuntimeError</code> if none exists. </p>
+                <p> <code>signature : Command(Quoted) -> Substack(Types)</code> <br/> Produces the signature of this command
+                    (the list of types it expects, in order).
                 </p>
                 <hr/>
                 <div id="footer"></div>

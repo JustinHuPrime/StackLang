@@ -37,8 +37,8 @@ string ArgumentError::getKind() const noexcept {
 }
 
 ParserException::ParserException(const string& msg, const string& ctx,
-                                 size_t loc) noexcept
-    : LanguageException(msg, ctx, loc) {}
+                                 size_t loc, list<string> trace) noexcept
+    : LanguageException(msg, ctx, loc, trace) {}
 
 string ParserException::getKind() const noexcept { return "Could not parse:"; }
 }  // namespace exceptions

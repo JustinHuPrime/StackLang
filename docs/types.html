@@ -18,64 +18,45 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://justinhuprime.github.io/StackLang/styletweaks.css">
     <script src="https://justinhuprime.github.io/StackLang/loader.js"></script>
-
-    <title>
-        Types - StackLang Documentation
-    </title>
+    <title> Types - StackLang Documentation </title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 bg-secondary h-100" id="sidebar">
-            </div>
+            <div class="col-lg-2 bg-secondary h-100" id="sidebar"> </div>
             <div class="col-lg-6">
                 <h1 id="top">Types in StackLang</h1>
-                <p>
-                    StackLang is a statically typed language. This typing is enforced with latent typing. There are six basic types in StackLang:
+                <p> StackLang is a statically typed language. This typing is enforced with latent typing. There are six basic
+                    types in StackLang:
                     <ul>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/booleans.html">Booleans</a>: Booleans are either
-                            <code>true</code> or
-                            <code>false</code>.
-                        </li>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/commands.html">Commands</a>: Commands are either the name of a primitive function or the named of a defined
-                            function.
-                        </li>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/numbers.html">Numbers</a>: StackLang numbers are arbitrary precision rational numbers. All StackLang numbers
-                            are displayed as fractions or as integers. However, numbers can be parsed as decimals or as fractions.
-                        </li>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/strings.html">Strings</a>: A StackLang string is an arbitrarily long string of ASCII characters.
-                        </li>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/substacks.html">Substacks</a>: Substacks are a way to "group" stack elements together in StackLang. Stacks are
-                            similar to lists in Lisp, Scheme, and Racket - they can only be operated on from one end, and
-                            can be decomposed by getting the top and the rest of the substack.
-                        </li>
-                        <li>
-                            <a href="https://justinhuprime.github.io/StackLang/typeelements.html">Types</a>: StackLang has a limited capability for reflection - it is able to get the type of
-                            an element and manipulate that information. A type is one of the six primitive types, or the
-                            special
-                            <code>Any</code> type.
-                        </li>
-                    </ul>
-                    Functions and commands check for the correct number and type of arguments before being evaluated, so any arity of type errors
-                    will be caught at the soonest time possible. When this happens, a
-                    <code>TypeError</code> is thrown.
-                </p>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/booleans.html">Booleans</a>: Booleans are either
+                            <code>true</code> or <code>false</code>. </li>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/commands.html">Commands</a>: Commands are either
+                            the name of a primitive function or the named of a defined function. </li>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/numbers.html">Numbers</a>: StackLang numbers are
+                            arbitrary precision rational numbers. All StackLang numbers are displayed as fractions or as
+                            integers. However, numbers can be parsed as decimals or as fractions. </li>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/strings.html">Strings</a>: A StackLang string
+                            is an arbitrarily long string of ASCII characters. </li>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/substacks.html">Substacks</a>: Substacks are a
+                            way to "group" stack elements together in StackLang. Stacks are similar to lists in Lisp, Scheme,
+                            and Racket - they can only be operated on from one end, and can be decomposed by getting the
+                            top and the rest of the substack. </li>
+                        <li> <a href="https://justinhuprime.github.io/StackLang/typeelements.html">Types</a>: StackLang has a
+                            limited capability for reflection - it is able to get the type of an element and manipulate that
+                            information. A type is one of the six primitive types, or the special <code>Any</code> type.
+                            </li>
+                    </ul> Functions and commands check for the correct number and type of arguments before being evaluated, so
+                    any arity of type errors will be caught at the soonest time possible. When this happens, a <code>TypeError</code>                    is
+                    thrown. </p>
                 <h2 id="specialization">Type Specialziation</h2>
-                <p>
-                    A type specialziation is when there is additional information after the type in parenthesis. For example, a
-                    <code>Substack(Number)</code> is a substack of numbers. Only substacks may have a specialization. Substacks are specialized to indicate
-                    what type they can hold. In between the parenthesis should be another type (including further specialized
-                    types). For example,
-                    <code>Substack(String)</code> is a substack of strings. A
-                    <code>Substack(Substack(Number))</code> is a substack of substacks of numbers - a 2d grid of numbers. An unspecialized Substack is a substack
-                    of any type.
-                </p>
+                <p> A type specialziation is when there is additional information after the type in parenthesis. For example,
+                    a <code>Substack(Number)</code> is a substack of numbers. Only substacks may have a specialization. Substacks
+                    are specialized to indicate what type they can hold. In between the parenthesis should be another type
+                    (including further specialized types). For example, <code>Substack(String)</code> is a substack of strings.
+                    A <code>Substack(Substack(Number))</code> is a substack of substacks of numbers - a 2d grid of numbers.
+                    An unspecialized Substack is a substack of any type. </p>
                 <hr/>
                 <div id="footer"></div>
             </div>
