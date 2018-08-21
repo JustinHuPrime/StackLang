@@ -19,21 +19,21 @@
 
 << Any >> ; -> Boolean
 <<
-duplicate
-type?
-`base-other
-`base-type
-3, rotate
-if
-unquote
+    duplicate
+    type?
+    `base-other
+    `base-type
+    3, rotate
+    if
+    unquote
 >>
 `base?
 define
 
 << Any >> ; -> Boolean
 <<
-drop
-false
+    drop
+    false
 >>
 `base?
 `base-other
@@ -41,8 +41,8 @@ define*
 
 << Number >> ; -> Boolean
 <<
-specialized?
-not
+    specialized?
+    not
 >>
 `base?
 `base-type

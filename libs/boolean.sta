@@ -19,33 +19,33 @@
 
 << Boolean Boolean >> ; -> Boolean
 <<
-or
-not
+    or
+    not
 >>
 `nor
 define
 
 << Boolean Boolean >> ; -> Boolean
 <<
-xor
-not
+    xor
+    not
 >>
 `xnor
 define
 
 << Boolean Boolean >> ; -> Boolean
 <<
-and
-not
+    and
+    not
 >>
 `nand
 define
 
 << Boolean Boolean >> ; -> Boolean
 <<
-2, rotate
-not
-or
+    2, rotate
+    not
+    or
 >>
 `implies
 define

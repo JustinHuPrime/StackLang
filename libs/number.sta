@@ -19,30 +19,30 @@
 
 << Any >> ; -> Boolean
 <<
-duplicate
-number?
+    duplicate
+    number?
+    `integer-other
+    `integer-number
+    3, rotate
+    if
+    unquote
+>>
+`integer?
+define
+
+<< Any >> ; -> Boolean
+<<
+    drop
+    false
+>>
+`integer?
 `integer-other
-`integer-number
-3, rotate
-if
-unquote
->>
-`integer?
-define
-
-<< Any >> ; -> Boolean
-<<
-drop
-false
->>
-`integer?
-`integer-other
 define*
 
 << Number >> ; -> Boolean
 <<
-1, modulo
-zero?
+    1, modulo
+    zero?
 >>
 `integer?
 `integer-number
@@ -51,21 +51,21 @@ define*
 
 << Any >> ; -> Boolean
 <<
-duplicate
-number?
-`zero-other
-`zero-number
-3, rotate
-if
-unquote
+    duplicate
+    number?
+    `zero-other
+    `zero-number
+    3, rotate
+    if
+    unquote
 >>
 `zero?
 define
 
 << Any >> ; -> Boolean
 <<
-drop
-false
+    drop
+    false
 >>
 `zero?
 `zero-other
@@ -73,7 +73,8 @@ define*
 
 << Number >> ; -> Boolean
 <<
-0, equal?
+    0
+    equal?
 >>
 `zero?
 `zero-number
@@ -82,21 +83,21 @@ define*
 
 << Any >> ; -> Boolean
 <<
-duplicate
-number?
-`positive-other
-`positive-number
-3, rotate
-if
-unquote
+    duplicate
+    number?
+    `positive-other
+    `positive-number
+    3, rotate
+    if
+    unquote
 >>
 `positive?
 define
 
 << Any >> ; -> Boolean
 <<
-drop
-false
+    drop
+    false
 >>
 `positive?
 `positive-other
@@ -104,7 +105,8 @@ define*
 
 << Number >> ; -> Boolean
 <<
-0, greater-than?
+    0
+    greater-than?
 >>
 `positive?
 `positive-number
@@ -113,17 +115,17 @@ define*
 
 << Any >> ; -> Boolean
 <<
-duplicate
-duplicate
-number?
-2, rotate
-positive?
-not
-3, rotate
-zero?
-not
-and
-and
+    duplicate
+    duplicate
+    number?
+    2, rotate
+    positive?
+    not
+    3, rotate
+    zero?
+    not
+    and
+    and
 >>
 `negative
 define
@@ -131,21 +133,21 @@ define
 
 << Any >> ; -> Boolean
 <<
-duplicate
-integer?
-`even-other
-`even-integer
-3, rotate
-if
-unquote
+    duplicate
+    integer?
+    `even-other
+    `even-integer
+    3, rotate
+    if
+    unquote
 >>
 `even?
 define
 
 << Any >> ; -> Boolean
 <<
-drop
-false
+    drop
+    false
 >>
 `even?
 `even-other
@@ -153,8 +155,8 @@ define*
 
 << Number >> ; -> Boolean
 <<
-2, modulo
-zero?
+    2, modulo
+    zero?
 >>
 `even?
 `even-integer
@@ -163,17 +165,17 @@ define*
 
 << Any >> ; -> Boolean
 <<
-duplicate
-duplicate
-integer?
-2, rotate
-even?
-not
-3, rotate
-zero?
-not
-and
-and
+    duplicate
+    duplicate
+    integer?
+    2, rotate
+    even?
+    not
+    3, rotate
+    zero?
+    not
+    and
+    and
 >>
 `odd?
 define
@@ -181,18 +183,18 @@ define
 
 << Number >> ; -> Number
 <<
-0
-2, rotate
-minus
+    0
+    2, rotate
+    minus
 >>
 `negate
 define
 
 << Number >> ; -> Number
 <<
-1
-2, rotate
-divide
+    1
+    2, rotate
+    divide
 >>
 `inverse
 define
@@ -200,16 +202,16 @@ define
 
 << Number >> ; -> Number
 <<
-1
-add
+    1
+    add
 >>
 `increment
 define
 
 << Number >> ; -> Number
 <<
-1
-subtract
+    1
+    subtract
 >>
 `decrement
 define
@@ -217,17 +219,17 @@ define
 
 << Number >> ; -> Number
 <<
-0.5
-pow
+    0.5
+    pow
 >>
 `sqrt
 define
 
 << Number >> ; -> Number
 <<
-euler
-2, rotate
-pow
+    euler
+    2, rotate
+    pow
 >>
 `exponential
 define
@@ -235,24 +237,24 @@ define
 
 << Number >> ; -> Number
 <<
-euler
-log
+    euler
+    log
 >>
 `log-e
 define
 
 << Number >> ; -> Number
 <<
-10
-log
+    10
+    log
 >>
 `log-10
 define
 
 << Number >> ; -> Number
 <<
-2
-log
+    2
+    log
 >>
 `log-2
 define
@@ -260,24 +262,24 @@ define
 
 << Number Number >> ; -> Boolean
 <<
-equal?
-not
+    equal?
+    not
 >>
 `not-equal?
 define
 
 << Number Number >> ; -> Boolean
 <<
-greater-than?
-not
+    greater-than?
+    not
 >>
 `less-than-equal?
 define
 
 << Number Number >> ; -> Boolean
 <<
-less-than?
-not
+    less-than?
+    not
 >>
 `greater-than-equal?
 define
@@ -285,20 +287,20 @@ define
 
 << Number >> ; -> Number
 <<
-180
-divide
-pi
-multiply
+    180
+    divide
+    pi
+    multiply
 >>
 `degrees-to-radians
 define
 
 << Number >> ; -> Number
 <<
-pi
-divide
-180
-multiply
+    pi
+    divide
+    180
+    multiply
 >>
 `radians-to-degrees
 define

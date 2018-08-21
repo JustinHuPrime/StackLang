@@ -30,50 +30,10 @@ include
 "type"
 include
 
-<< Any, Command, Substack(Any) >> ; -> Any
-<<
-duplicate
-empty?
-`foldr-bc
-`foldr-rc
-3, rotate
-if
-unquote
-2, rotate
-drop
->>
-`foldr
-define
-
-<< Any, Command, Substack(Any) >> ; -> Any
-<<
-drop
-2, rotate
->>
-`foldr
-`foldr-bc
-define*
-
-<< Any, Command, Substack(Any) >> ; -> Any
-<<
-pop*
-3, rotate
-duplicate
-5, rotate
-2, rotate
-5, rotate
-foldr
-3, 2, rotate*
-unquote
->>
-`foldr
-`foldr-rc
-define*
-
 ;<< Number Number Number >> ; -> Number
 ;<<
-;add
-;add
+;   add
+;   add
 ;>>
 ;"add-three"
 ;define
