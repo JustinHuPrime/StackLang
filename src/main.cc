@@ -49,6 +49,7 @@ using std::cout;
 using std::endl;
 using std::invalid_argument;
 using std::numeric_limits;
+using std::ofstream;
 using std::stoi;
 using std::stoul;
 using std::string;
@@ -64,6 +65,7 @@ using terminalui::HELPMSG;
 using terminalui::init;
 using terminalui::LineEditor;
 using terminalui::printError;
+using terminalui::uninit;
 
 const char KEY_CTRL = 0x1f;
 const char KEY_CTRL_D = 'd' & KEY_CTRL;
@@ -78,7 +80,7 @@ int main(int argc, char* argv[]) noexcept {
   bool errorFlag = false;
 
   int debugMode = 0;
-  string outputFile;
+  ofstream outputFile;
 
   ArgReader args;
 
@@ -139,7 +141,11 @@ int main(int argc, char* argv[]) noexcept {
     }
   }
   if (args.hasOpt('o')) {
-    outputFile = args.getOpt('o');
+    outputFile.open(args.getOpt('o'), ofstream::trunc | ofstream::out);
+    if (!outputFile.is_open()) {
+      cerr << "Could not open output file.\nAborting." << endl;
+      exit(EXIT_FAILURE);
+    }
   }
   if (args.hasOpt('I')) {
     vector<string> libs = args.getLongOpt('I');
@@ -257,6 +263,14 @@ int main(int argc, char* argv[]) noexcept {
     //   addstring("|");
     //   move(getmaxy(stdscr) - 1, buffer.cursorPosition() + 2);
     // }
+  }
+
+  uninit();
+
+  if (outputFile.is_open()) {
+    s.reverse();
+    for (auto elm : s) outputFile << static_cast<string>(*elm) << '\n';
+    outputFile.close();
   }
 
   exit(EXIT_SUCCESS);

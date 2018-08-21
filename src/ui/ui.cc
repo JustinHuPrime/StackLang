@@ -74,7 +74,10 @@ void init() noexcept {
   signal(SIGQUIT, defSigHandler);
 }
 
-void uninit() noexcept { endwin(); }
+void uninit() noexcept {
+  curs_set(CURSOR_VISIBLE);
+  endwin();
+}
 
 void drawStack(const Stack& s) noexcept {
   int maxY = getmaxy(stdscr);
