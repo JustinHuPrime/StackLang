@@ -20,7 +20,7 @@
 
 {"string?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, Defines&, list<string>& context) {
+  [](Stack& s, Defines&, list<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::String));
@@ -212,7 +212,7 @@
     {"string-equal?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData() == b->getData()));
@@ -220,7 +220,7 @@
     {"string-alphabetic?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData().compare(b->getData()) > 0));
@@ -228,7 +228,7 @@
     {"string-reverse-alphabetic?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, list<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData().compare(b->getData()) < 0));

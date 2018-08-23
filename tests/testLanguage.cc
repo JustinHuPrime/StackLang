@@ -189,30 +189,3 @@ TEST_CASE("check limiting context respected", "[language][checkContext]") {
       checkContext(GLOBAL_CONTEXT, other.get(), "foldl-local", list<string>{}),
       SyntaxError);
 }
-
-TEST_CASE("check pairs between stack and Prim", "[language][PRIMTIVES]") {
-  Stack stk = Stack{new TypeElement(StackElement::DataType::Number)};
-  Prim pf = [](Stack&, map<string, DefinedFunction>&, list<string>&) {
-    return;
-  };
-
-  PrimitiveFunction* p = new PrimitiveFunction{stk, pf};
-  delete p;
-}
-
-TEST_CASE("check PRIMITIVES segfault special case", "[language][PRIMTIVES]") {
-  Stack stk = Stack{new TypeElement(StackElement::DataType::Number)};
-  Prim pf = [](Stack& s, map<string, DefinedFunction>&, list<string>&) {
-    return;
-  };
-
-  map<string, PrimitiveFunction>* manual =
-      new map<string, PrimitiveFunction>{{"drop*", PrimitiveFunction{stk, pf}}};
-
-  map<string, PrimitiveFunction>* prims = new map<string, PrimitiveFunction>{
-      {"drop*",
-       PrimitiveFunction{Stack{new TypeElement(StackElement::DataType::Number)},
-                         [](Stack& s, map<string, DefinedFunction>&,
-                            list<string>&) { return; }}},
-  };
-}

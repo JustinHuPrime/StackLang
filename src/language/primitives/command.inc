@@ -33,9 +33,16 @@
             elm->getType() == StackElement::DataType::Command &&
             dynamic_cast<CommandElement*>(elm.get())->isQuoted()));
       }}},
+    {"defined?",
+     {Stack{new TypeElement(StackElement::DataType::Any)},
+      [](Stack& s, Defines& defs, list<string>&) {
+        CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
+        s.push(new BooleanElement(prims->find(cmd->getName()) != prims->end() ||
+                                  defs.find(cmd->getName()) != defs.end()));
+      }}},
     {"local?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, list<string>&) {
         ElementPtr elm(s.pop());
         if (elm->getType() != StackElement::DataType::Command) {
           s.push(new BooleanElement(false));

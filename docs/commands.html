@@ -51,6 +51,8 @@ command = quoted-command | unquoted-command ;</pre>
                     to <code>quoted?</code>. </p>
                 <p> <code>quoted? : Any -> Boolean</code> <br/> Produces true if input is a quoted command.
                 </p>
+                <p> <code>defined?: Command -> Boolean</code><br/>Produces true if given command is defined.
+                </p>
                 <p> <code>local? : Any -> Boolean</code> <br/> Produces true if define bound to this command has a context. Command
                     must exist - fails with a <code>RuntimeError</code> if command does not exist. </p>
                 <h3 id="conversion">Type Conversion</h3>
