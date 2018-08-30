@@ -65,7 +65,7 @@ const int CURSOR_VERY_VISIBLE = 2;
 
 // const char KEY_WIN_RESIZE = 0;
 
-const char* const INFO = R"(StackLang interpreter version ALPHA 6
+const char* const INFO = R"(StackLang interpreter version 1
 Copyright 2018 Justin Hu
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under certain conditions. For more detail see

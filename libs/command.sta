@@ -23,11 +23,42 @@
     1000000
     multiply
     trunc
-    string-to-number
+    number-to-string
     "cmd"
     2, rotate
     string-append
     string-to-command*
+    gensym-remove-collision
 >>
 `gensym
 define
+
+<< Command >> ; -> Command
+<<
+    duplicate
+    defined?
+    `gensym-add-more
+    `identity
+    3, rotate
+    if
+    unquote
+>>
+`gensym
+`gensym-remove-collision
+define*
+
+<< Command >> ; -> Command
+<<
+    command-to-string
+    random
+    10
+    multiply
+    trunc
+    string-to-number
+    string-append
+    string-to-command*
+    gensym-remove-collision
+>>
+`gensym
+`gensum-add-more
+define*
