@@ -28,7 +28,7 @@
             <div class="col-lg-6">
                 <h1 id="top">The Standard Library</h1>
                 <p> The StackLang standard library is composed of two parts - the extended command set for primitive types (see
-                    individual primitive type pages for more information), and the set of utility commands. By default both
+                    individual primitive type pages for more information), and this set of utility commands. By default both
                     parts are automatically included, but running the interpreter with the <code>-b</code> option will turn
                     off this automatic inclusion. Both parts are written in StackLang, and can be found in <code>libs/std.sta</code>,
                     as well as files included from that file. (The official implementation splits off many of the extended
@@ -36,9 +36,8 @@
                 <h2 id="utility">Utility Functions</h2>
                 <p> These functions are provided as being commonly used. They are not associated with any particular type, but
                     are generally useful. </p>
-                <p> <code>equal? : Any Any -> Boolean</code> <br/> Produces true if given elements are of the same type and equal
-                    (according to that type's equality command) or equivalent (if such a command doesn't make sense - for
-                    example, with substacks).
+                <p> <code>equal? : Any Any -> Boolean</code> <br/> Produces true if given elements are of the same type and equal,
+                    according to that type's equality command.
                 </p>
                 <h2 id="map">Associative Substacks</h2>
                 <p> Any Associative substack is any substack whose elements are all composed of a substack of two elements, and

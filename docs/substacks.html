@@ -92,55 +92,29 @@ substack = left-delimiter, {stackelement, separator}, [stackelement], right-deli
                 <p> <code>insert : Substack Number Substack -> Substack</code> <br/> Inserts the first substack into the second,
                     such that the first substack's first element is the n'th element of the new substack.
                 </p>
-                <!--<h3 id="abstract">Abstract Commands</h3>
+                <h3 id="abstract">Abstract Commands</h3>
                 <p> <code>map : Command Substack -> Substack</code> <br/> Applies the command ( <code>Any -> Any</code>) to each
                     element in the given substack, forming a new substack with the results. Resulting substack is as large
                     as the input. </p>
                 <p> <code>filter : Command Substack -> Substack</code> <br/> Applies the command ( <code>Any -> Boolean</code>)
-                    to each element in the given substack. If the command produces true, then the element that cause the
+                    to each element in the given substack. If the command produces true, then the element that caused the
                     command to produce true is kept. Otherwise, the element is discarded. Resulting substack is the same
                     size or smaller than the input. </p>
-                <p> <code>remove : Any Command Substack -> Substack</code> <br/> Removes any element for which applying the command
-                    ( <code>Any Any -> Boolean</code>) to the first parameter and the element from the list would produce
-                    true. </p>
-                <p> <code>remove* : Substack Command Substack -> Substack</code> <br/> For each element of the first substakc,
-                    applies <code>remove</code> on the second substack using the command and the element. </p>
                 <p> <code>foldr : Command Any Substack -> Any</code> <br/> Applies the command ( <code>Any Any -> Any</code>)
                     to the accumulator (initial value is the <code>Any</code> element) and each element from the substack
                     (furthest from active end first), with the result of this application becoming the new accumulator. This
-                    does not use tail recursion. </p>
+                    does not use tail recursion. The given command should expect the element first, and the accumulator second.</p>
                 <p> <code>foldl : Command Any Substack -> Any</code> <br/> Applies the command ( <code>Any Any -> Any</code>)
                     to the accumulator (initial value is the <code>Any</code> element) and each element from the substack
                     (active end first), with the result of this application becoming the new accumulator. This does use tail
                     recursion. </p>
-                <p> <code>ormap : Command Substack -> Boolean</code> <br/> Applies the command ( <code>Any -> Boolean</code>)
-                    to each element in the given substack, combining the results together with <code>or</code>. </p>
-                <p>
-                <code>andmap : Command Substack -> Boolean</code> <br/> Applies the command ( <code>Any -> Boolean</code>)
-                    to each element in the given substack, combining the results together with <code>and</code>. </p>
-                <p>
-                <code>sequence : Number -> Substack(Number)</code> <br/> Produces a sequence of numbers from zero to n, inclusive.
+                <p> <code>sequence : Number -> Substack(Number)</code> <br/> Produces a sequence of numbers from zero to n, inclusive.
                     Number must be an integer.
                 </p>
-                <p> <code>build-substack : Command Number -> Substack</code> <br/> Builds a substack by applying the command
-                    ( <code>Number -> Any</code>) to each number in the sequence from 0 to n (generated using <code>sequence</code>),
-                    and forming a substack from the results. </p>
-                <p> <code>sort : Command Substack -> Substack</code> <br/> Sorts the substack into stable ascending order according
-                    to the given command ( <code>Any Any -> Boolean</code>), which produces true if the second element is
-                    larger than or equal to the first. </p>
-                <p> <code>member? : Any Command Substack -> Boolean</code> <br/> Produces true if the application of the command
-                    ( <code>Any Any -> Boolean</code>) produces true at least once when applied to the first parameter and
-                    any element from the substack. </p>
                 <p> <code>index-of : Any Command Substack -> Number</code> <br/> Produces the index for which the application
                     of the command ( <code>Any Any -> Boolean</code>) produces true when applied to the first parameter and
                     any element from the substack. If none exists, produces an index equal to the length of the substack.
                     </p>
-                <p> <code>indices-of : Any Command Substack -> Substack(Number)</code> <br/> Produces a substack of indices for
-                    which the application of the command ( <code>Any Any -> Boolean</code>) produces true when applied to
-                    the first parameter and any element from the substack. If none exists, produces an empty substack. </p>
-                <p> <code>remove-duplicates : Command Substack -> Substack</code> <br/> Removes any elements that are considered
-                    equal. The command ( <code>Any Any -> Boolean</code>) given should produce true when the two inputs are
-                    equal. </p>-->
                 <hr/>
                 <div id="footer"></div>
             </div>

@@ -17,7 +17,7 @@
 
 ; StackLang extended substack primitives
 
-<< >> ; -> substack
+<<>> ; -> substack
 <<
     <<>>
 >>
@@ -72,3 +72,127 @@ define
 >>
 `last
 define
+
+
+<< Command, Substack(Any) >> ; -> Substack(Any)
+<<
+    2, rotate
+    duplicate
+    empty?
+    `map-bc
+    `map-rc
+    3, rotate
+    if
+    unquote
+>>
+`map
+define
+
+<< Substack(Any), Command >> ; -> Substack(Any)
+<<
+    pop*
+    2, rotate
+    3, rotate
+    duplicate
+    3, 2, rotate*
+    map
+    3, 2, rotate*
+    unquote
+    push
+>>
+`map
+`map-rc
+define*
+
+<< Substack(Any), Command >> ; -> Substack(Any)
+<<
+    2, rotate
+    drop
+>>
+`map
+`map-bc
+define*
+
+
+<< Command, Substack(Any) >> ; -> Substack(Any)
+<<
+    2, rotate
+    duplicate
+    empty?
+    `filter-bc
+    `filter-rc
+    3, rotate
+    if
+    unquote
+>>
+`filter
+define
+
+<< Substack(Any), Command >> ; -> Substack(Any)
+<<
+    pop*
+    2, rotate
+    3, rotate
+    duplicate
+    3, 2, rotate*
+    filter
+    3, rotate
+    duplicate
+    4, rotate
+    unquote
+    `push
+    `drop
+    3, rotate
+    if
+    unquote
+>>
+`filter
+`filter-rc
+define*
+
+<< Substack(Any), Command >> ; -> Substack(Any)
+<<
+    2, rotate
+    drop
+>>
+`filter
+`filter-bc
+define*
+
+
+<< Command, Any, Substack(Any) >> ; -> Any
+<<
+    3, rotate
+    duplicate
+    empty?
+    `foldr-bc
+    `foldr-rc
+    3, rotate
+    if
+    unquote
+>>
+`foldr
+define
+
+<< Substack(Any), Command, Any >> ; -> Any
+<<
+    pop*
+    2, rotate
+    4, 2, rotate*
+    duplicate
+    4, 3, rotate*
+    foldr
+    3, 2, rotate*
+    unquote
+>>
+`foldr
+`foldr-rc
+define*
+
+<< Substack(Any), Command, Any >> ; -> Any
+<<
+    2, drop*
+>>
+`foldr
+`foldr-bc
+define*
