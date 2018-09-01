@@ -263,7 +263,7 @@
      {Stack{new TypeElement(StackElement::DataType::String)},
       [](Stack& s, Defines&, list<string>& context) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
-        throw new RuntimeError(str->getData(), context);
+        throw RuntimeError(str->getData(), context);
       }}},
     {"error*",
      {Stack{new TypeElement(StackElement::DataType::String),
@@ -281,7 +281,7 @@
                                  static_cast<string>(*ctxIndex) + " instead.",
                              context);
         }
-        throw new RuntimeError(msg->getData(), ctx->getData(), whole, context);
+        throw RuntimeError(msg->getData(), ctx->getData(), whole, context);
       }}},
     {"null", {Stack{}, [](Stack&, Defines&, list<string>&) { return; }}},
     {"identity",
