@@ -62,3 +62,13 @@ define*
 `gensym
 `gensum-add-more
 define*
+
+<< Substack, Substack(Type) >> ; -> Command
+<<
+    gensym
+    duplicate
+    4, 3, rotate*
+    define
+>>
+`lambda
+define
