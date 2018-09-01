@@ -242,7 +242,8 @@ void displayInfo() noexcept {
   curs_set(CURSOR_INVISIBLE);
   move(0, 0);
   addstring(INFO);
-  getch();
+  while (ERR == getch())
+    ;
 }
 
 void printError(const LanguageException& e) noexcept {
