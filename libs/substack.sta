@@ -196,3 +196,64 @@ define*
 `foldr
 `foldr-bc
 define*
+
+
+; !!! foldl goes here
+
+
+<< Number >> ; -> Substack(Number)
+<<
+    <<>>
+    2, rotate
+    duplicate
+    integer?
+    2, rotate
+    duplicate
+    negative?
+    not
+    3, rotate
+    and
+    `sequence-rc
+    `sequence-error
+    3, rotate
+    if
+    unquote
+>>
+`sequence
+define
+
+<< Number, Substack(Number) >> ; -> Substack(Number)
+<<
+    2, drop*
+    "Given number is not a non-negative integer.", error
+>>
+`sequence
+`sequence-error
+define*
+
+; current list
+<< Number, Substack(Number) >> ; -> Substack(Number)
+<<
+    duplicate
+    zero?
+    `push
+    `sequence-tr
+    3, rotate
+    if
+    unquote
+>>
+`sequence-rc
+define
+
+<< Number, Substack(Number) >> ; -> Substack(Number)
+<<
+    duplicate
+    decrement
+    3, 2, rotate*
+    push
+    2, rotate
+    sequence-rc
+>>
+`sequence-rc
+`sequence-tr
+define*
