@@ -94,10 +94,10 @@ void drawStack(const Stack& s) noexcept {
   auto it = s.begin();
   for (; i > 0 && it != s.end(); i--, ++it) {
     move(i, 0);
-    addstring(string(**it));
+    addstring(static_cast<string>(**it));
   }
 
-  if (long(s.size()) >= getmaxy(stdscr) - 2) {
+  if (long(s.size()) >= maxY - 2) {
     move(0, 0);
     clrtoeol();
     addstring("...");
@@ -111,7 +111,6 @@ void drawStack(const Stack& s) noexcept {
 
 void drawPrompt(const LineEditor& s) noexcept {
   int maxY = getmaxy(stdscr);
-
   curs_set(CURSOR_INVISIBLE);
   move(maxY - 1, 0);
   clrtoeol();
@@ -133,7 +132,9 @@ void drawWaiting() noexcept {
 }
 
 void drawError(const LanguageException& e) noexcept {
-  int maxY = getmaxy(stdscr);
+  int dump;
+  int maxY;
+  getmaxyx(stdscr, maxY, dump);
   int centerY = maxY / 2;
 
   curs_set(CURSOR_INVISIBLE);
@@ -232,16 +233,33 @@ void drawTrace(int top, int bottom, const list<string>& trace) {
 }
 
 void addstring(const string& s) noexcept {
+  int savedY = getcury(stdscr);
   for (const char c : s) {
-    unsigned char ch = static_cast<unsigned char>(c);
-    addch(ch);
+    if (getcury(stdscr) != savedY) {
+      mvaddch(savedY, getmaxx(stdscr) - 1, '|');
+      return;
+    }
+    addch(static_cast<unsigned char>(c));
+  }
+}
+
+void addblock(const string& s) noexcept {
+  int savedY = getcury(stdscr);
+  for (const char c : s) {
+    if (getcury(stdscr) != savedY) {
+      mvaddch(savedY, getmaxx(stdscr) - 1, '|');
+      continue;
+    } else if (c == '\n') {
+      savedY++;
+    }
+    addch(static_cast<unsigned char>(c));
   }
 }
 
 void displayInfo() noexcept {
   curs_set(CURSOR_INVISIBLE);
   move(0, 0);
-  addstring(INFO);
+  addblock(INFO);
   while (ERR == getch())
     ;
 }

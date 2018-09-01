@@ -251,9 +251,12 @@ int main(int argc, char* argv[]) noexcept {
     }
 
     // if (debugMode == 1) {  // debug options - must not include 0
-    //   move(0, getmaxx(stdscr) - 3);
+    //   int curx = getcurx(stdscr);
+    //   move(0, 0);
     //   clrtoeol();
-    //   addstring(std::to_string(key).c_str());
+    //   addstring("|");
+    //   addstring(to_string(curx) + "/" + to_string(getmaxx(stdscr)));
+    //   addstring("|");
     //   move(getmaxy(stdscr) - 1, buffer.cursorPosition() + 2);
     // } else if (debugMode == 2) {
     //   move(0, 0);
