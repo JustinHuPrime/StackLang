@@ -198,7 +198,42 @@ define*
 define*
 
 
-; !!! foldl goes here
+<< Command, Any, Substack(Any) >> ; -> Any
+<<
+    3, rotate
+    duplicate
+    empty?
+    `foldl-bc
+    `foldl-rc
+    3, rotate
+    if
+    unquote
+>>
+`foldl
+define
+
+<< Substack(Any), Command, Any >> ; -> Any
+<<
+    2, rotate
+    duplicate
+    3, rotate
+    pop*
+    5, 2, rotate*
+    unquote
+    3, rotate
+    foldl
+>>
+`foldl
+`foldl-rc
+define*
+
+<< Substack(Any), Command, Any >> ; -> Any
+<<
+    2, drop*
+>>
+`foldl
+`foldl-bc
+define*
 
 
 << Number >> ; -> Substack(Number)
