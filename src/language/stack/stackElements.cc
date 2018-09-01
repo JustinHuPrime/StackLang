@@ -60,6 +60,15 @@ BooleanElement* BooleanElement::clone() const noexcept {
   return new BooleanElement(data);
 }
 
+bool BooleanElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const BooleanElement& b = static_cast<const BooleanElement&>(elm);
+    return b.data == data;
+  }
+}
+
 BooleanElement::operator string() const noexcept { return data ? TSTR : FSTR; }
 
 bool BooleanElement::getData() const noexcept { return data; }
@@ -108,6 +117,15 @@ CommandElement::CommandElement(const string& s, bool isQuoted) noexcept
 
 CommandElement* CommandElement::clone() const noexcept {
   return new CommandElement(name, quoted);
+}
+
+bool CommandElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const CommandElement& cmd = static_cast<const CommandElement&>(elm);
+    return cmd.name == name && cmd.quoted == quoted;
+  }
 }
 
 CommandElement::operator string() const noexcept {
@@ -162,6 +180,15 @@ NumberElement* NumberElement::clone() const noexcept {
   return new NumberElement(data, precision);
 }
 
+bool NumberElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const NumberElement& num = static_cast<const NumberElement&>(elm);
+    return num.data == data && num.precision == precision;
+  }
+}
+
 NumberElement::operator string() const noexcept {
   stringstream stream;
   stream << fixed << setprecision(precision) << data;
@@ -193,6 +220,15 @@ StringElement::StringElement(string s) noexcept
 
 StringElement* StringElement::clone() const noexcept {
   return new StringElement(data);
+}
+
+bool StringElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const StringElement& str = static_cast<const StringElement&>(elm);
+    return str.data == data;
+  }
 }
 
 StringElement::operator string() const noexcept {
@@ -272,6 +308,20 @@ SubstackElement::SubstackElement(const Stack& s) noexcept
 
 SubstackElement* SubstackElement::clone() const noexcept {
   return new SubstackElement(data);
+}
+
+bool SubstackElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const SubstackElement& s = static_cast<const SubstackElement&>(elm);
+    if (s.data.size() != data.size()) return false;
+    auto iter1 = s.data.begin(), iter2 = data.begin();
+    for (; iter2 != data.end(); ++iter1, ++iter2) {
+      if (!(**iter1 == **iter2)) return false;
+    }
+    return true;
+  }
 }
 
 SubstackElement::operator string() const noexcept {
@@ -355,6 +405,18 @@ TypeElement::~TypeElement() noexcept {
 TypeElement* TypeElement::clone() const noexcept {
   return new TypeElement(
       data, specialization == nullptr ? nullptr : specialization->clone());
+}
+
+bool TypeElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const TypeElement& t = static_cast<const TypeElement&>(elm);
+    if (t.data != data) return false;
+    if ((t.specialization == nullptr) != (specialization == nullptr))
+      return false;
+    return specialization == nullptr || *t.specialization == *specialization;
+  }
 }
 
 TypeElement::operator string() const noexcept {

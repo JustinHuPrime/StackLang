@@ -41,6 +41,8 @@ class BooleanElement : public StackElement {
   explicit BooleanElement(bool) noexcept;
   BooleanElement* clone() const noexcept override;
 
+  bool operator==(const StackElement&) const noexcept override;
+
   explicit operator string() const noexcept override;
   bool getData() const noexcept;
 
@@ -56,6 +58,8 @@ class CommandElement : public StackElement {
 
   explicit CommandElement(const string&, bool isQuoted = false) noexcept;
   CommandElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
 
   explicit operator string() const noexcept override;
   const string& getName() const noexcept;
@@ -83,6 +87,8 @@ class NumberElement : public StackElement {
   explicit NumberElement(string) noexcept;
   NumberElement* clone() const noexcept override;
 
+  bool operator==(const StackElement&) const noexcept override;
+
   explicit operator string() const noexcept override;
   long double getData() const noexcept;
   int getPrecision() const noexcept;
@@ -100,6 +106,8 @@ class StringElement : public StackElement {
   explicit StringElement(string) noexcept;
   StringElement* clone() const noexcept override;
 
+  bool operator==(const StackElement&) const noexcept override;
+
   explicit operator string() const noexcept override;
   const string& getData() const noexcept;
 
@@ -112,6 +120,8 @@ class SubstackElement : public StackElement {
   static SubstackElement* parse(const string&);
   explicit SubstackElement(const Stack&) noexcept;
   SubstackElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
 
   explicit operator string() const noexcept override;
   const Stack& getData() const noexcept;
@@ -137,6 +147,8 @@ class TypeElement : public StackElement {
   TypeElement& operator=(TypeElement&&) noexcept;
   TypeElement* clone() const noexcept override;
   ~TypeElement() noexcept;
+
+  bool operator==(const StackElement&) const noexcept override;
 
   explicit operator string() const noexcept override;
   DataType getBase() const noexcept;

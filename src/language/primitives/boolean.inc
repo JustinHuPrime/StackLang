@@ -106,3 +106,11 @@
         BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(new BooleanElement(a->getData() != b->getData()));
       }}},
+    {"eqv?",
+     {Stack{new TypeElement(StackElement::DataType::Any),
+            new TypeElement(StackElement::DataType::Any)},
+      [](Stack& s, Defines&, list<string>&) {
+        ElementPtr a(s.pop());
+        ElementPtr b(s.pop());
+        s.push(new BooleanElement(*a == *b));
+      }}},

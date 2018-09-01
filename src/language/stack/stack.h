@@ -59,6 +59,8 @@ class StackElement {
 
   virtual ~StackElement() = 0;
 
+  virtual bool operator==(const StackElement&) const noexcept = 0;
+
   // Produces a nicely formatted string of the string (for print to console)
   explicit virtual operator string() const noexcept = 0;
 
