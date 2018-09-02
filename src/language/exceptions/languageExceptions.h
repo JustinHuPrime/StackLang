@@ -31,12 +31,13 @@ namespace exceptions {
 namespace {
 using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::TypeElement;
+using std::exception;
 using std::list;
 using std::string;
 }  // namespace
 
 // Describes a StackLang runtime error
-class LanguageException {
+class LanguageException : public exception {
  public:
   // Creates an error with a message, but no context
   explicit LanguageException(const string&,
