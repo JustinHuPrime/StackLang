@@ -120,12 +120,12 @@
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto primIter = prims->find(cmd->getName());
         if (primIter != prims->end()) {
-          s.push(new NumberElement(primIter->second.first.size()));
+          s.push(new NumberElement(primIter->second.first.size(), 0));
           return;
         }
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
-          s.push(new NumberElement(defIter->second.signature.size()));
+          s.push(new NumberElement(defIter->second.signature.size(), 0));
           return;
         }
         throw RuntimeError("Command " + cmd->getName() + " doesn't exist.",
