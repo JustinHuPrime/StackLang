@@ -104,9 +104,9 @@
       [](Stack& s, Defines&, list<string>&) {
         NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
-        s.push(new NumberElement(
-            first->getData() * second->getData(),
-            max(first->getPrecision(), second->getPrecision())));
+        s.push(
+            new NumberElement(first->getData() * second->getData(),
+                              first->getPrecision() + second->getPrecision()));
       }}},
     {"divide",
      {Stack{new TypeElement(StackElement::DataType::Number),
@@ -117,9 +117,9 @@
         if (first->getData() == 0) {
           throw RuntimeError("Attempted to divide by zero.", context);
         }
-        s.push(new NumberElement(
-            second->getData() / first->getData(),
-            max(first->getPrecision(), second->getPrecision())));
+        s.push(
+            new NumberElement(second->getData() / first->getData(),
+                              first->getPrecision() + second->getPrecision()));
       }}},
     {"modulo",
      {Stack{new TypeElement(StackElement::DataType::Number),
