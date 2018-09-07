@@ -52,6 +52,7 @@ void drawTrace(int, int, const list<string>&);
 
 // adds an std::string at the current cursor position
 void addstring(const string& s) noexcept;
+void addblock(const string& s) noexcept;
 
 // displays info splash, then waits for a key
 void displayInfo() noexcept;
