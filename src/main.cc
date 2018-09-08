@@ -72,6 +72,14 @@ const char KEY_CTRL_D = 'd' & KEY_CTRL;
 const char KEY_CTRL_X = 'x' & KEY_CTRL;
 }  // namespace
 
+void outputToFile(ofstream& outputFile, Stack& s) {
+  if (outputFile.is_open()) {
+    s.reverse();
+    for (auto elm : s) outputFile << static_cast<string>(*elm) << '\n';
+    outputFile.close();
+  }
+}
+
 int main(int argc, char* argv[]) noexcept {
   Stack s;
   Defines defines;
@@ -87,17 +95,21 @@ int main(int argc, char* argv[]) noexcept {
   // flags parsing
   try {
     args.read(argc, const_cast<const char**>(argv));
-    args.validate("?hb", "dlo", "I");
+    args.validate("?bh", "dflo", "I");
   } catch (const LanguageException& e) {
     printError(e);
     cerr << "\nEncountered error parsing command line arguments. Aborting."
          << endl;
     exit(EXIT_FAILURE);
   }
-  if (args.hasFlag('?') || args.hasFlag('h')) {
+
+  if (args.hasFlag('?') ||
+      args.hasFlag('h')) {  // out of order - processed first since help options
+                            // supercede other options
     cout << HELPMSG;
     exit(EXIT_SUCCESS);
   }
+
   if (!args.hasFlag('b')) {
     s.push(new StringElement("std"));
     s.push(new CommandElement("include"));
@@ -117,8 +129,7 @@ int main(int argc, char* argv[]) noexcept {
       debugMode = stoi(args.getOpt('d'));
     } catch (const invalid_argument&) {
       cerr << "(Command line arguments invalid:\nExpected a number after "
-              "`-d`, "
-              "but found" +
+              "`-d`, but found" +
                   args.getOpt('d') + ".\nAborting."
            << endl;
       exit(EXIT_FAILURE);
@@ -152,6 +163,7 @@ int main(int argc, char* argv[]) noexcept {
     for (string str : libs) {
       s.push(new StringElement(str));
       s.push(new CommandElement("include"));
+
       try {
         stopFlag = false;
         execute(s, defines);
@@ -162,6 +174,25 @@ int main(int argc, char* argv[]) noexcept {
         exit(EXIT_FAILURE);
       }
     }
+  }
+
+  if (args.hasOpt('f')) {  // out of order - must be after other includes have
+                           // been processed.
+    s.push(new StringElement(args.getOpt('f')));
+    s.push(new CommandElement("include"));
+
+    try {
+      stopFlag = false;
+      execute(s, defines);
+    } catch (const LanguageException& e) {
+      printError(e);
+      cerr << "Encountered error running interpreted file. Aborting." << endl;
+      exit(EXIT_FAILURE);
+    }
+
+    outputToFile(outputFile, s);
+
+    exit(EXIT_SUCCESS);
   }
 
   // TUI stuff
@@ -270,11 +301,7 @@ int main(int argc, char* argv[]) noexcept {
 
   uninit();
 
-  if (outputFile.is_open()) {
-    s.reverse();
-    for (auto elm : s) outputFile << static_cast<string>(*elm) << '\n';
-    outputFile.close();
-  }
+  outputToFile(outputFile, s);
 
   exit(EXIT_SUCCESS);
 }

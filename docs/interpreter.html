@@ -41,8 +41,15 @@
                 <ul>
                     <li> <code>-?</code>, <code>-h</code>: prints a summary of the command line options, then exits immediately.
                         </li>
+                    <li> <code>-b</code>: prevents automatic inclusion of standard library. Note that this will also prevent inclusion
+                        of any extended primtive commands. It is implementation specific which commands are considered extended
+                        primitives. See the <a href="https://justinhuprime.github.io/StackLang/interpreter.html#primlist">list</a>
+                        for details on the primtivive commands in this implementation. Special forms should always be avalible.
+                        </li>
                     <li> <code>-d N</code>: activates debugging of the interpreter in mode N - this is not guarenteed to have
                         an effect. The default mode of 0 is guarenteed to have no effect. </li>
+                    <li> <code>-f file</code>: includes this file at the end of startup, executes it, then stops the interpreter
+                        without starting the UI. Should be combined with <code>-o</code> to produce output. </li>
                     <li> <code>-I filepath ...</code>: automatically includes files (at the specified path) to be read at startup.
                         Filepaths may be enclosed in quotes. Any unquoted string that starts with <code>-</code> will cause
                         it to parse a new option. For filenames (anything without a <code>/</code>), the <code>include</code>                        command
@@ -53,11 +60,6 @@
                         a <code>.sta</code> extension. Note that <code>-I std</code> is implied unless overridden by the
                         <code>-b</code> option. For a path, first the target path is checked, then the target path with a
                         <code>.sta</code> extension. </li>
-                    <li> <code>-b</code>: prevents automatic inclusion of standard library. Note that this will also prevent inclusion
-                        of any extended primtive commands. It is implementation specific which commands are considered extended
-                        primitives. See the <a href="https://justinhuprime.github.io/StackLang/interpreter.html#primlist">list</a>
-                        for details on the primtivive commands in this implementation. Special forms should always be avalible.
-                        </li>
                     <li> <code>-l N</code>: limits the stack to N elements in size - interpreter will abort if attempting to put
                         more than N elements onto the stack. Default is limited by the size of a long int on the local system
                         (although the system will likely run out of memory before it reaches that many stack elements). </li>
