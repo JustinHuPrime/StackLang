@@ -20,14 +20,3 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-
-#include <cmath>
-
-// TEST_CASE("abs vs fabs sanity check", "[sanity]") {
-//   using std::abs;
-//   long double a = 3.14;
-//   long double b = -3.14;
-//   REQUIRE(abs(a) == abs(b));
-//   REQUIRE(abs(a) == 3.14);
-//   REQUIRE(abs(b) == 3.14);
-// }
