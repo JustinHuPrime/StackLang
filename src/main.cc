@@ -70,7 +70,6 @@ using terminalui::uninit;
 const char KEY_CTRL = 0x1f;
 const char KEY_CTRL_D = 'd' & KEY_CTRL;
 const char KEY_CTRL_X = 'x' & KEY_CTRL;
-}  // namespace
 
 void outputToFile(ofstream& outputFile, Stack& s) {
   if (outputFile.is_open()) {
@@ -79,6 +78,7 @@ void outputToFile(ofstream& outputFile, Stack& s) {
     outputFile.close();
   }
 }
+}  // namespace
 
 int main(int argc, char* argv[]) noexcept {
   Stack s;
