@@ -100,7 +100,7 @@ DefinedFunction::DefinedFunction() noexcept
     : signature(Stack{}), body(Stack{}), context(nullptr) {}
 
 const Primitives& PRIMITIVES() noexcept {
-  static const Primitives* const prims = new Primitives{
+  static const Primitives prims = Primitives{
 // Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
@@ -110,7 +110,7 @@ const Primitives& PRIMITIVES() noexcept {
 #include "language/primitives/substack.inc"
 #include "language/primitives/type.inc"
   };
-  return *prims;
+  return prims;
 }
 
 bool checkType(const StackElement* elm, const TypeElement& type,

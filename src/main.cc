@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) noexcept {
   LineEditor buffer;
   bool errorFlag = false;
 
-  int debugMode = 0;
+  int debugMode = 0;  // currently has no effect
   ofstream outputFile;
 
   ArgReader args;

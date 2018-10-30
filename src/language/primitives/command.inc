@@ -37,14 +37,14 @@
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>&) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        s.push(new BooleanElement(prims->find(cmd->getName()) != prims->end() ||
+        s.push(new BooleanElement(prims.find(cmd->getName()) != prims.end() ||
                                   defs.find(cmd->getName()) != defs.end()));
       }}},
     {"local?",
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>&) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        if (prims->find(cmd->getName()) != prims->end()) {
+        if (prims.find(cmd->getName()) != prims.end()) {
           s.push(new BooleanElement(false));
           return;
         }
@@ -113,8 +113,8 @@
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        auto primIter = prims->find(cmd->getName());
-        if (primIter != prims->end()) {
+        auto primIter = prims.find(cmd->getName());
+        if (primIter != prims.end()) {
           s.push(new NumberElement(primIter->second.first.size(), 0));
           return;
         }
@@ -159,8 +159,8 @@
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, list<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        auto primIter = prims->find(cmd->getName());
-        if (primIter != prims->end()) {
+        auto primIter = prims.find(cmd->getName());
+        if (primIter != prims.end()) {
           s.push(new SubstackElement(primIter->second.first));
           return;
         }
