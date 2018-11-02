@@ -20,6 +20,10 @@
 #include "util/stringUtils.h"
 
 namespace util {
+namespace {
+using std::string;
+}
+
 bool starts_with(const string& outer, const string& prefix) noexcept {
   return 0 == outer.find(prefix);
 }

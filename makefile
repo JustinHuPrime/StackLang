@@ -51,7 +51,6 @@ OPTIONS := -std=c++17 $(WARNINGS)
 #build-specific compiler options
 DEBUGOPTIONS := -Og -ggdb
 RELEASEOPTIONS := -Os -Wunused
-#RELEASEOPTIONS := -O3 -Wunused
 
 #libraries and included files
 LIBS := $(shell pkg-config --libs ncurses)

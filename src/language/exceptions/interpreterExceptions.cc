@@ -22,8 +22,10 @@
 namespace stacklang {
 namespace exceptions {
 namespace {
+using std::string;
 using std::to_string;
-}
+using std::vector;
+}  // namespace
 
 ArgumentError::ArgumentError(const string& msg) noexcept
     : LanguageException(msg) {}
@@ -37,7 +39,7 @@ string ArgumentError::getKind() const noexcept {
 }
 
 ParserException::ParserException(const string& msg, const string& ctx,
-                                 size_t loc, list<string> trace) noexcept
+                                 size_t loc, vector<string> trace) noexcept
     : LanguageException(msg, ctx, loc, trace) {}
 
 string ParserException::getKind() const noexcept { return "Could not parse:"; }

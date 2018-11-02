@@ -20,14 +20,14 @@
 
 {"string?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, Defines&, list<string>&) {
+  [](Stack& s, Defines&, vector<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::String));
   }}},
     {"empty-string?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::String &&
@@ -35,14 +35,14 @@
       }}},
     {"string-length",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         s.push(new NumberElement(str->getData().length(), 0));
       }}},
     {"string-ref",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         long double indexRemainder = num->getData();
@@ -64,7 +64,7 @@
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::Number),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr start(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr end(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
@@ -108,14 +108,14 @@
     {"string-append",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr first(dynamic_cast<StringElement*>(s.pop()));
         StringPtr second(dynamic_cast<StringElement*>(s.pop()));
         s.push(new StringElement(second->getData() + first->getData()));
       }}},
     {"toupper",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         string rawStr = str->getData();
         for (char& c : rawStr) c = toupper(c);
@@ -123,7 +123,7 @@
       }}},
     {"tolower",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         string rawStr = str->getData();
         for (char& c : rawStr) c = tolower(c);
@@ -133,7 +133,7 @@
      {Stack{new TypeElement(StackElement::DataType::Substack,
                             new TypeElement(StackElement::DataType::String)),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr splice(dynamic_cast<StringElement*>(s.pop()));
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         string acc;
@@ -147,7 +147,7 @@
     {"split",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr splitter(dynamic_cast<StringElement*>(s.pop()));
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         Stack sta;
@@ -176,7 +176,7 @@
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr from(dynamic_cast<StringElement*>(s.pop()));
         StringPtr to(dynamic_cast<StringElement*>(s.pop()));
         StringPtr target(dynamic_cast<StringElement*>(s.pop()));
@@ -192,7 +192,7 @@
     {"build-string",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr reps(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         long double countRemainder = reps->getData();
@@ -212,7 +212,7 @@
     {"string-equal?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData() == b->getData()));
@@ -220,7 +220,7 @@
     {"string-alphabetic?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData().compare(b->getData()) > 0));
@@ -228,7 +228,7 @@
     {"string-reverse-alphabetic?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr a(dynamic_cast<StringElement*>(s.pop()));
         StringPtr b(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(a->getData().compare(b->getData()) < 0));
@@ -236,7 +236,7 @@
     {"string-contains?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr inner(dynamic_cast<StringElement*>(s.pop()));
         StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(outer->getData().find(inner->getData()) !=
@@ -245,7 +245,7 @@
     {"string-prefix?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr prefix(dynamic_cast<StringElement*>(s.pop()));
         StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
         s.push(new BooleanElement(
@@ -254,7 +254,7 @@
     {"string-suffix?",
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         StringPtr suffix(dynamic_cast<StringElement*>(s.pop()));
         StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
         s.push(

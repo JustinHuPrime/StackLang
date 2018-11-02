@@ -22,15 +22,17 @@
 namespace stacklang {
 namespace exceptions {
 namespace {
+using std::string;
 using std::to_string;
-}
+using std::vector;
+}  // namespace
 
 LanguageException::LanguageException(const string& msg,
-                                     list<string> trace) noexcept
+                                     vector<string> trace) noexcept
     : message(msg), errorHasContext(false), stacktrace(trace) {}
 
 LanguageException::LanguageException(const string& msg, const string& ctx,
-                                     size_t loc, list<string> trace) noexcept
+                                     size_t loc, vector<string> trace) noexcept
     : message(msg),
       context(ctx),
       location(loc),
@@ -41,21 +43,21 @@ const string& LanguageException::getMessage() const noexcept { return message; }
 const string& LanguageException::getContext() const noexcept { return context; }
 size_t LanguageException::getLocation() const noexcept { return location; }
 bool LanguageException::hasContext() const noexcept { return errorHasContext; }
-const list<string>& LanguageException::getTrace() const noexcept {
+const vector<string>& LanguageException::getTrace() const noexcept {
   return stacktrace;
 }
 
-RuntimeError::RuntimeError(const string& msg, list<string> trace) noexcept
+RuntimeError::RuntimeError(const string& msg, vector<string> trace) noexcept
     : LanguageException(msg, trace) {}
 
 RuntimeError::RuntimeError(const string& msg, const string& ctx, size_t index,
-                           list<string> trace) noexcept
+                           vector<string> trace) noexcept
     : LanguageException(msg, ctx, index, trace) {}
 
 string RuntimeError::getKind() const noexcept { return "Runtime Error:"; }
 
 StackOverflowError::StackOverflowError(size_t limit,
-                                       list<string> trace) noexcept
+                                       vector<string> trace) noexcept
     : LanguageException(
           "Stack has exceeded configured limit of " + to_string(limit) + ".",
           trace) {}
@@ -64,7 +66,7 @@ string StackOverflowError::getKind() const noexcept {
   return "Stack overflowed:";
 }
 
-StackUnderflowError::StackUnderflowError(list<string> trace) noexcept
+StackUnderflowError::StackUnderflowError(vector<string> trace) noexcept
     : LanguageException(
           "Stack is empty, but attempted to access element from stack.",
           trace) {}
@@ -73,28 +75,29 @@ string StackUnderflowError::getKind() const noexcept {
   return "Stack underflowed:";
 }
 
-StopError::StopError(list<string> trace) noexcept
+StopError::StopError(vector<string> trace) noexcept
     : LanguageException("Ctrl-c (SIGINTR) sent, interpreter stopping.", trace) {
 }
 
 string StopError::getKind() const noexcept { return "Manual interrupt:"; }
 
-SyntaxError::SyntaxError(const string& msg, list<string> trace) noexcept
+SyntaxError::SyntaxError(const string& msg, vector<string> trace) noexcept
     : LanguageException(msg, trace) {}
 
 SyntaxError::SyntaxError(const string& msg, const string& ctx, size_t pos,
-                         list<string> trace) noexcept
+                         vector<string> trace) noexcept
     : LanguageException(msg, ctx, pos, trace) {}
 
 string SyntaxError::getKind() const noexcept { return "Syntax error:"; }
 
 TypeError::TypeError(const StackElement& expected, const StackElement& given,
-                     list<string> trace) noexcept
+                     vector<string> trace) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
                             ", given " + static_cast<string>(given),
                         trace) {}
 
-TypeError::TypeError(const StackElement& expected, list<string> trace) noexcept
+TypeError::TypeError(const StackElement& expected,
+                     vector<string> trace) noexcept
     : LanguageException("Expected " + static_cast<string>(expected) +
                             " but reached the bottom of the stack instead.",
                         trace) {}

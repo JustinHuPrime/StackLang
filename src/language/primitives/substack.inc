@@ -20,14 +20,14 @@
 
 {"substack?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, Defines&, list<string>&) {
+  [](Stack& s, Defines&, vector<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::Substack));
   }}},
     {"empty?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Substack &&
@@ -36,7 +36,7 @@
     {"contains-type?",
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Type)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         TypePtr internal(dynamic_cast<TypeElement*>(s.pop()));
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         s.push(new BooleanElement(checkType(
@@ -47,7 +47,7 @@
     {"push",
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         ElementPtr elm(s.pop());
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         Stack sta = sub->getData();
@@ -60,7 +60,7 @@
       }}},
     {"top",
      {Stack{new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         Stack sta = sub->getData();
         try {
@@ -71,7 +71,7 @@
       }}},
     {"pop",
      {Stack{new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         Stack sta = sub->getData();
         try {
@@ -83,7 +83,7 @@
       }}},
     {"pop*",
      {Stack{new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         Stack sta = sub->getData();
         StackElement* popped;
@@ -98,7 +98,7 @@
     {"make-substack",
      {Stack{new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr a(s.pop());
         ElementPtr b(s.pop());
         Stack sta{b.release(), a.release()};
@@ -106,14 +106,14 @@
       }}},
     {"length",
      {Stack{new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
         s.push(new NumberElement(sub->getData().size(), 0));
       }}},
     {"substack-ref",
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr index(dynamic_cast<NumberElement*>(s.pop()));
         SubstackPtr sta(dynamic_cast<SubstackElement*>(s.pop()));
         long double remainder = index->getData();
@@ -140,7 +140,7 @@
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Number),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr start(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr end(dynamic_cast<NumberElement*>(s.pop()));
         SubstackPtr sta(dynamic_cast<SubstackElement*>(s.pop()));
@@ -190,7 +190,7 @@
     {"append",
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         SubstackPtr later(dynamic_cast<SubstackElement*>(s.pop()));
         SubstackPtr base(dynamic_cast<SubstackElement*>(s.pop()));
         Stack first = base->getData();
@@ -202,7 +202,7 @@
       }}},
     {"reverse",
      {Stack{new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         SubstackPtr sta(dynamic_cast<SubstackElement*>(s.pop()));
         Stack result = sta->getData();
         result.reverse();
@@ -212,7 +212,7 @@
      {Stack{new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Number),
             new TypeElement(StackElement::DataType::Substack)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         SubstackPtr inserted(dynamic_cast<SubstackElement*>(s.pop()));
         NumberPtr index(dynamic_cast<NumberElement*>(s.pop()));
         SubstackPtr base(dynamic_cast<SubstackElement*>(s.pop()));

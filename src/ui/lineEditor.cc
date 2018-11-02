@@ -19,7 +19,13 @@
 
 #include "ui/lineEditor.h"
 
+#include <iostream>  // debug only
+
 namespace terminalui {
+namespace {
+using std::string;
+}
+
 LineEditor::LineEditor() noexcept
     : preCursor(),
       postCursor(),
@@ -82,9 +88,7 @@ void LineEditor::up() noexcept {
 
   preCursor.clear();
   postCursor.clear();
-  for (auto c : *histPos) {
-    preCursor.push_back(c);
-  }
+  for (auto c : *histPos) preCursor.push_back(c);
 }
 
 void LineEditor::down() noexcept {
@@ -96,13 +100,9 @@ void LineEditor::down() noexcept {
     preCursor.clear();
     postCursor.clear();
     if (histPos == history.end()) {
-      for (auto c : draftLine) {
-        preCursor.push_back(c);
-      }
+      for (const auto& c : draftLine) preCursor.push_back(c);
     } else {
-      for (auto c : *histPos) {
-        preCursor.push_back(c);
-      }
+      for (const auto& c : *histPos) preCursor.push_back(c);
     }
   }
 }

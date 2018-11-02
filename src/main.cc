@@ -54,7 +54,7 @@ using std::stoi;
 using std::stoul;
 using std::string;
 using std::vector;
-using terminalui::addstring;
+using terminalui::addString;
 using terminalui::ArgReader;
 using terminalui::displayInfo;
 using terminalui::drawError;

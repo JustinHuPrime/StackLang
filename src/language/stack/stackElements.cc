@@ -38,9 +38,11 @@ using std::make_unique;
 using std::numeric_limits;
 using std::setprecision;
 using std::stold;
+using std::string;
 using std::stringstream;
 using std::swap;
 using std::to_string;
+using std::vector;
 using util::ends_with;
 using util::escape;
 using util::findImproperEscape;
@@ -278,8 +280,7 @@ SubstackElement* SubstackElement::parse(const string& s) {
       if (parseLevel < 0) {
         throw ParserException(
             "Missing at least one matching opening substack delimiter.", s,
-            iter - s.begin() -
-                1);  // iter is always at least 2 greater than s.begin().
+            static_cast<size_t>(iter - s.begin() - 1));
       }
     }
 

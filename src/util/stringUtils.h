@@ -23,34 +23,29 @@
 #include <string>
 
 namespace util {
-
-namespace {
-using std::string;
-}
-
 // Produce true if first string starts/ends with the second string
-bool starts_with(const string& outer, const string& prefix) noexcept;
-bool ends_with(const string& outer, const string& suffix) noexcept;
+bool starts_with(const std::string& outer, const std::string& prefix) noexcept;
+bool ends_with(const std::string& outer, const std::string& suffix) noexcept;
 
 // Escapes any \, ", or newline into a \\, \", or \n
-string escape(string) noexcept;
+std::string escape(std::string) noexcept;
 
 // Unescapes string - reverse of previous function
-string unescape(string) noexcept;
+std::string unescape(std::string) noexcept;
 
 // Returns the position of any improper escape (\ escaping anything but a \, ",
 // or n), or the posiiton of an unescaped \ or ". If none found, returns
 // string::npos
-size_t findImproperEscape(const string&) noexcept;
+size_t findImproperEscape(const std::string&) noexcept;
 
 // produces 'n' spaces in a row
-string spaces(size_t) noexcept;
+std::string spaces(size_t) noexcept;
 
 // removes all occurences of character c from string s
-string removeChar(string, char) noexcept;
+std::string removeChar(std::string, char) noexcept;
 
 // trims any whitespace from the start and the end of the string
-string trim(string) noexcept;
+std::string trim(std::string) noexcept;
 
 const char WHITESPACE[] = " \t\n\r";
 }  // namespace util

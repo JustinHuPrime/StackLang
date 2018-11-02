@@ -28,106 +28,107 @@
 
 namespace stacklang {
 namespace exceptions {
-namespace {
-using stacklang::stackelements::CommandElement;
-using stacklang::stackelements::TypeElement;
-using std::exception;
-using std::list;
-using std::string;
-}  // namespace
 
 // Describes a StackLang runtime error
-class LanguageException : public exception {
+class LanguageException : public std::exception {
  public:
   // Creates an error with a message, but no context
-  explicit LanguageException(const string&,
-                             list<string> = list<string>{}) noexcept;
+  explicit LanguageException(
+      const std::string&,
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
   // Creates an error with a message and context (plus exact location of error)
-  LanguageException(const string&, const string&, size_t,
-                    list<string> = list<string>{}) noexcept;
+  LanguageException(
+      const std::string&, const std::string&, size_t,
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
   LanguageException(const LanguageException&) = default;
 
   LanguageException& operator=(const LanguageException&) = default;
 
   // Get error details
-  virtual string getKind() const noexcept = 0;
-  const string& getMessage() const noexcept;
-  const string& getContext() const noexcept;
+  virtual std::string getKind() const noexcept = 0;
+  const std::string& getMessage() const noexcept;
+  const std::string& getContext() const noexcept;
   size_t getLocation() const noexcept;
   bool hasContext() const noexcept;
-  const list<string>& getTrace() const noexcept;
+  const std::vector<std::string>& getTrace() const noexcept;
 
  protected:
-  string message, context;
+  std::string message, context;
   size_t location;
   bool errorHasContext;
-  list<string> stacktrace;
+  std::vector<std::string> stacktrace;
 };
 
 class RuntimeError : public LanguageException {
  public:
-  explicit RuntimeError(const string&, list<string> = list<string>{}) noexcept;
-  RuntimeError(const string&, const string&, size_t,
-               list<string> = list<string>{}) noexcept;
+  explicit RuntimeError(
+      const std::string&,
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
+  RuntimeError(const std::string&, const std::string&, size_t,
+               std::vector<std::string> = std::vector<std::string>{}) noexcept;
   RuntimeError(const RuntimeError&) = default;
 
   RuntimeError& operator=(const RuntimeError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class StackOverflowError : public LanguageException {
  public:
-  explicit StackOverflowError(size_t, list<string> = list<string>{}) noexcept;
+  explicit StackOverflowError(
+      size_t, std::vector<std::string> = std::vector<std::string>{}) noexcept;
   StackOverflowError(const StackOverflowError&) = default;
 
   StackOverflowError& operator=(const StackOverflowError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class StackUnderflowError : public LanguageException {
  public:
-  StackUnderflowError(list<string> = list<string>{}) noexcept;
+  StackUnderflowError(
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
   StackUnderflowError(const StackUnderflowError&) = default;
 
   StackUnderflowError& operator=(const StackUnderflowError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class StopError : public LanguageException {
  public:
-  StopError(list<string> = list<string>{}) noexcept;
+  StopError(std::vector<std::string> = std::vector<std::string>{}) noexcept;
   StopError(const StopError&) = default;
 
   StopError& operator=(const StopError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class SyntaxError : public LanguageException {
  public:
-  SyntaxError(const string& msg, list<string> = list<string>{}) noexcept;
-  SyntaxError(const string& msg, const string& ctx, size_t pos,
-              list<string> = list<string>{}) noexcept;
+  SyntaxError(const std::string& msg,
+              std::vector<std::string> = std::vector<std::string>{}) noexcept;
+  SyntaxError(const std::string& msg, const std::string& ctx, size_t pos,
+              std::vector<std::string> = std::vector<std::string>{}) noexcept;
   SyntaxError(const SyntaxError&) = default;
 
   SyntaxError& operator=(const SyntaxError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class TypeError : public LanguageException {
  public:
   TypeError(const StackElement&, const StackElement&,
-            list<string> = list<string>{}) noexcept;
-  TypeError(const StackElement&, list<string> = list<string>{}) noexcept;
+            std::vector<std::string> = std::vector<std::string>{}) noexcept;
+  TypeError(const StackElement&,
+            std::vector<std::string> = std::vector<std::string>{}) noexcept;
   TypeError(const TypeError&) = default;
 
   TypeError& operator=(const TypeError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

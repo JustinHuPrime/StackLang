@@ -25,12 +25,6 @@
 #include <vector>
 
 namespace terminalui {
-namespace {
-using std::map;
-using std::string;
-using std::vector;
-}  // namespace
-
 // A commannd line argument reader that can infer the intended syntax of command
 // line arguments. An option followed by another option is a flag, an option
 // followed by something that doesn't start with a -, or a quoted string, is a
@@ -49,20 +43,20 @@ class ArgReader {
 
   // Checks if the intended syntax was valid. Throws an argumentError if there
   // are any errors.
-  void validate(const string& allowedFlag, const string& allowedOpts,
-                const string& allowedLongOpts) const;
+  void validate(const std::string& allowedFlag, const std::string& allowedOpts,
+                const std::string& allowedLongOpts) const;
 
   // Getters. Will also throw ArgumentErrors.
   bool hasFlag(char) const noexcept;  // Doesn't check that given flag is valid
   bool hasOpt(char) const noexcept;
   bool hasLongOpt(char) const noexcept;
-  string getOpt(char) const;
-  vector<string> getLongOpt(char) const;
+  std::string getOpt(char) const;
+  std::vector<std::string> getLongOpt(char) const;
 
  private:
-  vector<char> flags;
-  map<char, string> options;
-  map<char, vector<string>> longOpts;
+  std::vector<char> flags;
+  std::map<char, std::string> options;
+  std::map<char, std::vector<std::string>> longOpts;
 };
 }  // namespace terminalui
 

@@ -44,8 +44,11 @@ using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
 using std::any_of;
 using std::find;
+using std::initializer_list;
 using std::make_unique;
+using std::numeric_limits;
 using std::queue;
+using std::string;
 using util::ends_with;
 using util::starts_with;
 }  // namespace
