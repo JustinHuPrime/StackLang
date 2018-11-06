@@ -71,7 +71,7 @@ const char KEY_CTRL = 0x1f;
 const char KEY_CTRL_D = 'd' & KEY_CTRL;
 const char KEY_CTRL_X = 'x' & KEY_CTRL;
 
-void outputToFile(ofstream& outputFile, const Stack& s) {
+void outputToFile(ofstream& outputFile, Stack& s) {
   if (outputFile.is_open()) {
     s.reverse();
     for (auto elm : s) outputFile << static_cast<string>(*elm) << '\n';
