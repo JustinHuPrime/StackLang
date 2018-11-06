@@ -19,10 +19,10 @@
 
 #include "ui/ui.h"
 
+#include <ncurses.h>
+
 #include <csignal>
 #include <iostream>
-
-#include <ncurses.h>
 
 #include "language/language.h"
 #include "util/stringUtils.h"
@@ -264,8 +264,7 @@ void displayInfo() noexcept {
   curs_set(CURSOR_INVISIBLE);
   move(0, 0);
   addBlock(INFO);
-  while (ERR == getch())
-    ;
+  while (ERR == getch()) continue;
 }
 
 void printError(const LanguageException& e) noexcept {

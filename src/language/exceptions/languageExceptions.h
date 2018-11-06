@@ -21,13 +21,12 @@
 #ifndef STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
 #define STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTIONS_H_
 
-#include <list>
 #include <string>
+#include <vector>
 
 #include "language/stack/stackElements.h"
 
-namespace stacklang {
-namespace exceptions {
+namespace stacklang::exceptions {
 
 // Describes a StackLang runtime error
 class LanguageException : public std::exception {
@@ -97,7 +96,8 @@ class StackUnderflowError : public LanguageException {
 
 class StopError : public LanguageException {
  public:
-  StopError(std::vector<std::string> = std::vector<std::string>{}) noexcept;
+  explicit StopError(
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
   StopError(const StopError&) = default;
 
   StopError& operator=(const StopError&) = default;
@@ -130,7 +130,6 @@ class TypeError : public LanguageException {
 
   std::string getKind() const noexcept override;
 };
-}  // namespace exceptions
-}  // namespace stacklang
+}  // namespace stacklang::exceptions
 
 #endif  // STACKLANG_LANGUAGE_EXCEPTONS_LANGUAGEEXCEPTION_H_

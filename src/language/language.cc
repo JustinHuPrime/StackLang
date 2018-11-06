@@ -104,7 +104,7 @@ DefinedFunction::DefinedFunction() noexcept
     : signature(Stack{}), body(Stack{}), context(nullptr) {}
 
 const Primitives& PRIMITIVES() noexcept {
-  static const Primitives prims = Primitives{
+  static const Primitives& prims = *new Primitives{
 // Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
@@ -205,7 +205,7 @@ void execute(Stack& s, Defines& defines, vector<string> context) {
       const auto& commands = defResult->second.body;
 
       checkTypes(s, types, context);
-      checkContext(context.front(), defResult->second.context,
+      checkContext(context.back(), defResult->second.context,
                    command->getName(), context);
 
       context.push_back(command->getName());  // now executing function
@@ -263,5 +263,5 @@ void execute(Stack& s, Defines& defines, vector<string> context) {
       }
     }
   }
-}  // namespace stacklang
+}
 }  // namespace stacklang
