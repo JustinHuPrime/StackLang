@@ -18,14 +18,14 @@
 // Main function for the interpreter. Parses command line arugments then runs
 // main loop of ui.
 
+#include <ncurses.h>
+
 #include <fstream>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include <ncurses.h>
 
 #include "language/exceptions/languageExceptions.h"
 #include "language/language.h"

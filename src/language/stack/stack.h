@@ -24,6 +24,7 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <string>
 
 namespace stacklang {
 
@@ -142,7 +143,7 @@ class Stack::StackIterator {
   typedef size_t size_type;
   typedef std::input_iterator_tag iterator_category;
 
-  StackIterator(const Stack::Node*) noexcept;
+  explicit StackIterator(const Stack::Node*) noexcept;
   StackIterator(const StackIterator&) = default;
 
   StackIterator& operator=(const StackIterator&) = default;

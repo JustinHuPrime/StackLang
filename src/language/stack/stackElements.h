@@ -20,13 +20,14 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 
+#include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "language/stack/stack.h"
 
-namespace stacklang {
-namespace stackelements {
+namespace stacklang::stackelements {
 
 class BooleanElement : public StackElement {
  public:
@@ -136,7 +137,7 @@ class TypeElement : public StackElement {
  public:
   static TypeElement* parse(const std::string&);
 
-  TypeElement(DataType, TypeElement* = nullptr) noexcept;
+  explicit TypeElement(DataType, TypeElement* = nullptr) noexcept;
   TypeElement(const TypeElement&) noexcept;
   TypeElement& operator=(const TypeElement&) noexcept;
   TypeElement(TypeElement&&) noexcept;
@@ -168,7 +169,6 @@ typedef std::unique_ptr<StringElement> StringPtr;
 typedef std::unique_ptr<SubstackElement> SubstackPtr;
 typedef std::unique_ptr<TypeElement> TypePtr;
 
-}  // namespace stackelements
-}  // namespace stacklang
+}  // namespace stacklang::stackelements
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_

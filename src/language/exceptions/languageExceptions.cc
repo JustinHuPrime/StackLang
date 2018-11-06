@@ -19,8 +19,7 @@
 
 #include "language/exceptions/languageExceptions.h"
 
-namespace stacklang {
-namespace exceptions {
+namespace stacklang::exceptions {
 namespace {
 using std::string;
 using std::to_string;
@@ -103,5 +102,4 @@ TypeError::TypeError(const StackElement& expected,
                         trace) {}
 
 string TypeError::getKind() const noexcept { return "Type Mismatch:"; }
-}  // namespace exceptions
-}  // namespace stacklang
+}  // namespace stacklang::exceptions

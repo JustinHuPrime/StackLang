@@ -20,13 +20,16 @@
 #ifndef STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
 #define STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
 
+#include <string>
+#include <vector>
+
 #include "language/exceptions/languageExceptions.h"
 
 namespace stacklang {
 namespace exceptions {
 class ArgumentError : public LanguageException {
  public:
-  ArgumentError(const std::string& msg) noexcept;
+  explicit ArgumentError(const std::string& msg) noexcept;
   ArgumentError(const std::string& msg, const std::string& actual,
                 size_t posDif) noexcept;
   ArgumentError(const ArgumentError&) = default;

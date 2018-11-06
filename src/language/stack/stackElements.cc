@@ -21,6 +21,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <limits>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -28,8 +29,7 @@
 #include "language/exceptions/interpreterExceptions.h"
 #include "util/stringUtils.h"
 
-namespace stacklang {
-namespace stackelements {
+namespace stacklang::stackelements {
 namespace {
 using stacklang::exceptions::ParserException;
 using std::count;
@@ -441,5 +441,4 @@ const vector<string>& TypeElement::TYPES() noexcept {
       "Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
   return *TYPES;
 }
-}  // namespace stackelements
-}  // namespace stacklang
+}  // namespace stacklang::stackelements
