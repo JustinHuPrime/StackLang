@@ -91,7 +91,6 @@ using util::ends_with;
 using util::spaceship;
 using util::starts_with;
 using util::trim;
-
 }  // namespace
 
 atomic_bool stopFlag = false;
