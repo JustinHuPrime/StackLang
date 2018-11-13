@@ -7,9 +7,6 @@
 #include "catch.hpp"
 
 namespace {
-using stacklang::checkContext;
-using stacklang::checkType;
-using stacklang::checkTypes;
 using stacklang::DefinedFunction;
 using stacklang::ElementPtr;
 using stacklang::GLOBAL_CONTEXT;
@@ -17,6 +14,9 @@ using stacklang::Prim;
 using stacklang::PrimitiveFunction;
 using stacklang::Stack;
 using stacklang::StackElement;
+using stacklang::checkContext;
+using stacklang::checkType;
+using stacklang::checkTypes;
 using stacklang::exceptions::SyntaxError;
 using stacklang::exceptions::TypeError;
 using stacklang::stackelements::CommandElement;

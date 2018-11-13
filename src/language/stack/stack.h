@@ -39,6 +39,8 @@ class StackElement {
     Substack,
     Type,
     Command,
+    Primitive,
+    Defined,
     Any,
   };
 
@@ -156,7 +158,7 @@ class Stack::StackIterator {
   const StackElement* operator*() noexcept;
 
   StackIterator& operator++() noexcept;
-  StackIterator operator++(int) noexcept;
+  StackIterator operator++(int)noexcept;
 
  private:
   const Stack::Node* curr;
