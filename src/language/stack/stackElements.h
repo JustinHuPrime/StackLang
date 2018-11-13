@@ -20,6 +20,7 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 
+#include <functional>
 #include <limits>
 #include <memory>
 #include <string>
@@ -48,28 +49,75 @@ class BooleanElement : public StackElement {
 
 class CommandElement : public StackElement {
  public:
-  static const char* const ALLOWED_COMMAND;
-
-  static CommandElement* parse(const std::string&);
-
-  explicit CommandElement(const std::string&, bool isQuoted = false) noexcept;
+  CommandElement(bool) noexcept;
   CommandElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
   explicit operator std::string() const noexcept override;
-  const std::string& getName() const noexcept;
-  bool isQuoted() const noexcept;
 
-  static const char QUOTE_CHAR;
+  bool isPrimitive() const noexcept;
 
  private:
-  static const char* const COMMAND_LDELIM;
-  static const char* const COMMAND_RDELIM;
-
-  std::string name;
-  bool quoted;
+  bool primtiive;
 };
+
+class PrimitiveCommandElement : public CommandElement {
+ public:
+  PrimitiveCommandElement(
+      std::function<void(Stack&, Defines&,
+                         std::vector<std::string>&)>) noexcept;
+  PrimitiveCommandElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
+
+  explicit operator std::string() const noexcept override;
+
+  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+
+ private:
+  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+};
+
+class DefinedCommandElement : public CommandElement {
+ public:
+  DefinedCommandElement(?) noexcept;
+  DefinedCommandElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
+
+  explicit operator std::string() const noexcept override;
+
+  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+
+ private:
+  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+};
+
+// class CommandElement : public StackElement {
+//  public:
+//   static const char* const ALLOWED_COMMAND;
+
+//   static CommandElement* parse(const std::string&);
+
+//   explicit CommandElement(const std::string&, bool isQuoted = false)
+//   noexcept; CommandElement* clone() const noexcept override;
+
+//   bool operator==(const StackElement&) const noexcept override;
+
+//   explicit operator std::string() const noexcept override;
+//   const std::string& getName() const noexcept;
+//   bool isQuoted() const noexcept;
+
+//   static const char QUOTE_CHAR;
+
+//  private:
+//   static const char* const COMMAND_LDELIM;
+//   static const char* const COMMAND_RDELIM;
+
+//   std::string name;
+//   bool quoted;
+// };
 
 class NumberElement : public StackElement {
  public:

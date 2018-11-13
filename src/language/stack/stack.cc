@@ -87,12 +87,12 @@ StackElement* StackElement::parse(const string& s) {
                   s) != TypeElement::TYPES()
                             .end()) {  // has a subtype, or exists in types
     return TypeElement::parse(s);
-  } else if (isalpha(s[0]) ||
-             (s[0] == CommandElement::QUOTE_CHAR &&
-              s.length() >
-                  1)) {  // starts with a character or
-                         // a command-quote and at least one other thing.
-    return CommandElement::parse(s);
+    // } else if (isalpha(s[0]) ||
+    //            (s[0] == CommandElement::QUOTE_CHAR &&
+    //             s.length() >
+    //                 1)) {  // starts with a character or
+    //                        // a command-quote and at least one other thing.
+    //   return CommandElement::parse(s);
   } else {  // error case
     throw ParserException(
         "Input doesn't look like any type - does it begin with a symbol?", s,
