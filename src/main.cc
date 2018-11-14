@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) noexcept {
   // flags parsing
   try {
     args.read(argc, const_cast<const char**>(argv));
-    args.validate("?bh", "dflo", "I");
+    args.validate("?bh", "dfloI", "I");
   } catch (const LanguageException& e) {
     printError(e);
     cerr << "\nEncountered error parsing command line arguments. Aborting."
@@ -158,8 +158,9 @@ int main(int argc, char* argv[]) noexcept {
       exit(EXIT_FAILURE);
     }
   }
-  if (args.hasOpt('I')) {
-    vector<string> libs = args.getLongOpt('I');
+  if (args.hasLongOpt('I') || args.hasOpt('I')) {
+    vector<string> libs = args.hasOpt('I') ? vector<string>{args.getOpt('I')}
+                                           : args.getLongOpt('I');
     for (string str : libs) {
       s.push(new StringElement(str));
       s.push(new CommandElement("include"));
