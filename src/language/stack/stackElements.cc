@@ -497,8 +497,9 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES = new vector<string>{
-      "Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
+  static vector<string>* TYPES =
+      new vector<string>{"Number", "String",  "Boolean",    "Substack",
+                         "Type",   "Command", "Identifier", "Any"};
   return *TYPES;
 }
 }  // namespace stacklang::stackelements
