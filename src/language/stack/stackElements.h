@@ -71,6 +71,29 @@ class CommandElement : public StackElement {
   bool quoted;
 };
 
+class IdentifierElement : public StackElement {
+ public:
+  static const char* const ALLOWED_IDENTIFIER;
+
+  static IdentifierElement* parse(const std::string&);
+
+  explicit IdentifierElement(const std::string&,
+                             bool isQuoted = false) noexcept;
+  IdentifierElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
+
+  explicit operator std::string() const noexcept override;
+  const std::string& getName() const noexcept;
+  bool isQuoted() const noexcept;
+
+  static const char QUOTE_CHAR;
+
+ private:
+  std::string name;
+  bool quoted;
+};
+
 class NumberElement : public StackElement {
  public:
   static const char* const ALLOWED_NUMBER;
