@@ -39,7 +39,7 @@ class ArgReader {
   ArgReader& operator=(ArgReader&&) = default;
   // Reads in to the object from argv. If restrictChar is true, then the reader
   // will only consider arguments with a dash and a char to be option flags
-  void read(int, const char*[]);
+  void read(int, const char* []);
 
   // Checks if the intended syntax was valid. Throws an argumentError if there
   // are any errors.
