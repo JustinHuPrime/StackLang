@@ -22,13 +22,18 @@
 
 #include <functional>
 #include <limits>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "language/stack/stack.h"
 
-namespace stacklang::stackelements {
+namespace stacklang {
+
+typedef std::vector<std::map<std::string, ElementPtr>> Environment;
+
+namespace stackelements {
 
 class BooleanElement : public StackElement {
  public:
@@ -50,6 +55,7 @@ class BooleanElement : public StackElement {
 class CommandElement : public StackElement {
  public:
   CommandElement(bool) noexcept;
+  bool operator==(const StackElement&) const noexcept override;
 
   bool isPrimitive() const noexcept;
 
@@ -59,34 +65,35 @@ class CommandElement : public StackElement {
 
 class PrimitiveCommandElement : public CommandElement {
  public:
+  static const char* const DISPLAY_AS;
+
   PrimitiveCommandElement(
-      std::function<void(Stack&, Defines&,
+      std::function<void(Stack&, Environment&,
                          std::vector<std::string>&)>) noexcept;
   PrimitiveCommandElement* clone() const noexcept override;
 
-  bool operator==(const StackElement&) const noexcept override;
-
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
 
  private:
-  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+  std::function<void(Stack&, Environment&, std::vector<std::string>&)> fun;
 };
 
 class DefinedCommandElement : public CommandElement {
  public:
+  static const char* const DISPLAY_AS;
+
   DefinedCommandElement(const Stack&, const Stack&) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
-  bool operator==(const StackElement&) const noexcept override;
-
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
 
  private:
-  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+  Stack sig;
+  Stack body;
 };
 
 class IdentifierElement : public StackElement {
@@ -210,6 +217,7 @@ typedef std::unique_ptr<StringElement> StringPtr;
 typedef std::unique_ptr<SubstackElement> SubstackPtr;
 typedef std::unique_ptr<TypeElement> TypePtr;
 
-}  // namespace stacklang::stackelements
+}  // namespace stackelements
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_

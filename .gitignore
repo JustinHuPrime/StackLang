@@ -4,3 +4,5 @@ bin/
 dependencies/
 tests/bin/
 tests/dependencies/
+*.sta
+-libs/*.sta

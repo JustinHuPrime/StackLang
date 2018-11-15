@@ -27,11 +27,14 @@
 #include <utility>
 
 #include "language/exceptions/interpreterExceptions.h"
+#include "language/language.h"
 #include "util/stringUtils.h"
 
 namespace stacklang::stackelements {
 namespace {
 using stacklang::exceptions::ParserException;
+using stacklang::exceptions::StackOverflowError;
+using stacklang::exceptions::StackUnderflowError;
 using std::count;
 using std::fixed;
 using std::make_unique;
@@ -80,19 +83,80 @@ CommandElement::CommandElement(bool prim) noexcept
 
 bool CommandElement::isPrimitive() const noexcept { return primitive; }
 
+bool CommandElement::operator==(const StackElement& elm) const noexcept {
+  return &elm == this;  // equality doesn't make sense for function values.
+}
+
+const char* const PrimitiveCommandElement::DISPLAY_AS = "<PRIMITIVE>";
+
+PrimitiveCommandElement::PrimitiveCommandElement(
+    std::function<void(Stack&, Environment&, std::vector<std::string>&)>
+        p) noexcept
+    : CommandElement{true}, fun{p} {}
+PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
+  return new PrimitiveCommandElement(fun);
+}
+
+explicit PrimitiveCommandElement::operator std::string() const noexcept {
+  return DISPLAY_AS;
+}
+
+void PrimitiveCommandElement::operator()(Stack& s, Environment& e,
+                                         std::vector<std::string>& st) const {
+  fun(s, e, st);
+}
+
+const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
+
+DefinedCommandElement::DefinedCommandElement(const Stack& s,
+                                             const Stack& b) noexcept
+    : CommandElement{false}, sig{s}, body{b} {}
+DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
+  return new DefinedCommandElement(sig, body);
+}
+
+explicit DefinedCommandElement::operator std::string() const noexcept {
+  return DISPLAY_AS;
+}
+
+void DefinedCommandElement::operator()(Stack& s, Environment& e,
+                                       std::vector<std::string>& st) const {
+  checkTypes(s, sig, st);
+
+  st.push_back("???");  // now executing function
+  for (const auto& c : body) {
+    try {
+      s.push(c->clone());
+    } catch (const StackOverflowError& e) {
+      // stack error without trace must be main stack.
+      if (e.getTrace().empty())
+        throw StackOverflowError(s.getLimit(), st);
+      else
+        throw e;
+    } catch (const StackUnderflowError& e) {
+      if (e.getTrace().empty())
+        throw StackUnderflowError(st);
+      else
+        throw e;
+    }
+    execute(s, e, st);  // TODO: make this tail recursive.
+  }
+}
+
 const char* const IdentifierElement::ALLOWED_IDENTIFIER =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 const char IdentifierElement::QUOTE_CHAR = '`';
 
 IdentifierElement* IdentifierElement::parse(const string& s) {
-  if (s.find_first_not_of(CommandElement::ALLOWED_COMMAND, 1) == string::npos &&
+  if (s.find_first_not_of(IdentifierElement::ALLOWED_IDENTIFIER, 1) ==
+          string::npos &&
       (isalpha(s[0]) ||
        (s[0] == QUOTE_CHAR && s.length() >= 2 &&
         isalpha(s[1])))) {  // has only allowed characters, starts with a
                             // quote char and a letter or a letter
     return new IdentifierElement(removeChar(s, QUOTE_CHAR), s[0] == QUOTE_CHAR);
   } else {
-    size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
+    size_t badIndex = s.find_first_not_of(IdentifierElement::ALLOWED_IDENTIFIER,
                                           s[0] == QUOTE_CHAR ? 1 : 0);
     if (badIndex == string::npos) {
       if (!(isalpha(s[0]) || ((s[0] == QUOTE_CHAR && isalpha(s[1]))))) {
