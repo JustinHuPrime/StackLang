@@ -30,9 +30,9 @@
 namespace terminalui {
 namespace {
 using stacklang::Stack;
+using stacklang::stopFlag;
 using stacklang::exceptions::LanguageException;
 using stacklang::stackelements::CommandElement;
-using stacklang::stopFlag;
 using std::cerr;
 using std::endl;
 using std::string;

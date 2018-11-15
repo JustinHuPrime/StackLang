@@ -26,10 +26,10 @@
 namespace {
 using stacklang::Defines;
 using stacklang::ElementPtr;
+using stacklang::execute;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::exceptions::RuntimeError;
-using stacklang::execute;
 using stacklang::stackelements::BooleanElement;
 using stacklang::stackelements::BooleanPtr;
 using stacklang::stackelements::CommandElement;

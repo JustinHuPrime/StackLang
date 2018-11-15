@@ -245,7 +245,7 @@ Stack::StackIterator& Stack::StackIterator::operator++() noexcept {
   return *this;
 }
 
-Stack::StackIterator Stack::StackIterator::operator++(int)noexcept {
+Stack::StackIterator Stack::StackIterator::operator++(int) noexcept {
   StackIterator temp = *this;
 
   operator++();

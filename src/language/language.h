@@ -45,8 +45,10 @@ typedef std::map<std::string, DefinedFunction> Defines;
 typedef void (*const Prim)(Stack&, Defines&, std::vector<std::string>&);
 typedef std::pair<Stack, Prim> PrimitiveFunction;
 typedef std::map<std::string, PrimitiveFunction> Primitives;
+typedef std::vector<std::map<std::string, ElementPtr>> Environment;
 
 const Primitives& PRIMITIVES() noexcept;
+Environment& ENVIRONMENT() noexcept;
 const char* const GLOBAL_CONTEXT = "global context";
 
 bool checkType(const StackElement* elm,
@@ -59,10 +61,9 @@ void checkContext(const std::string& actual,
                   const std::string& name,
                   const std::vector<std::string>& context);
 void execute(Stack&, Defines&,
-             std::vector<std::string> =
-                 std::vector<std::string>{
-                     GLOBAL_CONTEXT});  // Executes the stack until it
-                                        // encounters a data element
+             std::vector<std::string> = std::vector<std::string>{
+                 GLOBAL_CONTEXT});  // Executes the stack until it
+                                    // encounters a data element
 
 extern std::atomic_bool
     stopFlag;  // signal handlers set this to stop execution.
