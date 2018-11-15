@@ -116,6 +116,11 @@ const Primitives& PRIMITIVES() noexcept {
   return prims;
 }
 
+Environment& ENVIRONMENT() noexcept {
+  static Environment& env = *new Environment{};
+  return env;
+}
+
 bool checkType(const StackElement* elm, const TypeElement& type,
                const vector<string>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
