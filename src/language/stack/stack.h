@@ -40,6 +40,8 @@ class StackElement {
     Type,
     Command,
     Identifier,
+    Primitive,
+    Defined,
     Any,
   };
 
