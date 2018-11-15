@@ -50,16 +50,11 @@ class BooleanElement : public StackElement {
 class CommandElement : public StackElement {
  public:
   CommandElement(bool) noexcept;
-  CommandElement* clone() const noexcept override;
-
-  bool operator==(const StackElement&) const noexcept override;
-
-  explicit operator std::string() const noexcept override;
 
   bool isPrimitive() const noexcept;
 
  private:
-  bool primtiive;
+  bool primitive;
 };
 
 class PrimitiveCommandElement : public CommandElement {
@@ -81,7 +76,7 @@ class PrimitiveCommandElement : public CommandElement {
 
 class DefinedCommandElement : public CommandElement {
  public:
-  DefinedCommandElement(?) noexcept;
+  DefinedCommandElement(const Stack&, const Stack&) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
