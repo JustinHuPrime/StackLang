@@ -39,6 +39,7 @@ class StackElement {
     Substack,
     Type,
     Command,
+    Identifier,
     Any,
   };
 
