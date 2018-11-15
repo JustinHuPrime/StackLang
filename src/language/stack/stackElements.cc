@@ -421,9 +421,21 @@ TypeElement* TypeElement::parse(const string& s) {
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
                                     s.length() - s.find_first_of('(') - 2)));
+  } else if (starts_with(s, "Command")) {  // substack specializations
+    return new TypeElement(
+        DataType::Command,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
+  } else if (starts_with(s, "Identifier")) {  // substack specializations
+    return new TypeElement(
+        DataType::Identifier,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
   } else {
-    throw ParserException("Cannot have a specialzation except on a Substack.",
-                          s, s.find('('));
+    throw ParserException(
+        "Cannot have a specialization except on a Substack, Command, or "
+        "Identifier.",
+        s, s.find('('));
   }
 }  // namespace StackElements
 
