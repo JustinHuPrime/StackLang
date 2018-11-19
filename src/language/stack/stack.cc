@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <limits>
 #include <queue>
 #include <string>
 
@@ -42,10 +43,14 @@ using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::StringElement;
 using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
+// add imports for new stackelement types here
 using std::any_of;
 using std::find;
+using std::initializer_list;
 using std::make_unique;
+using std::numeric_limits;
 using std::queue;
+using std::string;
 using util::ends_with;
 using util::starts_with;
 }  // namespace
@@ -61,40 +66,35 @@ StackElement* StackElement::parse(const string& s) {
                        strlen(NumberElement::NUMBER_SIGNS),
                    s[0]) != NumberElement::NUMBER_SIGNS +
                                 strlen(NumberElement::NUMBER_SIGNS) &&
-              any_of(s.begin(), s.end(), isdigit)))  // looks like a number.
-  {
+              any_of(s.begin(), s.end(), isdigit))) {  // looks like a number.
     return NumberElement::parse(s);
   } else if (starts_with(
                  s,
-                 string(1, StringElement::QUOTE_CHAR)))  // starts with a quote
-  {
+                 string(1,
+                        StringElement::QUOTE_CHAR))) {  // starts with a quote
     return StringElement::parse(s);
   } else if (starts_with(s, SubstackElement::SUBSTACK_BEGIN) &&
              ends_with(
                  s,
-                 SubstackElement::SUBSTACK_END))  // has a pair of substack
-                                                  // delmiters on either end
-                                                  // - must be a substack.
-  {
+                 SubstackElement::SUBSTACK_END)) {  // has a pair of substack
+                                                    // delmiters on either end
+                                                    // - must be a substack.
     return SubstackElement::parse(s);
   } else if (s == BooleanElement::TSTR ||
-             s == BooleanElement::FSTR)  // it's either true or false
-  {
+             s == BooleanElement::FSTR) {  // it's either true or false
     return new BooleanElement(s == string(BooleanElement::TSTR));
   } else if (s.find_first_of(TypeElement::PARENS) != string::npos ||
              find(TypeElement::TYPES().begin(), TypeElement::TYPES().end(),
                   s) != TypeElement::TYPES()
-                            .end())  // has a subtype, or exists in types
-  {                                  // is a type
+                            .end()) {  // has a subtype, or exists in types
     return TypeElement::parse(s);
-  } else if (isalpha(s[0]) ||
-             (s[0] == CommandElement::QUOTE_CHAR &&
-              s.length() > 1))  // starts with a character or
-                                // a command-quote and at least one other thing.
-  {
-    return CommandElement::parse(s);
-  } else  // error case
-  {
+    // } else if (isalpha(s[0]) ||
+    //            (s[0] == CommandElement::QUOTE_CHAR &&
+    //             s.length() >
+    //                 1)) {  // starts with a character or
+    //                        // a command-quote and at least one other thing.
+    //   return CommandElement::parse(s);
+  } else {  // error case
     throw ParserException(
         "Input doesn't look like any type - does it begin with a symbol?", s,
         0);

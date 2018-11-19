@@ -43,7 +43,9 @@ class StackElement {
     Boolean,
     Substack,
     Type,
-    Command,
+    CommandPrimitive,
+    CommandElement,
+    Identifier,
     Any,
   };
 

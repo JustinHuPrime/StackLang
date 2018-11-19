@@ -20,18 +20,15 @@
 #ifndef STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 #define STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
 
+#include <functional>
+#include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "language/stack/stack.h"
 
-namespace stacklang {
-namespace stackelements {
-namespace {
-using stacklang::Stack;
-using std::string;
-using std::vector;
-}  // namespace
+namespace stacklang::stackelements {
 
 class BooleanElement : public StackElement {
  public:
@@ -43,7 +40,7 @@ class BooleanElement : public StackElement {
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
+  explicit operator std::string() const noexcept override;
   bool getData() const noexcept;
 
  private:
@@ -52,44 +49,92 @@ class BooleanElement : public StackElement {
 
 class CommandElement : public StackElement {
  public:
-  static const char* const ALLOWED_COMMAND;
-
-  static CommandElement* parse(const string&);
-
-  explicit CommandElement(const string&, bool isQuoted = false) noexcept;
+  CommandElement(bool) noexcept;
   CommandElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
-  const string& getName() const noexcept;
-  bool isQuoted() const noexcept;
+  explicit operator std::string() const noexcept override;
 
-  static const char QUOTE_CHAR;
+  bool isPrimitive() const noexcept;
 
  private:
-  static const char* const COMMAND_LDELIM;
-  static const char* const COMMAND_RDELIM;
-
-  string name;
-  bool quoted;
+  bool primitive;
 };
+
+class PrimitiveCommandElement : public CommandElement {
+ public:
+  PrimitiveCommandElement(
+      std::function<void(Stack&, Defines&,
+                         std::vector<std::string>&)>) noexcept;
+  PrimitiveCommandElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
+
+  explicit operator std::string() const noexcept override;
+
+  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+
+ private:
+  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+};
+
+class DefinedCommandElement : public CommandElement {
+ public:
+  DefinedCommandElement(?) noexcept;
+  DefinedCommandElement* clone() const noexcept override;
+
+  bool operator==(const StackElement&) const noexcept override;
+
+  explicit operator std::string() const noexcept override;
+
+  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+
+ private:
+  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
+};
+
+// class CommandElement : public StackElement {
+//  public:
+//   static const char* const ALLOWED_COMMAND;
+
+//   static CommandElement* parse(const std::string&);
+
+//   explicit CommandElement(const std::string&, bool isQuoted = false)
+//   noexcept; CommandElement* clone() const noexcept override;
+
+//   bool operator==(const StackElement&) const noexcept override;
+
+//   explicit operator std::string() const noexcept override;
+//   const std::string& getName() const noexcept;
+//   bool isQuoted() const noexcept;
+
+//   static const char QUOTE_CHAR;
+
+//  private:
+//   static const char* const COMMAND_LDELIM;
+//   static const char* const COMMAND_RDELIM;
+
+//   std::string name;
+//   bool quoted;
+// };
 
 class NumberElement : public StackElement {
  public:
   static const char* const ALLOWED_NUMBER;
   static const char* const NUMBER_SIGNS;
 
-  static NumberElement* parse(const string&);
+  static NumberElement* parse(const std::string&);
 
   explicit NumberElement(
-      long double, int = numeric_limits<long double>::max_digits10) noexcept;
-  explicit NumberElement(string) noexcept;
+      long double,
+      int = std::numeric_limits<long double>::max_digits10) noexcept;
+  explicit NumberElement(std::string) noexcept;
   NumberElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
+  explicit operator std::string() const noexcept override;
   long double getData() const noexcept;
   int getPrecision() const noexcept;
 
@@ -102,28 +147,28 @@ class StringElement : public StackElement {
  public:
   static const char QUOTE_CHAR;
 
-  static StringElement* parse(const string&);
-  explicit StringElement(string) noexcept;
+  static StringElement* parse(const std::string&);
+  explicit StringElement(std::string) noexcept;
   StringElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
-  const string& getData() const noexcept;
+  explicit operator std::string() const noexcept override;
+  const std::string& getData() const noexcept;
 
  private:
-  string data;
+  std::string data;
 };
 
 class SubstackElement : public StackElement {
  public:
-  static SubstackElement* parse(const string&);
+  static SubstackElement* parse(const std::string&);
   explicit SubstackElement(const Stack&) noexcept;
   SubstackElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
+  explicit operator std::string() const noexcept override;
   const Stack& getData() const noexcept;
 
   static const char* const SUBSTACK_BEGIN;
@@ -138,9 +183,9 @@ class SubstackElement : public StackElement {
 
 class TypeElement : public StackElement {
  public:
-  static TypeElement* parse(const string&);
+  static TypeElement* parse(const std::string&);
 
-  TypeElement(DataType, TypeElement* = nullptr) noexcept;
+  explicit TypeElement(DataType, TypeElement* = nullptr) noexcept;
   TypeElement(const TypeElement&) noexcept;
   TypeElement& operator=(const TypeElement&) noexcept;
   TypeElement(TypeElement&&) noexcept;
@@ -150,13 +195,13 @@ class TypeElement : public StackElement {
 
   bool operator==(const StackElement&) const noexcept override;
 
-  explicit operator string() const noexcept override;
+  explicit operator std::string() const noexcept override;
   DataType getBase() const noexcept;
   const TypeElement* getSpecialization() const noexcept;
 
-  static string to_string(DataType) noexcept;
+  static std::string to_string(DataType) noexcept;
 
-  static const vector<string>& TYPES() noexcept;
+  static const std::vector<std::string>& TYPES() noexcept;
 
   static const char* const PARENS;
 
@@ -165,14 +210,13 @@ class TypeElement : public StackElement {
   TypeElement* specialization;
 };
 
-typedef unique_ptr<BooleanElement> BooleanPtr;
-typedef unique_ptr<CommandElement> CommandPtr;
-typedef unique_ptr<NumberElement> NumberPtr;
-typedef unique_ptr<StringElement> StringPtr;
-typedef unique_ptr<SubstackElement> SubstackPtr;
-typedef unique_ptr<TypeElement> TypePtr;
+typedef std::unique_ptr<BooleanElement> BooleanPtr;
+typedef std::unique_ptr<CommandElement> CommandPtr;
+typedef std::unique_ptr<NumberElement> NumberPtr;
+typedef std::unique_ptr<StringElement> StringPtr;
+typedef std::unique_ptr<SubstackElement> SubstackPtr;
+typedef std::unique_ptr<TypeElement> TypePtr;
 
-}  // namespace stackelements
-}  // namespace stacklang
+}  // namespace stacklang::stackelements
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_
