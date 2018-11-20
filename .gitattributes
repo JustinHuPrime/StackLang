@@ -1,4 +1,4 @@
-*.sta linguist-language=StackLang
+*.sta linguist-language=Other
 *.inc linguist-language=C++
 docs/* linguist-documentation
 tests/catch.hpp linguist-vendored

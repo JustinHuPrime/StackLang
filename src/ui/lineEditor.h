@@ -24,14 +24,9 @@
 #include <list>
 #include <stack>
 #include <string>
+#include <vector>
 
 namespace terminalui {
-namespace {
-using std::list;
-using std::stack;
-using std::string;
-}  // namespace
-
 class LineEditor {
  public:
   // Create blank lineEditor
@@ -70,17 +65,17 @@ class LineEditor {
 
   // Add a character or a string to the editor
   void operator+=(char) noexcept;
-  void operator+=(string) noexcept;
+  void operator+=(std::string) noexcept;
 
-  explicit operator const string() const noexcept;
+  explicit operator const std::string() const noexcept;
 
  private:
-  list<char> preCursor;
-  list<char> postCursor;
+  std::list<char> preCursor;
+  std::list<char> postCursor;
 
-  list<string> history;
-  list<string>::const_iterator histPos;
-  string draftLine;
+  std::list<std::string> history;
+  std::list<std::string>::const_iterator histPos;
+  std::string draftLine;
 };
 }  // namespace terminalui
 

@@ -28,7 +28,9 @@ namespace {
 using stacklang::exceptions::ArgumentError;
 using std::find;
 using std::min;
+using std::string;
 using std::to_string;
+using std::vector;
 }  // namespace
 
 ArgReader::ArgReader() noexcept : flags(), options(), longOpts() {}

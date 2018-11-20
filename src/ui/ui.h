@@ -21,8 +21,8 @@
 #ifndef STACKLANG_UI_UI_H_
 #define STACKLANG_UI_UI_H_
 
-#include <list>
 #include <string>
+#include <vector>
 
 #include "language/exceptions/languageExceptions.h"
 #include "language/stack/stack.h"
@@ -30,34 +30,25 @@
 #include "ui/lineEditor.h"
 
 namespace terminalui {
-namespace {
-using stacklang::Stack;
-using stacklang::StackElement;
-using stacklang::exceptions::LanguageException;
-using stacklang::stackelements::CommandElement;
-using std::list;
-using std::string;
-using terminalui::LineEditor;
-}  // namespace
-
 // initializes/uninitializes curses (and general stuff) with preset options
 void init() noexcept;
 void uninit() noexcept;
 
-void drawStack(const Stack&) noexcept;
+void drawStack(const stacklang::Stack&) noexcept;
 void drawPrompt(const LineEditor&) noexcept;
 void drawWaiting() noexcept;
-void drawError(const LanguageException&) noexcept;
-void drawTrace(int, int, const list<string>&);
+void drawError(const stacklang::exceptions::LanguageException&) noexcept;
+void drawTrace(int, int, const std::vector<std::string>&);
 
-// adds an std::string at the current cursor position
-void addstring(const string& s) noexcept;
+// adds an string at the current cursor position
+void addString(const std::string& s) noexcept;
+void addBlock(const std::string& s) noexcept;
 
 // displays info splash, then waits for a key
 void displayInfo() noexcept;
 
 // prints an error mesage to stderr
-void printError(const LanguageException&) noexcept;
+void printError(const stacklang::exceptions::LanguageException&) noexcept;
 
 const int CURSOR_INVISIBLE = 0;
 const int CURSOR_VISIBLE = 1;

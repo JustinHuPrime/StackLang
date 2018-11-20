@@ -23,7 +23,7 @@
                         new TypeElement(StackElement::DataType::Type)),
         new TypeElement(StackElement::DataType::Substack),
         new TypeElement(StackElement::DataType::Command)},
-  [](Stack& s, Defines& defs, list<string>& context) {
+  [](Stack& s, Defines& defs, vector<string>& context) {
     CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
     SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
     SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
@@ -40,7 +40,7 @@
             new TypeElement(StackElement::DataType::Substack),
             new TypeElement(StackElement::DataType::Command),
             new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr name(dynamic_cast<CommandElement*>(s.pop()));
         CommandPtr contextReq(dynamic_cast<CommandElement*>(s.pop()));
         SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
@@ -56,7 +56,7 @@
       }}},
     {"undefine",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         auto iter = defs.find(elm->getName());
         if (iter == defs.end()) {
@@ -69,7 +69,7 @@
       }}},
     {"include",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         StringPtr given(dynamic_cast<StringElement*>(s.pop()));
         string path = given->getData();
         ifstream fin;
@@ -183,10 +183,10 @@
       }}},
     {"drop",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) { delete s.pop(); }}},
+      [](Stack& s, Defines&, vector<string>&) { delete s.pop(); }}},
     {"drop*",
      {Stack{new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
@@ -198,10 +198,11 @@
         }
         while (whole-- > 0) delete s.pop();
       }}},
-    {"clear", {Stack{}, [](Stack& s, Defines&, list<string>&) { s.clear(); }}},
+    {"clear",
+     {Stack{}, [](Stack& s, Defines&, vector<string>&) { s.clear(); }}},
     {"rotate",
      {Stack{new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
         long double remainder = num->getData();
         long double whole;
@@ -224,7 +225,7 @@
     {"rotate*",
      {Stack{new TypeElement(StackElement::DataType::Number),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
         NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
         long double reachRemainder = first->getData();
@@ -258,10 +259,10 @@
       }}},
     {"duplicate",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) { s.push(s.top()->clone()); }}},
+      [](Stack& s, Defines&, vector<string>&) { s.push(s.top()->clone()); }}},
     {"error",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         StringPtr str(dynamic_cast<StringElement*>(s.pop()));
         throw RuntimeError(str->getData(), context);
       }}},
@@ -269,7 +270,7 @@
      {Stack{new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::String),
             new TypeElement(StackElement::DataType::Number)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
         StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
         StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
@@ -283,9 +284,9 @@
         }
         throw RuntimeError(msg->getData(), ctx->getData(), whole, context);
       }}},
-    {"null", {Stack{}, [](Stack&, Defines&, list<string>&) { return; }}},
+    {"null", {Stack{}, [](Stack&, Defines&, vector<string>&) { return; }}},
     {"identity",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack&, Defines&, list<string>&) {
+      [](Stack&, Defines&, vector<string>&) {
         return;  // equivalent to popping then pushing.
       }}},

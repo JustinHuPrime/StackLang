@@ -20,31 +20,35 @@
 #ifndef STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
 #define STACKLANG_LANGUAGE_EXCEPTONS_INTERPRETEREXCEPTIONS_H_
 
+#include <string>
+#include <vector>
+
 #include "language/exceptions/languageExceptions.h"
 
 namespace stacklang {
 namespace exceptions {
 class ArgumentError : public LanguageException {
  public:
-  ArgumentError(const string& msg) noexcept;
-  ArgumentError(const string& msg, const string& actual,
+  explicit ArgumentError(const std::string& msg) noexcept;
+  ArgumentError(const std::string& msg, const std::string& actual,
                 size_t posDif) noexcept;
   ArgumentError(const ArgumentError&) = default;
 
   ArgumentError& operator=(const ArgumentError&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 
 class ParserException : public LanguageException {
  public:
-  ParserException(const string&, const string&, size_t,
-                  list<string> = list<string>{}) noexcept;
+  ParserException(
+      const std::string&, const std::string&, size_t,
+      std::vector<std::string> = std::vector<std::string>{}) noexcept;
   ParserException(const ParserException&) = default;
 
   ParserException& operator=(const ParserException&) = default;
 
-  string getKind() const noexcept override;
+  std::string getKind() const noexcept override;
 };
 }  // namespace exceptions
 }  // namespace stacklang

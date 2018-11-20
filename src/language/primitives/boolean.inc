@@ -20,14 +20,14 @@
 
 {"boolean?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, Defines&, list<string>&) {
+  [](Stack& s, Defines&, vector<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
   }}},
     {"false?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Boolean &&
@@ -35,7 +35,7 @@
       }}},
     {"true?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Boolean &&
@@ -43,13 +43,13 @@
       }}},
     {"boolean-to-string",
      {Stack{new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr elm(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(new StringElement(static_cast<string>(*elm)));
       }}},
     {"string-to-boolean",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
         ElementPtr result;
         try {
@@ -70,7 +70,7 @@
      {Stack{new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr boolean(dynamic_cast<BooleanElement*>(s.pop()));
         ElementPtr falseCase(s.pop());
         ElementPtr trueCase(s.pop());
@@ -78,14 +78,14 @@
       }}},
     {"not",
      {Stack{new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(new BooleanElement(!a->getData()));
       }}},
     {"or",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
         BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(a->getData() ? a.release() : b.release());
@@ -93,7 +93,7 @@
     {"and",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
         BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(a->getData() ? b.release() : a.release());
@@ -101,7 +101,7 @@
     {"xor",
      {Stack{new TypeElement(StackElement::DataType::Boolean),
             new TypeElement(StackElement::DataType::Boolean)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
         BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
         s.push(new BooleanElement(a->getData() != b->getData()));
@@ -109,7 +109,7 @@
     {"eqv?",
      {Stack{new TypeElement(StackElement::DataType::Any),
             new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr a(s.pop());
         ElementPtr b(s.pop());
         s.push(new BooleanElement(*a == *b));

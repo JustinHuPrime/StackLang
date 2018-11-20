@@ -20,36 +20,31 @@
 
 {"command?",
  {Stack{new TypeElement(StackElement::DataType::Any)},
-  [](Stack& s, Defines&, list<string>&) {
+  [](Stack& s, Defines&, vector<string>&) {
     ElementPtr elm(s.pop());
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::Command));
   }}},
     {"quoted?",
      {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         ElementPtr elm(s.pop());
         s.push(new BooleanElement(
             elm->getType() == StackElement::DataType::Command &&
             dynamic_cast<CommandElement*>(elm.get())->isQuoted()));
       }}},
     {"defined?",
-     {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines& defs, list<string>&) {
+     {Stack{new TypeElement(StackElement::DataType::Command)},
+      [](Stack& s, Defines& defs, vector<string>&) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        s.push(new BooleanElement(prims->find(cmd->getName()) != prims->end() ||
+        s.push(new BooleanElement(prims.find(cmd->getName()) != prims.end() ||
                                   defs.find(cmd->getName()) != defs.end()));
       }}},
     {"local?",
-     {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines& defs, list<string>&) {
-        ElementPtr elm(s.pop());
-        if (elm->getType() != StackElement::DataType::Command) {
-          s.push(new BooleanElement(false));
-          return;
-        }
-        CommandElement* cmd(dynamic_cast<CommandElement*>(elm.release()));
-        if (prims->find(cmd->getName()) != prims->end()) {
+     {Stack{new TypeElement(StackElement::DataType::Command)},
+      [](Stack& s, Defines& defs, vector<string>&) {
+        CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
+        if (prims.find(cmd->getName()) != prims.end()) {
           s.push(new BooleanElement(false));
           return;
         }
@@ -62,20 +57,20 @@
       }}},
     {"unquote",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(new CommandElement(elm->getName()));
       }}},
     {"command-to-string",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines&, list<string>&) {
+      [](Stack& s, Defines&, vector<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(
             new StringElement((elm->isQuoted() ? "`" : "") + elm->getName()));
       }}},
     {"string-to-command",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
         ElementPtr result;
         try {
@@ -95,7 +90,7 @@
       }}},
     {"string-to-command*",
      {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, list<string>& context) {
+      [](Stack& s, Defines&, vector<string>& context) {
         StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
         ElementPtr result;
         try {
@@ -116,16 +111,16 @@
       }}},
     {"arity",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        auto primIter = prims->find(cmd->getName());
-        if (primIter != prims->end()) {
-          s.push(new NumberElement(primIter->second.first.size()));
+        auto primIter = prims.find(cmd->getName());
+        if (primIter != prims.end()) {
+          s.push(new NumberElement(primIter->second.first.size(), 0));
           return;
         }
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
-          s.push(new NumberElement(defIter->second.signature.size()));
+          s.push(new NumberElement(defIter->second.signature.size(), 0));
           return;
         }
         throw RuntimeError("Command " + cmd->getName() + " doesn't exist.",
@@ -133,7 +128,7 @@
       }}},
     {"body",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
@@ -145,7 +140,7 @@
       }}},
     {"context",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
         auto defIter = defs.find(cmd->getName());
         if (defIter != defs.end()) {
@@ -162,10 +157,10 @@
       }}},
     {"signature",
      {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines& defs, list<string>& context) {
+      [](Stack& s, Defines& defs, vector<string>& context) {
         CommandPtr cmd(dynamic_cast<CommandElement*>(s.pop()));
-        auto primIter = prims->find(cmd->getName());
-        if (primIter != prims->end()) {
+        auto primIter = prims.find(cmd->getName());
+        if (primIter != prims.end()) {
           s.push(new SubstackElement(primIter->second.first));
           return;
         }

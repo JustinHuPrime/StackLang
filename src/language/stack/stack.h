@@ -24,14 +24,9 @@
 #include <initializer_list>
 #include <limits>
 #include <memory>
+#include <string>
 
 namespace stacklang {
-namespace {
-using std::initializer_list;
-using std::numeric_limits;
-using std::string;
-using std::unique_ptr;
-}  // namespace
 
 // Represents a element in the stack. Subclassed to make a specific element.
 class StackElement {
@@ -43,14 +38,21 @@ class StackElement {
     Boolean,
     Substack,
     Type,
+<<<<<<< HEAD
     CommandPrimitive,
     CommandElement,
     Identifier,
+=======
+    Command,
+    Identifier,
+    Primitive,
+    Defined,
+>>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
     Any,
   };
 
   // Produces a StackElement (of some type) from a terminal input string
-  static StackElement* parse(const string&);
+  static StackElement* parse(const std::string&);
 
   StackElement(const StackElement&) = default;
   StackElement(StackElement&&) = default;
@@ -63,8 +65,9 @@ class StackElement {
 
   virtual bool operator==(const StackElement&) const noexcept = 0;
 
-  // Produces a nicely formatted string of the string (for print to console)
-  explicit virtual operator string() const noexcept = 0;
+  // Produces a nicely formatted string of the element (for print to
+  // console)
+  explicit virtual operator std::string() const noexcept = 0;
 
   // Getter for the DataType
   DataType getType() const noexcept;
@@ -84,7 +87,7 @@ class StackElement {
   DataType dataType;
 };
 
-typedef unique_ptr<StackElement> ElementPtr;
+typedef std::unique_ptr<StackElement> ElementPtr;
 
 // A literal stack of StackElements.
 class Stack {
@@ -94,8 +97,8 @@ class Stack {
   class StackIterator;
 
   // Creates a stack, optionally with a limit on the number of elements.
-  explicit Stack(size_t = numeric_limits<size_t>().max()) noexcept;
-  explicit Stack(initializer_list<StackElement*>) noexcept;
+  explicit Stack(size_t = std::numeric_limits<size_t>().max()) noexcept;
+  explicit Stack(std::initializer_list<StackElement*>) noexcept;
   Stack(const Stack&) noexcept;
   Stack(Stack&&) noexcept;
 
@@ -128,7 +131,7 @@ class Stack {
 
  private:
   struct Node {
-    unique_ptr<StackElement> elm;
+    std::unique_ptr<StackElement> elm;
     Node* next;
     Node(StackElement*, Node*) noexcept;
   };
@@ -149,7 +152,7 @@ class Stack::StackIterator {
   typedef size_t size_type;
   typedef std::input_iterator_tag iterator_category;
 
-  StackIterator(const Stack::Node*) noexcept;
+  explicit StackIterator(const Stack::Node*) noexcept;
   StackIterator(const StackIterator&) = default;
 
   StackIterator& operator=(const StackIterator&) = default;

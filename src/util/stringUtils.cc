@@ -20,6 +20,10 @@
 #include "util/stringUtils.h"
 
 namespace util {
+namespace {
+using std::string;
+}
+
 bool starts_with(const string& outer, const string& prefix) noexcept {
   return 0 == outer.find(prefix);
 }
@@ -102,11 +106,9 @@ size_t findImproperEscape(const string& str) noexcept {
         (str[i] == '\\' && str[i + 1] != 'n' && str[i + 1] != 't' &&
          str[i + 1] != '"' &&
          str[i + 1] != '\\') ||  // make sure that we only escape \, n, ", and t
-        (str[i] == '"'))         // it's an unescaped quote!
-    {
+        (str[i] == '"')) {       // it's an unescaped quote!
       return i;
-    } else if (str[i] == '\\')  // it's a valid escape - skip next char
-    {
+    } else if (str[i] == '\\') {  // it's a valid escape - skip next char
       i++;
     }
   }

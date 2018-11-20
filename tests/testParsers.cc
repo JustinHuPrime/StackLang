@@ -148,6 +148,13 @@ TEST_CASE("number with quote chars between signs", "[parse][NumberElement]") {
   REQUIRE(num->getData() == 1.5);
 }
 
+TEST_CASE("number precision check", "[parse][NumberElement]") {
+  NumberPtr num1(NumberElement::parse("3.14159"));
+  REQUIRE(num1->getPrecision() == 5);
+  NumberPtr num2(NumberElement::parse("30000"));
+  REQUIRE(num2->getPrecision() == 0);
+}
+
 TEST_CASE("string with missing closing quote", "[parse][StringElement]") {
   REQUIRE_THROWS_AS(StringElement::parse("\"bad string"), ParserException);
 }

@@ -76,14 +76,17 @@ using std::make_unique;
 using std::max;
 using std::min;
 using std::modf;
+using std::pair;
 using std::pow;
 using std::random_device;
 using std::sin;
 using std::sinh;
 using std::stack;
+using std::string;
 using std::tan;
 using std::tanh;
 using std::to_string;
+using std::vector;
 using util::ends_with;
 using util::spaceship;
 using util::starts_with;
@@ -100,7 +103,7 @@ DefinedFunction::DefinedFunction() noexcept
     : signature(Stack{}), body(Stack{}), context(nullptr) {}
 
 const Primitives& PRIMITIVES() noexcept {
-  static const Primitives* const prims = new Primitives{
+  static const Primitives& prims = *new Primitives{
 // Special include files to group definition of primitives.
 #include "language/primitives/boolean.inc"
 #include "language/primitives/command.inc"
@@ -110,11 +113,16 @@ const Primitives& PRIMITIVES() noexcept {
 #include "language/primitives/substack.inc"
 #include "language/primitives/type.inc"
   };
-  return *prims;
+  return prims;
+}
+
+Environment& ENVIRONMENT() noexcept {
+  static Environment& env = *new Environment{};
+  return env;
 }
 
 bool checkType(const StackElement* elm, const TypeElement& type,
-               const list<string>& context) {
+               const vector<string>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
     return false;
   } else if (type.getBase() == StackElement::DataType::Any &&
@@ -145,7 +153,7 @@ bool checkType(const StackElement* elm, const TypeElement& type,
 }
 
 void checkTypes(const Stack& s, const Stack& types,
-                const list<string>& context) {
+                const vector<string>& context) {
   auto typeIter = types.begin();
   auto stackIter = s.begin();
 
@@ -162,7 +170,7 @@ void checkTypes(const Stack& s, const Stack& types,
 }
 
 void checkContext(const string& actual, const CommandElement* required,
-                  const string& name, const list<string>& context) {
+                  const string& name, const vector<string>& context) {
   if (required != nullptr) {
     if (actual == GLOBAL_CONTEXT) {
       throw SyntaxError("Attempted to use `" + name +
@@ -178,14 +186,12 @@ void checkContext(const string& actual, const CommandElement* required,
   }
 }
 
-void execute(Stack& s, Defines& defines, list<string> context) {
+void execute(Stack& s, Environment& defines, vector<string> context) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError(context);
   }
-  if (s.isEmpty()) {
-    return;
-  }
+  if (s.isEmpty()) return;
 
   const auto& PRIMS = PRIMITIVES();
 
@@ -203,10 +209,10 @@ void execute(Stack& s, Defines& defines, list<string> context) {
       const auto& commands = defResult->second.body;
 
       checkTypes(s, types, context);
-      checkContext(context.front(), defResult->second.context,
+      checkContext(context.back(), defResult->second.context,
                    command->getName(), context);
 
-      context.push_front(command->getName());  // now executing function
+      context.push_back(command->getName());  // now executing function
       for (auto c : commands) {
         try {
           s.push(c->clone());
@@ -224,7 +230,7 @@ void execute(Stack& s, Defines& defines, list<string> context) {
         }
         execute(s, defines, context);  // TODO: make this tail recursive.
       }
-      context.pop_front();  // done with function
+      context.pop_back();  // done with function
       return execute(
           s, defines,
           context);  // clear off any commands produced but not executed
@@ -238,7 +244,7 @@ void execute(Stack& s, Defines& defines, list<string> context) {
       if (primResult != PRIMS.end()) {
         const auto& types = primResult->second.first;
         checkTypes(s, types, context);
-        context.push_front(primResult->first);
+        context.push_back(primResult->first);
         try {
           primResult->second.second(
               s, defines,
@@ -251,7 +257,7 @@ void execute(Stack& s, Defines& defines, list<string> context) {
         } catch (const StackUnderflowError& e) {
           if (e.getTrace().empty()) throw StackUnderflowError(context);
         }
-        context.pop_front();
+        context.pop_back();
         return execute(
             s, defines,
             context);  // clear off any commands produced but not executed
@@ -261,5 +267,5 @@ void execute(Stack& s, Defines& defines, list<string> context) {
       }
     }
   }
-}  // namespace stacklang
+}
 }  // namespace stacklang

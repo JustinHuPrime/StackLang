@@ -260,6 +260,50 @@ define
 define
 
 
+<< Number >> ; -> Number
+<<
+    1
+    2, rotate
+    factorial-rc
+>>
+`factorial
+define
+
+<< Number, Number >> ; -> Number
+<<
+    duplicate
+    positive?
+    `factorial-tr
+    `factorial-bc
+    3, rotate
+    if
+    unquote
+>>
+`factorial-rc
+define
+
+<< Number, Number >> ; -> Number
+<<
+    duplicate
+    decrement
+    3, 2, rotate*
+    multiply
+    2, rotate
+    factorial-rc
+>>
+`factorial-rc
+`factorial-tr
+define*
+
+<< Number, Number >> ; -> Number
+<<
+    drop
+>>
+`factorial-rc
+`factorial-bc
+define*
+
+
 << Number, Number >> ; -> Boolean
 <<
     equal?

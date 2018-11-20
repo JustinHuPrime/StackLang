@@ -21,26 +21,31 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <limits>
 #include <sstream>
 #include <string>
 #include <utility>
 
 #include "language/exceptions/interpreterExceptions.h"
+#include "language/language.h"
 #include "util/stringUtils.h"
 
-namespace stacklang {
-namespace stackelements {
+namespace stacklang::stackelements {
 namespace {
 using stacklang::exceptions::ParserException;
+using stacklang::exceptions::StackOverflowError;
+using stacklang::exceptions::StackUnderflowError;
 using std::count;
 using std::fixed;
 using std::make_unique;
 using std::numeric_limits;
 using std::setprecision;
 using std::stold;
+using std::string;
 using std::stringstream;
 using std::swap;
 using std::to_string;
+using std::vector;
 using util::ends_with;
 using util::escape;
 using util::findImproperEscape;
@@ -73,6 +78,7 @@ BooleanElement::operator string() const noexcept { return data ? TSTR : FSTR; }
 
 bool BooleanElement::getData() const noexcept { return data; }
 
+<<<<<<< HEAD
 // const char* const CommandElement::COMMAND_LDELIM = "<";
 // const char* const CommandElement::COMMAND_RDELIM = ">";
 // const char* const CommandElement::ALLOWED_COMMAND =
@@ -135,6 +141,133 @@ bool BooleanElement::getData() const noexcept { return data; }
 
 // const string& CommandElement::getName() const noexcept { return name; }
 // bool CommandElement::isQuoted() const noexcept { return quoted; }
+=======
+CommandElement::CommandElement(bool prim) noexcept
+    : StackElement(StackElement::DataType::Command), primitive(prim) {}
+
+bool CommandElement::isPrimitive() const noexcept { return primitive; }
+
+bool CommandElement::operator==(const StackElement& elm) const noexcept {
+  return &elm == this;  // equality doesn't make sense for function values.
+}
+
+const char* const PrimitiveCommandElement::DISPLAY_AS = "<PRIMITIVE>";
+
+PrimitiveCommandElement::PrimitiveCommandElement(
+    std::function<void(Stack&, Environment&, std::vector<std::string>&)>
+        p) noexcept
+    : CommandElement{true}, fun{p} {}
+PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
+  return new PrimitiveCommandElement(fun);
+}
+
+explicit PrimitiveCommandElement::operator std::string() const noexcept {
+  return DISPLAY_AS;
+}
+
+void PrimitiveCommandElement::operator()(Stack& s, Environment& e,
+                                         std::vector<std::string>& st) const {
+  fun(s, e, st);
+}
+
+const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
+
+DefinedCommandElement::DefinedCommandElement(const Stack& s,
+                                             const Stack& b) noexcept
+    : CommandElement{false}, sig{s}, body{b} {}
+DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
+  return new DefinedCommandElement(sig, body);
+}
+
+explicit DefinedCommandElement::operator std::string() const noexcept {
+  return DISPLAY_AS;
+}
+
+void DefinedCommandElement::operator()(Stack& s, Environment& e,
+                                       std::vector<std::string>& st) const {
+  checkTypes(s, sig, st);
+
+  st.push_back("???");  // now executing function
+  for (const auto& c : body) {
+    try {
+      s.push(c->clone());
+    } catch (const StackOverflowError& e) {
+      // stack error without trace must be main stack.
+      if (e.getTrace().empty())
+        throw StackOverflowError(s.getLimit(), st);
+      else
+        throw e;
+    } catch (const StackUnderflowError& e) {
+      if (e.getTrace().empty())
+        throw StackUnderflowError(st);
+      else
+        throw e;
+    }
+    execute(s, e, st);  // TODO: make this tail recursive.
+  }
+}
+
+const char* const IdentifierElement::ALLOWED_IDENTIFIER =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
+const char IdentifierElement::QUOTE_CHAR = '`';
+
+IdentifierElement* IdentifierElement::parse(const string& s) {
+  if (s.find_first_not_of(IdentifierElement::ALLOWED_IDENTIFIER, 1) ==
+          string::npos &&
+      (isalpha(s[0]) ||
+       (s[0] == QUOTE_CHAR && s.length() >= 2 &&
+        isalpha(s[1])))) {  // has only allowed characters, starts with a
+                            // quote char and a letter or a letter
+    return new IdentifierElement(removeChar(s, QUOTE_CHAR), s[0] == QUOTE_CHAR);
+  } else {
+    size_t badIndex = s.find_first_not_of(IdentifierElement::ALLOWED_IDENTIFIER,
+                                          s[0] == QUOTE_CHAR ? 1 : 0);
+    if (badIndex == string::npos) {
+      if (!(isalpha(s[0]) || ((s[0] == QUOTE_CHAR && isalpha(s[1]))))) {
+        throw ParserException(
+            "Input does not begin with an alphabetic character.", s,
+            s[0] == QUOTE_CHAR ? 1 : 0);
+      } else {
+        throw ParserException("Input is too short.", s,
+                              s[0] == QUOTE_CHAR ? 2 : 1);
+      }
+    } else if (s[badIndex] == ' ') {  // has a space
+      throw ParserException("Input looks like a command, but has a space.", s,
+                            badIndex);
+    } else {
+      throw ParserException(
+          "Input looks like a command, but has a symbol "
+          "that is not in `-?*`.",
+          s, badIndex);
+    }
+  }
+}
+
+IdentifierElement::IdentifierElement(const string& s, bool isQuoted) noexcept
+    : StackElement(StackElement::DataType::Identifier),
+      name(s),
+      quoted(isQuoted) {}
+
+IdentifierElement* IdentifierElement::clone() const noexcept {
+  return new IdentifierElement(name, quoted);
+}
+
+bool IdentifierElement::operator==(const StackElement& elm) const noexcept {
+  if (elm.getType() != dataType) {
+    return false;
+  } else {
+    const IdentifierElement& cmd = static_cast<const IdentifierElement&>(elm);
+    return cmd.name == name && cmd.quoted == quoted;
+  }
+}
+
+IdentifierElement::operator string() const noexcept {
+  return (quoted ? string(1, QUOTE_CHAR) : "") + name;
+}
+
+const string& IdentifierElement::getName() const noexcept { return name; }
+bool IdentifierElement::isQuoted() const noexcept { return quoted; }
+>>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 
 const char* const NumberElement::ALLOWED_NUMBER = "-+1234567890.'";
 const char* const NumberElement::NUMBER_SIGNS = "-+";
@@ -278,8 +411,7 @@ SubstackElement* SubstackElement::parse(const string& s) {
       if (parseLevel < 0) {
         throw ParserException(
             "Missing at least one matching opening substack delimiter.", s,
-            iter - s.begin() -
-                1);  // iter is always at least 2 greater than s.begin().
+            static_cast<size_t>(iter - s.begin() - 1));
       }
     }
 
@@ -360,9 +492,21 @@ TypeElement* TypeElement::parse(const string& s) {
         DataType::Substack,
         TypeElement::parse(s.substr(s.find_first_of('(') + 1,
                                     s.length() - s.find_first_of('(') - 2)));
+  } else if (starts_with(s, "Command")) {  // substack specializations
+    return new TypeElement(
+        DataType::Command,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
+  } else if (starts_with(s, "Identifier")) {  // substack specializations
+    return new TypeElement(
+        DataType::Identifier,
+        TypeElement::parse(s.substr(s.find_first_of('(') + 1,
+                                    s.length() - s.find_first_of('(') - 2)));
   } else {
-    throw ParserException("Cannot have a specialzation except on a Substack.",
-                          s, s.find('('));
+    throw ParserException(
+        "Cannot have a specialization except on a Substack, Command, or "
+        "Identifier.",
+        s, s.find('('));
   }
 }  // namespace StackElements
 
@@ -436,9 +580,9 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES = new vector<string>{
-      "Number", "String", "Boolean", "Substack", "Type", "Command", "Any"};
+  static vector<string>* TYPES =
+      new vector<string>{"Number", "String",  "Boolean",    "Substack",
+                         "Type",   "Command", "Identifier", "Any"};
   return *TYPES;
 }
-}  // namespace stackelements
-}  // namespace stacklang
+}  // namespace stacklang::stackelements
