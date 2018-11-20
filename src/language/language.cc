@@ -186,7 +186,7 @@ void checkContext(const string& actual, const CommandElement* required,
   }
 }
 
-void execute(Stack& s, Defines& defines, vector<string> context) {
+void execute(Stack& s, Environment& defines, vector<string> context) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError(context);

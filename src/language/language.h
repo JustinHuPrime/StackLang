@@ -45,7 +45,6 @@ typedef std::map<std::string, DefinedFunction> Defines;
 typedef void (*const Prim)(Stack&, Defines&, std::vector<std::string>&);
 typedef std::pair<Stack, Prim> PrimitiveFunction;
 typedef std::map<std::string, PrimitiveFunction> Primitives;
-typedef std::vector<std::map<std::string, ElementPtr>> Environment;
 
 const Primitives& PRIMITIVES() noexcept;
 Environment& ENVIRONMENT() noexcept;
