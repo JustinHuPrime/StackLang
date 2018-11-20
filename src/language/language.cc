@@ -195,8 +195,7 @@ void execute(Stack& s, Environment& defines, vector<string> context) {
 
   const auto& PRIMS = PRIMITIVES();
 
-  if (s.top()->getType() == StackElement::DataType::Command &&
-      !dynamic_cast<const CommandElement*>(s.top())->isQuoted()) {
+  if (s.top()->getType() == StackElement::DataType::Command) {
     CommandPtr command(dynamic_cast<CommandElement*>(s.pop()));
     const auto& defResult =
         find_if(defines.begin(), defines.end(),
