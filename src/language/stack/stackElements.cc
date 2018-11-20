@@ -79,7 +79,6 @@ const char* const CommandElement::COMMAND_LDELIM = "<";
 const char* const CommandElement::COMMAND_RDELIM = ">";
 const char* const CommandElement::ALLOWED_COMMAND =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
-// const char CommandElement::QUOTE_CHAR = '`';
 
 CommandElement* CommandElement::parse(const string& s) {
   size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND, 0);
@@ -94,51 +93,14 @@ CommandElement* CommandElement::parse(const string& s) {
         "that is not in `-?*`.",
         s, badIndex);
   }
-
-
-  // if (s.find_first_not_of(CommandElement::ALLOWED_COMMAND, 1) == string::npos &&
-  //     (isalpha(s[0]) ||
-  //      (s[0] == QUOTE_CHAR && s.length() >= 2 &&
-  //       isalpha(s[1])))) {  // has only allowed characters, starts with a
-  //                           // quote char and a letter or a letter
-  //   return new CommandElement(removeChar(s, QUOTE_CHAR), s[0] == QUOTE_CHAR);
-  // } else {
-  // size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND,
-  //                                       s[0] == QUOTE_CHAR ? 1 : 0);
-  // size_t badIndex = s.find_first_not_of(CommandElement::ALLOWED_COMMAND, 0);
-  // if (badIndex == string::npos) { // If all chars are allowed chars
-
-    // then there are no problems. Can get rid of this case
-
-    // if (!(isalpha(s[0]) || ((s[0] == QUOTE_CHAR && isalpha(s[1]))))) {
-    //   throw ParserException(
-    //       "Input does not begin with an alphabetic character.", s,
-    //       s[0] == QUOTE_CHAR ? 1 : 0);
-    // } else {
-    //   throw ParserException("Input is too short.", s,
-    //                         s[0] == QUOTE_CHAR ? 2 : 1);
-    // }
-  // } else if (s[badIndex] == ' ') {  // has a space
-  //   throw ParserException("Input looks like a command, but has a space.", s,
-  //                         badIndex);
-  // } else {
-  //   throw ParserException(
-  //       "Input looks like a command, but has a symbol "
-  //       "that is not in `-?*`.",
-  //       s, badIndex);
-  // }
-  // }
 }
 
 CommandElement::CommandElement(const string& s) noexcept
-// CommandElement::CommandElement(const string& s, bool isQuoted) noexcept
     : StackElement(StackElement::DataType::Command),
       name(s) {}
-      // quoted(isQuoted) {}
 
 CommandElement* CommandElement::clone() const noexcept {
     return new CommandElement(name);
-  // return new CommandElement(name, quoted);
 }
 
 bool CommandElement::operator==(const StackElement& elm) const noexcept {
@@ -147,18 +109,14 @@ bool CommandElement::operator==(const StackElement& elm) const noexcept {
   } else {
     const CommandElement& cmd = static_cast<const CommandElement&>(elm);
     return cmd.name == name;
-    // return cmd.name == name && cmd.quoted == quoted;
   }
 }
 
 CommandElement::operator string() const noexcept {
   return COMMAND_LDELIM + name + COMMAND_RDELIM;
-  // return (quoted ? string(1, QUOTE_CHAR) : "") + COMMAND_LDELIM + name +
-  //        COMMAND_RDELIM;
 }
 
 const string& CommandElement::getName() const noexcept { return name; }
-// bool CommandElement::isQuoted() const noexcept { return quoted; }
 
 const char* const NumberElement::ALLOWED_NUMBER = "-+1234567890.'";
 const char* const NumberElement::NUMBER_SIGNS = "-+";
