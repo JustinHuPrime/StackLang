@@ -83,32 +83,32 @@ TEST_CASE("check empty substack always matches substack",
   REQUIRE(checkType(s.get(), anyT, vector<string>{}));
 }
 
-TEST_CASE("check mixed substack only matched by any", "[language][checkType]") {
-  ElementPtr s(SubstackElement::parse("<<\"string\", 2, `map>>"));
-  TypeElement anyT = TypeElement(StackElement::DataType::Substack,
-                                 new TypeElement(StackElement::DataType::Any));
-  TypeElement numberT =
-      TypeElement(StackElement::DataType::Substack,
-                  new TypeElement(StackElement::DataType::Number));
-  TypeElement commandT =
-      TypeElement(StackElement::DataType::Substack,
-                  new TypeElement(StackElement::DataType::Command));
-  TypeElement substackT = TypeElement(StackElement::DataType::Substack);
-  REQUIRE_FALSE(checkType(s.get(), numberT, vector<string>{}));
-  REQUIRE_FALSE(checkType(s.get(), commandT, vector<string>{}));
-  REQUIRE(checkType(s.get(), substackT, vector<string>{}));
-  REQUIRE(checkType(s.get(), anyT, vector<string>{}));
-}
+// TEST_CASE("check mixed substack only matched by any", "[language][checkType]") {
+//   ElementPtr s(SubstackElement::parse("<<\"string\", 2, `map>>"));
+//   TypeElement anyT = TypeElement(StackElement::DataType::Substack,
+//                                  new TypeElement(StackElement::DataType::Any));
+//   TypeElement numberT =
+//       TypeElement(StackElement::DataType::Substack,
+//                   new TypeElement(StackElement::DataType::Number));
+//   TypeElement commandT =
+//       TypeElement(StackElement::DataType::Substack,
+//                   new TypeElement(StackElement::DataType::Command));
+//   TypeElement substackT = TypeElement(StackElement::DataType::Substack);
+//   REQUIRE_FALSE(checkType(s.get(), numberT, vector<string>{}));
+//   REQUIRE_FALSE(checkType(s.get(), commandT, vector<string>{}));
+//   REQUIRE(checkType(s.get(), substackT, vector<string>{}));
+//   REQUIRE(checkType(s.get(), anyT, vector<string>{}));
+// }
 
-TEST_CASE("check any matches any element", "[language][checkType]") {
-  ElementPtr number(NumberElement::parse("3.14"));
-  ElementPtr substack(SubstackElement::parse("<<\"string\", 2, `map>>"));
-  ElementPtr command(CommandElement::parse("filter"));
-  TypeElement anyT = TypeElement(StackElement::DataType::Any);
-  REQUIRE(checkType(number.get(), anyT, vector<string>{}));
-  REQUIRE(checkType(substack.get(), anyT, vector<string>{}));
-  REQUIRE(checkType(command.get(), anyT, vector<string>{}));
-}
+// TEST_CASE("check any matches any element", "[language][checkType]") {
+//   ElementPtr number(NumberElement::parse("3.14"));
+//   ElementPtr substack(SubstackElement::parse("<<\"string\", 2, `map>>"));
+//   ElementPtr command(CommandElement::parse("filter"));
+//   TypeElement anyT = TypeElement(StackElement::DataType::Any);
+//   REQUIRE(checkType(number.get(), anyT, vector<string>{}));
+//   REQUIRE(checkType(substack.get(), anyT, vector<string>{}));
+//   REQUIRE(checkType(command.get(), anyT, vector<string>{}));
+// }
 
 TEST_CASE("check vector of types good", "[language][checkTypes]") {
   Stack things = Stack{

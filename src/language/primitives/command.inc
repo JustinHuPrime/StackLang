@@ -25,14 +25,6 @@
     s.push(
         new BooleanElement(elm->getType() == StackElement::DataType::Command));
   }}},
-    {"quoted?",
-     {Stack{new TypeElement(StackElement::DataType::Any)},
-      [](Stack& s, Defines&, vector<string>&) {
-        ElementPtr elm(s.pop());
-        s.push(new BooleanElement(
-            elm->getType() == StackElement::DataType::Command &&
-            dynamic_cast<CommandElement*>(elm.get())->isQuoted()));
-      }}},
     {"defined?",
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines& defs, vector<string>&) {
@@ -55,18 +47,12 @@
         }
         s.push(new BooleanElement(iter->second.context != nullptr));
       }}},
-    {"unquote",
-     {Stack{new TypeElement(StackElement::DataType::Command)},
-      [](Stack& s, Defines&, vector<string>&) {
-        CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
-        s.push(new CommandElement(elm->getName()));
-      }}},
     {"command-to-string",
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines&, vector<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
         s.push(
-            new StringElement((elm->isQuoted() ? "`" : "") + elm->getName()));
+            new StringElement(elm->getName()));
       }}},
     {"string-to-command",
      {Stack{new TypeElement(StackElement::DataType::String)},
@@ -87,27 +73,6 @@
                              context);
         }
         s.push(result.release());
-      }}},
-    {"string-to-command*",
-     {Stack{new TypeElement(StackElement::DataType::String)},
-      [](Stack& s, Defines&, vector<string>& context) {
-        StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
-        ElementPtr result;
-        try {
-          result = ElementPtr(StackElement::parse(elm->getData()));
-        } catch (...) {
-          throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-                                 " produced an error.",
-                             context);
-        }
-        if (result->getType() != StackElement::DataType::Command) {
-          string elmString = static_cast<string>(*elm);
-          throw RuntimeError("Parsing of element " + elmString +
-                                 " produced a non-command result.",
-                             context);
-        }
-        CommandPtr cmd(dynamic_cast<CommandElement*>(result.release()));
-        s.push(new CommandElement(cmd->getName(), true));
       }}},
     {"arity",
      {Stack{new TypeElement(StackElement::DataType::Command)},

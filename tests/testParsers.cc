@@ -100,27 +100,27 @@ TEST_CASE("word parses to command", "[parse][StackElement][command]") {
   REQUIRE(cmd->getName() == "cmd1*");
 }
 
-TEST_CASE("command quote recognized", "[parse][StackElement][command]") {
-  CommandPtr cmd(dynamic_cast<CommandElement*>(StackElement::parse("`Number")));
-  REQUIRE(cmd != nullptr);
-  REQUIRE(cmd->getName() == "Number");
-}
+// TEST_CASE("command quote recognized", "[parse][StackElement][command]") {
+//   CommandPtr cmd(dynamic_cast<CommandElement*>(StackElement::parse("`Number")));
+//   REQUIRE(cmd != nullptr);
+//   REQUIRE(cmd->getName() == "Number");
+// }
 
-TEST_CASE("unquoted command properly parsed", "[parse][CommandElement]") {
-  CommandPtr cmd(CommandElement::parse("foldr"));
-  REQUIRE(cmd->getName() == "foldr");
-  REQUIRE_FALSE(cmd->isQuoted());
-}
+// TEST_CASE("unquoted command properly parsed", "[parse][CommandElement]") {
+//   CommandPtr cmd(CommandElement::parse("foldr"));
+//   REQUIRE(cmd->getName() == "foldr");
+//   REQUIRE_FALSE(cmd->isQuoted());
+// }
 
-TEST_CASE("quoted command properly parsed", "[parse][CommandElement]") {
-  CommandPtr cmd(CommandElement::parse("`foldr"));
-  REQUIRE(cmd->getName() == "foldr");
-  REQUIRE(cmd->isQuoted());
-}
+// TEST_CASE("quoted command properly parsed", "[parse][CommandElement]") {
+//   CommandPtr cmd(CommandElement::parse("`foldr"));
+//   REQUIRE(cmd->getName() == "foldr");
+//   REQUIRE(cmd->isQuoted());
+// }
 
-TEST_CASE("quote in middle of command", "[parse][CommandElement]") {
-  REQUIRE_THROWS_AS(CommandElement::parse("`fold`r"), ParserException);
-}
+// TEST_CASE("quote in middle of command", "[parse][CommandElement]") {
+//   REQUIRE_THROWS_AS(CommandElement::parse("`fold`r"), ParserException);
+// }
 
 TEST_CASE("space in middle of command", "[parse][CommandElement]") {
   REQUIRE_THROWS_AS(CommandElement::parse("stuff todo"), ParserException);
@@ -143,10 +143,10 @@ TEST_CASE("number with symbol in the middle", "[parse][NumberElement]") {
   REQUIRE_THROWS_AS(NumberElement::parse("1-2"), ParserException);
 }
 
-TEST_CASE("number with quote chars between signs", "[parse][NumberElement]") {
-  NumberPtr num(NumberElement::parse("+'1.5'"));
-  REQUIRE(num->getData() == 1.5);
-}
+// TEST_CASE("number with quote chars between signs", "[parse][NumberElement]") {
+//   NumberPtr num(NumberElement::parse("+'1.5'"));
+//   REQUIRE(num->getData() == 1.5);
+// }
 
 TEST_CASE("number precision check", "[parse][NumberElement]") {
   NumberPtr num1(NumberElement::parse("3.14159"));

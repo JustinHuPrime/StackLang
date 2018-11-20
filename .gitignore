@@ -4,3 +4,4 @@ bin/
 dependencies/
 tests/bin/
 tests/dependencies/
+.vscode/

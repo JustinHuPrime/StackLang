@@ -63,32 +63,32 @@ TEST_CASE("command? primitive false case", "[primitives][Command][command?]") {
   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == false);
 }
 
-TEST_CASE("quoted? primitive true case", "[primitives][Command][quoted?]") {
-  Stack s{new CommandElement("foldr", true), new CommandElement("quoted?")};
-  execute(s, emptyDefines);
-  ElementPtr ptr(s.pop());
-  REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
-  REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == true);
-}
+// TEST_CASE("quoted? primitive true case", "[primitives][Command][quoted?]") {
+//   Stack s{new CommandElement("foldr", true), new CommandElement("quoted?")};
+//   execute(s, emptyDefines);
+//   ElementPtr ptr(s.pop());
+//   REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
+//   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == true);
+// }
 
-TEST_CASE("quoted? primitive simple false case",
-          "[primitives][Command][quoted?]") {
-  Stack s{new StringElement("I'm a quoted command - trust me!"),
-          new CommandElement("quoted?")};
-  execute(s, emptyDefines);
-  ElementPtr ptr(s.pop());
-  REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
-  REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == false);
-}
+// TEST_CASE("quoted? primitive simple false case",
+//           "[primitives][Command][quoted?]") {
+//   Stack s{new StringElement("I'm a quoted command - trust me!"),
+//           new CommandElement("quoted?")};
+//   execute(s, emptyDefines);
+//   ElementPtr ptr(s.pop());
+//   REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
+//   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == false);
+// }
 
-TEST_CASE("quoted? primitive complex false case",
-          "[primitives][Command][quoted?]") {
-  Stack s{new CommandElement("foldr", false), new CommandElement("quoted?")};
-  execute(s, emptyDefines);
-  ElementPtr ptr(s.pop());
-  REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
-  REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == false);
-}
+// TEST_CASE("quoted? primitive complex false case",
+//           "[primitives][Command][quoted?]") {
+//   Stack s{new CommandElement("foldr", false), new CommandElement("quoted?")};
+//   execute(s, emptyDefines);
+//   ElementPtr ptr(s.pop());
+//   REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
+//   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == false);
+// }
 
 TEST_CASE("defined? false case", "[primtives][Command][defined?]") {
   Stack s{new CommandElement("doesnt-exist"), new CommandElement("defined?")};
@@ -106,22 +106,22 @@ TEST_CASE("defined? primtive true case", "[primtives][Command][defined?]") {
   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == true);
 }
 
-TEST_CASE("defined? defined true case", "[primtives][Command][defined?]") {
-  Stack s{
-      new SubstackElement(Stack{}),
-      new SubstackElement(Stack{}),
-      new CommandElement("function-name", true),
-      new CommandElement("define", false),
-  };
-  Defines d;
-  execute(s, d);
-  s.push(new CommandElement("function-name"));
-  s.push(new CommandElement("defined?"));
-  execute(s, d);
-  ElementPtr ptr(s.pop());
-  REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
-  REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == true);
-}
+// TEST_CASE("defined? defined true case", "[primtives][Command][defined?]") {
+//   Stack s{
+//       new SubstackElement(Stack{}),
+//       new SubstackElement(Stack{}),
+//       new CommandElement("function-name", true),
+//       new CommandElement("define", false),
+//   };
+//   Defines d;
+//   execute(s, d);
+//   s.push(new CommandElement("function-name"));
+//   s.push(new CommandElement("defined?"));
+//   execute(s, d);
+//   ElementPtr ptr(s.pop());
+//   REQUIRE(ptr->getType() == StackElement::DataType::Boolean);
+//   REQUIRE(dynamic_cast<BooleanElement*>(ptr.get())->getData() == true);
+// }
 
 TEST_CASE("local? not found", "[primitives][Command][local?]") {}
 TEST_CASE("local? primitive", "[primitives][Command][local?]") {}

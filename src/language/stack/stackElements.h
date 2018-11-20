@@ -52,23 +52,20 @@ class CommandElement : public StackElement {
 
   static CommandElement* parse(const std::string&);
 
-  explicit CommandElement(const std::string&, bool isQuoted = false) noexcept;
+  explicit CommandElement(const std::string&) noexcept;
   CommandElement* clone() const noexcept override;
 
   bool operator==(const StackElement&) const noexcept override;
 
   explicit operator std::string() const noexcept override;
   const std::string& getName() const noexcept;
-  bool isQuoted() const noexcept;
 
-  static const char QUOTE_CHAR;
 
  private:
   static const char* const COMMAND_LDELIM;
   static const char* const COMMAND_RDELIM;
 
   std::string name;
-  bool quoted;
 };
 
 class IdentifierElement : public StackElement {
