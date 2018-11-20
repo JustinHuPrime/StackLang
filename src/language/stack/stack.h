@@ -38,16 +38,10 @@ class StackElement {
     Boolean,
     Substack,
     Type,
-<<<<<<< HEAD
-    CommandPrimitive,
-    CommandElement,
-    Identifier,
-=======
     Command,
     Identifier,
     Primitive,
     Defined,
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
     Any,
   };
 

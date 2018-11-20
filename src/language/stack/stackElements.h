@@ -22,25 +22,19 @@
 
 #include <functional>
 #include <limits>
-<<<<<<< HEAD
-=======
 #include <map>
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "language/stack/stack.h"
 
-<<<<<<< HEAD
-namespace stacklang::stackelements {
-=======
+
 namespace stacklang {
 
 typedef std::vector<std::map<std::string, ElementPtr>> Environment;
 
 namespace stackelements {
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 
 class BooleanElement : public StackElement {
  public:
@@ -62,26 +56,6 @@ class BooleanElement : public StackElement {
 class CommandElement : public StackElement {
  public:
   CommandElement(bool) noexcept;
-<<<<<<< HEAD
-  CommandElement* clone() const noexcept override;
-
-  bool operator==(const StackElement&) const noexcept override;
-
-  explicit operator std::string() const noexcept override;
-
-  bool isPrimitive() const noexcept;
-
- private:
-  bool primitive;
-};
-
-class PrimitiveCommandElement : public CommandElement {
- public:
-  PrimitiveCommandElement(
-      std::function<void(Stack&, Defines&,
-                         std::vector<std::string>&)>) noexcept;
-  PrimitiveCommandElement* clone() const noexcept override;
-=======
   bool operator==(const StackElement&) const noexcept override;
 
   bool isPrimitive() const noexcept;
@@ -132,41 +106,18 @@ class IdentifierElement : public StackElement {
   explicit IdentifierElement(const std::string&,
                              bool isQuoted = false) noexcept;
   IdentifierElement* clone() const noexcept override;
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 
   bool operator==(const StackElement&) const noexcept override;
 
   explicit operator std::string() const noexcept override;
-<<<<<<< HEAD
-=======
   const std::string& getName() const noexcept;
   bool isQuoted() const noexcept;
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 
   void operator()(Stack&, Defines&, std::vector<std::string>&) const;
 
  private:
-<<<<<<< HEAD
-  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
-};
-
-class DefinedCommandElement : public CommandElement {
- public:
-  DefinedCommandElement(?) noexcept;
-  DefinedCommandElement* clone() const noexcept override;
-
-  bool operator==(const StackElement&) const noexcept override;
-
-  explicit operator std::string() const noexcept override;
-
-  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
-
- private:
-  std::function<void(Stack&, Defines&, std::vector<std::string>&)> primitive;
-=======
   std::string name;
   bool quoted;
->>>>>>> 8316510b3717c17707cc5370fe63615b6164bb88
 };
 
 // class CommandElement : public StackElement {
