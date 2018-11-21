@@ -88,7 +88,7 @@ StackElement* StackElement::parse(const string& s) {
                   s) != TypeElement::TYPES()
                             .end()) {  // has a subtype, or exists in types
     return TypeElement::parse(s);
-  } else if (isalpha(s[0]) // starts with a character
+  } else if (isalpha(s[0])) { // starts with a character
     return CommandElement::parse(s);
   } else {  // error case
     throw ParserException(
