@@ -1,0 +1,31 @@
+<<
+3, rotate
+dup
+2
+multiply ; get 2a
+
+4, rotate
+dup
+negate ; get -b
+
+2, rotate
+2, pow ; get b^2
+
+5, rotate
+5, rotate
+4
+multiply
+multiply ; get 4ac
+
+subtract ; b^2 - 4ac
+
+sqrt ; sqrt(b^2 - 4ac)
+
+add ; -b + sqrt(b^2 - 4ac)
+
+2, rotate
+
+divide ; {-b + sqrt(b^2 - 4ac)}/{2a}
+>>
+`quadratic
+define

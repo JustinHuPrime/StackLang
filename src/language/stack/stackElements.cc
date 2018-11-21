@@ -97,7 +97,7 @@ PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
   return new PrimitiveCommandElement(fun);
 }
 
-explicit PrimitiveCommandElement::operator std::string() const noexcept {
+PrimitiveCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
@@ -115,7 +115,7 @@ DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
   return new DefinedCommandElement(sig, body);
 }
 
-explicit DefinedCommandElement::operator std::string() const noexcept {
+DefinedCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
@@ -127,17 +127,19 @@ void DefinedCommandElement::operator()(Stack& s, Environment& e,
   for (const auto& c : body) {
     try {
       s.push(c->clone());
-    } catch (const StackOverflowError& e) {
+    } catch (const StackOverflowError& exn) {
       // stack error without trace must be main stack.
-      if (e.getTrace().empty())
+      if (exn.getTrace().empty()) {
         throw StackOverflowError(s.getLimit(), st);
-      else
-        throw e;
-    } catch (const StackUnderflowError& e) {
-      if (e.getTrace().empty())
+      } else {
+        throw;
+      }
+    } catch (const StackUnderflowError& exn) {
+      if (exn.getTrace().empty()) {
         throw StackUnderflowError(st);
-      else
-        throw e;
+      } else {
+        throw;
+      }
     }
     execute(s, e, st);  // TODO: make this tail recursive.
   }
@@ -515,10 +517,9 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES =
-      new vector<string>{"Number", "String",  "Boolean",    "Substack",
-                         "Type",   "Command", "Identifier", "Primitive",
-                         "Defined", "Any"};
+  static vector<string>* TYPES = new vector<string>{
+      "Number",  "String",     "Boolean",   "Substack", "Type",
+      "Command", "Identifier", "Primitive", "Defined",  "Any"};
   return *TYPES;
 }
 }  // namespace stacklang::stackelements

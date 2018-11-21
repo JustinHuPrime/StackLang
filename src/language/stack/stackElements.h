@@ -29,7 +29,6 @@
 
 #include "language/stack/stack.h"
 
-
 namespace stacklang {
 
 typedef std::vector<std::map<std::string, ElementPtr>> Environment;
@@ -100,6 +99,7 @@ class DefinedCommandElement : public CommandElement {
 class IdentifierElement : public StackElement {
  public:
   static const char* const ALLOWED_IDENTIFIER;
+  static const char QUOTE_CHAR;
 
   static IdentifierElement* parse(const std::string&);
 
@@ -113,7 +113,7 @@ class IdentifierElement : public StackElement {
   const std::string& getName() const noexcept;
   bool isQuoted() const noexcept;
 
-  void operator()(Stack&, Defines&, std::vector<std::string>&) const;
+  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
 
  private:
   std::string name;
@@ -243,6 +243,7 @@ typedef std::unique_ptr<StringElement> StringPtr;
 typedef std::unique_ptr<SubstackElement> SubstackPtr;
 typedef std::unique_ptr<TypeElement> TypePtr;
 
-}  // namespace stacklang::stackelements
+}  // namespace stackelements
+}  // namespace stacklang
 
 #endif  // STACKLANG_LANGUAGE_STACK_STACKELEMENT_H_

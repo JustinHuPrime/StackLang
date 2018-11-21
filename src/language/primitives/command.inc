@@ -51,8 +51,7 @@
      {Stack{new TypeElement(StackElement::DataType::Command)},
       [](Stack& s, Defines&, vector<string>&) {
         CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
-        s.push(
-            new StringElement(elm->getName()));
+        s.push(new StringElement(elm->getName()));
       }}},
     {"string-to-command",
      {Stack{new TypeElement(StackElement::DataType::String)},

@@ -59,7 +59,7 @@ void checkContext(const std::string& actual,
                   const stacklang::stackelements::CommandElement* required,
                   const std::string& name,
                   const std::vector<std::string>& context);
-void execute(Stack&, Defines&,
+void execute(Stack&, Environment&,
              std::vector<std::string> = std::vector<std::string>{
                  GLOBAL_CONTEXT});  // Executes the stack until it
                                     // encounters a data element
