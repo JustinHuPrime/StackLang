@@ -5,3 +5,5 @@ dependencies/
 tests/bin/
 tests/dependencies/
 .vscode/
+*.sta
+-libs/

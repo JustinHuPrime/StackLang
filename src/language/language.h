@@ -31,6 +31,10 @@
 #include "language/stack/stackElements.h"
 
 namespace stacklang {
+
+#define PRIMDEF(name, body) \
+  {name, new PrimitiveCommandElement([](Stack & s, Environment & e) body)},
+
 Environment& GLOBAL_ENVIRONMENT() noexcept;
 
 bool checkType(const StackElement* elm, const stackelements::TypeElement& type);

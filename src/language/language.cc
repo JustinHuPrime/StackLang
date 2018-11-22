@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <iostream>  // debug only
 #include <iterator>
 #include <random>
 #include <sstream>
@@ -100,9 +101,9 @@ using util::starts_with;
 using util::trim;
 
 StackElement* getOrError(const Environment& env, const string& id) {
-  for (const auto& layer : env) {
-    auto iter = layer.find(id);
-    if (iter != layer.cend()) {
+  for (auto layer = env.rbegin(); layer != env.rend(); ++layer) {
+    auto iter = layer->find(id);
+    if (iter != layer->cend()) {
       return iter->second->clone();
     }
   }

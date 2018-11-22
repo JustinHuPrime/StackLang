@@ -16,256 +16,250 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-{"define", new PrimitiveCommandElement([](Stack& s, Environment& e) {
-   checkTypes(
-       s, Stack{new TypeElement(StackElement::DataType::Substack,
-                                new TypeElement(StackElement::DataType::Type)),
-                new TypeElement(StackElement::DataType::Substack),
-                new TypeElement(StackElement::DataType::Identifier)});
-   IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
-   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
-   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
-   auto iter = e.front().find(name->getName());
-   if (iter != e.front().cend()) {
-     throw RuntimeError("Cannot redefine " + name->getName() + ".");
-   }
-   DefinedCommandElement* def =
-       new DefinedCommandElement(sig->getData(), body->getData(), e);
-   e.front().insert(pair<string, const StackElement*>(name->getName(), def));
-   def->getEnv().front().insert(
-       pair<string, const StackElement*>(name->getName(), def));
+PRIMDEF("define", {
+  checkTypes(
+      s, Stack{new TypeElement(StackElement::DataType::Substack,
+                               new TypeElement(StackElement::DataType::Type)),
+               new TypeElement(StackElement::DataType::Substack),
+               new TypeElement(StackElement::DataType::Identifier)});
+  std::cerr << "HERE!\nEnv size: " << e.size()
+            << "\nEnv front size: " << e.front().size()
+            << "\nEnv back size: " << e.back().size() << "\n";
+            
+  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
+  SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
+  auto iter = e.back().find(name->getName());
+  if (iter != e.back().cend()) {
+    throw RuntimeError("Cannot redefine " + name->getName() + ".");
+  }
+  DefinedCommandElement* def =
+      new DefinedCommandElement(sig->getData(), body->getData(), e);
+  e.back().insert(pair<string, const StackElement*>(name->getName(), def));
+  def->getEnv().back().insert(
+      pair<string, const StackElement*>(name->getName(), def));
+  def->getEnv().emplace_back();
+})
+PRIMDEF("undefine", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Command)});
+  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  for (auto& layer : e) {
+    auto iter = layer.find(name->getName());
+    if (iter != layer.cend()) {
+      delete iter->second;
+      layer.erase(iter);
+    }
+  }
 
-   return execute(s, e);
- })},
+  throw RuntimeError("Identifier " + name->getName() +
+                     " was not previously defined.");
+})
+PRIMDEF("include", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
+  StringPtr given(dynamic_cast<StringElement*>(s.pop()));
+  string path = given->getData();
+  ifstream fin;
 
-    /*
-    {"undefine",
-         {Stack{new TypeElement(StackElement::DataType::Command)},
-          [](Stack& s, Defines& defs, list<string>& context) {
-            CommandPtr elm(dynamic_cast<CommandElement*>(s.pop()));
-            auto iter = defs.find(elm->getName());
-            if (iter == defs.end()) {
-              throw RuntimeError(
-                  "Command " + elm->getName() + " was not previously defined.",
-                  context);
-            } else {
-              defs.erase(iter);
-            }
-          }}},
-       {"include",
-        {Stack{new TypeElement(StackElement::DataType::String)},
-         [](Stack& s, Defines& defs, list<string>& context) {
-           StringPtr given(dynamic_cast<StringElement*>(s.pop()));
-           string path = given->getData();
-           ifstream fin;
+  // change this to be more portable.
+  if (!fin.is_open()) fin.open(path);
+  if (!fin.is_open()) fin.open(path + ".sta");
+  if (path.find('/') ==
+      string::npos) {  // filename - check file within libs folder
+    if (!fin.is_open()) fin.open("libs/" + path);
+    if (!fin.is_open()) fin.open("libs/" + path + ".sta");
+  }
+  if (!fin.is_open())
+    throw RuntimeError("Could not open include file " + path + ".");
 
-           // change this to be more portable.
-           if (!fin.is_open()) fin.open(path);
-           if (!fin.is_open()) fin.open(path + ".sta");
-           if (path.find('/') ==
-               string::npos) {  // filename - check file within libs folder
-             if (!fin.is_open()) fin.open("libs/" + path);
-             if (!fin.is_open()) fin.open("libs/" + path + ".sta");
-           }
-           if (!fin.is_open())
-             throw RuntimeError("Could not open include file " + path + ".",
-                                context);
+  string buffer;
+  size_t lineNumber = 1;
+  int substackLevel = 0;
+  bool inString = false;
+  bool inComment = false;
+  bool setPrevChar = true;
+  char prevChar = '\0';
+  while (fin.peek() != EOF) {
+    char c = fin.get();
+    if (c == ';' && !inString) {
+      inComment = true;
+      continue;
+    } else if (c == '"' && !inComment && !inString) {
+      inString = true;
+    } else if (c == '"' && !inComment && inString && prevChar != '\\') {
+      inString = false;
+    } else if (c == '\\' && inString && prevChar == '\\') {
+      prevChar = '\0';
+      setPrevChar = false;
+    } else if (c == '<' && prevChar == '<' && !inString && !inComment) {
+      prevChar = '\0';
+      setPrevChar = false;
+      substackLevel++;
+    } else if (c == '>' && prevChar == '>' && !inString && !inComment) {
+      prevChar = '\0';
+      setPrevChar = false;
+      if (--substackLevel < 0)
+        throw ParserException(
+            path + ":" + to_string(lineNumber) +
+                ": Found unmatched closing substack delimiter.",
+            "", 0);
+    } else if (c == '\n' && substackLevel == 0 && trim(buffer) != "") {
+      try {
+        s.push(StackElement::parse(trim(buffer)));
+      } catch (const StackOverflowError&) {
+        throw StackOverflowError(s.getLimit());
+      } catch (const ParserException& exn) {
+        throw ParserException(
+            path + ":" + to_string(lineNumber) + ": " + exn.getMessage(),
+            exn.getContext(), exn.getLocation());
+      }
+      buffer.erase();
+      inString = false;
+      inComment = false;
+      prevChar = '\0';
+      execute(s, env);
+      lineNumber++;
+      continue;  // skip end block
+    } else if (c == '\n' && substackLevel == 0 && trim(buffer) == "") {
+      buffer.erase();
+      inString = false;
+      inComment = false;
+      prevChar = '\0';
+      lineNumber++;
+      continue;  // skip end block
+    } else if (c == '\n' && substackLevel > 0) {
+      if (buffer.back() != ',' && !inString && !ends_with(buffer, "<<"))
+        buffer += ',';
+      prevChar = '\0';
+      inString = false;
+      inComment = false;
+      lineNumber++;
+      continue;
+    }
 
-           string buffer;
-           size_t lineNumber = 1;
-           int substackLevel = 0;
-           bool inString = false;
-           bool inComment = false;
-           bool setPrevChar = true;
-           char prevChar = '\0';
-           while (fin.peek() != EOF) {
-             char c = fin.get();
-             if (c == ';' && !inString) {
-               inComment = true;
-               continue;
-             } else if (c == '"' && !inComment && !inString) {
-               inString = true;
-             } else if (c == '"' && !inComment && inString && prevChar != '\\')
-    { inString = false; } else if (c == '\\' && inString && prevChar == '\\') {
-               prevChar = '\0';
-               setPrevChar = false;
-             } else if (c == '<' && prevChar == '<' && !inString && !inComment)
-    { prevChar = '\0'; setPrevChar = false; substackLevel++; } else if (c == '>'
-    && prevChar == '>' && !inString && !inComment) { prevChar = '\0';
-               setPrevChar = false;
-               if (--substackLevel < 0)
-                 throw ParserException(
-                     path + ":" + to_string(lineNumber) +
-                         ": Found unmatched closing substack delimiter.",
-                     "", 0, context);
-             } else if (c == '\n' && substackLevel == 0 && trim(buffer) != "") {
-               try {
-                 s.push(StackElement::parse(trim(buffer)));
-               } catch (const StackOverflowError&) {
-                 throw StackOverflowError(s.getLimit(), context);
-               } catch (const ParserException& e) {
-                 throw ParserException(
-                     path + ":" + to_string(lineNumber) + ": " + e.getMessage(),
-                     e.getContext(), e.getLocation(), context);
-               }
-               buffer.erase();
-               inString = false;
-               inComment = false;
-               prevChar = '\0';
-               execute(s, defs, context);
-               lineNumber++;
-               continue;  // skip end block
-             } else if (c == '\n' && substackLevel == 0 && trim(buffer) == "") {
-               buffer.erase();
-               inString = false;
-               inComment = false;
-               prevChar = '\0';
-               lineNumber++;
-               continue;  // skip end block
-             } else if (c == '\n' && substackLevel > 0) {
-               if (buffer.back() != ',' && !inString && !ends_with(buffer,
-    "<<")) buffer += ','; prevChar = '\0'; inString = false; inComment = false;
-               lineNumber++;
-               continue;
-             }
+    if (!inComment) {
+      buffer += c;
+      if (setPrevChar) prevChar = c;
+      setPrevChar = true;
+    }
+  }
 
-             if (!inComment) {
-               buffer += c;
-               if (setPrevChar) prevChar = c;
-               setPrevChar = true;
-             }
-           }
+  if (substackLevel == 0 && trim(buffer) != "") {
+    try {
+      s.push(StackElement::parse(trim(buffer)));
+    } catch (const StackOverflowError&) {
+      throw StackOverflowError(s.getLimit());
+    } catch (const ParserException& exn) {
+      throw ParserException(
+          path + ":" + to_string(lineNumber) + ": " + exn.getMessage(),
+          exn.getContext(), exn.getLocation());
+    }
+    execute(s, env);
+  } else if (substackLevel > 0) {
+    throw ParserException(path + ":" + to_string(lineNumber) + ": Missing " +
+                              to_string(substackLevel) +
+                              " closing substack delimiter" +
+                              (substackLevel > 1 ? "s" : "") + ".",
+                          "", 0);
+  }
 
-           if (substackLevel == 0 && trim(buffer) != "") {
-             try {
-               s.push(StackElement::parse(trim(buffer)));
-             } catch (const StackOverflowError&) {
-               throw StackOverflowError(s.getLimit(), context);
-             } catch (const ParserException& e) {
-               throw ParserException(
-                   path + ":" + to_string(lineNumber) + ": " + e.getMessage(),
-                   e.getContext(), e.getLocation(), context);
-             }
-             execute(s, defs, context);
-           } else if (substackLevel > 0) {
-             throw ParserException(path + ":" + to_string(lineNumber) +
-                                       ": Missing " + to_string(substackLevel) +
-                                       " closing substack delimiter" +
-                                       (substackLevel > 1 ? "s" : "") + ".",
-                                   "", 0, context);
-           }
+  fin.close();
+})
+PRIMDEF("drop", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
+  delete s.pop();
+})
+PRIMDEF("drop*", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
+  NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
+  long double remainder = num->getData();
+  long double whole;
+  remainder = modf(remainder, &whole);
+  if (remainder != 0 || whole <= 0) {
+    throw RuntimeError("Expected a positive integer, but got " +
+                       static_cast<string>(*num) + " instead.");
+  }
+  while (whole-- > 0) delete s.pop();
+})
+PRIMDEF("clear", { s.clear(); })
+PRIMDEF("rotate", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
+  NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
+  long double remainder = num->getData();
+  long double whole;
+  remainder = modf(remainder, &whole);
+  if (remainder != 0 || whole <= 0) {
+    throw RuntimeError("Expected a positive integer, but got " +
+                       static_cast<string>(*num) + " instead.");
+  }
+  StackElement* grabbed;
+  stack<StackElement*> rest;
+  while (whole-- > 1) rest.push(s.pop());
+  grabbed = s.pop();
+  while (!rest.empty()) {
+    s.push(rest.top());
+    rest.pop();
+  }
+  s.push(grabbed);
+})
+PRIMDEF("rotate*", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number),
+                      new TypeElement(StackElement::DataType::Number)});
+  NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
+  NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
+  long double reachRemainder = first->getData();
+  long double reachWhole;
+  reachRemainder = modf(reachRemainder, &reachWhole);
+  if (reachRemainder != 0 || reachWhole <= 0) {
+    throw RuntimeError("Expected a positive integer, but got " +
+                       static_cast<string>(*second) + " instead.");
+  }
+  long double countRemainder = second->getData();
+  long double countWhole;
+  countRemainder = modf(countRemainder, &countWhole);
+  if (countRemainder != 0 || countWhole <= 0)
+    throw RuntimeError("Expected a positive integer, but got " +
+                       static_cast<string>(*first) + " instead.");
 
-           fin.close();
-
-           execute(s, defs, context);
-         }}},
-       {"drop",
-        {Stack{new TypeElement(StackElement::DataType::Any)},
-         [](Stack& s, Defines&, list<string>&) { delete s.pop(); }}},
-       {"drop*",
-        {Stack{new TypeElement(StackElement::DataType::Number)},
-         [](Stack& s, Defines&, list<string>& context) {
-           NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
-           long double remainder = num->getData();
-           long double whole;
-           remainder = modf(remainder, &whole);
-           if (remainder != 0 || whole <= 0) {
-             throw RuntimeError("Expected a positive integer, but got " +
-                                    static_cast<string>(*num) + " instead.",
-                                context);
-           }
-           while (whole-- > 0) delete s.pop();
-         }}},
-       {"clear", {Stack{}, [](Stack& s, Defines&, list<string>&) { s.clear();
-    }}},
-       {"rotate",
-        {Stack{new TypeElement(StackElement::DataType::Number)},
-         [](Stack& s, Defines&, list<string>& context) {
-           NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
-           long double remainder = num->getData();
-           long double whole;
-           remainder = modf(remainder, &whole);
-           if (remainder != 0 || whole <= 0) {
-             throw RuntimeError("Expected a positive integer, but got " +
-                                    static_cast<string>(*num) + " instead.",
-                                context);
-           }
-           StackElement* grabbed;
-           stack<StackElement*> rest;
-           while (whole-- > 1) rest.push(s.pop());
-           grabbed = s.pop();
-           while (!rest.empty()) {
-             s.push(rest.top());
-             rest.pop();
-           }
-           s.push(grabbed);
-         }}},
-       {"rotate*",
-        {Stack{new TypeElement(StackElement::DataType::Number),
-               new TypeElement(StackElement::DataType::Number)},
-         [](Stack& s, Defines&, list<string>& context) {
-           NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
-           NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
-           long double reachRemainder = first->getData();
-           long double reachWhole;
-           reachRemainder = modf(reachRemainder, &reachWhole);
-           if (reachRemainder != 0 || reachWhole <= 0) {
-             throw RuntimeError("Expected a positive integer, but got " +
-                                    static_cast<string>(*second) + " instead.",
-                                context);
-           }
-           long double countRemainder = second->getData();
-           long double countWhole;
-           countRemainder = modf(countRemainder, &countWhole);
-           if (countRemainder != 0 || countWhole <= 0)
-             throw RuntimeError("Expected a positive integer, but got " +
-                                    static_cast<string>(*first) + " instead.",
-                                context);
-
-           while (countWhole-- > 0) {
-             long double reach = reachWhole;
-             StackElement* grabbed;
-             stack<StackElement*> rest;
-             while (reach-- > 1) rest.push(s.pop());
-             grabbed = s.pop();
-             while (!rest.empty()) {
-               s.push(rest.top());
-               rest.pop();
-             }
-             s.push(grabbed);
-           }
-         }}},
-       {"duplicate",
-        {Stack{new TypeElement(StackElement::DataType::Any)},
-         [](Stack& s, Defines&, list<string>&) { s.push(s.top()->clone()); }}},
-       {"error",
-        {Stack{new TypeElement(StackElement::DataType::String)},
-         [](Stack& s, Defines&, list<string>& context) {
-           StringPtr str(dynamic_cast<StringElement*>(s.pop()));
-           throw RuntimeError(str->getData(), context);
-         }}},
-       {"error*",
-        {Stack{new TypeElement(StackElement::DataType::String),
-               new TypeElement(StackElement::DataType::String),
-               new TypeElement(StackElement::DataType::Number)},
-         [](Stack& s, Defines&, list<string>& context) {
-           NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
-           StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
-           StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
-           long double remainder = ctxIndex->getData();
-           long double whole;
-           remainder = modf(remainder, &whole);
-           if (remainder != 0 || whole <= 0) {
-             throw RuntimeError("Expected a positive integer, but got " +
-                                    static_cast<string>(*ctxIndex) + "
-    instead.", context);
-           }
-           throw RuntimeError(msg->getData(), ctx->getData(), whole, context);
-         }}},
-       {"null", {Stack{}, [](Stack&, Defines&, list<string>&) { return; }}},
-       {"identity",
-        {Stack{new TypeElement(StackElement::DataType::Any)},
-         [](Stack&, Defines&, list<string>&) {
-           return;  // equivalent to popping then pushing.
-         }}},
-         */
+  while (countWhole-- > 0) {
+    long double reach = reachWhole;
+    StackElement* grabbed;
+    stack<StackElement*> rest;
+    while (reach-- > 1) rest.push(s.pop());
+    grabbed = s.pop();
+    while (!rest.empty()) {
+      s.push(rest.top());
+      rest.pop();
+    }
+    s.push(grabbed);
+  }
+})
+PRIMDEF("duplicate", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
+  s.push(s.top()->clone());
+})
+PRIMDEF("error", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
+  StringPtr str(dynamic_cast<StringElement*>(s.pop()));
+  throw RuntimeError(str->getData());
+})
+PRIMDEF("error*", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
+                      new TypeElement(StackElement::DataType::String),
+                      new TypeElement(StackElement::DataType::Number)});
+  NumberPtr ctxIndex(dynamic_cast<NumberElement*>(s.pop()));
+  StringPtr ctx(dynamic_cast<StringElement*>(s.pop()));
+  StringPtr msg(dynamic_cast<StringElement*>(s.pop()));
+  long double remainder = ctxIndex->getData();
+  long double whole;
+  remainder = modf(remainder, &whole);
+  if (remainder != 0 || whole <= 0) {
+    throw RuntimeError("Expected a positive integer, but got " +
+                       static_cast<string>(*ctxIndex) + "instead.");
+  }
+  throw RuntimeError(msg->getData(), ctx->getData(), whole);
+})
+PRIMDEF("null", { return; })
+PRIMDEF("identity", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
+  return;
+})
