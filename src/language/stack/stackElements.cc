@@ -39,6 +39,7 @@ using std::count;
 using std::fixed;
 using std::make_unique;
 using std::numeric_limits;
+using std::pair;
 using std::setprecision;
 using std::stold;
 using std::string;
@@ -106,11 +107,20 @@ void PrimitiveCommandElement::operator()(Stack& s, Environment& e) const {
 
 const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
 
-DefinedCommandElement::DefinedCommandElement(const Stack& s,
-                                             const Stack& b) noexcept
-    : CommandElement{false}, sig{s}, body{b} {}
+DefinedCommandElement::DefinedCommandElement(const Stack& s, const Stack& b,
+                                             const Environment& e) noexcept
+    : CommandElement{false}, sig{s}, body{b} {
+  env = Environment();
+  for (const auto& layer : e) {
+    env.emplace_back();
+    for (const auto& entry : layer) {
+      env.back().insert(pair<string, ElementPtr>(
+          entry.first, ElementPtr(entry.second->clone())));
+    }
+  }
+}
 DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
-  return new DefinedCommandElement(sig, body);
+  return new DefinedCommandElement(sig, body, env);
 }
 
 DefinedCommandElement::operator std::string() const noexcept {
@@ -122,7 +132,7 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
 
   for (const auto& c : body) {
     try {
-      s.push(c->clone());
+      mainStack.push(elm->clone());
     } catch (const StackOverflowError& exn) {
       // stack error without trace must be main stack.
       if (exn.getTrace().empty()) {

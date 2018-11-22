@@ -48,8 +48,14 @@ using stacklang::stackelements::BooleanElement;
 using stacklang::stackelements::BooleanPtr;
 using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::CommandPtr;
+using stacklang::stackelements::DefinedCommandElement;
+using stacklang::stackelements::DefinedCommandPtr;
+using stacklang::stackelements::IdentiferPtr;
+using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::NumberPtr;
+using stacklang::stackelements::PrimitiveCommandElement;
+using stacklang::stackelements::PrimitiveCommandPtr;
 using stacklang::stackelements::StringElement;
 using stacklang::stackelements::StringPtr;
 using stacklang::stackelements::SubstackElement;
@@ -102,7 +108,6 @@ StackElement* getOrError(const Environment& env, const string& id) {
 
   throw RuntimeError("Cannot find identifier '" + id + "'.");
 }
-}  // namespace
 
 atomic_bool stopFlag = false;
 
@@ -179,4 +184,4 @@ void execute(Stack& s, Environment& env) {
     }
   }
 }
-}  // namespace stacklang
+}  // namespace
