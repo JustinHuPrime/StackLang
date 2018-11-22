@@ -90,8 +90,7 @@ bool CommandElement::operator==(const StackElement& elm) const noexcept {
 const char* const PrimitiveCommandElement::DISPLAY_AS = "<PRIMITIVE>";
 
 PrimitiveCommandElement::PrimitiveCommandElement(
-    std::function<void(Stack&, Environment&, std::vector<std::string>&)>
-        p) noexcept
+    std::function<void(Stack&, Environment&)> p) noexcept
     : CommandElement{true}, fun{p} {}
 PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
   return new PrimitiveCommandElement(fun);
@@ -101,9 +100,8 @@ PrimitiveCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
-void PrimitiveCommandElement::operator()(Stack& s, Environment& e,
-                                         std::vector<std::string>& st) const {
-  fun(s, e, st);
+void PrimitiveCommandElement::operator()(Stack& s, Environment& e) const {
+  fun(s, e);
 }
 
 const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
@@ -119,29 +117,27 @@ DefinedCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
-void DefinedCommandElement::operator()(Stack& s, Environment& e,
-                                       std::vector<std::string>& st) const {
-  checkTypes(s, sig, st);
+void DefinedCommandElement::operator()(Stack& mainStack) {
+  checkTypes(mainStack, sig);
 
-  st.push_back("???");  // now executing function
   for (const auto& c : body) {
     try {
       s.push(c->clone());
     } catch (const StackOverflowError& exn) {
       // stack error without trace must be main stack.
       if (exn.getTrace().empty()) {
-        throw StackOverflowError(s.getLimit(), st);
+        throw StackOverflowError(mainStack.getLimit());
       } else {
         throw;
       }
     } catch (const StackUnderflowError& exn) {
       if (exn.getTrace().empty()) {
-        throw StackUnderflowError(st);
+        throw StackUnderflowError();
       } else {
         throw;
       }
     }
-    execute(s, e, st);  // TODO: make this tail recursive.
+    execute(mainStack, env);
   }
 }
 

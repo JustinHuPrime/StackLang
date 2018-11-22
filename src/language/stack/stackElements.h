@@ -67,17 +67,15 @@ class PrimitiveCommandElement : public CommandElement {
  public:
   static const char* const DISPLAY_AS;
 
-  PrimitiveCommandElement(
-      std::function<void(Stack&, Environment&,
-                         std::vector<std::string>&)>) noexcept;
+  PrimitiveCommandElement(std::function<void(Stack&, Environment&)>) noexcept;
   PrimitiveCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
+  void operator()(Stack&, Environment&) const;
 
  private:
-  std::function<void(Stack&, Environment&, std::vector<std::string>&)> fun;
+  std::function<void(Stack&, Environment&)> fun;
 };
 
 class DefinedCommandElement : public CommandElement {
@@ -89,7 +87,7 @@ class DefinedCommandElement : public CommandElement {
 
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
+  void operator()(Stack&);
 
  private:
   Stack sig;
@@ -113,37 +111,10 @@ class IdentifierElement : public StackElement {
   const std::string& getName() const noexcept;
   bool isQuoted() const noexcept;
 
-  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
-
  private:
   std::string name;
   bool quoted;
 };
-
-// class CommandElement : public StackElement {
-//  public:
-//   static const char* const ALLOWED_COMMAND;
-
-//   static CommandElement* parse(const std::string&);
-
-//   explicit CommandElement(const std::string&, bool isQuoted = false)
-//   noexcept; CommandElement* clone() const noexcept override;
-
-//   bool operator==(const StackElement&) const noexcept override;
-
-//   explicit operator std::string() const noexcept override;
-//   const std::string& getName() const noexcept;
-//   bool isQuoted() const noexcept;
-
-//   static const char QUOTE_CHAR;
-
-//  private:
-//   static const char* const COMMAND_LDELIM;
-//   static const char* const COMMAND_RDELIM;
-
-//   std::string name;
-//   bool quoted;
-// };
 
 class NumberElement : public StackElement {
  public:

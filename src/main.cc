@@ -36,8 +36,7 @@
 #include "ui/ui.h"
 
 namespace {
-using stacklang::DefinedFunction;
-using stacklang::Defines;
+using stacklang::ENVIRONMENT;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::stopFlag;
