@@ -125,6 +125,30 @@ Environment& ENVIRONMENT() noexcept {
   return env;
 }
 
+// Look up the StackElement bound to the given identifier in the environment.
+// It returns a pointer to the StackElement if found, and throws an error
+// if not found.
+//
+// For reference, the Environment typedef is:
+//    typedef std::vector<std::map<std::string, ElementPtr>> Environment;
+ElementPtr lookupInEnv(const string& id, const Environment& env,
+                       const vector<string>& context) {
+
+  // start at back of vector and search through each map until id is found
+  for (auto vecIterator = env.rbegin(); vecIterator != env.rend(); ++vecIterator) {
+
+    std::map<std::string, ElementPtr>::iterator mapIterator;
+    mapIterator = iterator->find(id);
+
+    // once found, return the pointer to the StackElement
+    if (mapIterator != vecIterator.end()) {
+      return mapIterator->second->clone();
+    }
+  }
+  // if not found, throw an error
+  throw RuntimeError("Identifier " + *id + " doesn't exist.", context);
+}
+
 bool checkType(const StackElement* elm, const TypeElement& type,
                const vector<string>& context) {
   if (elm == nullptr) {  // nullptr not matched ever.
