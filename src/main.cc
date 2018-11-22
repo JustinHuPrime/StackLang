@@ -38,11 +38,12 @@
 namespace {
 using stacklang::DefinedFunction;
 using stacklang::Defines;
+using stacklang::ENVIRONMENT;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::stopFlag;
 using stacklang::exceptions::LanguageException;
-using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::StringElement;
 using std::cerr;
 using std::cout;
@@ -82,7 +83,6 @@ void outputToFile(ofstream& outputFile, Stack& s) {
 
 int main(int argc, char* argv[]) noexcept {
   Stack s;
-  Defines defines;
 
   LineEditor buffer;
   bool errorFlag = false;
@@ -112,10 +112,10 @@ int main(int argc, char* argv[]) noexcept {
 
   if (!args.hasFlag('b')) {
     s.push(new StringElement("std"));
-    s.push(new CommandElement("include"));
+    s.push(new IdentifierElement("include"));
     try {
       stopFlag = false;
-      execute(s, defines);
+      execute(s, ENVIRONMENT());
     } catch (const LanguageException& e) {
       printError(e);
       cerr << "Encountered error in standard library. Please report this "
@@ -163,11 +163,11 @@ int main(int argc, char* argv[]) noexcept {
                                            : args.getLongOpt('I');
     for (string str : libs) {
       s.push(new StringElement(str));
-      s.push(new CommandElement("include"));
+      s.push(new IdentifierElement("include"));
 
       try {
         stopFlag = false;
-        execute(s, defines);
+        execute(s, ENVIRONMENT());
       } catch (const LanguageException& e) {
         printError(e);
         cerr << "Encountered error parsing command line arguments. Aborting."
@@ -180,11 +180,11 @@ int main(int argc, char* argv[]) noexcept {
   if (args.hasOpt('f')) {  // out of order - must be after other includes have
                            // been processed.
     s.push(new StringElement(args.getOpt('f')));
-    s.push(new CommandElement("include"));
+    s.push(new IdentifierElement("include"));
 
     try {
       stopFlag = false;
-      execute(s, defines);
+      execute(s, ENVIRONMENT());
     } catch (const LanguageException& e) {
       printError(e);
       cerr << "Encountered error running interpreted file. Aborting." << endl;
@@ -247,7 +247,7 @@ int main(int argc, char* argv[]) noexcept {
         drawStack(s);
         drawWaiting();
         stopFlag = false;
-        execute(s, defines);
+        execute(s, ENVIRONMENT());
         drawStack(s);
         drawPrompt(buffer);
       } catch (const LanguageException& e) {

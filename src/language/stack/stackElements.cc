@@ -39,6 +39,7 @@ using std::count;
 using std::fixed;
 using std::make_unique;
 using std::numeric_limits;
+using std::pair;
 using std::setprecision;
 using std::stold;
 using std::string;
@@ -97,7 +98,7 @@ PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
   return new PrimitiveCommandElement(fun);
 }
 
-explicit PrimitiveCommandElement::operator std::string() const noexcept {
+PrimitiveCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
@@ -108,38 +109,48 @@ void PrimitiveCommandElement::operator()(Stack& s, Environment& e,
 
 const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
 
-DefinedCommandElement::DefinedCommandElement(const Stack& s,
-                                             const Stack& b) noexcept
-    : CommandElement{false}, sig{s}, body{b} {}
+DefinedCommandElement::DefinedCommandElement(const Stack& s, const Stack& b,
+                                             const Environment& e) noexcept
+    : CommandElement{false}, sig{s}, body{b} {
+  env = Environment();
+  for (const auto& layer : e) {
+    env.emplace_back();
+    for (const auto& entry : layer) {
+      env.back().insert(pair<string, ElementPtr>(
+          entry.first, ElementPtr(entry.second->clone())));
+    }
+  }
+}
 DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
-  return new DefinedCommandElement(sig, body);
+  return new DefinedCommandElement(sig, body, env);
 }
 
-explicit DefinedCommandElement::operator std::string() const noexcept {
+DefinedCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
-void DefinedCommandElement::operator()(Stack& s, Environment& e,
-                                       std::vector<std::string>& st) const {
-  checkTypes(s, sig, st);
+void DefinedCommandElement::operator()(Stack& mainStack,
+                                       std::vector<std::string>& st) {
+  checkTypes(mainStack, sig, st);
 
-  st.push_back("???");  // now executing function
-  for (const auto& c : body) {
+  for (const auto& elm : body) {
     try {
-      s.push(c->clone());
-    } catch (const StackOverflowError& e) {
+      mainStack.push(elm->clone());
+    } catch (const StackOverflowError& exn) {
       // stack error without trace must be main stack.
-      if (e.getTrace().empty())
-        throw StackOverflowError(s.getLimit(), st);
-      else
-        throw e;
-    } catch (const StackUnderflowError& e) {
-      if (e.getTrace().empty())
+      if (exn.getTrace().empty()) {
+        throw StackOverflowError(mainStack.getLimit(), st);
+      } else {
+        throw;
+      }
+    } catch (const StackUnderflowError& exn) {
+      if (exn.getTrace().empty()) {
         throw StackUnderflowError(st);
-      else
-        throw e;
+      } else {
+        throw;
+      }
     }
-    execute(s, e, st);  // TODO: make this tail recursive.
+    execute(mainStack, env, st);
   }
 }
 
@@ -515,10 +526,9 @@ string TypeElement::to_string(StackElement::DataType type) noexcept {
 }
 
 const vector<string>& TypeElement::TYPES() noexcept {
-  static vector<string>* TYPES =
-      new vector<string>{"Number", "String",  "Boolean",    "Substack",
-                         "Type",   "Command", "Identifier", "Primitive",
-                         "Defined", "Any"};
+  static vector<string>* TYPES = new vector<string>{
+      "Number",  "String",     "Boolean",   "Substack", "Type",
+      "Command", "Identifier", "Primitive", "Defined",  "Any"};
   return *TYPES;
 }
 }  // namespace stacklang::stackelements
