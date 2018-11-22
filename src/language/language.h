@@ -32,8 +32,7 @@
 namespace stacklang {
 Environment& ENVIRONMENT() noexcept;
 
-bool checkType(const StackElement* elm,
-               const stacklang::stackelements::TypeElement& type);
+bool checkType(const StackElement* elm, const stackelements::TypeElement& type);
 void checkTypes(const Stack& s, const Stack& types);
 void execute(Stack&, Environment&);  // Executes the stack until it
                                      // encounters a data element

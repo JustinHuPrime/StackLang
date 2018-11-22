@@ -108,6 +108,7 @@ StackElement* getOrError(const Environment& env, const string& id) {
 
   throw RuntimeError("Cannot find identifier '" + id + "'.");
 }
+}  // namespace
 
 atomic_bool stopFlag = false;
 
@@ -184,4 +185,4 @@ void execute(Stack& s, Environment& env) {
     }
   }
 }
-}  // namespace
+}  // namespace stacklang
