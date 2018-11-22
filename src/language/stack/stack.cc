@@ -38,12 +38,11 @@ using stacklang::exceptions::ParserException;
 using stacklang::exceptions::StackOverflowError;
 using stacklang::exceptions::StackUnderflowError;
 using stacklang::stackelements::BooleanElement;
-using stacklang::stackelements::CommandElement;
+using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::StringElement;
 using stacklang::stackelements::SubstackElement;
 using stacklang::stackelements::TypeElement;
-// add imports for new stackelement types here
 using std::any_of;
 using std::find;
 using std::initializer_list;
@@ -88,8 +87,10 @@ StackElement* StackElement::parse(const string& s) {
                   s) != TypeElement::TYPES()
                             .end()) {  // has a subtype, or exists in types
     return TypeElement::parse(s);
-  } else if (isalpha(s[0])) {  // starts with a character
-    return CommandElement::parse(s);
+  } else if (isalpha(s[0]) ||
+             (s[0] == IdentifierElement::QUOTE_CHAR && s.length() >= 2 &&
+              isalpha(s[1]))) {  // starts with a character
+    return IdentifierElement::parse(s);
   } else {  // error case
     throw ParserException(
         "Input doesn't look like any type - does it begin with a symbol?", s,
