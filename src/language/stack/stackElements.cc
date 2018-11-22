@@ -114,13 +114,29 @@ DefinedCommandElement::DefinedCommandElement(const Stack& s, const Stack& b,
   for (const auto& layer : e) {
     env.emplace_back();
     for (const auto& entry : layer) {
-      env.back().insert(pair<string, ElementPtr>(
-          entry.first, ElementPtr(entry.second->clone())));
+      env.back().insert(pair<string, const StackElement*>(
+          entry.first, entry.second->clone()));
     }
   }
 }
 DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
-  return new DefinedCommandElement(sig, body, env);
+  DefinedCommandElement* cmd =
+      new DefinedCommandElement(sig, body, Environment{});
+
+  Environment e;
+  for (const auto& layer : e) {
+    e.emplace_back();
+    for (const auto& entry : layer) {
+      if (entry.second != this) {
+        e.back().insert(pair<string, const StackElement*>(
+            entry.first, entry.second->clone()));
+      } else {
+        e.back().insert(pair<string, const StackElement*>(entry.first, cmd));
+      }
+    }
+  }
+
+  return cmd;
 }
 
 DefinedCommandElement::operator std::string() const noexcept {
@@ -149,7 +165,11 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
     }
     execute(mainStack, env);
   }
+
+  return execute(mainStack, env);
 }
+
+Environment& DefinedCommandElement::getEnv() noexcept { return env; }
 
 const char* const IdentifierElement::ALLOWED_IDENTIFIER =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";

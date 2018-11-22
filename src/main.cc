@@ -36,7 +36,7 @@
 #include "ui/ui.h"
 
 namespace {
-using stacklang::ENVIRONMENT;
+using stacklang::GLOBAL_ENVIRONMENT;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::stopFlag;
@@ -113,7 +113,7 @@ int main(int argc, char* argv[]) noexcept {
     s.push(new IdentifierElement("include"));
     try {
       stopFlag = false;
-      execute(s, ENVIRONMENT());
+      execute(s, GLOBAL_ENVIRONMENT());
     } catch (const LanguageException& e) {
       printError(e);
       cerr << "Encountered error in standard library. Please report this "
@@ -165,7 +165,7 @@ int main(int argc, char* argv[]) noexcept {
 
       try {
         stopFlag = false;
-        execute(s, ENVIRONMENT());
+        execute(s, GLOBAL_ENVIRONMENT());
       } catch (const LanguageException& e) {
         printError(e);
         cerr << "Encountered error parsing command line arguments. Aborting."
@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) noexcept {
 
     try {
       stopFlag = false;
-      execute(s, ENVIRONMENT());
+      execute(s, GLOBAL_ENVIRONMENT());
     } catch (const LanguageException& e) {
       printError(e);
       cerr << "Encountered error running interpreted file. Aborting." << endl;
@@ -245,7 +245,7 @@ int main(int argc, char* argv[]) noexcept {
         drawStack(s);
         drawWaiting();
         stopFlag = false;
-        execute(s, ENVIRONMENT());
+        execute(s, GLOBAL_ENVIRONMENT());
         drawStack(s);
         drawPrompt(buffer);
       } catch (const LanguageException& e) {

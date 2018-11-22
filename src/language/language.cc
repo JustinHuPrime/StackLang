@@ -112,8 +112,31 @@ StackElement* getOrError(const Environment& env, const string& id) {
 
 atomic_bool stopFlag = false;
 
-Environment& ENVIRONMENT() noexcept {
-  static Environment& env = *new Environment{};
+Environment& GLOBAL_ENVIRONMENT() noexcept {
+  static Environment& env = *new Environment{
+      {{"define", new PrimitiveCommandElement([](Stack& s, Environment& e) {
+          checkTypes(
+              s, Stack{new TypeElement(
+                           StackElement::DataType::Substack,
+                           new TypeElement(StackElement::DataType::Type)),
+                       new TypeElement(StackElement::DataType::Substack),
+                       new TypeElement(StackElement::DataType::Identifier)});
+          IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+          SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
+          SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
+          auto iter = e.front().find(name->getName());
+          if (iter != e.front().cend()) {
+            throw RuntimeError("Cannot redefine " + name->getName() + ".");
+          }
+          DefinedCommandElement* def =
+              new DefinedCommandElement(sig->getData(), body->getData(), e);
+          e.front().insert(
+              pair<string, const StackElement*>(name->getName(), def));
+          def->getEnv().front().insert(
+              pair<string, const StackElement*>(name->getName(), def));
+
+          return execute(s, e);
+        })}}};
   return env;
 }
 
@@ -174,6 +197,7 @@ void execute(Stack& s, Environment& env) {
            ->isQuoted()) {  // identifier that isn't quoted.
     IdentiferPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
     s.push(getOrError(env, id->getName()));
+    return execute(s, env);
   } else if (s.top()->getType() == StackElement::DataType::Command) {
     const CommandElement* cmd = dynamic_cast<const CommandElement*>(s.top());
     if (cmd->isPrimitive()) {
@@ -183,6 +207,7 @@ void execute(Stack& s, Environment& env) {
       DefinedCommandPtr func(dynamic_cast<DefinedCommandElement*>(s.pop()));
       (*func)(s);
     }
+    return execute(s, env);
   }
 }
 }  // namespace stacklang

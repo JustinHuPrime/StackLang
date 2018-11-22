@@ -30,7 +30,7 @@
 #include "language/stack/stackElements.h"
 
 namespace stacklang {
-Environment& ENVIRONMENT() noexcept;
+Environment& GLOBAL_ENVIRONMENT() noexcept;
 
 bool checkType(const StackElement* elm, const stackelements::TypeElement& type);
 void checkTypes(const Stack& s, const Stack& types);

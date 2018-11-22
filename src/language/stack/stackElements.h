@@ -31,7 +31,7 @@
 
 namespace stacklang {
 
-typedef std::vector<std::map<std::string, ElementPtr>> Environment;
+typedef std::vector<std::map<std::string, const StackElement*>> Environment;
 
 namespace stackelements {
 
@@ -82,13 +82,15 @@ class DefinedCommandElement : public CommandElement {
  public:
   static const char* const DISPLAY_AS;
 
-  DefinedCommandElement(const Stack&, const Stack&,
-                        const Environment&) noexcept;
+  DefinedCommandElement(const Stack& sig, const Stack& body,
+                        const Environment& closure) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
 
   void operator()(Stack&);
+
+  Environment& getEnv() noexcept;
 
  private:
   Stack sig;
