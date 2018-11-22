@@ -46,7 +46,6 @@ typedef void (*const Prim)(Stack&, Defines&, std::vector<std::string>&);
 typedef std::pair<Stack, Prim> PrimitiveFunction;
 typedef std::map<std::string, PrimitiveFunction> Primitives;
 
-const Primitives& PRIMITIVES() noexcept;
 Environment& ENVIRONMENT() noexcept;
 const char* const GLOBAL_CONTEXT = "global context";
 
@@ -55,10 +54,6 @@ bool checkType(const StackElement* elm,
                const std::vector<std::string>& context);
 void checkTypes(const Stack& s, const Stack& types,
                 const std::vector<std::string>& context);
-void checkContext(const std::string& actual,
-                  const stacklang::stackelements::CommandElement* required,
-                  const std::string& name,
-                  const std::vector<std::string>& context);
 void execute(Stack&, Environment&,
              std::vector<std::string> = std::vector<std::string>{
                  GLOBAL_CONTEXT});  // Executes the stack until it

@@ -67,19 +67,19 @@ TEXENAME := stacklangTest
 
 
 debug: OPTIONS := $(OPTIONS) $(DEBUGOPTIONS)
-debug: $(EXENAME) $(TEXENAME)
+debug: $(EXENAME)# $(TEXENAME)
 	@echo "Done compiling debug."
-	@echo "Running tests."
-	@echo ""
-	@./$(TEXENAME)
+#	@echo "Running tests."
+#	@echo ""
+#	@./$(TEXENAME)
 	@echo "Debug build finished."
 
 release: OPTIONS := $(OPTIONS) $(RELEASEOPTIONS)
-release: $(EXENAME) $(TEXENAME)
+release: $(EXENAME)# $(TEXENAME)
 	@echo "Done with release."
-	@echo "Running tests."
-	@echo ""
-	@./$(TEXENAME)
+#	@echo "Running tests."
+#	@echo ""
+#	@./$(TEXENAME)
 	@echo "Release build finished."
 
 
