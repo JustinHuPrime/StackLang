@@ -39,6 +39,7 @@ using std::count;
 using std::fixed;
 using std::make_unique;
 using std::numeric_limits;
+using std::pair;
 using std::setprecision;
 using std::stold;
 using std::string;
@@ -108,29 +109,37 @@ void PrimitiveCommandElement::operator()(Stack& s, Environment& e,
 
 const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
 
-DefinedCommandElement::DefinedCommandElement(const Stack& s,
-                                             const Stack& b) noexcept
-    : CommandElement{false}, sig{s}, body{b} {}
+DefinedCommandElement::DefinedCommandElement(const Stack& s, const Stack& b,
+                                             const Environment& e) noexcept
+    : CommandElement{false}, sig{s}, body{b} {
+  env = Environment();
+  for (const auto& layer : e) {
+    env.emplace_back();
+    for (const auto& entry : layer) {
+      env.back().insert(pair<string, ElementPtr>(
+          entry.first, ElementPtr(entry.second->clone())));
+    }
+  }
+}
 DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
-  return new DefinedCommandElement(sig, body);
+  return new DefinedCommandElement(sig, body, env);
 }
 
 DefinedCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
-void DefinedCommandElement::operator()(Stack& s, Environment& e,
-                                       std::vector<std::string>& st) const {
-  checkTypes(s, sig, st);
+void DefinedCommandElement::operator()(Stack& mainStack,
+                                       std::vector<std::string>& st) {
+  checkTypes(mainStack, sig, st);
 
-  st.push_back("???");  // now executing function
-  for (const auto& c : body) {
+  for (const auto& elm : body) {
     try {
-      s.push(c->clone());
+      mainStack.push(elm->clone());
     } catch (const StackOverflowError& exn) {
       // stack error without trace must be main stack.
       if (exn.getTrace().empty()) {
-        throw StackOverflowError(s.getLimit(), st);
+        throw StackOverflowError(mainStack.getLimit(), st);
       } else {
         throw;
       }
@@ -141,7 +150,7 @@ void DefinedCommandElement::operator()(Stack& s, Environment& e,
         throw;
       }
     }
-    execute(s, e, st);  // TODO: make this tail recursive.
+    execute(mainStack, env, st);
   }
 }
 

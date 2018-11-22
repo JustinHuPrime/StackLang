@@ -84,16 +84,18 @@ class DefinedCommandElement : public CommandElement {
  public:
   static const char* const DISPLAY_AS;
 
-  DefinedCommandElement(const Stack&, const Stack&) noexcept;
+  DefinedCommandElement(const Stack&, const Stack&,
+                        const Environment&) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Environment&, std::vector<std::string>&) const;
+  void operator()(Stack&, std::vector<std::string>&);
 
  private:
   Stack sig;
   Stack body;
+  Environment env;
 };
 
 class IdentifierElement : public StackElement {
@@ -242,6 +244,9 @@ typedef std::unique_ptr<NumberElement> NumberPtr;
 typedef std::unique_ptr<StringElement> StringPtr;
 typedef std::unique_ptr<SubstackElement> SubstackPtr;
 typedef std::unique_ptr<TypeElement> TypePtr;
+typedef std::unique_ptr<IdentifierElement> IdentiferPtr;
+typedef std::unique_ptr<DefinedCommandElement> DefinedCommandPtr;
+typedef std::unique_ptr<PrimitiveCommandElement> PrimitiveCommandPtr;
 
 }  // namespace stackelements
 }  // namespace stacklang
