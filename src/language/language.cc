@@ -1,4 +1,5 @@
-// Copyright 2018 Justin Hu
+// Copyright 2018 Justin Hu, Bronwyn Damm, Jacques Marais, Ramon Rakow, and Jude
+// Sidloski
 //
 // This file is part of the StackLang interpreter.
 //
@@ -113,30 +114,9 @@ StackElement* getOrError(const Environment& env, const string& id) {
 atomic_bool stopFlag = false;
 
 Environment& GLOBAL_ENVIRONMENT() noexcept {
-  static Environment& env = *new Environment{
-      {{"define", new PrimitiveCommandElement([](Stack& s, Environment& e) {
-          checkTypes(
-              s, Stack{new TypeElement(
-                           StackElement::DataType::Substack,
-                           new TypeElement(StackElement::DataType::Type)),
-                       new TypeElement(StackElement::DataType::Substack),
-                       new TypeElement(StackElement::DataType::Identifier)});
-          IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
-          SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
-          SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
-          auto iter = e.front().find(name->getName());
-          if (iter != e.front().cend()) {
-            throw RuntimeError("Cannot redefine " + name->getName() + ".");
-          }
-          DefinedCommandElement* def =
-              new DefinedCommandElement(sig->getData(), body->getData(), e);
-          e.front().insert(
-              pair<string, const StackElement*>(name->getName(), def));
-          def->getEnv().front().insert(
-              pair<string, const StackElement*>(name->getName(), def));
-
-          return execute(s, e);
-        })}}};
+  static Environment& env = *new Environment{{
+#include "language/primitives/special.inc"
+  }};
   return env;
 }
 

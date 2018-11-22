@@ -1,4 +1,5 @@
-// Copyright 2018 Justin Hu
+// Copyright 2018 Justin Hu, Bronwyn Damm, Jacques Marais, Ramon Rakow, and Jude
+// Sidloski
 //
 // This file is part of the StackLang interpreter.
 //
@@ -57,7 +58,7 @@ const int CURSOR_VERY_VISIBLE = 2;
 // const char KEY_WIN_RESIZE = 0;
 
 const char* const INFO = R"(StackLang interpreter version 1
-Copyright 2018 Justin Hu
+Copyright 2018 Justin Hu, Bronwyn Damm, Jacques Marais, Ramon Rakow, and Jude Sidloski
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under certain conditions. For more detail see
 the COPYING file that should have been included with this program.
