@@ -22,17 +22,12 @@ PRIMDEF("define", {
                                new TypeElement(StackElement::DataType::Type)),
                new TypeElement(StackElement::DataType::Substack),
                new TypeElement(StackElement::DataType::Identifier)});
-  std::cerr << "HERE!\nEnv size: " << e.size()
-            << "\nEnv front size: " << e.front().size()
-            << "\nEnv back size: " << e.back().size() << "\n";
-            
   IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
   auto iter = e.back().find(name->getName());
-  if (iter != e.back().cend()) {
+  if (iter != e.back().cend())
     throw RuntimeError("Cannot redefine " + name->getName() + ".");
-  }
   DefinedCommandElement* def =
       new DefinedCommandElement(sig->getData(), body->getData(), e);
   e.back().insert(pair<string, const StackElement*>(name->getName(), def));

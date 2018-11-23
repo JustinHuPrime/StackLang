@@ -125,7 +125,7 @@ DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
       new DefinedCommandElement(sig, body, Environment{});
 
   Environment e;
-  for (const auto& layer : e) {
+  for (const auto& layer : env) {
     e.emplace_back();
     for (const auto& entry : layer) {
       if (entry.second != this) {
@@ -136,6 +136,8 @@ DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
       }
     }
   }
+
+  cmd->env = move(e);
 
   return cmd;
 }
