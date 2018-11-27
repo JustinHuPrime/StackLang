@@ -20,20 +20,23 @@ PRIMDEF("define", {
   checkTypes(
       s, Stack{new TypeElement(StackElement::DataType::Substack,
                                new TypeElement(StackElement::DataType::Type)),
+               new TypeElement(
+                   StackElement::DataType::Substack,
+                   new TypeElement(StackElement::DataType::Identifier)),
                new TypeElement(StackElement::DataType::Substack),
                new TypeElement(StackElement::DataType::Identifier)});
   IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
+  SubstackPtr params(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
   auto iter = e.back().find(name->getName());
   if (iter != e.back().cend())
     throw RuntimeError("Cannot redefine " + name->getName() + ".");
-  DefinedCommandElement* def =
-      new DefinedCommandElement(sig->getData(), body->getData(), e);
+  DefinedCommandElement* def = new DefinedCommandElement(
+      params->getData(), sig->getData(), body->getData(), e);
   e.back().insert(pair<string, const StackElement*>(name->getName(), def));
   def->getEnv().back().insert(
       pair<string, const StackElement*>(name->getName(), def));
-  def->getEnv().emplace_back();
 })
 PRIMDEF("undefine", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Command)});

@@ -144,6 +144,12 @@ bool checkType(const StackElement* elm, const TypeElement& type) {
     return all_of(s.begin(), s.end(), [&spec](const StackElement* e) {
       return checkType(e, *spec);
     });
+  } else if (elm->getType() == type.getBase() &&
+             type.getBase() ==
+                 StackElement::DataType::Command) {  // is a specialized command
+    return (type.getSpecialization()->getBase() ==
+            StackElement::DataType::Primitive) ==
+           dynamic_cast<const CommandElement*>(elm)->isPrimitive();
   } else {  // is a specialized non-substack
     throw SyntaxError("Impossible type detected.", static_cast<string>(type),
                       0);
