@@ -19,32 +19,32 @@
 // primitives
 
 PRIMDEF("boolean?", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
   s.push(
   new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
   }})
 PRIMDEF("false?", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
   s.push(new BooleanElement(
     elm->getType() == StackElement::DataType::Boolean &&
     !dynamic_cast<BooleanElement*>(elm.get())->getData()));
 })
 PRIMDEF("true?", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
   s.push(new BooleanElement(
     elm->getType() == StackElement::DataType::Boolean &&
     dynamic_cast<BooleanElement*>(elm.get())->getData()));
 })
 PRIMDEF("boolean-to-string", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr elm(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(new StringElement(static_cast<string>(*elm)));
 })
 PRIMDEF("string-to-boolean", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
   StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
   ElementPtr result;
   try {
@@ -74,34 +74,34 @@ PRIMDEF("if", {
   s.push(new StringElement(static_cast<string>(*elm)));
 })
 PRIMDEF("not", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(new BooleanElement(!a->getData()));
 })
 PRIMDEF("or", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)}));
+            new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(a->getData() ? a.release() : b.release());
 })
 PRIMDEF("and", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)}));
+            new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(a->getData() ? b.release() : a.release());
 })
 PRIMDEF("xor", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)}));
+            new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(new BooleanElement(a->getData() != b->getData()));
 })
 PRIMDEF("eqv?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any),
-            new TypeElement(StackElement::DataType::Any)}));
+            new TypeElement(StackElement::DataType::Any)});
   ElementPtr a(s.pop());
   ElementPtr b(s.pop());
   s.push(new BooleanElement(*a == *b));

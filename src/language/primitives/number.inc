@@ -25,18 +25,18 @@ PRIMDEF("pi", {
   s.push(new NumberElement(M_PI));
 })
 PRIMDEF("number?", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
   s.push(new BooleanElement(elm->getType() ==
     StackElement::DataType::Number));
 })
 PRIMDEF("number-to-string", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr elm(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new StringElement(static_cast<string>(*elm)));
 })
 PRIMDEF("string-to-number", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
   StringPtr elm(dynamic_cast<StringElement*>(s.pop()));
   ElementPtr result;
   try {
@@ -52,7 +52,7 @@ PRIMDEF("string-to-number", {
     s.push(result.release());
 })
 PRIMDEF("precision", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr elm(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(elm->getPrecision(), 0));
 })
@@ -127,17 +127,17 @@ PRIMDEF("modulo", {
   s.push(new NumberElement(target, second->getPrecision()));
 })  
 PRIMDEF("floor", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(floor(num->getData()), 0));
 })
 PRIMDEF("ceil", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(ceil(num->getData()), 0));
 })
 PRIMDEF("round", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   long double numRaw = num->getData();
   long double numFloored = floor(numRaw);
@@ -152,22 +152,22 @@ PRIMDEF("round", {
   }
 })
 PRIMDEF("round*", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(round(num->getData()), 0));
 })
 PRIMDEF("trunc", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(trunc(num->getData()), 0));
 })
 PRIMDEF("abs", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(abs(num->getData()), num->getPrecision()));
 })
 PRIMDEF("sign", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
  s.push(new NumberElement(
     num->getData() == 0 ? 0 : copysign(1, num->getData()), 0));
@@ -239,42 +239,42 @@ PRIMDEF("greater-than?", {
   second->getPrecision()))) == -1));
 }) 
 PRIMDEF("sine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(sin(num->getData())));
 })
 PRIMDEF("cosine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(cos(num->getData())));
 })
 PRIMDEF("tangent", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(tan(num->getData())));
 })
 PRIMDEF("arcsine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   long double result = asin(num->getData());
   if (isnan(result))
   throw RuntimeError("The value " + static_cast<string>(*num) +
                                  " is not in the range for arcsine.",
-  context);
+                                 context);
   s.push(new NumberElement(result));
 })
 PRIMDEF("arccosine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   long double result = acos(num->getData());
   if (isnan(result))
  throw RuntimeError("The value " + static_cast<string>(*num) +
                                  "is not in the range for arccosine.",
-  context);
+                                 context);
   s.push(new NumberElement(result));
 })
 PRIMDEF("arctangent", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(atan(num->getData())));
 })
@@ -289,27 +289,27 @@ PRIMDEF("arctangent2", {
     second->getPrecision()))) == 0));
 })
 PRIMDEF("hyperbolic-sine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(sinh(num->getData())));
 })    
 PRIMDEF("hyperbolic-cosine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(cosh(num->getData())));
 }) 
 PRIMDEF("hyperbolic-tangent", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(tanh(num->getData())));
 }) 
 PRIMDEF("hyperbolic-arcsine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   s.push(new NumberElement(asinh(num->getData())));
 }) 
 PRIMDEF("hyperbolic-arccosine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   long double result = acosh(num->getData());
   if (isnan(result))
@@ -320,7 +320,7 @@ PRIMDEF("hyperbolic-arccosine", {
         s.push(new NumberElement(result));
 }) 
 PRIMDEF("hyperbolic-arctangent", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number));
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Number)});
   NumberPtr num(dynamic_cast<NumberElement*>(s.pop()));
   long double result = atanh(num->getData());
   if (isnan(result))
