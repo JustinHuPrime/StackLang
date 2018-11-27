@@ -129,6 +129,9 @@ bool checkType(const StackElement* elm, const TypeElement& type) {
     return true;
   } else if (type.getBase() != elm->getType()) {  // types don't match plainly
     return false;
+  } else if (elm->getType() ==
+             StackElement::DataType::Identifier) {  // identifier special case
+    return dynamic_cast<const IdentifierElement*>(elm)->isQuoted();
   } else if (type.getSpecialization() == nullptr ||
              type.getSpecialization()->getBase() ==
                  StackElement::DataType::Any) {  // has no specialization or is
