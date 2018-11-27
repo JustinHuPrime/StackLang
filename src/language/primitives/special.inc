@@ -39,7 +39,7 @@ PRIMDEF("define", {
       pair<string, const StackElement*>(name->getName(), def));
 })
 PRIMDEF("undefine", {
-  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Command)});
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   for (auto& layer : e) {
     auto iter = layer.find(name->getName());
