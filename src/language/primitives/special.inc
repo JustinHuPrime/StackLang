@@ -25,7 +25,7 @@ PRIMDEF("define", {
                    new TypeElement(StackElement::DataType::Identifier)),
                new TypeElement(StackElement::DataType::Substack),
                new TypeElement(StackElement::DataType::Identifier)});
-  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr params(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
@@ -40,7 +40,7 @@ PRIMDEF("define", {
 })
 PRIMDEF("undefine", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
-  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   for (auto& layer : e) {
     auto iter = layer.find(name->getName());
     if (iter != layer.cend()) {
@@ -260,4 +260,17 @@ PRIMDEF("null", { return; })
 PRIMDEF("identity", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   return;
+})
+PRIMDEF("export", {
+  checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
+  IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+
+  if (e.size() < 2)
+    throw RuntimeError("Cannot export beyond global environment.");
+  auto iter = e.back().find(name->getName());
+  if (iter == e.back().cend())
+    throw RuntimeError("Identifier " + name->getName() + " is not defined.");
+  e[e.size() - 2].insert(
+      pair<string, const StackElement*>(iter->first, iter->second));
+  e.back().erase(iter);
 })
