@@ -92,6 +92,8 @@ class DefinedCommandElement : public CommandElement {
   void operator()(Stack&);
 
   Environment& getEnv() noexcept;
+  Stack& getSig() noexcept;
+  Stack& getBody() noexcept;
 
  private:
   Stack params;
