@@ -83,8 +83,8 @@ class DefinedCommandElement : public CommandElement {
  public:
   static const char* const DISPLAY_AS;
 
-  DefinedCommandElement(const Stack& sig, const Stack& body,
-                        const Environment& closure) noexcept;
+  DefinedCommandElement(const Stack& params, const Stack& sig,
+                        const Stack& body, const Environment& closure) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
@@ -96,6 +96,7 @@ class DefinedCommandElement : public CommandElement {
   Stack& getBody() noexcept;
 
  private:
+  Stack params;
   Stack sig;
   Stack body;
   Environment env;

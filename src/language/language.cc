@@ -53,6 +53,7 @@ using stacklang::stackelements::DefinedCommandElement;
 using stacklang::stackelements::DefinedCommandPtr;
 using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::IdentifierElement;
+using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::NumberPtr;
 using stacklang::stackelements::PrimitiveCommandElement;
@@ -129,6 +130,9 @@ bool checkType(const StackElement* elm, const TypeElement& type) {
     return true;
   } else if (type.getBase() != elm->getType()) {  // types don't match plainly
     return false;
+  } else if (elm->getType() ==
+             StackElement::DataType::Identifier) {  // identifier special case
+    return dynamic_cast<const IdentifierElement*>(elm)->isQuoted();
   } else if (type.getSpecialization() == nullptr ||
              type.getSpecialization()->getBase() ==
                  StackElement::DataType::Any) {  // has no specialization or is
@@ -144,6 +148,12 @@ bool checkType(const StackElement* elm, const TypeElement& type) {
     return all_of(s.begin(), s.end(), [&spec](const StackElement* e) {
       return checkType(e, *spec);
     });
+  } else if (elm->getType() == type.getBase() &&
+             type.getBase() ==
+                 StackElement::DataType::Command) {  // is a specialized command
+    return (type.getSpecialization()->getBase() ==
+            StackElement::DataType::Primitive) ==
+           dynamic_cast<const CommandElement*>(elm)->isPrimitive();
   } else {  // is a specialized non-substack
     throw SyntaxError("Impossible type detected.", static_cast<string>(type),
                       0);
