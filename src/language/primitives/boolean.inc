@@ -23,7 +23,7 @@ PRIMDEF("boolean?", {
   ElementPtr elm(s.pop());
   s.push(
   new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
-  }})
+  })
 PRIMDEF("false?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
@@ -51,13 +51,11 @@ PRIMDEF("string-to-boolean", {
     result = ElementPtr(StackElement::parse(elm->getData()));
     } catch (...) {
       throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-      " produced an error.",
-      context);
+      " produced an error.");
       }
       if (result->getType() != StackElement::DataType::Boolean) {
         throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-        " produced a non-boolean result.",
-        context);
+        " produced a non-boolean result.");
         }
         s.push(result.release());
 })
@@ -69,9 +67,6 @@ PRIMDEF("if", {
   ElementPtr falseCase(s.pop());
   ElementPtr trueCase(s.pop());
   s.push(boolean->getData() ? trueCase.release() : falseCase.release());
-  }});
-  BooleanPtr elm(dynamic_cast<BooleanElement*>(s.pop()));
-  s.push(new StringElement(static_cast<string>(*elm)));
 })
 PRIMDEF("not", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean)});

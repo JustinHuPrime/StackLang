@@ -51,6 +51,7 @@ using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::CommandPtr;
 using stacklang::stackelements::DefinedCommandElement;
 using stacklang::stackelements::DefinedCommandPtr;
+using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::NumberElement;

@@ -46,14 +46,12 @@ PRIMDEF("string-ref", {
   indexRemainder = modf(indexRemainder, &index);
   if (indexRemainder != 0 || index < 0)
     throw RuntimeError("Expected a non-negative integer, but got " +
-                      static_cast<string>(*num) + " instead.",
-                      context);
+                      static_cast<string>(*num) + " instead.");
   size_t i = static_cast<size_t>(index);
   if (i >= str->getData().size())
     throw RuntimeError("Index " + static_cast<string>(*num) +
                         " is out of range for the string " +
-                        static_cast<string>(*str) + ".",
-                        context);
+                        static_cast<string>(*str) + ".");
   s.push(new StringElement(string(1, str->getData()[i])));
 })  
 PRIMDEF("substring", {
@@ -70,34 +68,29 @@ PRIMDEF("substring", {
     throw RuntimeError(
         "Expected a non-negative integer for the starting index, but "
         "got " +
-        static_cast<string>(*start) + " instead.",
-        context);
+        static_cast<string>(*start) + " instead.");
   long double endRemainder = end->getData();
   long double endIndex;
   endRemainder = modf(endRemainder, &endIndex);
   if (endRemainder != 0 || endIndex < 0)
     throw RuntimeError(
         "Expected a non-negative integer for the ending index, but got " +
-        static_cast<string>(*start) + " instead.",
-        context);
+        static_cast<string>(*start) + " instead.");
   size_t sidx = static_cast<size_t>(startIndex);
   size_t eidx = static_cast<size_t>(endIndex);
   if (sidx >= str->getData().size())
     throw RuntimeError("Starting index " + static_cast<string>(*start) +
                       " is out of range for the string " +
-                      static_cast<string>(*str) + ".",
-                      context);
+                      static_cast<string>(*str) + ".");
   if (eidx >= str->getData().size())
     throw RuntimeError("Ending index " + static_cast<string>(*end) +
                       " is out of range for the string " +
-                      static_cast<string>(*str) + ".",
-                      context);
+                      static_cast<string>(*str) + ".");
   if (eidx < sidx)
     throw RuntimeError(
         "Ending index (" + static_cast<string>(*end) +
         ") must not be less than the starting index (" +
-        static_cast<string>(*start) + ").",
-        context);
+        static_cast<string>(*start) + ").");
   s.push(new StringElement(str->getData().substr(sidx, eidx - sidx)));
 })  
 PRIMDEF("string-append", {
@@ -176,6 +169,7 @@ PRIMDEF("replace", {
   } else {
     str.replace(foundLocation, from->getData().size(), to->getData());
     s.push(new StringElement(str));
+  }
 }) 
 PRIMDEF("build-string", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
@@ -189,8 +183,7 @@ PRIMDEF("build-string", {
     throw RuntimeError(
         "Expected a non-negative integer for the number of repetitions, "
         "but got " +
-            static_cast<string>(*reps) + " instead.",
-        context);
+            static_cast<string>(*reps) + " instead.");
   string acc;
   const string& toAdd = str->getData();
   while (count-- > 0) acc += toAdd;
