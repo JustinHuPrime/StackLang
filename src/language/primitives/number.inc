@@ -43,11 +43,11 @@ PRIMDEF("string-to-number", {
     result = ElementPtr(StackElement::parse(elm->getData()));
   } catch (...) {
     throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-      " produced an error.", context);
+      " produced an error.");
         }
     if (result->getType() != StackElement::DataType::Number) {
       throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-        " produced a non-number result.", context);
+        " produced a non-number result.");
         }
     s.push(result.release());
 })
@@ -66,7 +66,7 @@ PRIMDEF("set-precision", {
   remainder = modf(remainder, &whole);
   if (remainder != 0 || whole <= 0) {
   throw RuntimeError("Expected a positive integer, but got " +
-    static_cast<string>(*newPrec) + " instead.", context);
+    static_cast<string>(*newPrec) + " instead.");
   }
   s.push(new NumberElement(target->getData(), whole));
 })
@@ -103,7 +103,7 @@ PRIMDEF("divide", {
   NumberPtr first(dynamic_cast<NumberElement*>(s.pop()));
   NumberPtr second(dynamic_cast<NumberElement*>(s.pop()));
   if (first->getData() == 0) {
-  throw RuntimeError("Attempted to divide by zero.", context);
+  throw RuntimeError("Attempted to divide by zero.");
   }
   s.push(
     new NumberElement(second->getData() / first->getData(),
@@ -117,7 +117,7 @@ PRIMDEF("modulo", {
   long double base = first->getData();
   long double target = second->getData();
   if (base == 0) {
-  throw RuntimeError("Attempted to modulo by zero.", context);
+  throw RuntimeError("Attempted to modulo by zero.");
   }
   long double resultSign = copysign(1, base);  // base won't be zero.
   base = abs(base);
@@ -259,8 +259,7 @@ PRIMDEF("arcsine", {
   long double result = asin(num->getData());
   if (isnan(result))
   throw RuntimeError("The value " + static_cast<string>(*num) +
-                                 " is not in the range for arcsine.",
-                                 context);
+                                 " is not in the range for arcsine.");
   s.push(new NumberElement(result));
 })
 PRIMDEF("arccosine", {
@@ -269,8 +268,7 @@ PRIMDEF("arccosine", {
   long double result = acos(num->getData());
   if (isnan(result))
  throw RuntimeError("The value " + static_cast<string>(*num) +
-                                 "is not in the range for arccosine.",
-                                 context);
+                                 "is not in the range for arccosine.");
   s.push(new NumberElement(result));
 })
 PRIMDEF("arctangent", {
@@ -315,8 +313,7 @@ PRIMDEF("hyperbolic-arccosine", {
   if (isnan(result))
   throw RuntimeError(
     "The value " + static_cast<string>(*num) +
-      "is not in the range for the hyperbolic arccosines.",
-              context);
+      "is not in the range for the hyperbolic arccosines.");
         s.push(new NumberElement(result));
 }) 
 PRIMDEF("hyperbolic-arctangent", {
@@ -326,7 +323,7 @@ PRIMDEF("hyperbolic-arctangent", {
   if (isnan(result))
   throw RuntimeError(
    "The value " + static_cast<string>(*num) +
-   "is not in the range for the hyperbolic arctangent.", context);
+   "is not in the range for the hyperbolic arctangent.");
   s.push(new NumberElement(result));
 }) 
 PRIMDEF("random", {

@@ -51,7 +51,7 @@ PRIMDEF("add-specialization?", {
 
   if (trace.back() != StackElement::DataType::Substack)
   throw RuntimeError(
-  "Cannot have a specialzation except on a Substack.", context);
+  "Cannot have a specialzation except on a Substack.");
 
   TypeElement* result =
   added.release();  // dangerous, but inefficient to use and release
@@ -72,7 +72,7 @@ PRIMDEF("check-type", {
             new TypeElement(StackElement::DataType::Type)});
   TypePtr type(dynamic_cast<TypeElement*>(s.pop()));
   ElementPtr elm(s.pop());
-  s.push(new BooleanElement(checkType(elm.get(), *type, context)));
+  s.push(new BooleanElement(checkType(elm.get(), *type)));
 }) 
 PRIMDEF("typeof", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});

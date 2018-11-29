@@ -38,8 +38,7 @@ PRIMDEF("contains-type?", {
   SubstackPtr sub(dynamic_cast<SubstackElement*>(s.pop()));
   s.push(new BooleanElement(checkType(
     sub.get(),
-    TypeElement(StackElement::DataType::Substack, internal.release()),
-    context)));
+    TypeElement(StackElement::DataType::Substack, internal.release()))));
 }) 
 PRIMDEF("push", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Substack),
@@ -50,7 +49,7 @@ PRIMDEF("push", {
   try {
     sta.push(elm.release());
   } catch (const StackOverflowError&) {
-    throw StackOverflowError(sta.getLimit(), context);
+    throw StackOverflowError(sta.getLimit());
   }
   s.push(new SubstackElement(sta));
 }) 
@@ -61,7 +60,7 @@ PRIMDEF("top", {
   try {
     s.push(sta.pop());
   } catch (const StackUnderflowError&) {
-    throw StackUnderflowError(context);
+    throw StackUnderflowError();
   }
 }) 
 PRIMDEF("pop", {
@@ -71,7 +70,7 @@ PRIMDEF("pop", {
   try {
     delete sta.pop();
   } catch (const StackUnderflowError&) {
-  throw StackUnderflowError(context);
+  throw StackUnderflowError();
   }
   s.push(new SubstackElement(sta));
 }) 
@@ -83,7 +82,7 @@ PRIMDEF("pop*", {
   try {
     popped = sta.pop();
   } catch (const StackUnderflowError&) {
-    throw StackUnderflowError(context);
+    throw StackUnderflowError();
   }
   s.push(new SubstackElement(sta));
   s.push(popped);
@@ -111,13 +110,12 @@ PRIMDEF("substack-ref", {
   remainder = modf(remainder, &whole);
   if (remainder != 0 || whole < 0)
     throw RuntimeError(
-      "Expected a non-negative integer for the index, but "
-      "got " + static_cast<string>(*index) + " instead.",
-      context);
+      "Expected a non-negative integer for the index, but " +
+      "got " + static_cast<string>(*index) + " instead.");
   if (whole >= sta->getData().size())
     throw RuntimeError("Index " + static_cast<string>(*index) +
       " is out of range for the substack ( " +
-      to_string(sta->getData().size()) + " long).", context);
+      to_string(sta->getData().size()) + " long).");
   for (const StackElement* elm : sta->getData()) {
     if (whole-- == 0) {
       s.push(elm->clone());
@@ -136,32 +134,28 @@ PRIMDEF("sub-substack", {
   startRemainder = modf(startRemainder, &startIndex);
   if (startRemainder != 0 || startIndex < 0)
     throw RuntimeError(
-      "Expected a non-negative integer for the starting index, but "
-      "got " + static_cast<string>(*start) + " instead.", context);
+      "Expected a non-negative integer for the starting index, but " +
+      "got " + static_cast<string>(*start) + " instead.");
   long double endRemainder = end->getData();
   long double endIndex;
   endRemainder = modf(endRemainder, &endIndex);
   if (endRemainder != 0 || endIndex < 0)
     throw RuntimeError(
       "Expected a non-negative integer for the ending index, but got " +
-      static_cast<string>(*start) + " instead.",
-      context);
+      static_cast<string>(*start) + " instead.");
   if (startIndex >= sta->getData().size())
     throw RuntimeError("Starting index " + static_cast<string>(*start) +
                        " is out of range for the substack ( " +
-                       to_string(sta->getData().size()) + " long).",
-                       context);
+                       to_string(sta->getData().size()) + " long).");
   if (endIndex >= sta->getData().size())
     throw RuntimeError("Ending index " + static_cast<string>(*end) +
                        " is out of range for the substack ( " +
-                       to_string(sta->getData().size()) + " long).",
-                       context);
+                       to_string(sta->getData().size()) + " long).");
   if (endIndex < startIndex)
     throw RuntimeError(
       "Ending index (" + static_cast<string>(*end) +
       ") must not be less than the starting index (" +
-      static_cast<string>(*start) + ").",
-      context);
+      static_cast<string>(*start) + ").");
   Stack result;
   auto iter = sta->getData().begin();
   size_t index = 0;
@@ -203,10 +197,9 @@ PRIMDEF("insert", {
   remainder = modf(remainder, &whole);
   if (remainder != 0 || whole < 0)
     throw RuntimeError(
-        "Expected a non-negative integer for the index, but "
+        "Expected a non-negative integer for the index, but " +
         "got " +
-            static_cast<string>(*index) + " instead.",
-        context);
+            static_cast<string>(*index) + " instead.");
   Stack baseStack = base->getData();
   Stack insertStack = inserted->getData();
   Stack result;

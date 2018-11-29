@@ -22,7 +22,7 @@ PRIMDEF("define", {
                                new TypeElement(StackElement::DataType::Type)),
                new TypeElement(StackElement::DataType::Substack),
                new TypeElement(StackElement::DataType::Identifier)});
-  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
   auto iter = e.back().find(name->getName());
@@ -37,7 +37,7 @@ PRIMDEF("define", {
 })
 PRIMDEF("undefine", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Command)});
-  IdentiferPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
+  IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
   for (auto& layer : e) {
     auto iter = layer.find(name->getName());
     if (iter != layer.cend()) {

@@ -220,7 +220,7 @@ typedef std::unique_ptr<NumberElement> NumberPtr;
 typedef std::unique_ptr<StringElement> StringPtr;
 typedef std::unique_ptr<SubstackElement> SubstackPtr;
 typedef std::unique_ptr<TypeElement> TypePtr;
-typedef std::unique_ptr<IdentifierElement> IdentiferPtr;
+typedef std::unique_ptr<IdentifierElement> IdentifierPtr;
 typedef std::unique_ptr<DefinedCommandElement> DefinedCommandPtr;
 typedef std::unique_ptr<PrimitiveCommandElement> PrimitiveCommandPtr;
 

@@ -34,7 +34,12 @@ PRIMDEF("quoted?", {
 PRIMDEF("bound?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr elm(dynamic_cast<IdentifierElement*>(s.pop()));
-  s.push(new BooleanElement(e.find(elm->getName()) != e.end()));
+  try {
+    getOrError(e, elm->getName());
+    s.push(new BooleanElement(1));
+  } catch (...) {
+    s.push(new BooleanElement(0));
+  }
 })
 PRIMDEF("unquote", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
@@ -85,36 +90,51 @@ PRIMDEF("string-to-identifier*", {
 PRIMDEF("arity", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  CommandPtr cmd(getOrError(e, id->getName()));
-  if (checkType(cmd, new TypeElement(StackElement::DataType::Defined))) {
-    s.push(new NumberElement(cmd->getSig().size(), 0));
-    delete cmd;
-    return;
+  StackElement* elem = getOrError(e, id->getName());
+  Stack elemStack;
+  elemStack.push(elem);
+  try {
+    checkTypes(elemStack, Stack{new TypeElement(StackElement::DataType::Defined)});
+  } catch (...) {
+    delete elem;
+    throw RuntimeError("Identifier " + id->getName() + " is bound to a primitive command.");
   }
-  delete cmd;
-  throw RuntimeError("Identifier " + id->getName() + " is bound to a primitive command.");
+  DefinedCommandPtr defcmd(dynamic_cast<DefinedCommandElement*>(elem));
+  s.push(new NumberElement(defcmd->getSig().size(), 0));
+  delete elem;
+  return;
 }) 
 PRIMDEF("body", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  CommandPtr cmd(getOrError(e, id->getName()));
-  if (checkType(cmd, new TypeElement(StackElement::DataType::Defined))) {
-    s.push(new SubstackElement(cmd->getBody());
-    delete cmd;
-    return;
+  StackElement* elem = getOrError(e, id->getName());
+  Stack elemStack;
+  elemStack.push(elem);
+  try {
+    checkTypes(elemStack, Stack{new TypeElement(StackElement::DataType::Defined)});
+  } catch (...) {
+    delete elem;
+    throw RuntimeError("Identifier " + id->getName() + " is bound to a primitive command.");
   }
-  delete cmd;
-  throw RuntimeError("Identifier " + id->getName() + " is bound to a primitive command.");
-})
+  DefinedCommandPtr defcmd(dynamic_cast<DefinedCommandElement*>(elem));
+  s.push(new SubstackElement(defcmd->getBody()));
+  delete elem;
+  return;
+}) 
 PRIMDEF("signature", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  CommandPtr cmd(getOrError(e, id->getName()));
-  if (checkType(cmd, new TypeElement(StackElement::DataType::Defined))) {
-    s.push(new SubstackElement(cmd->getSig());
-    delete cmd;
-    return;
+  StackElement* elem = getOrError(e, id->getName());
+  Stack elemStack;
+  elemStack.push(elem);
+  try {
+    checkTypes(elemStack, Stack{new TypeElement(StackElement::DataType::Defined)});
+  } catch (...) {
+    delete elem;
+    throw RuntimeError("Identifier " + id->getName() + " is bound to a primitive command.");
   }
-  delete cmd;
-  throw RuntimeError("Identifier " + id->getName() + " is bound a primitive command.");
+  DefinedCommandPtr defcmd(dynamic_cast<DefinedCommandElement*>(elem));
+  s.push(new SubstackElement(defcmd->getSig()));
+  delete elem;
+  return;
 }) 

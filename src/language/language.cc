@@ -51,7 +51,7 @@ using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::CommandPtr;
 using stacklang::stackelements::DefinedCommandElement;
 using stacklang::stackelements::DefinedCommandPtr;
-using stacklang::stackelements::IdentiferPtr;
+using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::NumberElement;
 using stacklang::stackelements::NumberPtr;
@@ -175,7 +175,7 @@ void execute(Stack& s, Environment& env) {
   if (s.top()->getType() == StackElement::DataType::Identifier &&
       !dynamic_cast<const IdentifierElement*>(s.top())
            ->isQuoted()) {  // identifier that isn't quoted.
-    IdentiferPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
+    IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
     s.push(getOrError(env, id->getName()));
     return execute(s, env);
   } else if (s.top()->getType() == StackElement::DataType::Command) {
