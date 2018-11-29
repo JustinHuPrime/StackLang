@@ -174,6 +174,10 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
 
 Environment& DefinedCommandElement::getEnv() noexcept { return env; }
 
+Stack& DefinedCommandElement::getSig() noexcept { return sig; }
+
+Stack& DefinedCommandElement::getBody() noexcept { return body; }
+
 const char* const IdentifierElement::ALLOWED_IDENTIFIER =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-?*";
 const char IdentifierElement::QUOTE_CHAR = '`';
