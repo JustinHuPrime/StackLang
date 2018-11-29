@@ -21,14 +21,13 @@
 PRIMDEF("string?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
-  s.push(
-    new BooleanElement(elm->getType() == StackElement::DataType::String));
+  s.push(new BooleanElement(elm->getType() == StackElement::DataType::String));
 })
 PRIMDEF("empty-string?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
   s.push(new BooleanElement(
-    elm->getType() == StackElement::DataType::String &&
+      elm->getType() == StackElement::DataType::String &&
       dynamic_cast<StringElement*>(elm.get())->getData() == ""));
 })
 PRIMDEF("string-length", {
@@ -46,14 +45,14 @@ PRIMDEF("string-ref", {
   indexRemainder = modf(indexRemainder, &index);
   if (indexRemainder != 0 || index < 0)
     throw RuntimeError("Expected a non-negative integer, but got " +
-                      static_cast<string>(*num) + " instead.");
+                       static_cast<string>(*num) + " instead.");
   size_t i = static_cast<size_t>(index);
   if (i >= str->getData().size())
     throw RuntimeError("Index " + static_cast<string>(*num) +
-                        " is out of range for the string " +
-                        static_cast<string>(*str) + ".");
+                       " is out of range for the string " +
+                       static_cast<string>(*str) + ".");
   s.push(new StringElement(string(1, str->getData()[i])));
-})  
+})
 PRIMDEF("substring", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::Number),
@@ -80,40 +79,39 @@ PRIMDEF("substring", {
   size_t eidx = static_cast<size_t>(endIndex);
   if (sidx >= str->getData().size())
     throw RuntimeError("Starting index " + static_cast<string>(*start) +
-                      " is out of range for the string " +
-                      static_cast<string>(*str) + ".");
+                       " is out of range for the string " +
+                       static_cast<string>(*str) + ".");
   if (eidx >= str->getData().size())
     throw RuntimeError("Ending index " + static_cast<string>(*end) +
-                      " is out of range for the string " +
-                      static_cast<string>(*str) + ".");
+                       " is out of range for the string " +
+                       static_cast<string>(*str) + ".");
   if (eidx < sidx)
-    throw RuntimeError(
-        "Ending index (" + static_cast<string>(*end) +
-        ") must not be less than the starting index (" +
-        static_cast<string>(*start) + ").");
+    throw RuntimeError("Ending index (" + static_cast<string>(*end) +
+                       ") must not be less than the starting index (" +
+                       static_cast<string>(*start) + ").");
   s.push(new StringElement(str->getData().substr(sidx, eidx - sidx)));
-})  
+})
 PRIMDEF("string-append", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr first(dynamic_cast<StringElement*>(s.pop()));
   StringPtr second(dynamic_cast<StringElement*>(s.pop()));
   s.push(new StringElement(second->getData() + first->getData()));
-}) 
+})
 PRIMDEF("toupper", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
   StringPtr str(dynamic_cast<StringElement*>(s.pop()));
   string rawStr = str->getData();
   for (char& c : rawStr) c = toupper(c);
   s.push(new StringElement(rawStr));
-})  
+})
 PRIMDEF("tolower", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String)});
   StringPtr str(dynamic_cast<StringElement*>(s.pop()));
   string rawStr = str->getData();
   for (char& c : rawStr) c = tolower(c);
   s.push(new StringElement(rawStr));
-})  
+})
 PRIMDEF("join", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Substack),
                       new TypeElement(StackElement::DataType::String),
@@ -127,7 +125,7 @@ PRIMDEF("join", {
     acc += str->getData();
   }
   s.push(new StringElement(acc));
-}) 
+})
 PRIMDEF("split", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
@@ -145,8 +143,7 @@ PRIMDEF("split", {
     size_t current = raw.find(delim);
     size_t previous = 0;
     while (current != string::npos) {
-      sta.push(
-          new StringElement(raw.substr(previous, current - previous)));
+      sta.push(new StringElement(raw.substr(previous, current - previous)));
       previous = current + delim.size();
       current = raw.find(delim, previous);
     }
@@ -154,7 +151,7 @@ PRIMDEF("split", {
   }
   sta.reverse();
   s.push(new SubstackElement(sta));
-}) 
+})
 PRIMDEF("replace", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String),
@@ -170,7 +167,7 @@ PRIMDEF("replace", {
     str.replace(foundLocation, from->getData().size(), to->getData());
     s.push(new StringElement(str));
   }
-}) 
+})
 PRIMDEF("build-string", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::Number)});
@@ -183,54 +180,52 @@ PRIMDEF("build-string", {
     throw RuntimeError(
         "Expected a non-negative integer for the number of repetitions, "
         "but got " +
-            static_cast<string>(*reps) + " instead.");
+        static_cast<string>(*reps) + " instead.");
   string acc;
   const string& toAdd = str->getData();
   while (count-- > 0) acc += toAdd;
   s.push(new StringElement(acc));
-}) 
+})
 PRIMDEF("string-equal?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr a(dynamic_cast<StringElement*>(s.pop()));
   StringPtr b(dynamic_cast<StringElement*>(s.pop()));
   s.push(new BooleanElement(a->getData() == b->getData()));
-}) 
+})
 PRIMDEF("string-alphabetic?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr a(dynamic_cast<StringElement*>(s.pop()));
   StringPtr b(dynamic_cast<StringElement*>(s.pop()));
   s.push(new BooleanElement(a->getData().compare(b->getData()) > 0));
-})  
+})
 PRIMDEF("string-reverse-alphabetic?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr a(dynamic_cast<StringElement*>(s.pop()));
   StringPtr b(dynamic_cast<StringElement*>(s.pop()));
   s.push(new BooleanElement(a->getData().compare(b->getData()) < 0));
-})  
+})
 PRIMDEF("string-contains?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr inner(dynamic_cast<StringElement*>(s.pop()));
   StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
   s.push(new BooleanElement(outer->getData().find(inner->getData()) !=
-    string::npos));
-})  
+                            string::npos));
+})
 PRIMDEF("string-prefix?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr prefix(dynamic_cast<StringElement*>(s.pop()));
   StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
-  s.push(new BooleanElement(
-      starts_with(outer->getData(), prefix->getData())));
+  s.push(new BooleanElement(starts_with(outer->getData(), prefix->getData())));
 })
 PRIMDEF("string-suffix?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::String),
                       new TypeElement(StackElement::DataType::String)});
   StringPtr suffix(dynamic_cast<StringElement*>(s.pop()));
   StringPtr outer(dynamic_cast<StringElement*>(s.pop()));
-  s.push(
-    new BooleanElement(ends_with(outer->getData(), suffix->getData())));
+  s.push(new BooleanElement(ends_with(outer->getData(), suffix->getData())));
 })

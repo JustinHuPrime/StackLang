@@ -51,7 +51,6 @@ using stacklang::stackelements::CommandElement;
 using stacklang::stackelements::CommandPtr;
 using stacklang::stackelements::DefinedCommandElement;
 using stacklang::stackelements::DefinedCommandPtr;
-using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::IdentifierElement;
 using stacklang::stackelements::IdentifierPtr;
 using stacklang::stackelements::NumberElement;
@@ -116,7 +115,13 @@ atomic_bool stopFlag = false;
 
 Environment& GLOBAL_ENVIRONMENT() noexcept {
   static Environment& env = *new Environment{{
+#include "language/primitives/boolean.inc"
+#include "language/primitives/command.inc"
+#include "language/primitives/number.inc"
 #include "language/primitives/special.inc"
+#include "language/primitives/string.inc"
+#include "language/primitives/substack.inc"
+#include "language/primitives/type.inc"
   }};
   return env;
 }

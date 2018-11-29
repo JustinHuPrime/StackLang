@@ -21,22 +21,21 @@
 PRIMDEF("boolean?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
-  s.push(
-  new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
-  })
+  s.push(new BooleanElement(elm->getType() == StackElement::DataType::Boolean));
+})
 PRIMDEF("false?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
-  s.push(new BooleanElement(
-    elm->getType() == StackElement::DataType::Boolean &&
-    !dynamic_cast<BooleanElement*>(elm.get())->getData()));
+  s.push(
+      new BooleanElement(elm->getType() == StackElement::DataType::Boolean &&
+                         !dynamic_cast<BooleanElement*>(elm.get())->getData()));
 })
 PRIMDEF("true?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any)});
   ElementPtr elm(s.pop());
-  s.push(new BooleanElement(
-    elm->getType() == StackElement::DataType::Boolean &&
-    dynamic_cast<BooleanElement*>(elm.get())->getData()));
+  s.push(
+      new BooleanElement(elm->getType() == StackElement::DataType::Boolean &&
+                         dynamic_cast<BooleanElement*>(elm.get())->getData()));
 })
 PRIMDEF("boolean-to-string", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean)});
@@ -49,20 +48,20 @@ PRIMDEF("string-to-boolean", {
   ElementPtr result;
   try {
     result = ElementPtr(StackElement::parse(elm->getData()));
-    } catch (...) {
-      throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-      " produced an error.");
-      }
-      if (result->getType() != StackElement::DataType::Boolean) {
-        throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
-        " produced a non-boolean result.");
-        }
-        s.push(result.release());
+  } catch (...) {
+    throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
+                       " produced an error.");
+  }
+  if (result->getType() != StackElement::DataType::Boolean) {
+    throw RuntimeError("Parsing of element " + static_cast<string>(*elm) +
+                       " produced a non-boolean result.");
+  }
+  s.push(result.release());
 })
 PRIMDEF("if", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any),
-            new TypeElement(StackElement::DataType::Any),
-            new TypeElement(StackElement::DataType::Boolean)});
+                      new TypeElement(StackElement::DataType::Any),
+                      new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr boolean(dynamic_cast<BooleanElement*>(s.pop()));
   ElementPtr falseCase(s.pop());
   ElementPtr trueCase(s.pop());
@@ -75,28 +74,28 @@ PRIMDEF("not", {
 })
 PRIMDEF("or", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)});
+                      new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(a->getData() ? a.release() : b.release());
 })
 PRIMDEF("and", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)});
+                      new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(a->getData() ? b.release() : a.release());
 })
 PRIMDEF("xor", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Boolean),
-            new TypeElement(StackElement::DataType::Boolean)});
+                      new TypeElement(StackElement::DataType::Boolean)});
   BooleanPtr a(dynamic_cast<BooleanElement*>(s.pop()));
   BooleanPtr b(dynamic_cast<BooleanElement*>(s.pop()));
   s.push(new BooleanElement(a->getData() != b->getData()));
 })
 PRIMDEF("eqv?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Any),
-            new TypeElement(StackElement::DataType::Any)});
+                      new TypeElement(StackElement::DataType::Any)});
   ElementPtr a(s.pop());
   ElementPtr b(s.pop());
   s.push(new BooleanElement(*a == *b));
