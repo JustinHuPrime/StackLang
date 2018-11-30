@@ -29,24 +29,28 @@ PRIMDEF("define", {
   SubstackPtr body(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr params(dynamic_cast<SubstackElement*>(s.pop()));
   SubstackPtr sig(dynamic_cast<SubstackElement*>(s.pop()));
-  auto iter = e.back().find(name->getName());
-  if (iter != e.back().cend())
+  auto iter = e->bindings.find(name->getName());
+  if (iter != e->bindings.cend())
     throw RuntimeError("Cannot redefine " + name->getName() + ".");
+
+  Environment* closure = new Environment(e);
+
   DefinedCommandElement* def = new DefinedCommandElement(
-      params->getData(), sig->getData(), body->getData(), e);
-  e.back().insert(pair<string, const StackElement*>(name->getName(), def));
-  def->getEnv().back().insert(
-      pair<string, const StackElement*>(name->getName(), def));
+      params->getData(), sig->getData(), body->getData(), closure);
+  e->bindings.insert(pair<string, StackElement*>(name->getName(), def));
 })
 PRIMDEF("undefine", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
-  for (auto& layer : e) {
-    auto iter = layer.find(name->getName());
-    if (iter != layer.cend()) {
+  Environment* currEnv = e;
+  while (currEnv != nullptr) {
+    auto iter = currEnv->bindings.find(name->getName());
+    if (iter != currEnv->bindings.cend()) {
       delete iter->second;
-      layer.erase(iter);
+      currEnv->bindings.erase(iter);
+      return;
     }
+    currEnv = currEnv->parent;
   }
 
   throw RuntimeError("Identifier " + name->getName() +
@@ -114,7 +118,7 @@ PRIMDEF("include", {
       inString = false;
       inComment = false;
       prevChar = '\0';
-      execute(s, env);
+      execute(s, e);
       lineNumber++;
       continue;  // skip end block
     } else if (c == '\n' && substackLevel == 0 && trim(buffer) == "") {
@@ -151,7 +155,7 @@ PRIMDEF("include", {
           path + ":" + to_string(lineNumber) + ": " + exn.getMessage(),
           exn.getContext(), exn.getLocation());
     }
-    execute(s, env);
+    execute(s, e);
   } else if (substackLevel > 0) {
     throw ParserException(path + ":" + to_string(lineNumber) + ": Missing " +
                               to_string(substackLevel) +
@@ -265,12 +269,11 @@ PRIMDEF("export", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr name(dynamic_cast<IdentifierElement*>(s.pop()));
 
-  if (e.size() < 2)
+  if (e->parent == nullptr)
     throw RuntimeError("Cannot export beyond global environment.");
-  auto iter = e.back().find(name->getName());
-  if (iter == e.back().cend())
+  auto iter = e->bindings.find(name->getName());
+  if (iter == e->bindings.cend())
     throw RuntimeError("Identifier " + name->getName() + " is not defined.");
-  e[e.size() - 2].insert(
-      pair<string, const StackElement*>(iter->first, iter->second));
-  e.back().erase(iter);
+  e->parent->bindings.insert(*iter);
+  e->bindings.erase(iter);
 })

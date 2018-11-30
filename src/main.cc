@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 
+#include "language/environment.h"
 #include "language/exceptions/languageExceptions.h"
 #include "language/language.h"
 #include "language/stack/stack.h"
@@ -37,7 +38,7 @@
 #include "ui/ui.h"
 
 namespace {
-using stacklang::GLOBAL_ENVIRONMENT;
+using stacklang::EnvTree;
 using stacklang::Stack;
 using stacklang::StackElement;
 using stacklang::stopFlag;
@@ -82,6 +83,7 @@ void outputToFile(ofstream& outputFile, Stack& s) {
 
 int main(int argc, char* argv[]) noexcept {
   Stack s;
+  EnvTree e;
 
   LineEditor buffer;
   bool errorFlag = false;
@@ -95,8 +97,8 @@ int main(int argc, char* argv[]) noexcept {
   try {
     args.read(argc, const_cast<const char**>(argv));
     args.validate("?bh", "dfloI", "I");
-  } catch (const LanguageException& e) {
-    printError(e);
+  } catch (const LanguageException& exn) {
+    printError(exn);
     cerr << "\nEncountered error parsing command line arguments. Aborting."
          << endl;
     exit(EXIT_FAILURE);
@@ -114,9 +116,9 @@ int main(int argc, char* argv[]) noexcept {
     s.push(new IdentifierElement("include"));
     try {
       stopFlag = false;
-      execute(s, GLOBAL_ENVIRONMENT());
-    } catch (const LanguageException& e) {
-      printError(e);
+      execute(s, e.getRoot());
+    } catch (const LanguageException& exn) {
+      printError(exn);
       cerr << "Encountered error in standard library. Please report this "
               "error. Aborting."
            << endl;
@@ -143,8 +145,8 @@ int main(int argc, char* argv[]) noexcept {
                   args.getOpt('l') + ".\nAborting."
            << endl;
       exit(EXIT_FAILURE);
-    } catch (const LanguageException& e) {
-      printError(e);
+    } catch (const LanguageException& exn) {
+      printError(exn);
       cerr << "Encountered error parsing command line arguments. Aborting."
            << endl;
       exit(EXIT_FAILURE);
@@ -166,9 +168,9 @@ int main(int argc, char* argv[]) noexcept {
 
       try {
         stopFlag = false;
-        execute(s, GLOBAL_ENVIRONMENT());
-      } catch (const LanguageException& e) {
-        printError(e);
+        execute(s, e.getRoot());
+      } catch (const LanguageException& exn) {
+        printError(exn);
         cerr << "Encountered error parsing command line arguments. Aborting."
              << endl;
         exit(EXIT_FAILURE);
@@ -183,14 +185,14 @@ int main(int argc, char* argv[]) noexcept {
 
     try {
       stopFlag = false;
-      execute(s, GLOBAL_ENVIRONMENT());
-    } catch (const LanguageException& e) {
-      printError(e);
+      execute(s, e.getRoot());
+    } catch (const LanguageException& exn) {
+      printError(exn);
       cerr << "Encountered error running interpreted file. Aborting." << endl;
       exit(EXIT_FAILURE);
     }
 
-    outputToFile(outputFile, s);
+    if (outputFile.is_open()) outputToFile(outputFile, s);
 
     exit(EXIT_SUCCESS);
   }
@@ -246,11 +248,11 @@ int main(int argc, char* argv[]) noexcept {
         drawStack(s);
         drawWaiting();
         stopFlag = false;
-        execute(s, GLOBAL_ENVIRONMENT());
+        execute(s, e.getRoot());
         drawStack(s);
         drawPrompt(buffer);
-      } catch (const LanguageException& e) {
-        drawError(e);
+      } catch (const LanguageException& exn) {
+        drawError(exn);
         errorFlag = true;
       }
     } else if (key == KEY_BACKSPACE) {  // line editing.

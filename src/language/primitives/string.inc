@@ -81,7 +81,7 @@ PRIMDEF("substring", {
     throw RuntimeError("Starting index " + static_cast<string>(*start) +
                        " is out of range for the string " +
                        static_cast<string>(*str) + ".");
-  if (eidx >= str->getData().size())
+  if (eidx > str->getData().size())
     throw RuntimeError("Ending index " + static_cast<string>(*end) +
                        " is out of range for the string " +
                        static_cast<string>(*str) + ".");

@@ -16,29 +16,52 @@
 // You should have received a copy of the GNU General Public License along with
 // the StackLang interpreter.  If not, see <https://www.gnu.org/licenses/>.
 
-// The core of the language
+// environment tree
 
-#ifndef STACKLANG_LANGUAGE_LANGUAGE_H_
-#define STACKLANG_LANGUAGE_LANGUAGE_H_
+#ifndef STACKLANG_LANGUAGE_ENVIRONMENT_H_
+#define STACKLANG_LANGUAGE_ENVIRONMENT_H_
 
-#include <atomic>
+#include "language/stack/stack.h"
+
 #include <map>
-#include <string>
-#include <utility>
 #include <vector>
 
-#include "language/environment.h"
-#include "language/stack/stack.h"
-#include "language/stack/stackElements.h"
-
 namespace stacklang {
-bool checkType(const StackElement* elm, const stackelements::TypeElement& type);
-void checkTypes(const Stack& s, const Stack& types);
-void execute(Stack&, Environment*);  // Executes the stack until it
-                                     // encounters a data element
+class EnvTree {
+ public:
+  class Environment {
+   public:
+    std::map<std::string, StackElement*> bindings;
+    Environment* parent;
 
-extern std::atomic_bool
-    stopFlag;  // signal handlers set this to stop execution.
+    Environment(Environment*) noexcept;
+    Environment(Environment&&) = default;
+
+    ~Environment() noexcept;
+
+    Environment& operator=(Environment&&) = default;
+
+    StackElement* lookup(const std::string&);
+    void clearBindings() noexcept;
+
+   private:
+    std::vector<Environment*> children;
+  };
+
+  EnvTree() noexcept;
+  EnvTree(EnvTree&&) = default;
+
+  ~EnvTree() noexcept;
+
+  EnvTree& operator=(EnvTree&&) = default;
+
+  Environment* getRoot() noexcept;
+
+ private:
+  Environment* root;
+};
+
+typedef EnvTree::Environment Environment;
 }  // namespace stacklang
 
-#endif  // STACKLANG_LANGUAGE_
+#endif

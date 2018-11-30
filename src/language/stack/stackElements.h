@@ -28,11 +28,10 @@
 #include <string>
 #include <vector>
 
+#include "language/environment.h"
 #include "language/stack/stack.h"
 
 namespace stacklang {
-
-typedef std::vector<std::map<std::string, const StackElement*>> Environment;
 
 namespace stackelements {
 
@@ -68,15 +67,15 @@ class PrimitiveCommandElement : public CommandElement {
  public:
   static const char* const DISPLAY_AS;
 
-  PrimitiveCommandElement(std::function<void(Stack&, Environment&)>) noexcept;
+  PrimitiveCommandElement(std::function<void(Stack&, Environment*)>) noexcept;
   PrimitiveCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
 
-  void operator()(Stack&, Environment&) const;
+  void operator()(Stack&, Environment*) const;
 
  private:
-  std::function<void(Stack&, Environment&)> fun;
+  std::function<void(Stack&, Environment*)> fun;
 };
 
 class DefinedCommandElement : public CommandElement {
@@ -84,14 +83,14 @@ class DefinedCommandElement : public CommandElement {
   static const char* const DISPLAY_AS;
 
   DefinedCommandElement(const Stack& params, const Stack& sig,
-                        const Stack& body, const Environment& closure) noexcept;
+                        const Stack& body, Environment* closure) noexcept;
   DefinedCommandElement* clone() const noexcept override;
 
   explicit operator std::string() const noexcept override;
 
   void operator()(Stack&);
 
-  Environment& getEnv() noexcept;
+  Environment* getEnv() noexcept;
   Stack& getSig() noexcept;
   Stack& getBody() noexcept;
 
@@ -99,7 +98,7 @@ class DefinedCommandElement : public CommandElement {
   Stack params;
   Stack sig;
   Stack body;
-  Environment env;
+  Environment* env;
 };
 
 class IdentifierElement : public StackElement {

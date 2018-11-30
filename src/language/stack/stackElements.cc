@@ -92,7 +92,7 @@ bool CommandElement::operator==(const StackElement& elm) const noexcept {
 const char* const PrimitiveCommandElement::DISPLAY_AS = "<PRIMITIVE>";
 
 PrimitiveCommandElement::PrimitiveCommandElement(
-    std::function<void(Stack&, Environment&)> p) noexcept
+    std::function<void(Stack&, Environment*)> p) noexcept
     : CommandElement{true}, fun{p} {}
 PrimitiveCommandElement* PrimitiveCommandElement::clone() const noexcept {
   return new PrimitiveCommandElement(fun);
@@ -102,7 +102,7 @@ PrimitiveCommandElement::operator std::string() const noexcept {
   return DISPLAY_AS;
 }
 
-void PrimitiveCommandElement::operator()(Stack& s, Environment& e) const {
+void PrimitiveCommandElement::operator()(Stack& s, Environment* e) const {
   fun(s, e);
 }
 
@@ -110,37 +110,10 @@ const char* const DefinedCommandElement::DISPLAY_AS = "<FUNCTION>";
 
 DefinedCommandElement::DefinedCommandElement(const Stack& p, const Stack& s,
                                              const Stack& b,
-                                             const Environment& e) noexcept
-    : CommandElement{false}, params{p}, sig{s}, body{b} {
-  env = Environment();
-  for (const auto& layer : e) {
-    env.emplace_back();
-    for (const auto& entry : layer) {
-      env.back().insert(pair<string, const StackElement*>(
-          entry.first, entry.second->clone()));
-    }
-  }
-}
+                                             Environment* e) noexcept
+    : CommandElement{false}, params{p}, sig{s}, body{b}, env{e} {}
 DefinedCommandElement* DefinedCommandElement::clone() const noexcept {
-  DefinedCommandElement* cmd =
-      new DefinedCommandElement(params, sig, body, Environment{});
-
-  Environment e;
-  for (const auto& layer : env) {
-    e.emplace_back();
-    for (const auto& entry : layer) {
-      if (entry.second != this) {
-        e.back().insert(pair<string, const StackElement*>(
-            entry.first, entry.second->clone()));
-      } else {
-        e.back().insert(pair<string, const StackElement*>(entry.first, cmd));
-      }
-    }
-  }
-
-  cmd->env = move(e);
-
-  return cmd;
+  return new DefinedCommandElement(params, sig, body, env);
 }
 
 DefinedCommandElement::operator std::string() const noexcept {
@@ -150,12 +123,10 @@ DefinedCommandElement::operator std::string() const noexcept {
 void DefinedCommandElement::operator()(Stack& mainStack) {
   checkTypes(mainStack, sig);
 
-  env.emplace_back();
-
   for (const auto& elm : params) {
-    env.back().insert(pair<string, const StackElement*>(
+    env->bindings.insert_or_assign(
         dynamic_cast<const IdentifierElement*>(elm)->getName(),
-        mainStack.pop()));
+        mainStack.pop());
   }
 
   for (const auto& elm : body) {
@@ -178,15 +149,10 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
     execute(mainStack, env);
   }
 
-  for (const auto& elm : env.back()) {
-    delete elm.second;
-  }
-  env.pop_back();
-
   return execute(mainStack, env);
 }
 
-Environment& DefinedCommandElement::getEnv() noexcept { return env; }
+Environment* DefinedCommandElement::getEnv() noexcept { return env; }
 
 Stack& DefinedCommandElement::getSig() noexcept { return sig; }
 

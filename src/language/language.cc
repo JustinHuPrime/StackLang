@@ -18,113 +18,32 @@
 
 // Implementation of the core language evaluation system.
 
-#define _USE_MATH_DEFINES
-
 #include "language/language.h"
 
-#include <algorithm>
-#include <cmath>
-#include <fstream>
-#include <iterator>
-#include <random>
-#include <sstream>
-#include <stack>
-
-#include "language/exceptions/interpreterExceptions.h"
 #include "language/exceptions/languageExceptions.h"
-#include "language/stack/stack.h"
-#include "util/mathUtils.h"
-#include "util/stringUtils.h"
+
+#include <algorithm>
 
 namespace stacklang {
 namespace {
-using stacklang::exceptions::ParserException;
-using stacklang::exceptions::RuntimeError;
-using stacklang::exceptions::StackOverflowError;
-using stacklang::exceptions::StackUnderflowError;
-using stacklang::exceptions::StopError;
-using stacklang::exceptions::SyntaxError;
-using stacklang::exceptions::TypeError;
-using stacklang::stackelements::BooleanElement;
-using stacklang::stackelements::BooleanPtr;
-using stacklang::stackelements::CommandElement;
-using stacklang::stackelements::CommandPtr;
-using stacklang::stackelements::DefinedCommandElement;
-using stacklang::stackelements::DefinedCommandPtr;
-using stacklang::stackelements::IdentifierElement;
-using stacklang::stackelements::IdentifierPtr;
-using stacklang::stackelements::NumberElement;
-using stacklang::stackelements::NumberPtr;
-using stacklang::stackelements::PrimitiveCommandElement;
-using stacklang::stackelements::PrimitiveCommandPtr;
-using stacklang::stackelements::StringElement;
-using stacklang::stackelements::StringPtr;
-using stacklang::stackelements::SubstackElement;
-using stacklang::stackelements::SubstackPtr;
-using stacklang::stackelements::TypeElement;
-using stacklang::stackelements::TypePtr;
-using std::abs;
-using std::acosh;
+using exceptions::StopError;
+using exceptions::SyntaxError;
+using exceptions::TypeError;
+using stackelements::CommandElement;
+using stackelements::DefinedCommandElement;
+using stackelements::DefinedCommandPtr;
+using stackelements::IdentifierElement;
+using stackelements::IdentifierPtr;
+using stackelements::PrimitiveCommandElement;
+using stackelements::PrimitiveCommandPtr;
+using stackelements::SubstackElement;
+using stackelements::TypeElement;
 using std::all_of;
-using std::asinh;
-using std::atanh;
 using std::atomic_bool;
-using std::begin;
-using std::copysign;
-using std::cos;
-using std::cosh;
-using std::end;
-using std::find_if;
-using std::ifstream;
-using std::isnan;
-using std::istringstream;
-using std::log;
-using std::make_unique;
-using std::max;
-using std::min;
-using std::modf;
-using std::pair;
-using std::pow;
-using std::random_device;
-using std::sin;
-using std::sinh;
-using std::stack;
 using std::string;
-using std::tan;
-using std::tanh;
-using std::to_string;
-using std::vector;
-using util::ends_with;
-using util::spaceship;
-using util::starts_with;
-using util::trim;
-
-StackElement* getOrError(const Environment& env, const string& id) {
-  for (auto layer = env.rbegin(); layer != env.rend(); ++layer) {
-    auto iter = layer->find(id);
-    if (iter != layer->cend()) {
-      return iter->second->clone();
-    }
-  }
-
-  throw RuntimeError("Cannot find identifier '" + id + "'.");
-}
 }  // namespace
 
 atomic_bool stopFlag = false;
-
-Environment& GLOBAL_ENVIRONMENT() noexcept {
-  static Environment& env = *new Environment{{
-#include "language/primitives/boolean.inc"
-#include "language/primitives/command.inc"
-#include "language/primitives/number.inc"
-#include "language/primitives/special.inc"
-#include "language/primitives/string.inc"
-#include "language/primitives/substack.inc"
-#include "language/primitives/type.inc"
-  }};
-  return env;
-}
 
 bool checkType(const StackElement* elm, const TypeElement& type) {
   if (elm == nullptr) {  // nullptr not matched ever.
@@ -180,7 +99,7 @@ void checkTypes(const Stack& s, const Stack& types) {
   }
 }
 
-void execute(Stack& s, Environment& env) {
+void execute(Stack& s, Environment* env) {
   if (stopFlag) {
     stopFlag = false;
     throw StopError();
@@ -191,7 +110,7 @@ void execute(Stack& s, Environment& env) {
       !dynamic_cast<const IdentifierElement*>(s.top())
            ->isQuoted()) {  // identifier that isn't quoted.
     IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-    s.push(getOrError(env, id->getName()));
+    s.push(env->lookup(id->getName()));
     return execute(s, env);
   } else if (s.top()->getType() == StackElement::DataType::Command) {
     const CommandElement* cmd = dynamic_cast<const CommandElement*>(s.top());

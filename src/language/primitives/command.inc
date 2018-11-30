@@ -35,7 +35,7 @@ PRIMDEF("bound?", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr elm(dynamic_cast<IdentifierElement*>(s.pop()));
   try {
-    getOrError(e, elm->getName());
+    e->lookup(elm->getName());
     s.push(new BooleanElement(1));
   } catch (...) {
     s.push(new BooleanElement(0));
@@ -89,7 +89,7 @@ PRIMDEF("string-to-identifier*", {
 PRIMDEF("arity", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  StackElement* elem = getOrError(e, id->getName());
+  StackElement* elem = e->lookup(id->getName());
   Stack elemStack;
   elemStack.push(elem);
   try {
@@ -108,7 +108,7 @@ PRIMDEF("arity", {
 PRIMDEF("body", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  StackElement* elem = getOrError(e, id->getName());
+  StackElement* elem = e->lookup(id->getName());
   Stack elemStack;
   elemStack.push(elem);
   try {
@@ -127,7 +127,7 @@ PRIMDEF("body", {
 PRIMDEF("signature", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Identifier)});
   IdentifierPtr id(dynamic_cast<IdentifierElement*>(s.pop()));
-  StackElement* elem = getOrError(e, id->getName());
+  StackElement* elem = e->lookup(id->getName());
   Stack elemStack;
   elemStack.push(elem);
   try {

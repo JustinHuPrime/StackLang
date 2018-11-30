@@ -69,12 +69,12 @@ Press any key to continue...)";
 
 const char* const HELPMSG = R"(Usage: stacklang [OPTIONS]
 * `-?`, `-h`: prints this message.
-* `-W`: show warranty information.
-* `-C`: show copying information
+* `-b`: runs StackLang without including standard library.
 * `-d N`: sets debugger to mode N.
-* `-I filepath ... --`: includes files at filepath.
+* `-f`: runs StackLang interpreter on a file, then stops.
 * `-l N`: limits stack to N elements in size.
 * `-o file`: outputs formatted stack to file.
+* `-I filepath ...`: includes files at filepath.
 )";
 }  // namespace terminalui
 
