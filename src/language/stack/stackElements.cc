@@ -124,9 +124,9 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
   checkTypes(mainStack, sig);
 
   for (const auto& elm : params) {
-    env->bindings.insert_or_assign(
+    env->bindings.insert(pair<string, StackElement*>(
         dynamic_cast<const IdentifierElement*>(elm)->getName(),
-        mainStack.pop());
+        mainStack.pop()));
   }
 
   for (const auto& elm : body) {
@@ -148,6 +148,8 @@ void DefinedCommandElement::operator()(Stack& mainStack) {
     }
     execute(mainStack, env);
   }
+
+  env->clearBindings();
 
   return execute(mainStack, env);
 }

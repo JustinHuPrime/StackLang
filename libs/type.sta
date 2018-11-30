@@ -19,32 +19,33 @@
 ; StackLang extended type primitives
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    duplicate
-    type?
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `base-other
+    define
+
+    << Type >> ; -> Boolean
+    << `elm >>
+    <<
+        elm
+        specialized?
+        not
+    >>
+    `base-type
+    define
+
+    elm
     `base-type
     `base-other
-    3, rotate
+    elm
+    type?
     if
     unquote
 >>
 `base?
 define
-
-<< Any >> ; -> Boolean
-<<
-    drop
-    false
->>
-`base?
-`base-other
-define*
-
-<< Type >> ; -> Boolean
-<<
-    specialized?
-    not
->>
-`base?
-`base-type
-define*

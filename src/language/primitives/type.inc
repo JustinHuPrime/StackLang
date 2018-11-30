@@ -60,7 +60,7 @@ PRIMDEF("add-specialization?", {
   }
   s.push(result);
 })
-PRIMDEF("base?", {
+PRIMDEF("base", {
   checkTypes(s, Stack{new TypeElement(StackElement::DataType::Type)});
   TypePtr elm(dynamic_cast<TypeElement*>(s.pop()));
   s.push(new TypeElement(elm->getBase()));

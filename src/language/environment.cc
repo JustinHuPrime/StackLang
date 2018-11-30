@@ -127,6 +127,7 @@ StackElement* EnvTree::Environment::lookup(const string& id) {
 
 void EnvTree::Environment::clearBindings() noexcept {
   for (auto& elm : bindings) delete elm.second;
+  bindings.clear();
 }
 
 EnvTree::EnvTree() noexcept {
