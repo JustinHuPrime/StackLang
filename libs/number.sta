@@ -19,8 +19,27 @@
 ; StackLang extended number primitives
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    duplicate
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `integer-other
+    define
+
+    << Number >> ; -> Boolean
+    << `num >>
+    <<
+        num
+        1, modulo
+        zero?
+    >>
+    `integer-number
+    define
+
+    elm, elm
     number?
     `integer-number
     `integer-other
@@ -32,27 +51,27 @@
 define
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    drop
-    false
->>
-`integer?
-`integer-other
-define*
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `zero-other
+    define
 
-<< Number >> ; -> Boolean
-<<
-    1, modulo
-    zero?
->>
-`integer?
-`integer-number
-define*
+    << Number >> ; -> Boolean
+    << `num >>
+    <<
+        num
+        0
+        equal?
+    >>
+    `zero-number
+    define
 
-
-<< Any >> ; -> Boolean
-<<
-    duplicate
+    elm, elm
     number?
     `zero-number
     `zero-other
@@ -64,60 +83,40 @@ define*
 define
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    drop
-    false
->>
-`zero?
-`zero-other
-define*
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `positive-other
+    define
 
-<< Number >> ; -> Boolean
-<<
-    0
-    equal?
->>
-`zero?
-`zero-number
-define*
+    << Number >> ; -> Boolean
+    << `num >>
+    <<
+        num
+        0, greater-than?
+    >>
+    `positive-number
+    define
 
-
-<< Any >> ; -> Boolean
-<<
-    duplicate
+    elm, elm
     number?
     `positive-number
     `positive-other
     3, rotate
     if
-    unquote
+   unquote
 >>
 `positive?
 define
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    drop
-    false
->>
-`positive?
-`positive-other
-define*
-
-<< Number >> ; -> Boolean
-<<
-    0
-    greater-than?
->>
-`positive?
-`positive-number
-define*
-
-
-<< Any >> ; -> Boolean
-<<
-    duplicate
-    duplicate
+    elm, elm, elm
     number?
     2, rotate
     positive?
@@ -131,10 +130,28 @@ define*
 `negative?
 define
 
-
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    duplicate
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `even-other
+    define
+
+    << Number >> ; -> Boolean
+    << `num >>
+    <<
+        num
+        2, modulo
+        zero?
+    >>
+    `even-integer
+   define
+
+    elm, elm
     integer?
     `even-integer
     `even-other
@@ -146,28 +163,9 @@ define
 define
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    drop
-    false
->>
-`even?
-`even-other
-define*
-
-<< Number >> ; -> Boolean
-<<
-    2, modulo
-    zero?
->>
-`even?
-`even-integer
-define*
-
-
-<< Any >> ; -> Boolean
-<<
-    duplicate
-    duplicate
+    elm, elm, elm
     integer?
     2, rotate
     even?
@@ -181,28 +179,30 @@ define*
 `odd?
 define
 
-
 << Number >> ; -> Number
+<< `num >>
 <<
     0
-    2, rotate
-    minus
+    num
+    subtract
 >>
 `negate
 define
 
 << Number >> ; -> Number
+<< `num >>
 <<
     1
-    2, rotate
+    num
     divide
 >>
 `inverse
 define
 
-
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     1
     add
 >>
@@ -210,16 +210,19 @@ define
 define
 
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     1
     subtract
 >>
 `decrement
 define
 
-
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     0.5
     pow
 >>
@@ -227,17 +230,19 @@ define
 define
 
 << Number >> ; -> Number
+<< `num >>
 <<
     euler
-    2, rotate
+    num
     pow
 >>
 `exponential
 define
 
-
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     euler
     log
 >>
@@ -245,7 +250,9 @@ define
 define
 
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     10
     log
 >>
@@ -253,60 +260,65 @@ define
 define
 
 << Number >> ; -> Number
+<< `num >>
 <<
+    num
     2
     log
 >>
 `log-2
 define
 
-
 << Number >> ; -> Number
+<< `num >>
 <<
+        << Number, Number >> ; -> Number
+        << `curr, `rsf >>
+        <<
+            << Number, Number >> ; -> Number
+            << `curr, `rsf >>
+            <<
+                curr
+                rsf
+                multiply
+                rsf
+                decrement
+                factorial-rc
+            >>
+            `factorial-tr
+            define
+
+            << Number, Number >> ; -> Number
+            << `curr, `rsf >>
+            <<
+                rsf
+            >>
+            `factorial-bc
+            define
+
+            curr, rsf
+            rsf
+            positive?
+            `factorial-tr
+            `factorial-bc
+            3, rotate
+            if
+            unquote
+        >>
+        `factorial-rc
+        define
+
     1
-    2, rotate
+    num
     factorial-rc
 >>
 `factorial
 define
 
-<< Number, Number >> ; -> Number
-<<
-    duplicate
-    positive?
-    `factorial-tr
-    `factorial-bc
-    3, rotate
-    if
-    unquote
->>
-`factorial-rc
-define
-
-<< Number, Number >> ; -> Number
-<<
-    duplicate
-    decrement
-    3, 2, rotate*
-    multiply
-    2, rotate
-    factorial-rc
->>
-`factorial-rc
-`factorial-tr
-define*
-
-<< Number, Number >> ; -> Number
-<<
-    drop
->>
-`factorial-rc
-`factorial-bc
-define*
-
-
 << Number, Number >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     equal?
     not
 >>
@@ -314,7 +326,9 @@ define*
 define
 
 << Number, Number >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     greater-than?
     not
 >>
@@ -322,16 +336,19 @@ define
 define
 
 << Number, Number >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     less-than?
     not
 >>
 `greater-than-equal?
 define
 
-
 << Number >> ; -> Number
+<< `degs >>
 <<
+    degs
     180
     divide
     pi
@@ -341,7 +358,9 @@ define
 define
 
 << Number >> ; -> Number
+<< `rads >>
 <<
+    rads
     pi
     divide
     180

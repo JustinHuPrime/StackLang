@@ -19,8 +19,25 @@
 ; StackLang extended string primitives
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    duplicate
+    << Any >> ; -> Boolean
+    <<
+        drop
+        false
+    >>
+    `non-empty-string-other
+    define
+
+    << String >> ; -> Boolean
+    <<
+        empty-string?
+        not
+    >>
+    `non-empty-string-string
+    define
+
+    elm, elm
     string?
     `non-empty-string-string
     `non-empty-string-other
@@ -31,49 +48,30 @@
 `non-empty-string?
 define
 
-<< Any >> ; -> Boolean
-<<
-    drop
-    false
->>
-`non-empty-string?
-`non-empty-string-other
-define*
-
-<< String >> ; -> Boolean
-<<
-    empty-string?
-    not
->>
-`non-empty-string?
-`non-empty-string-string
-define*
-
-
 << String, Number, String >> ; -> String
+<< `to-insert, `index, `target >>
 <<
-    3, rotate
-    duplicate
-    4, rotate
-    duplicate
-    3, 2, rotate*
+    target
+    index
     0
     substring
-    4, 3, rotate
-    2, rotate
-    duplicate
+    target
+    target
     string-length
-    3, rotate
-    subtring
+    index
+    substring
+    to-insert
+    2, rotate
     string-append
     string-append
 >>
 `string-insert
 define
 
-
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-equal?
     not
 >>
@@ -81,7 +79,9 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-reverse-alphabetic?
     not
 >>
@@ -89,7 +89,9 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-alphabetic?
     not
 >>
@@ -97,9 +99,11 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a
     toupper
-    2, rotate
+    b
     toupper
     string-equal?
 >>
@@ -107,7 +111,9 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-equal-ci?
     not
 >>
@@ -115,9 +121,11 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a
     toupper
-    2, rotate
+    b
     toupper
     string-reverse-alphabetic-equal?
 >>
@@ -125,7 +133,9 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-reverse-alphabetic-ci?
     not
 >>
@@ -133,9 +143,11 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a
     toupper
-    2, rotate
+    b
     toupper
     string-alphabetic-equal?
 >>
@@ -143,7 +155,9 @@ define
 define
 
 << String, String >> ; -> String
+<< `a, `b >>
 <<
+    a, b
     string-alphabetic-ci?
     not
 >>

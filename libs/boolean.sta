@@ -19,7 +19,9 @@
 ; StackLang extended boolean primitives
 
 << Boolean, Boolean >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     or
     not
 >>
@@ -27,7 +29,9 @@
 define
 
 << Boolean, Boolean >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     xor
     not
 >>
@@ -35,7 +39,9 @@ define
 define
 
 << Boolean, Boolean >> ; -> Boolean
+<< `a, `b >>
 <<
+    a, b
     and
     not
 >>
@@ -43,9 +49,11 @@ define
 define
 
 << Boolean, Boolean >> ; -> Boolean
+<< `a, `b >>
 <<
-    2, rotate
+    b
     not
+    a
     or
 >>
 `implies
