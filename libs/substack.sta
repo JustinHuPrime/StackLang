@@ -19,6 +19,7 @@
 ; StackLang extended substack primitives
 
 <<>> ; -> substack
+<<>>
 <<
     <<>>
 >>
@@ -27,8 +28,27 @@ define
 
 
 << Any >> ; -> Boolean
+<< `elm >>
 <<
-    duplicate
+    << Any >> ; -> Boolean
+    << `ignored >>
+    <<
+        false
+    >>
+    `non-empty-other
+    define
+
+    << Substack >> ; -> Boolean
+    << `elm >>
+    <<
+        elm
+        empty?
+        not
+    >>
+    `non-empty-substack
+    define
+
+    elm, elm
     substack?
     `non-empty-substack
     `non-empty-other
@@ -39,27 +59,10 @@ define
 `non-empty?
 define
 
-<< Any >> ; -> Boolean
-<<
-    drop
-    false
->>
-`non-empty?
-`non-empty-other
-define*
-
-<< Substack >> ; -> Boolean
-<<
-    empty?
-    not
->>
-`non-empty?
-`non-empty-substack
-define*
-
-
 << Substack >> ; -> Any
+<< `lst >>
 <<
+    lst
     pop
     top
 >>
@@ -67,18 +70,44 @@ define*
 define
 
 << Substack >> ; -> Any
+<< `lst >>
 <<
+    lst
     reverse
     top
 >>
 `last
 define
 
-
-<< Command, Substack(Any) >> ; -> Substack(Any)
+<< Identifier, Substack(Any) >> ; -> Substack(Any)
+<< `fn, `lst >>
 <<
-    2, rotate
-    duplicate
+    << Substack(Any), Identifier >> ; -> Substack(Any)
+    << lst, fn <<
+    <<
+        lst
+        pop*
+        2, rotate
+        fn
+        map
+        2, rotate
+        fn
+        unquote
+        push
+    >>
+    `map-rc
+    define
+
+    << Substack(Any), Identifier >> ; -> Substack(Any)
+    << `lst, `fn >>
+    <<
+        lst
+    >>
+    `map-bc
+    define
+
+    fn, lst
+    lst
     empty?
     `map-bc
     `map-rc
@@ -88,32 +117,6 @@ define
 >>
 `map
 define
-
-<< Substack(Any), Command >> ; -> Substack(Any)
-<<
-    pop*
-    2, rotate
-    3, rotate
-    duplicate
-    3, 2, rotate*
-    map
-    3, 2, rotate*
-    unquote
-    push
->>
-`map
-`map-rc
-define*
-
-<< Substack(Any), Command >> ; -> Substack(Any)
-<<
-    2, rotate
-    drop
->>
-`map
-`map-bc
-define*
-
 
 << Command, Substack(Any) >> ; -> Substack(Any)
 <<
